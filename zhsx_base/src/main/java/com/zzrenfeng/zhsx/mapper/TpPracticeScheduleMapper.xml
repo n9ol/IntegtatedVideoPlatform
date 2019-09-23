@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TpPracticeScheduleMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TpPracticeSchedule" >
+		<result column="id" property="id" />
+		<result column="pid" property="pid" />
+		<result column="sid" property="sid" />
+		<result column="cid" property="cid" />
+		<result column="createId" property="createId" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,pid,sid,cid,createId,createTime
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_schedule
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from tp_practice_schedule
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TpPracticeSchedule" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into tp_practice_schedule (id,pid,sid,cid,createId,createTime)
+		values (#{id},#{pid},#{sid},#{cid},#{createId},#{createTime})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TpPracticeSchedule" >
+		update tp_practice_schedule
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="pid != null" >
+				pid = #{pid},
+			</if>
+			<if test="sid != null" >
+				sid = #{sid},
+			</if>
+			<if test="cid != null" >
+				cid = #{cid},
+			</if>
+			<if test="createId != null" >
+				createId = #{createId},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TpPracticeSchedule" >
+		update tp_practice_schedule
+		set 
+		id = #{id},
+		pid = #{pid},
+		sid = #{sid},
+		cid = #{cid},
+		createId = #{createId},
+		createTime = #{createTime}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="pid != null" >
+				and pid = #{pid}
+			</if>
+			<if test="sid != null" >
+				and sid = #{sid}
+			</if>
+			<if test="cid != null" >
+				and cid = #{cid}
+			</if>
+			<if test="createId != null" >
+				and createId = #{createId}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TpPracticeSchedule" resultType="TpPracticeSchedule">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_schedule
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TpPracticeSchedule" resultType="TpPracticeSchedule">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_schedule
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

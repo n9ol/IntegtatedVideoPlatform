@@ -61,22 +61,11 @@ public interface SysClassroomService extends BaseService<SysClassroom> {
 	 * @return
 	 */
 	SysClassroom getSysClassroom(String classCode, String serviceIp);
-
 	/**
-	 * 获取教室信息通过 classCode
-	 * 
-	 * @param classCode
+	 * 通过学校id查询班级id和班级名称
+	 * @param sysClassroom
 	 * @return
 	 */
-	SysClassroom getSysClassroomByClassCode(String classCode);
-
-	/**
-	 * 更新教室所在教学楼的名称
-	 * 
-	 * @param teachingBuildingId
-	 * @param teachingBuildingName
-	 * @return
-	 */
-	int updateClassroomTeachingBuildingName(String teachingBuildingId, String teachingBuildingName);
+	List<SysClassroom> findClassNameAndClassIdBySchoolId(SysClassroom sysClassroom);
 
 }

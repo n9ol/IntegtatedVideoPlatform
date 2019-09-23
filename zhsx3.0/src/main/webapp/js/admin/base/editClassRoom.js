@@ -1,12 +1,7 @@
 var layer;
 layui.use([ 'layer', 'form' ], function() {
 	layer = layui.layer;
-	var form = layui.form;
-	
-	form.on('select(teachingBuildingId)', function(data){
-		 var teachingBuildingName = $(data.elem).find("option:selected").text();
-		 $("#teachingBuildingName").val(teachingBuildingName);
-	});  
+	var form = layui.form();
 });
 
 // 表单验证
@@ -96,3 +91,26 @@ function updateClassRoom(index) {
 		}
 	});
 }
+
+
+// //验证
+// function checkIpRoomUid(){
+// var serviceIp = $("#serviceIp").val();
+// var roomId = $("#roomId").val();
+// var uid = document.getElementById("uid");
+// if(serviceIp != oldServiceIp || uid.value != oldUid || roomId != oldRoomId){
+// $.getJSON(ctx+"/adminBaseData/checkIpRoomUid",{serviceIp:serviceIp,roomId:roomId,uid:uid.value},function(data){
+// if(!data){
+// $("#ipRoomUid_msg").css("color","#f00");
+// $("#ipRoomUid_msg").text("已存在与服务器ip,教学编号,用户编号三者的完成相同的教室！");
+// }else{
+// checkOk(uid, true);
+// updateClassRoom();
+// }
+// });
+// }else{
+// updateClassRoom();
+// }
+// }
+
+

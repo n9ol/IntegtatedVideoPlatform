@@ -239,7 +239,7 @@
 			<!-- 分割线 -->
 			
 
-			<div id="page" style="text-align: center;"></div>
+			<div id="pager" style="text-align: center;"></div>
 		</div>
 		<form id="form" action="${ctx}/test/findOne"method="post">
 			<input type="hidden" name="p" value="${pageNum!''}">
@@ -250,13 +250,47 @@
 	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
 	<script src="${ctx}/js/web/mstd_geren.js" type="text/javascript" charset="utf-8"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
-		}
-	</script>
+		var skinColor = "#4596E5";
+		var skinName = "${skinName!''}";
+		switch (skinName) {
+			case "springtime":
+				skinColor = "#1cc8d2";
+				break;
+			case "summer":
+				skinColor = "#ee336e";
+				break;
+			case "autumn":
+				skinColor = "#ff9900";
+				break;
+			case "winter":
+				skinColor = "#1ca5d2";
+				break;
+			default:
+				skinColor = "#4596E5";
+				break;
+		}	
+	
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;	
+			laypage({
+				cont: "pager",
+				pages: "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip: false,
+				skin: skinColor,
+				groups: 10,
+				jump: function(e, first) {
+					if(!first){
+						$("input[name='p']").val(e.curr);
+						refreshPage();
+					}
+				}
+			});
+			setIframeH();
+			
+		});
+</script>
 <script type="text/javascript">
 
 

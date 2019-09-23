@@ -30,13 +30,23 @@ public class VideoScreenshotServlet extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 
 		String path = request.getParameter("path");
-		if (path == null)
+		if (path == null) {
 			path = "/upload";
+		}
 		String uploadPath = request.getSession().getServletContext().getRealPath(path);
-		String filePath = request.getParameter("filePath");
+		final String filePath = request.getParameter("filePath");
 		String filePath1 = filePath.substring(0, filePath.lastIndexOf("."));
-		boolean isok = VideoTranscodingUtil.videoScreenshot(filePath, uploadPath + filePath1 + ".jpg");
-		response.getWriter().append("" + isok);
+
+		final String imgFilePath = uploadPath + filePath1 + ".jpg";
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				VideoTranscodingUtil.videoScreenshot(filePath, imgFilePath);
+				super.run();
+			}
+		};
+		thread.start();
+		response.getWriter().append("" + true);
 	}
 
 	@Override

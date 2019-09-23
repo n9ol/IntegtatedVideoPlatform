@@ -1,0 +1,79 @@
+.top {
+    background-color: #1cc8d2;
+    height: 72px;
+}
+
+.top_zhong {
+    width: 1200px;
+    height: 100%;
+    font-size: 28px;
+    color: white;
+    margin: 0 auto;
+    line-height: 72px;
+}
+.top_zhong a{
+    color: white;
+
+}
+.conss {
+    height: 755px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.bg_deng {
+    margin-top: 100px;
+}
+
+.er_deng_kuang {
+    width: 285px;
+    height: 260px;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    float: right;
+    margin-top: 140px;
+    margin-right: 150px;
+    background-color: #f3f4f5;
+}
+
+.er_kuang_top {
+    background-color: #1cc8d2;
+    color: white;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+
+.saoma{
+	float:right;
+	margin-bottom:-15px;
+}
+
+.er_queren {
+    text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    position: relative;
+    padding-top: 10px;
+    font-size: 13px;
+    line-height: 24px;
+}
+.ewm{
+    text-align: center;
+    border-bottom: 1px dashed gainsboro;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+.ewm img{
+    width: 93px;
+    height: 91px;
+}
+.mmdl{
+    float: right;
+    color: #a7a7a7;
+    margin-right:10px;
+}

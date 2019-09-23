@@ -1,0 +1,155 @@
+.div-inline{
+	display: inline;	
+	text-align:center;
+	padding-top:32px;
+	margin:0 auto;
+	width: 670px;
+	position:relative;
+}
+.div-inline .layui-btn{
+	margin-top:30px;
+}
+img {
+	width: 400px;
+	height:550px;
+}
+.div-bg{
+	display: flex;
+   	justify-content: space-around;
+}
+.span-fontcolor{
+	color: #FF5722;
+}
+.div-head{
+	margin-top:70px;
+	height: 10px;
+	font-size: 30px;
+	text-align: center;
+}
+.present{
+	background-color:
+}
+.ulFather{
+	display: flex;
+    justify-content: space-around;
+    width: 650px;
+    margin: 0 auto;
+    padding-top: 55px;
+}
+.defaultStyle{
+	border-color:#33a7fd;
+	color:#33a7fd;
+	font-size:16px;
+	width:120px;
+	height:40px;
+	border: 2px solid;
+    border-radius: 10px;
+    line-height: 37px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.springtimeStyle{
+	border-color:#1cc8d2;
+	color:#1cc8d2;
+	font-size:16px;
+	width:120px;
+	height:40px;
+	border: 2px solid;
+    border-radius: 10px;
+    line-height: 37px;
+    text-align: center;
+    cursor: pointer;
+}
+.summerStyle{
+	border-color:#ee336e;
+	color:#ee336e;
+	font-size:16px;
+	width:120px;
+	height:40px;
+	border: 2px solid;
+    border-radius: 10px;
+    line-height: 37px;
+    text-align: center;
+    cursor: pointer;
+}
+.autumnStyle{
+	border-color:#ff9900;
+	color:#ff9900;
+	font-size:16px;
+	width:120px;
+	height:40px;
+	border: 2px solid;
+    border-radius: 10px;
+    line-height: 37px;
+    text-align: center;
+    cursor: pointer;
+}
+.winterStyle{
+	border-color:#1ca5d2;
+	color:#1ca5d2;
+	font-size:16px;
+	width:120px;
+	height:40px;
+	border: 2px solid;
+    border-radius: 10px;
+    line-height: 37px;
+    text-align: center;
+    cursor: pointer;
+}
+.defaultStyle:hover{
+	background-color:#33a7fd;
+	color:#fff;
+}
+.springtimeStyle:hover{
+	background-color:#1cc8d2;
+	color:#fff;
+}
+.summerStyle:hover{
+	background-color:#ee336e;
+	color:#fff;
+}
+.autumnStyle:hover{
+	background-color:#ff9900;
+	color:#fff;
+}
+.winterStyle:hover{
+	background-color:#1ca5d2;
+	color:#fff;
+}
+.springtimeStyleBg{ 
+background-color:#1cc8d2; 
+	color:#fff; 
+} 
+
+.defaultStyleBg{ 
+background-color:#33a7fd; 
+	color:#fff; 
+} 
+.summerStyleBg{ 
+	background-color:#ee336e; 
+	color:#fff; 
+} 
+.autumnStyleBg{ 
+	background-color:#ff9900; 
+color:#fff; 
+} 
+.winterStyleBg{ 
+	background-color:#1ca5d2; 
+	color:#fff; 
+} 
+.affirm{
+	background-color:rgb(28,210,109);
+	width:120px;
+	height:40px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+	font-size:16px;
+    color:#fff;
+    line-height: 40px;
+	position: absolute;
+	bottom: 0;    
+	right: 0;
+
+}

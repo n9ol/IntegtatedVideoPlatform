@@ -28,22 +28,9 @@ public class SysRole {
 	 */
 	private java.lang.Boolean available;
 
-	/**
-	 * 角色类型(base 基本信息类型角色, zhsx 综合视讯类型角色)
-	 */
-	private String roleType;
-
 	// get and set
 	public void setId(java.lang.String value) {
 		this.id = value;
-	}
-
-	public String getRoleType() {
-		return roleType;
-	}
-
-	public void setRoleType(String roleType) {
-		this.roleType = roleType;
 	}
 
 	public java.lang.String getId() {
@@ -76,8 +63,9 @@ public class SysRole {
 
 	@Override
 	public String toString() {
-		return "SysRole [id=" + id + ", role=" + role + ", description=" + description + ", available=" + available
-				+ ", roleType=" + roleType + "]";
+		return new StringBuffer().append("主键[").append(getId()).append("],").append("角色标识(唯一的)[").append(getRole())
+				.append("],").append("角色描述[").append(getDescription()).append("],").append("是否可用[")
+				.append(getAvailable()).append("],").toString();
 	}
 
 }

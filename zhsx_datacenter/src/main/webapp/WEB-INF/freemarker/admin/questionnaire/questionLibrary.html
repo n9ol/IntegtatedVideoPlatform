@@ -100,13 +100,13 @@
 										
 										<td>${(l.createTime)?string('yyyy-MM-dd HH:mm')}</td>
 										<td style="width:300px; word-break: break-all; word-wrap:break-word;">
-										 <a class="check_look" title="选项管理" href="javascript:option('${(l.id)!''}');" >
+										 <a class="btn layui-btn" title="选项管理" href="javascript:option('${(l.id)!''}');" >
 		                                    <i class="layui-icon">&#xe641;</i>&nbsp;选项管理
 		                                </a> 
-		                                <a class="check_look" title="编辑" href="javascript:eduQuestion('${(l.id)!''}');" >
+		                                <a class="btn btn-info" title="编辑" href="javascript:eduQuestion('${(l.id)!''}');" >
 		                                    <i class="layui-icon">&#xe642;</i>&nbsp;编辑
 		                                </a>
-		                                <a class="check_look" title="删除" href="javascript:deleteById('${(l.id)!''}');">
+		                                <a class="btn btn-danger" title="删除" href="javascript:deleteById('${(l.id)!''}');">
 		                                    <i class="layui-icon">&#xe640;</i>&nbsp;删除
 		                                </a>
 										
@@ -133,20 +133,25 @@
 			</form>
 		</div>
 	</section>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
-	<script type="text/javascript">
-		function turnPage(p) {
-			 var type = $("#type").val();
-        	 var question = $("#question").val();
-        	 var nickName = $("#nickName").val();
-		  	 window.location.href="${ctx}/questionnaire/questionLibrary?p="+p+"&type="+type+"&question="+question+"&nickName="+nickName;
-		}
-	</script>
+	<script type="text/javascript" src="${ctx}/common/layui/lay/modules/laypage.js"></script>
+
 	<script type="text/javascript">
 		var layer;
+		var laypage = layui.laypage;
+		laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : "molv",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					 var type = $("#type").val();
+		        	 var question = $("#question").val();
+		        	 var nickName = $("#nickName").val();
+				  window.location.href="${ctx}/questionnaire/questionLibrary?p="+e.curr+"&type="+type+"&question="+question+"&nickName="+nickName;
+				}
+			}
+		});
 		layui.use([  'layer','form','laydate' ], function() {
 			layer = layui.layer;
-			var form = layui.form;
+			var form = layui.form();
 			   form.on('submit(search)', function(data){
 		        	 var type = $("#type").val();
 		        	 var question = $("#question").val();

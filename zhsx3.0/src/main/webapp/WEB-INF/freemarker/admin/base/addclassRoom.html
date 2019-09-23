@@ -1,166 +1,120 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 
-<head>
-<meta charset="utf-8">
-<title>添加学校</title>
-<meta name="renderer" content="webkit">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="format-detection" content="telephone=no">
-<#include "/commons/comAdmin.html" encoding="utf-8" />
-<style type="text/css">
-.layui-larry-box {
-	padding: 0;
-}
-
-#jj {
-	text-align: right;
-	width: 120px;
-	float: left;
-}
-
-.layui-input-block {
-	margin-right: 195px;
-	margin-left: 125px;
-}
-
-.msg {
-	float: right;
-	margin-top: -25px;
-	width: 175px;
-}
-
-.layui-form-item .layui-input-inline {
-	width: 120px;
-}
-</style>
-</head>
-
-<body>
-	<section class="layui-larry-box">
-		<div class="larry-personal">
-			<div class="larry-personal-body clearfix">
-				<form id="form" class="layui-form">
-					<div class="row">
-						<#if schoollevel?? && schoollevel=="Y"> 
-							<input type="hidden" name="schoolId" id="schoolId" value="${schoolId!''}"> 
-						<#else>
+	<head>
+		<meta charset="utf-8">
+		<title>添加教室</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<style type="text/css">
+			.layui-larry-box {
+				padding: 0;
+			}
+			#jj {
+				text-align:right;
+				width: 120px;
+				float:left;
+			}
+			.layui-input-block{
+				margin-right:195px;
+				margin-left: 125px;
+			}
+			.msg{
+				float:right;
+				margin-top:-25px;
+				width: 175px;
+			}
+ 			.layui-form-item .layui-input-inline{
+				width: 120px;
+			}	 
+		</style>
+	</head>
+	
+	<body>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="larry-personal-body clearfix">
+					<form id="form" class="layui-form">
+						<div class="row">
 							<div class="layui-form-item">
-								<label class="layui-form-label" id="jj">选择学校：</label>
+		                      <label class="layui-form-label" id="jj">选择学校：</label>
+		                      <div class="layui-input-block">
+		                          <select name="schoolId"  id="schoolId" lay-search>
+		                              <option value="">请选择学校</option>
+									  <#if schools?? && (schools?size>0)><#list schools as l>
+									　　	<option value="${l.id!''}">${l.schoolName!''}</option>
+									　　</#list></#if>
+		                          </select>
+		                      </div>
+		                      <span id="schoolId_msg" class="msg" style="color:red;">*</span>
+			                </div>
+			                <div class="layui-form-item">
+								<label class="layui-form-label" id="jj">教室名称：</label>
 								<div class="layui-input-block">
-									<select name="schoolId" id="schoolId" lay-search>
-										<option value="">请选择学校</option>
-										<#if schools?? && (schools?size>0)><#list schools as l>
-										<option value="${l.id!''}">${l.schoolName!''}</option>
-										</#list></#if>
-									</select>
+									<input type="text" id="className" title="教室名称" name="className" class="layui-input" onblur="javascript:checkOk(this,checkString(this));">
 								</div>
-								<span id="schoolId_msg" class="msg" style="color: red;">*</span>
+								<span id="className_msg" class="msg" style="color:red;">*</span>
 							</div>
-						</#if>
-						
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">教学楼名称：</label>
-							<div class="layui-input-block">
-								<select name="teachingBuildingId" id="teachingBuildingId" lay-search  lay-filter="teachingBuildingId">
-									<option value="">请选择教学楼</option>
-									<#if listBuilding?? && (listBuilding?size>0)><#list listBuilding as l>
-										  <option value="${l.id!''}">${l.buildName}</option>
-									</#list></#if>
-								</select>
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">教室编号：</label>
+								<div class="layui-input-block">
+									<input type="text" id="classCode" title="教室编号" name="classCode" class="layui-input" onblur="javascript:checkOk(this,checkString(this)&&checkNum(this));">
+								</div>
+								<span id="classCode_msg" class="msg" style="color:red;">*</span>
 							</div>
-							<span id="teachingBuildingId_msg" class="msg" style="color: red;">*</span>
-							<input type="hidden" id="teachingBuildingName" name="teachingBuildingName">
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">教室名称：</label>
-							<div class="layui-input-block">
-								<input type="text" id="className" title="教室名称" name="className" class="layui-input"
-									onblur="javascript:checkOk(this,checkString(this));">
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">直播服务器IP:Port：</label>
+								<div class="layui-input-block">
+									<input type="text" id="serviceIp" title="直播服务器IP:Port" name="serviceIp" class="layui-input" onblur="javascript:checkOk(this,checkString(this));">
+								</div>
+								<span id="serviceIp_msg" class="msg" style="color:red;">*</span>
 							</div>
-							<span id="className_msg" class="msg" style="color: red;">*</span>
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">教室编号：</label>
-							<div class="layui-input-block">
-								<input type="text" id="classCode" title="教室编号" name="classCode" class="layui-input"
-									onblur="javascript:checkOk(this,checkString(this)&&checkNum(this));">
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">教室主机IP:Port：</label>
+								<div class="layui-input-block">
+									<input type="text" id="clientIp" title="教室主机IP:Port" name="clientIp" class="layui-input">
+								</div>
+								<span id="clientIp_msg" class="msg" style="color:red;"></span>
 							</div>
-							<span id="classCode_msg" class="msg" style="color: red;">*</span>
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">直播服务器IP:Port：</label>
-							<div class="layui-input-block">
-								<input type="text" id="serviceIp" title="直播服务器IP:Port" name="serviceIp" class="layui-input"
-									onblur="javascript:checkOk(this,checkString(this));">
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">web端口：</label>
+								<div class="layui-input-block">
+									<input type="text" id="webPort" title="web端口" name="webPort" class="layui-input" onblur="javascript:checkOk(this,checkString(this)&&checkNum(this));">
+								</div>
+								<span id="webPort_msg" class="msg" style="color:red;">*</span>
 							</div>
-							<span id="serviceIp_msg" class="msg" style="color: red;">*</span>
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">教室主机IP:Port：</label>
-							<div class="layui-input-block">
-								<input type="text" id="clientIp" title="教室主机IP:Port" name="clientIp" class="layui-input">
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">教学编号：</label>
+								<div class="layui-input-block">
+									<input type="text" id="roomId" title="教学编号" name="roomId" class="layui-input" onblur="javascript:checkOk(this,checkString(this)&&checkNum(this));">
+								</div>
+								<span id="roomId_msg" class="msg" style="color:red;">*</span>
 							</div>
-							<span id="clientIp_msg" class="msg" style="color: red;"></span>
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">web端口：</label>
-							<div class="layui-input-block">
-								<input type="text" id="webPort" title="web端口" name="webPort" class="layui-input"
-									onblur="javascript:checkOk(this,checkString(this)&&checkNum(this));">
-							</div>
-							<span id="webPort_msg" class="msg" style="color: red;">*</span>
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">教学编号：</label>
-							<div class="layui-input-block">
-								<input type="text" id="roomId" title="教学编号" name="roomId" class="layui-input"
-									onblur="javascript:checkOk(this,checkString(this)&&checkNum(this));">
-							</div>
-							<span id="roomId_msg" class="msg" style="color: red;">*</span>
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">用户编号：</label>
-							<div class="layui-input-block">
-								<input type="text" id="uid" title="用户编号" name="uid" class="layui-input"
-									onblur="javascript:checkOk(this,checkString(this));">
-							</div>
-							<span id="uid_msg" class="msg" style="color: red;">* </span>
-						</div>
-						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">老师视频路径：</label>
-							<div class="layui-input-block">
-								<input type="text" id="bak2" title="老师视频路径" name="bak2" class="layui-input">
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">用户编号：</label>
+								<div class="layui-input-block">
+									<input type="text" id="uid" title="用户编号" name="uid" class="layui-input" onblur="javascript:checkOk(this,checkString(this));">
+								</div>
+								<span id="uid_msg" class="msg" style="color:red;">* </span>
+							</div><br>
+							<span style="margin-left:60px;color:#FF5722;">注意：<span id="ipClassCode_msg" style="margin-left:10px;">同一直播服务器下教室编号不能相同</span></span> <br><br>
+							<div class="layui-form-item">
+								<div class="layui-input-block">
+									<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								</div>
 							</div>
 						</div>
-					    <div class="layui-form-item">
-							<label class="layui-form-label" id="jj">学生视频路径：</label>
-							<div class="layui-input-block">
-								<input type="text" id="studentUrl" title="学生视频路径" name="studentUrl" class="layui-input">
-							</div>
-						</div>
-						<br>
-						<span style="margin-left: 60px; color: #FF5722;">
-							注意：
-							<span id="ipClassCode_msg" style="margin-left: 10px;">同一直播服务器下教室编号不能相同</span>
-						</span>
-						<br>
-						<br>
-						<div class="layui-form-item">
-							<div class="layui-input-block">
-								<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
-								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-							</div>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
-	</section>
-</body>
-<script type="text/javascript" src="${ctx}/js/check.js"></script>
-<script type="text/javascript" src="${ctx}/js/admin/base/addclassRoom.js"></script>
+		</section>
+	</body>
+	<script type="text/javascript"  src="${ctx}/js/check.js"></script>
+	<script type="text/javascript"  src="${ctx}/js/admin/base/addclassRoom.js"></script>
 </html>

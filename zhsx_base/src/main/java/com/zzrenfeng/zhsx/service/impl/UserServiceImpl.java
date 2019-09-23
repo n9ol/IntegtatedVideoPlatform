@@ -495,6 +495,10 @@ public class UserServiceImpl extends BaseServiceImpl<BaseMapper<User>, User> imp
 			isPgAuthority = "N";
 			return isPgAuthority;
 		}
+		if (schedulePgModel != null && schedulePgModel.equals(LoSchedule.PG_BAK2_N)) {
+			isPgAuthority = "N";
+			return isPgAuthority;
+		}
 		if (schedulePgModel != null && schedulePgModel.equals(LoSchedule.PG_BAK2_S)) {
 			int pgAuthority = loPgGroupUserService.isPgAuthority(userId, scheduleId);
 			if (pgAuthority <= 0) {

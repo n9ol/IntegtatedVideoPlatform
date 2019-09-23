@@ -15,29 +15,25 @@
 		<result column="bak" property="bak" />
 		<result column="bak1" property="bak1" />
 		<result column="bak2" property="bak2" />
-		<result column="student_url" property="studentUrl" />
-		<result column="schoolName" property="schoolName" />
-		<result column="teaching_building_id" property="teachingBuildingId" />
-		<result column="teaching_building_name" property="teachingBuildingName" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,classCode,className,schoolId,serviceIp,webPort,roomId,uid,clientIp,bak,bak1,bak2,student_url,teaching_building_id,teaching_building_name
+		id,classCode,className,schoolId,serviceIp,webPort,roomId,uid,clientIp,bak,bak1,bak2
 	</sql>
 
 
 	<insert id="insert" parameterType="SysClassroom" >
 		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
-		insert into sys_classroom (id,classCode,className,schoolId,serviceIp,webPort,roomId,uid,clientIp,bak,bak1,bak2,student_url,teaching_building_id,teaching_building_name)
-		values (#{id},#{classCode},#{className},#{schoolId},#{serviceIp},#{webPort},#{roomId},#{uid},#{clientIp},#{bak},#{bak1},#{bak2},#{studentUrl},#{teachingBuildingId},#{teachingBuildingName})
+		insert into sys_classroom (id,classCode,className,schoolId,serviceIp,webPort,roomId,uid,clientIp,bak,bak1,bak2)
+		values (#{id},#{classCode},#{className},#{schoolId},#{serviceIp},#{webPort},#{roomId},#{uid},#{clientIp},#{bak},#{bak1},#{bak2})
 	</insert>
 	
 	<insert id="insertBatch" parameterType="java.util.List" >
-		insert into sys_classroom (id,classCode,className,schoolId,serviceIp,webPort,roomId,uid,clientIp,bak,bak1,bak2,student_url,teaching_building_id,teaching_building_name)
+		insert into sys_classroom (id,classCode,className,schoolId,serviceIp,webPort,roomId,uid,clientIp,bak,bak1,bak2)
 		values 
 		<foreach collection="list" item="classNames" separator=",">
 			(
-				(select uuid()),#{classNames.classCode},#{classNames.className},#{classNames.schoolId},#{classNames.serviceIp},#{classNames.webPort},#{classNames.roomId},#{classNames.uid},#{classNames.clientIp},#{classNames.bak},#{classNames.bak1},#{classNames.bak2},#{classNames.studentUrl},#{classNames.teachingBuildingId},#{classNames.teachingBuildingName}
+				(select uuid()),#{classNames.classCode},#{classNames.className},#{classNames.schoolId},#{classNames.serviceIp},#{classNames.webPort},#{classNames.roomId},#{classNames.uid},#{classNames.clientIp},#{classNames.bak},#{classNames.bak1},#{classNames.bak2}
 			)
 		</foreach>
 	</insert>
@@ -58,7 +54,7 @@
 
 	<update id="updateByPrimaryKeySelective" parameterType="SysClassroom" >
 		update sys_classroom
-		<set >
+		<set>
 			<if test="id != null" >
 				id = #{id},
 			</if>
@@ -71,9 +67,6 @@
 			<if test="schoolId != null" >
 				schoolId = #{schoolId},
 			</if>
-			<if test="serviceIp != null" >
-				serviceIp = #{serviceIp},
-			</if>
 			<if test="webPort != null" >
 				webPort = #{webPort},
 			</if>
@@ -83,6 +76,9 @@
 			<if test="uid != null" >
 				uid = #{uid},
 			</if>
+			<if test="serviceIp != null" >
+				serviceIp = #{serviceIp},
+			</if>
 			<if test="bak != null" >
 				bak = #{bak},
 			</if>
@@ -91,15 +87,6 @@
 			</if>
 			<if test="bak2 != null" >
 				bak2 = #{bak2},
-			</if>
-			<if test="studentUrl != null">
-				student_url = #{studentUrl},
-			</if>
-			<if test="teachingBuildingId != null">
-				teaching_building_id = #{teachingBuildingId},
-			</if>
-			<if test="teachingBuildingName != null">
-				teaching_building_name = #{teachingBuildingName},
 			</if>
 			clientIp = #{clientIp}
 		</set>
@@ -121,10 +108,7 @@
 		clientIp = #{clientIp},
 		bak = #{bak},
 		bak1 = #{bak1},
-		bak2 = #{bak2},
-		student_url = #{studentUrl},
-		teaching_building_id = #{teachingBuildingId},
-		teaching_building_name = #{teachingBuildingName}
+		bak2 = #{bak2}
 		where id = #{id}
 	</update>
 	
@@ -140,12 +124,8 @@
 	
 	
 	<update id="updateOnlineState" parameterType="SysClassroom">
-		UPDATE sys_classroom SET bak1 = #{bak1} WHERE classCode = #{classCode}
+		UPDATE sys_classroom SET bak1 = #{bak1} WHERE classCode = #{classCode} and substring_index(serviceIp, ':', 1) = #{serviceIp}
 	</update>	
-	
-	<update id="updateClassroomTeachingBuildingName" parameterType="SysClassroom">
-		UPDATE sys_classroom SET teaching_building_name = #{teachingBuildingName} WHERE teaching_building_id = #{teachingBuildingId}
-	</update>
 	
 	
 	<sql id="Dynamic_Conditions">
@@ -187,25 +167,8 @@
 			<if test="bak2 != null" >
 				and bak2 = #{bak2}
 			</if>
-			<if test="studentUrl != null">
-				and student_url = #{studentUrl}
-			</if>
-			<if test="teachingBuildingId != null">
-				and teaching_building_id = #{teachingBuildingId}
-			</if>
-			<if test="teachingBuildingName != null">
-				and teaching_building_name = #{teachingBuildingName}
-			</if>
 			<if test="search!=null">
-				and ( 
-				      classCode like '%${search}%' 
-				      or 
-				      className like '%${search}%' 
-				      or 
-				      (schoolId in (select id from sys_school where schoolName like '%${search}%' )) 
-				      or 
-				      teaching_building_name like '%${search}%'
-				   )
+				and (classCode like '%${search}%' or className like '%${search}%' or (schoolId in (select id from sys_school where schoolName like '%${search}%' )))
 			</if>
 			<if test="authority != null">
 				<if test="schoolIds != null">
@@ -216,7 +179,7 @@
 				</if>
 			</if>
 		</where>
-		ORDER BY schoolId DESC,className
+		ORDER BY schoolId DESC,bak DESC,id DESC
 	</sql>
 	
 	
@@ -227,7 +190,7 @@
 		where id = #{id}
 	</select>
 	
-	<select id="findSelective" parameterType="SysClassroom" resultMap="BaseResultMap">
+	<select id="findSelective" parameterType="SysClassroom" resultType="SysClassroom">
 		select 
 		<include refid="Base_Column_List" />,
 		(SELECT schoolName FROM sys_school s WHERE s.id=c.schoolId) as schoolName
@@ -236,7 +199,7 @@
 	</select>
 
 
-	<select id="findPageSelective" parameterType="SysClassroom" resultMap="BaseResultMap">
+	<select id="findPageSelective" parameterType="SysClassroom" resultType="SysClassroom">
 		select 
 		<include refid="Base_Column_List" />,
 		(SELECT schoolName FROM sys_school s WHERE s.id=c.schoolId) as schoolName
@@ -249,5 +212,12 @@
 		select classCode,className from sys_classroom where schoolId = #{schoolId}
 	</select>
 	
+	
+	
+	<select id="findClassroomNameAndClassroomId" parameterType="SysClassroom" resultType="SysClassroom">
+		select id,className 
+		from sys_classroom
+		<include refid="Dynamic_Conditions"/>
+	</select>
 		
 </mapper>

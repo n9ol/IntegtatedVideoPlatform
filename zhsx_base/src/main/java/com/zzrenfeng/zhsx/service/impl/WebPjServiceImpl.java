@@ -1,7 +1,6 @@
 package com.zzrenfeng.zhsx.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,9 @@ import com.zzrenfeng.zhsx.base.BaseMapper;
 import com.zzrenfeng.zhsx.mapper.WebPjMapper;
 import com.zzrenfeng.zhsx.model.WebPj;
 import com.zzrenfeng.zhsx.model.WebPjInfoExt;
+import com.zzrenfeng.zhsx.model.WebPjinfo;
 import com.zzrenfeng.zhsx.service.WebPjService;
+import com.zzrenfeng.zhsx.service.WebPjinfoService;
 import com.zzrenfeng.zhsx.service.impl.base.BaseServiceImpl;
 
 /**
@@ -33,11 +34,23 @@ public class WebPjServiceImpl extends BaseServiceImpl<BaseMapper<WebPj>, WebPj> 
 
 	@Resource
 	private WebPjMapper webPjMapper;
+	@Resource
+	private WebPjinfoService webPjinfoService;
 
 	@Override
 	@Resource
 	public void setBaseMapper(BaseMapper<WebPj> webPjMapper) {
 		super.setBaseMapper(webPjMapper);
+	}
+
+	@Override
+	public void insterPgMessage(String userId, String pgId, String onOff, String type) {
+		WebPj webPj = new WebPj();
+		webPj.setUserId(userId);
+		webPj.setPgId(pgId);
+		webPj.setOnOff(onOff);
+		webPj.setType(type);
+		webPjMapper.insterPgMessage(webPj);
 	}
 
 	@Override
@@ -55,22 +68,6 @@ public class WebPjServiceImpl extends BaseServiceImpl<BaseMapper<WebPj>, WebPj> 
 					.doubleValue();
 		}
 		return new BigDecimal(total).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-	}
-
-	@Override
-	public double calculateTotalNotWeight(WebPjInfoExt webPjInfoExt) {
-		List<Double> totals = webPjInfoExt.getTotals();
-		int size = totals.size();
-		if (totals == null || size <= 0) {
-			return 0;
-		}
-
-		double total = 0.0;
-		for (Double double1 : totals) {
-			total += double1;
-		}
-		double avgTotal = new BigDecimal(total).divide(new BigDecimal(size), 2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		return avgTotal;
 	}
 
 	@Override
@@ -183,18 +180,48 @@ public class WebPjServiceImpl extends BaseServiceImpl<BaseMapper<WebPj>, WebPj> 
 	}
 
 	@Override
-	public WebPj getWebPj(String currUserId, String pgId, String onOff) {
-		WebPj webPj = new WebPj();
-		WebPj webPj1 = new WebPj(currUserId, pgId, onOff);
-		webPj1.setAddTime(new Date());
-		List<WebPj> webpjs = findSelective(webPj1);
-		if (webpjs != null && webpjs.size() > 0) {
-			webPj = webpjs.get(0);
+	public Map<String, Object> getPjInfo(String currUserId, String pgId, String onOff, String pgType) {
+		Map<String, Object> hm = new HashMap<>();
+
+		WebPj webpj = new WebPj();
+		webpj.setUserId(currUserId);
+		webpj.setPgId(pgId);
+		webpj.setOnOff(onOff);
+		List<WebPj> webpjs = findSelective(webpj);
+		if (webpjs == null || webpjs.size() == 0) {
+			deleteWebPg(currUserId, pgId);
+			insterPgMessage(currUserId, pgId, onOff, pgType);
+			webpj = findSelective(webpj).get(0);
 		} else {
-			webPjMapper.insterPgMessage(webPj1);
-			webPj = webPjMapper.selectByPrimaryKey(webPj1.getId());
+			webpj = webpjs.get(0);
 		}
-		return webPj;
+
+		// 获得课中评估项
+		WebPjinfo webPjInfo = new WebPjinfo();
+		webPjInfo.setUserId(currUserId);
+		webPjInfo.setPgId(pgId);
+		webPjInfo.setOnOff(onOff);
+		webPjInfo.setBak1(pgType);
+		List<WebPjinfo> webPjInfoList = webPjinfoService.findSelective(webPjInfo);
+
+		/*
+		 * 此处处理数据异常时的情况-为什么会出现记录异常(多条总评,没有评估项)的原因咱不明确.
+		 * 解决方案-数据库设置唯一约束测试找出原因。此处先这样处理，需然很丑陋.
+		 */
+		if (webPjInfoList == null || webPjInfoList.size() == 0 || webpjs.size() > 1) {
+			deleteWebPg(currUserId, pgId);
+			insterPgMessage(currUserId, pgId, onOff, pgType);
+
+			WebPj webpj1 = new WebPj();
+			webpj1.setUserId(currUserId);
+			webpj1.setPgId(pgId);
+			webpj1.setOnOff(onOff);
+			webpj = findSelective(webpj1).get(0);
+			webPjInfoList = webPjinfoService.findSelective(webPjInfo);
+		}
+		hm.put("webpj", webpj);
+		hm.put("webPjInfoList", webPjInfoList);
+		return hm;
 	}
 
 	@Override
@@ -203,18 +230,6 @@ public class WebPjServiceImpl extends BaseServiceImpl<BaseMapper<WebPj>, WebPj> 
 		webpj.setPgId(pgId);
 		webpj.setUserId(currUserId);
 		webPjMapper.deleteWebPg(webpj);
-	}
-
-	@Override
-	public Page<WebPj> listWebPjResult(WebPj webPj, int p, int pageSize) {
-		PageHelper.startPage(p, pageSize);
-		return webPjMapper.listWebPjResult(webPj);
-	}
-
-	@Override
-	public Page<WebPj> listPersonalWebPjRecord(String userId, int p, int pageSize) {
-		PageHelper.startPage(p, pageSize);
-		return webPjMapper.listPersonalWebPjRecord(userId);
 	}
 
 }

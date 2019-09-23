@@ -21,8 +21,8 @@
 						<li class="layui-form">
 							  <div class="layui-form-item">
 							    <div class="layui-input-inline">
-							    	<select type="text" id="gradeId" name="gradeName" title="专业"  lay-filter="gradeId" lay-search>
-							         	<option value="">选择专业</option>
+							    	<select type="text" id="gradeId" name="gradeName" title="年级"  lay-filter="gradeId" lay-search>
+							         	<option value="">选择年级</option>
 								        <#if grades??&&(grades?size>0)><#list grades as g>
 			       							<option  value="${g.id}" >${g.value}</option>
 			       						</#list></#if>

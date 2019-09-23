@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TpPracticeQuestionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TpPracticeQuestion" >
+		<result column="id" property="id" />
+		<result column="pid" property="pid" />
+		<result column="question" property="question" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subjectName" property="subjectName" />
+		<result column="rights" property="rights" />
+		<result column="type" property="type" />
+		<result column="options" property="options" />
+		<result column="createId" property="createId" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,pid,question,gradeName,subjectName,rights,type,options,createId,createTime
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_question
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from tp_practice_question
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TpPracticeQuestion" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into tp_practice_question (id,pid,question,gradeName,subjectName,rights,type,options,createId,createTime)
+		values (#{id},#{pid},#{question},#{gradeName},#{subjectName},#{rights},#{type},#{options},#{createId},#{createTime})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TpPracticeQuestion" >
+		update tp_practice_question
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="pid != null" >
+				pid = #{pid},
+			</if>
+			<if test="question != null" >
+				question = #{question},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectName != null" >
+				subjectName = #{subjectName},
+			</if>
+			<if test="rights != null" >
+				rights = #{rights},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="options != null" >
+				options = #{options},
+			</if>
+			<if test="createId != null" >
+				createId = #{createId},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TpPracticeQuestion" >
+		update tp_practice_question
+		set 
+		id = #{id},
+		pid = #{pid},
+		question = #{question},
+		gradeName = #{gradeName},
+		subjectName = #{subjectName},
+		rights = #{rights},
+		type = #{type},
+		options = #{options},
+		createId = #{createId},
+		createTime = #{createTime}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="pid != null" >
+				and pid = #{pid}
+			</if>
+			<if test="question != null" >
+				and question = #{question}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subjectName != null" >
+				and subjectName = #{subjectName}
+			</if>
+			<if test="rights != null" >
+				and rights = #{rights}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="options != null" >
+				and options = #{options}
+			</if>
+			<if test="createId != null" >
+				and createId = #{createId}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TpPracticeQuestion" resultType="TpPracticeQuestion">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_question
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TpPracticeQuestion" resultType="TpPracticeQuestion">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_question
+		<include refid="Dynamic_Conditions"/>
+		<if test="searchQuestion != null" >
+				and question like concat('%',#{searchQuestion},'%')
+		</if>
+	</select>
+
+
+
+</mapper>

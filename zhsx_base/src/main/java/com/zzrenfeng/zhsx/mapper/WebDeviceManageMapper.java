@@ -10,18 +10,19 @@ import com.zzrenfeng.zhsx.model.WebDeviceManage;
  * TODO 在此加入类描述
  * @copyright {@link zzrenfeng.com}
  * @author zzrenfeng.com
- * @version  2017-08-08 14:24:22
+ * @version  2018-07-23 16:03:27
  * @see com.zzrenfeng.zhsx.service.WebDeviceManage
  */
 
 public interface WebDeviceManageMapper extends BaseMapper<WebDeviceManage>{
-
+	
 	Map<String, Object> getTotalSchool(Map<String, Object> paramMap);
 
 	Map<String, Object> getdetailSchool(Map<String, Object> paramMap2);
 
 	Map<String, Object> getDetailClass(Map<String, Object> params);
 
+	
 	Map<String, Object> selectDeviceCalssInfo(String string);
 
 	List<String> selectAllDeviceCodeOnline();
@@ -39,6 +40,8 @@ public interface WebDeviceManageMapper extends BaseMapper<WebDeviceManage>{
 	List<Map<String, Object>> usageRateRank(Map<String, Object> paramMap);
 
 	Integer findDeviceStateByClassId(String classId);
-	
+
+	List<Map<String, Object>> getDeviceByClassId(String classId);
+
 }
 

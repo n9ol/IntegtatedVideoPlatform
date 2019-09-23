@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>淇县教育综合视讯管理平台</title>
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/imagehover.min.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/index.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/banner.css" />
+</head>
+<body>
+	<!--头部start-->
+	<#include "/zhsx/t/head.html" encoding="utf-8"/>
+	<!--内容start-->
+	<div class="con">
+		<div class="lunbo">
+			<!-- flexslider -->
+			<div class="jq22-container">
+				<div class="flexslider">
+					<ul class="slides">
+						<li class="slidesSon1" style="background-size: 100% 100%;"></li>
+						<li class="slidesSon2" style="background-size: 100% 100%;"></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!--直播-->
+	<div class="online clear">
+		<div class="online_left">
+			<p class="zhi">
+				<img src="img/zhibo6.jpg" />
+				<span>在线评估</span>
+			</p>
+		</div>
+		<div class="online_right">
+			<span>
+				<a href="${ctx}/online/zb_online?type=A" class="more1">更多></a>
+			</span>
+			<div class="right_img clear">
+				<#if onlineLists?? && (onlineLists?size>0)><#list onlineLists as l>
+					<#if l.type?? && l.type=='A'>
+						<div class="right_ke" onclick="watchZVideo('${l.id}','${l.type}','${l.isGoClass}');">
+							 <#if l.type?? && l.type == "A">
+								<div class="biaoqian" style="background-color: orange;"> 质量评估</div>
+							 <#else>
+							 	<div class="biaoqian" style="background-color: red;">  互动评估 </div>
+							 </#if>
+							
+							<div class="ke_img">
+								<img src="${ctx}/images/pinggu270.png" />
+							</div>
+							<div class="ke_p">
+								<p class="p1 clear">
+									<span class="span1"> ${l.schoolName!''} </span>
+									<#if l.isGoClass == 1>
+										<span class="span2" style="color: green;">正在直播 </span>
+									</#if> <#if l.isGoClass == 2>
+										<span class="span2"> 即将直播 </span>
+									</#if>
+								</p>
+								<p class="p2">
+									<span>${l.gradeId!''}-${l.subjectId!''}</span>
+									<span style="color: orange; margin-left: 15px;">${l.userName!''}</span>
+								</p>
+								<p class="p3">
+									<span>开播时间：</span>
+									<span style="color: orange;">${(l.z_date)?string('yyyy-MM-dd')} &nbsp;&nbsp; ${l.startDate!''}-${l.endDate!''}</span>
+								</p>
+							</div>
+						</div>
+					</#if>
+				</#list></#if>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- 专递课堂 -->
+	<div class="online clear">
+		<div class="online_left">
+			<p class="zhi">
+				<img src="img/zhibo6.jpg" />
+				<span>专递课堂</span>
+			</p>
+		</div>
+		<div class="online_right">
+			<span>
+				<a href="${ctx}/online/zb_online?type=G" class="more1">更多></a>
+			</span>
+			<div class="right_img clear">
+				<#if onlineListsG?? && (onlineListsG?size>0)><#list onlineListsG as l>
+					<#if l.type?? && l.type=='G'>
+						<div class="right_ke" onclick="watchZVideo('${l.id}','${l.type}','${l.isGoClass}');">
+							<div class="biaoqian bg5">专递课堂</div>
+							<div class="ke_img">
+								<img src="${ctx}/images/zhuandi270.png" />
+							</div>
+							<div class="ke_p">
+								<p class="p1 clear">
+									<span class="span1"> ${l.schoolName!''} </span>
+									<#if l.isGoClass == 1>
+									<span class="span2" style="color: green;">正在直播 </span>
+									</#if> <#if l.isGoClass == 2>
+									<span class="span2"> 即将直播 </span>
+									</#if>
+								</p>
+								<p class="p2">
+									<span>${l.gradeId!''}-${l.subjectId!''}</span>
+									<span style="color: orange; margin-left: 15px;">${l.userName!''}</span>
+								</p>
+								<p class="p3">
+									<span>开播时间：</span>
+									<span style="color: orange;">${(l.z_date)?string('yyyy-MM-dd')} &nbsp;&nbsp; ${l.startDate!''}-${l.endDate!''}</span>
+								</p>
+							</div>
+						</div>
+					</#if>
+				</#list></#if>
+			</div>
+		</div>
+	</div>
+	
+	
+	<!-- 离线评估  -->
+	<div class="online clear">
+		<div class="online_left">
+			<p class="zhi">
+				<img src="${ctx}/img/zhibo6.jpg" />
+				<span>离线评估</span>
+			</p>
+		</div>
+		<div class="online_right">
+			<span>
+				<a href="${ctx}/offLine/dianbo?type=P" class="more1">更多></a>
+			</span>
+			<div class="right_img clear">
+				<#if olVideoLists?? && (olVideoLists?size>0)><#list olVideoLists as l>
+				<div class="right_ke dianboliebiao" onclick="watchofflineVideo('${l.id}','${l.type}');">
+					<div class="biaoqian bg1">离线评估</div>
+					<div class="ke_img">
+						<span class="mainTime">${l.timeLength!''}</span>
+						<img src="${fileWebPath}/videoRes/${l.picPath!''}" onerror="this.src='${ctx}/img/lunbo4.png'" />
+					</div>
+					<div class="ke_p">
+						<p class="p1 clear">
+							<span class="span1" title="${l.title!''}"> ${l.title!''} </span>
+							<span class="span2"> </span>
+						</p>
+						<p class="p2">
+							<span>${l.gradeName!''}-${l.subjectName!''}</span>
+						</p>
+						<p class="p3">
+							<span>授课教师：</span>
+							<span style="color: orange;">${l.schoolName!''} &nbsp;&nbsp; ${l.teacherName!''}</span>
+						</p>
+					</div>
+				</div>
+				</#list></#if>
+			</div>
+		</div>
+	</div>
+
+	<!-- 名师团队-->
+	<div class="xiao_lunbo">
+		<div class="xiao_p">
+			<div class="shan">
+				<img src="img/banhu.jpg" />
+			</div>
+			<div class="tuandui">名师风采</div>
+			<div class="xiao_more">
+				<a href="${ctx}/teacher/teacherList">更多></a>
+			</div>
+		</div>
+		<div class="main clear">
+			<#assign teachersize = ((teachers?size)/4)?ceiling>
+			<div class="myslide">
+				<ul class="myslidetwo">
+					<#if teachers?? && (teachers?size>0)> <#list teachers as l>
+					<li>
+						<div class="demo">
+							<div class="figure_bg" style="background: url(img/tx_bg.png); background-size: 270px 180px;">
+								<figure class="imghvr-slide-down">
+									<img src="${fileWebPath}/userheadPortrait/${l.filePath!''}" onerror="this.src='${ctx}/img/user126.jpg'" />
+									<figcaption style="padding-top: 70px; background-color: rgba(0, 0, 0, 0.7);">
+										<p style="text-align: center;">
+											<span>查看详细</span>
+										</p>
+									</figcaption>
+									<a href="${ctx}/teacher/teacherDetails?id=${l.id!''}"></a>
+								</figure>
+							</div>
+							<div class="school">
+								<span>${l.schoolName!''}</span>
+								<span><#if l.currName?? && (l.currName!='') >${l.currName!''} <#else>${l.nickName!''}</#if></span>
+							</div>
+							<div class="zuan">
+								<span style="background-color: #4596E5;">
+									<img style="vertical-align: middle;" src="${ctx}/img/dengji.png" />
+									${l.EXP!''}
+								</span>
+							</div>
+						</div>
+					</li>
+					</#list></#if>
+				</ul>
+
+			</div>
+		</div>
+	</div>
+
+	<!--贡献榜-->
+	<div class="bang clear">
+		<p class="gong">
+			<img src="img/bang.jpg" />
+			<span>排行榜</span>
+		</p>
+		<div class="bang_left bb">
+			<a href="${ctx}/new/xinwen">
+				<img src="${ctx}/img/bang4.jpg" />
+			</a>
+			<ul>
+				<#if news??&&(news?size>0)><#list news as n>
+				<li value="${n.id}">
+					<strong>·</strong>
+					${n.title!''}
+					</a>
+				</li>
+				</#list></#if>
+
+			</ul>
+			<p class="ap">
+				<a href="${ctx}/new/xinwen">进入新闻中心</a>
+			</p>
+		</div>
+
+		<div class="bang_middle bb">
+			<a href="${ctx}/courRes/ziyuan">
+				<img src="${ctx}/img/bang3.jpg" />
+			</a>
+			<ul>
+				<#if courResLists?? && (courResLists?size>0)><#list courResLists as l>
+				<li value="${l.id!''}">
+					<strong>·</strong>
+					${l.name!''}
+				</li>
+				</#list></#if>
+
+			</ul>
+			<p class="ap">
+				<a href="${ctx}/courRes/ziyuan">进入课件资源</a>
+			</p>
+		</div>
+
+		<div class="bnag_right bb">
+			<a href="${ctx}/zxdy/online_dayi">
+				<img src="${ctx}/img/bang2.jpg" />
+			</a>
+			<ul>
+				<#if question?? && (question?size>0)><#list question as q>
+				<li value="${q.id}">
+					<strong>·</strong>
+					${q.title}
+				</li>
+				</#list></#if>
+
+			</ul>
+			<p class="ap">
+				<a href="${ctx}/zxdy/online_dayi">进入在线答疑</a>
+			</p>
+		</div>
+
+	</div>
+
+	<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+</body>
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var teachersize = "${((teachers?size)/4)?ceiling}";
+</script>
+<script type="text/javascript" charset="utf-8" src="${ctx}/js/web/banner.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="${ctx}/js/web/index.js"></script>
+</html>

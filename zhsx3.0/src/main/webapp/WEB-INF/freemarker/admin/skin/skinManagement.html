@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>添加角色</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/css/admin/skin/skinManagement.css">
+</head>
+<body>
+	<div class="div-head">
+		<label>当前皮肤为:
+			<span class="span-fontcolor">
+				<span id="skinNameText">
+					<#if skinName??>
+						<#if skinName == 'default'> 默认皮肤 </#if>
+						<#if skinName == 'springtime'> 春季皮肤 </#if>
+						<#if skinName == 'summer'> 夏季皮肤 </#if>
+						<#if skinName == 'autumn'> 秋季皮肤 </#if>
+						<#if skinName == 'winter'> 冬季皮肤 </#if>
+					</#if>
+				</span>
+			</span>
+			 ,点击对应的皮肤按钮可查看效果图!
+		</label>
+	</div>
+	<div>
+		<ul class="ulFather">
+			<li class="defaultStyle">默认皮肤</li>
+			<li class="springtimeStyle">春季皮肤</li>
+			<li class="summerStyle">夏季皮肤</li>
+			<li class="autumnStyle">秋季皮肤</li>
+			<li class="winterStyle">冬季皮肤</li>
+		</ul>
+	</div>
+	<div class="div-bg">
+		<div class="div-inline">
+			<div class="img">
+				<img alt="" src="${ctx}/images/defaultSkin.png">
+			</div>
+			<div class="affirm" onclick="changeSkin();">确认</div>
+		</div>
+	</div>
+	<input type="hidden" id="skinName">
+</body>
+<script type="text/javascript">
+var layer;
+layui.use([ 'layer','form'], function() {
+	layer = layui.layer;
+	var form = layui.form();
+});
+
+$(function(){
+	var skinName = "${skinName!''}";
+	switch (skinName) {
+	case "default":
+		$("li.defaultStyle").addClass("defaultStyleBg");
+		break;
+	case "springtime":
+		$("li.springtimeStyle").addClass("springtimeStyleBg");
+		break;
+	case "summer":
+		$("li.summerStyle").addClass("summerStyleBg");
+		break;
+	case "autumn":
+		$("li.autumnStyle").addClass("autumnStyleBg");
+		break;
+	case "winter":
+		$("li.winterStyle").addClass("winterStyleBg");
+		break;
+	default:
+		break;
+	}
+});
+
+function changeSkin(){
+	var skinName =  $("#skinName").val();
+	$.get("${ctx}/skin/changeSkin?skinName="+skinName, function(data){
+			if(data == "操作成功"){
+				changeHeadText(skinName);
+				layer.msg("修改成功,返回刷新即可!");
+			}
+		});
+}
+function changeHeadText(skinName){
+	switch (skinName) {
+	case "default":
+		$("#skinNameText").text("默认皮肤");
+		break;
+	case "springtime":
+		$("#skinNameText").text("春季皮肤");
+		break;
+	case "summer":
+		$("#skinNameText").text("夏季皮肤");
+		break;
+	case "autumn":
+		$("#skinNameText").text("秋季皮肤");
+		break;
+	case "winter":
+		$("#skinNameText").text("冬季皮肤");
+		break;
+	default:
+		break;
+	}
+}
+$(".ulFather li").click(function(){
+	$(".ulFather li").eq(0).attr("class","defaultStyle");
+	$(".ulFather li").eq(1).attr("class","springtimeStyle");
+	$(".ulFather li").eq(2).attr("class","summerStyle");
+	$(".ulFather li").eq(3).attr("class","autumnStyle");
+	$(".ulFather li").eq(4).attr("class","winterStyle");
+	
+	var styleBg = $(this).attr("class");
+	$(this).addClass(styleBg + "Bg");
+	var skinName = styleBg.substring(0,styleBg.indexOf("Style"));
+	$("#skinName").val(skinName);
+	$("img").attr("src","${ctx}/images/"+skinName+"Skin.png");
+});
+</script>
+</html>

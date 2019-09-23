@@ -1,7 +1,7 @@
 var layer;
 layui.use([ 'layer','form'], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	
 	//获得科目
 	form.on('select(gradeName)', function(data){

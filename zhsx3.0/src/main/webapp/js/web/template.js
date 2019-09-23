@@ -69,7 +69,7 @@ var layer;
 layui.use(['element', 'layer'], function(){
 	var element={}; 
 	try {
-		element = layui.element;
+		element = layui.element();
 	} catch (e) {
 		// TODO: handle exception
 	}

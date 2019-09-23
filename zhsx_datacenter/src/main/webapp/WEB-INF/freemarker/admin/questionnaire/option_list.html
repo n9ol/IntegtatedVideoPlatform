@@ -57,10 +57,10 @@
 		                            <td>${(l_index+1)!''}</td>
 		                            <td>${l.option!''}</td>
 		                            <td>
-		                                <a class="check_look" title="编辑" href="javascript:findById('${(l.id)!''}');" >
+		                                <a class="btn btn-info" title="编辑" href="javascript:findById('${(l.id)!''}');" >
 		                                    <i class="layui-icon">&#xe642;</i>&nbsp;编辑
 		                                </a>
-		                                <a class="check_look" title="删除" href="javascript:deleteById('${(l.id)!''}');">
+		                                <a class="btn btn-danger" title="删除" href="javascript:deleteById('${(l.id)!''}');">
 		                                    <i class="layui-icon">&#xe640;</i>&nbsp;删除
 		                                </a>
 		                            </td>
@@ -84,7 +84,7 @@
 	
 	layui.use(['jquery', 'form'], function() {
 		$ = layui.jquery;
-		form = layui.form;
+		form = layui.form();
 		$form = $('form');
 	});
     

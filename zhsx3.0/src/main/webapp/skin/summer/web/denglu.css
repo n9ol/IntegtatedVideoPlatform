@@ -1,0 +1,121 @@
+.top {
+	background-color: #ee336e;
+	height: 72px;
+}
+
+.top_zhong {
+	width: 1200px;
+	height: 100%;
+	font-size: 28px;
+	margin: 0 auto;
+	line-height: 72px;
+}
+.top_zhong a{
+	color: white;
+	
+}
+.conss {
+	height: 755px;
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.bg_deng {
+	margin-top: 100px;
+}
+
+.deng_kuang {
+	width: 285px;
+	height: 260px;
+	border: 1px solid gainsboro;
+	border-radius: 5px;
+	float: right;
+	margin-top: 140px;
+	margin-right: 150px;
+	background-color: #f3f4f5;
+}
+
+.kuang_top {
+	background-color: #ee336e;
+	color: white;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 20px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.shuru input {
+	background-color: #f3f4f5;
+	border: 1px solid gainsboro;
+	border-radius: 2px;
+	float: right;
+	margin-right: 40px;
+	height: 25px;
+	padding-left: 5px;
+	color: gray;
+}
+
+.shuru {
+	height: 25px;
+	text-align: right;
+	margin-top: 30px;
+	color: gray;
+	line-height: 25px;
+	position: relative;
+}
+
+.tishiyu {
+	position: absolute;
+	font-size: 0.8em;
+	height: 20px;
+	line-height: 20px;
+	color: red;
+	left: 90px;
+	display: none;
+}
+
+
+
+.queren {
+	text-align: center;
+	margin-top: 30px;
+	position: relative;
+	padding-top: 20px;
+	border-top: 1px dashed gainsboro;
+}
+.queren button{
+	width: 80px;
+	background-color: #ee336e;
+}
+.queren a{
+	color: #4596E5;
+	font-size: 0.8em;
+	position: absolute;
+	top: 37px;
+	right: 60px;
+}
+.yes1,.yes2{
+	display: none;
+	position: absolute;
+	right: 20px;
+	top: 8px;
+}
+
+.forgetPad{
+	position: absolute;
+	right: 43px;
+	top: 30px;
+	
+}
+#forgetPad_a{
+	font-size:12px;
+	color:#ee336e;
+}
+#forgetPad_a:hover{
+	color:#8cd6f9;
+}
+.skinColor {
+	color: #ee336e;
+}

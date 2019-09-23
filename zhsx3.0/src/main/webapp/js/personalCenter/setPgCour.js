@@ -12,7 +12,7 @@ function chooseCour(id) {
         maxmin: true, //开启最大化最小化按钮
         scrollbar: false,
         resize :false,
-        area: ['550px', '200px'],
+        area: ['550px', '300px'],
         offset: 'rb',
         content: ctx+'/personalCenter/chooseCour?pjInfoId='+id+"&zId="+zId
       });

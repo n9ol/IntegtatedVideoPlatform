@@ -102,14 +102,39 @@
 							</#if>
 					</#list>
 				</#if>
-
-<#include "/commons/comPage.html" encoding="utf-8"/>
+				
 <script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		getListData();
+	var skinColor = "#4596E5";
+	var skinName = "${skinName!''}";
+	switch (skinName) {
+		case "springtime":
+			skinColor = "#1cc8d2";
+			break;
+		case "summer":
+			skinColor = "#ee336e";
+			break;
+		case "autumn":
+			skinColor = "#ff9900";
+			break;
+		case "winter":
+			skinColor = "#1ca5d2";
+			break;
+		default:
+			skinColor = "#4596E5";
+			break;
 	}
-	
+	layui.use([ 'laypage' ], function() {
+		laypage = layui.laypage;
+		laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : skinColor,groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					getListData();
+				}
+			}
+		});
+	});
 	//观看离线视频
 	function watchofflineVideo(id,type){
 		window.open(ctx+"/offLine/videoPlayback?id="+id+"&type="+type,"_blank");

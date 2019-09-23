@@ -132,11 +132,7 @@ public class AdminTestWebQuestionController extends BaseController {
 				lists.get(i).setPublicType("");
 			}
 		}
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
 
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("search", search);
 		model.addAttribute("gradeName", gradeName);
 		model.addAttribute("subjectName", subjectName);
@@ -258,11 +254,6 @@ public class AdminTestWebQuestionController extends BaseController {
 			}
 			lists.get(i).setAnswers(answers);
 		}
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("search", search);
 		model.addAttribute("gradeName", gradeName);
 		model.addAttribute("subjectName", subjectName);

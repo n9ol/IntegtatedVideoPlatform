@@ -58,17 +58,17 @@
 					<input type="hidden" name="classId" value="${loSchedule.classId!''}">
 					<div class="row">
 						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">专业科目：</label>
+							<label class="layui-form-label" id="jj">年级科目：</label>
 							<div class="layui-input-inline" style="margin-left: 20px;">
 								<select name="gradeId" id="gradeId" lay-filter="grade">
-									<option value="">请选择专业</option>
+									<option value="">请选择年级</option>
 									<#if sysDicts?? && (sysDicts?size>0)><#list sysDicts as g> <#assign sel=""> <#if loSchedule.gradeId==g.value><#assign sel="selected"></#if>
 									<option value="${g.value!''}" id="${g.id!''}"${sel}>${g.value}</option>
 									</#list></#if>
 								</select>
 							</div>
 							<div class="layui-input-inline">
-								<select id="subjectId" name="subjectId" title="专业科目">
+								<select id="subjectId" name="subjectId" title="年级科目">
 									<option value="">请选择科目</option>
 									<#if sysDictsList?? && (sysDictsList?size>0)><#list sysDictsList as g> <#assign sel=""> <#if loSchedule.subjectId==g.value><#assign sel="selected"></#if>
 									<option value="${g.value}"${sel}>${g.value}</option>
@@ -92,19 +92,18 @@
 
 
 						<#assign aa = ""> <#assign gg = ""> <#assign zz = ""> <#assign sty = "">
-						<#assign pgsty = "">
+						<#assign pgsty = "style='display:inline-block;'">
 						<#if loSchedule.type == "G"> 
 							<#assign gg = "checked"> 
-							<#assign pgsty = "style='display:none;'">
 						<#elseif loSchedule.type == "A" > 
 							<#assign aa = "checked"> 
 							<#assign sty ="style='display:none;'">
+							<#assign pgsty = "style='display:none;'">
 						<#elseif loSchedule.type == "Z" >
 							<#assign zz = "checked">
 							<#assign sty ="style='display:none;'">
 							<#assign pgsty = "style='display:none;'">   
 						</#if>
-						
 						
 						
 						<div class="layui-form-item">
@@ -116,12 +115,15 @@
 							</div>
 						</div>
 						
-						<div class="onlinePg" ${pgsty}>
+						<div class="onlinePg">
 							<#assign bak2ChkS = "">
 							<#assign bak2ChkG = "">
+							<#assign bak2ChkN = "">
 							<#assign bak2Display = "">
 							<#if loSchedule.bak2?? && loSchedule.bak2 == "S"> 
 								<#assign bak2ChkS = "checked">
+							<#elseif loSchedule.bak2 == "N">
+								<#assign bak2ChkN = "checked">
 							<#else>
 								<#assign bak2ChkG = "checked">
 								<#assign bak2Display = "style='display:none;'">
@@ -131,6 +133,9 @@
 								<label class="layui-form-label" id="jj">评估模式：</label>
 								<div class="layui-input-block">
 									<input type="radio" name="bak2" value="G" title="公开" lay-filter="pgType" ${bak2ChkG}>
+									<div class="onlineTypeG" ${pgsty}>
+										<input type="radio" name="bak2" value="N" title="禁止" lay-filter="pgType" ${bak2ChkN}>
+									</div>
 									<input type="radio" name="bak2" value="S" title="私有" lay-filter="pgType" ${bak2ChkS}>
 								</div>
 							</div>

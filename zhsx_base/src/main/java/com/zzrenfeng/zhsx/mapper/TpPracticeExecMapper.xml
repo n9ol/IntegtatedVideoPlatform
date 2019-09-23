@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TpPracticeExecMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TpPracticeExec" >
+		<result column="id" property="id" />
+		<result column="pid" property="pid" />
+		<result column="question" property="question" />
+		<result column="option" property="option" />
+		<result column="right" property="right" />
+		<result column="type" property="type" />
+		<result column="createid" property="createid" />
+		<result column="createtime" property="createtime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,pid,question,option,right,type,createid,createtime
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_exec
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from tp_practice_exec
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TpPracticeExec" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into tp_practice_exec (id,pid,question,option,right,type,createid,createtime)
+		values (#{id},#{pid},#{question},#{option},#{right},#{type},#{createid},#{createtime})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TpPracticeExec" >
+		update tp_practice_exec
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="pid != null" >
+				pid = #{pid},
+			</if>
+			<if test="question != null" >
+				question = #{question},
+			</if>
+			<if test="option != null" >
+				option = #{option},
+			</if>
+			<if test="right != null" >
+				right = #{right},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="createid != null" >
+				createid = #{createid},
+			</if>
+			<if test="createtime != null" >
+				createtime = #{createtime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TpPracticeExec" >
+		update tp_practice_exec
+		set 
+		id = #{id},
+		pid = #{pid},
+		question = #{question},
+		option = #{option},
+		right = #{right},
+		type = #{type},
+		createid = #{createid},
+		createtime = #{createtime}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="pid != null" >
+				and pid = #{pid}
+			</if>
+			<if test="question != null" >
+				and question = #{question}
+			</if>
+			<if test="option != null" >
+				and option = #{option}
+			</if>
+			<if test="right != null" >
+				and right = #{right}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="createid != null" >
+				and createid = #{createid}
+			</if>
+			<if test="createtime != null" >
+				and createtime = #{createtime}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TpPracticeExec" resultType="TpPracticeExec">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_exec
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TpPracticeExec" resultType="TpPracticeExec">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_exec
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

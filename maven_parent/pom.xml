@@ -48,6 +48,7 @@
 		<war.version>2.6</war.version>
 		<poi.version>3.9</poi.version>
 		<poi.ooxml.version>3.9</poi.ooxml.version>
+		<poiscratchpad.version>3.9</poiscratchpad.version>
 		<freemarker.version>2.3.23</freemarker.version>
 		<pagehelper.version>3.7.5</pagehelper.version>
 		<commons.lang3.version>3.0</commons.lang3.version>
@@ -64,7 +65,8 @@
 		<aspose.slides.version>16.7.0</aspose.slides.version>
 		<httpcore.version>4.4.5</httpcore.version>
 		<httpclient.version>4.5.2</httpclient.version>
-		<quartz.version>2.2.3</quartz.version>
+		<javax.websocket.version>1.1</javax.websocket.version>
+		<pdfbox.version>2.0.1</pdfbox.version>
 	</properties>
 
 
@@ -322,6 +324,11 @@
 				<version>${poi.ooxml.version}</version>
 			</dependency>
 			<dependency>
+			    <groupId>org.apache.poi</groupId>
+			    <artifactId>poi-scratchpad</artifactId>
+			    <version>${poiscratchpad.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
 				<version>${freemarker.version}</version>
@@ -396,15 +403,20 @@
 				<artifactId>httpclient</artifactId>
 				<version>${httpclient.version}</version>
 			</dependency>
-			<dependency>
-			    <groupId>org.quartz-scheduler</groupId>
-			    <artifactId>quartz</artifactId>
-			    <version>${quartz.version}</version>
-			</dependency>
-			<dependency>
-		    <groupId>org.quartz-scheduler</groupId>
-			    <artifactId>quartz-jobs</artifactId>
-			    <version>${quartz.version}</version>
+		    <dependency>
+	           <groupId>javax.websocket</groupId>
+	           <artifactId>javax.websocket-api</artifactId>
+	           <version>${javax.websocket.version}</version>
+	       </dependency>
+	       	<dependency>     
+				<groupId>org.apache.pdfbox</groupId>     
+				<artifactId>fontbox</artifactId>     
+				<version>${pdfbox.version}</version> 
+			</dependency> 
+			<dependency>   
+				<groupId>org.apache.pdfbox</groupId>   
+				<artifactId>pdfbox</artifactId>  
+				 <version>${pdfbox.version}</version> 
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -470,5 +482,6 @@
 		<module>../zhsx_teacher</module>
 		<module>../zhsx_test</module>
 		<module>../zhsx_zxdy</module>
+		<module>../zhsx_practice</module>
 	</modules>
 </project>

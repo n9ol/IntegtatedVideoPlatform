@@ -82,11 +82,6 @@ public class TestWebStuTestQuestionAnswerController extends BaseController {
 		Page<TestWebStuTestQuestion> pageInfo = testWebStuTestQuestionService.findPageSelective(t, p, 4);
 		int pages = pageInfo.getPages();
 		List<TestWebStuTestQuestion> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		// start
 		for (int i = 0; i < lists.size(); i++) {
 			// 获取题号
@@ -313,11 +308,6 @@ public class TestWebStuTestQuestionAnswerController extends BaseController {
 		Page<TestWebTestQuestion> pageInfo = testWebTestQuestionService.findPageSelective(twq, p, 4);
 		int pages = pageInfo.getPages();
 		List<TestWebTestQuestion> twqL = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		String[] xuanxiang = { "A", "B", "C", "D", "E", "F", "G" };
 		for (int i = 0; i < twqL.size(); i++) {
 			// 根据questionId获得选项

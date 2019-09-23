@@ -6,8 +6,8 @@
 		<!-- <#global ctx=rc.contextPath /> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/courRes.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/common/webuploader/webuploader.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/courRes.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/webuploader/webuploader.css">
 	</head>
 	<body>
 		<div class="box clear">
@@ -25,7 +25,7 @@
 					</div>
 				</div>
 				<div class="box_nav_sou clear">
-					<input type="search" id="searchval" placeholder="文件名/标题/专业/科目/教师" />
+					<input type="search" id="searchval" placeholder="文件名/标题/年级/科目/教师" />
 					<i class="layui-icon searchvalI" id="search">&#xe615;</i>
 				</div>
 				<div class="box_nav_bianji">
@@ -60,7 +60,7 @@
 								<span class="text1">标题</span>
 							</li>
 							<li class="size" style="width: 6%;">
-								<span class="text2">专业</span>
+								<span class="text2">年级</span>
 							</li>
 							<li class="size" style="width: 6%;">
 								<span class="text2">科目</span>

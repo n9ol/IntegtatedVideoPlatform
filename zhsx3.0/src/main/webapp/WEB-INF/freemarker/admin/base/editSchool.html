@@ -60,12 +60,9 @@
 							<span id="schoolName_msg" class="msg" style="color: red;">*</span>
 						</div>
 						
-						
+						<#if platformLevel?? && platformLevel != 'A'>
 						<div class="layui-form-item">
-							
-							<#if platformLevel?? && platformLevel != 'A'>
 							<label class="layui-form-label" id="jj">地区选择：</label>
-							
 							<#if platformLevel == 'N'>
 							<div class="layui-input-inline" style="margin-left: 20px;">
 								<select name="provinceId" lay-filter="province" id="provinceId" lay-search>
@@ -104,12 +101,9 @@
 									</select>
 								</div>
 							</#if>
-							
-							
 							<span id="countyId_msg" class="msg1" style="color: red;">*</span>
-							</#if>
 						</div>
-						
+						</#if>
 						
 						
 						<div class="layui-form-item">
@@ -135,7 +129,7 @@
 	var layer;
 	layui.use([ 'layer', 'form' ], function() {
 		layer = layui.layer;
-		var form = layui.form;
+		var form = layui.form();
 
 		form.on('select(province)', function(data) {
 			$("#cityId").empty();

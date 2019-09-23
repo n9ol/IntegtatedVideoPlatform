@@ -41,7 +41,7 @@
 					<ul class="pull-right">
 						<li>
 							<div class="layui-input-inline pull-left">
-								<input id="searchval" name="searchval" type="text" class="layui-input" placeholder="文件名/专业/科目/版本/上下册" value="${search!''}" />
+								<input id="searchval" name="searchval" type="text" class="layui-input" placeholder="文件名/年级/科目/版本/上下册" value="${search!''}" />
 							</div>
 							<a class="layui-btn search-btn01 pull-left" onclick="searchCourRes();" href="javascript:;">
 								<i class="layui-icon">&#xe615;</i>
@@ -63,7 +63,7 @@
 										<th>名称</th>
 										<th>所在学校</th>
 										<th>上传人</th>
-										<th>专业</th>
+										<th>年级</th>
 										<th>科目</th>
 										<th>版本</th>
 										<th>册次</th>
@@ -166,12 +166,24 @@
 		</div>
 	</section>
 	<script type="text/javascript" src="${ctx}/js/admin/courRes/checkCourRes.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			$("#myform1").submit();
-		}
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({
+				cont : "page",
+				pages : "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip : false,
+				skin : "molv",
+				groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						$("#myform1").submit();
+					}
+				}
+			});
+		});
 	</script>
 </body>
 </html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>仁峰后台管理系统</title>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>	
+	</head>
+
+	<body>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="larry-personal-body clearfix">
+					<form id="myForm" class="layui-form" action="" method="post">
+						<div class="row">
+		                    <div class="col-md-6 pull-left">
+		                        <div class="layui-form-item">
+		                            <label class="layui-form-label">姓名：</label>
+		                            <div class="layui-input-block">
+		                                <input type="hidden" id="id" name="id" value="${(dt.id)!''}">
+		                                <input type="text" id="name" name="name"  class="layui-input" value="${(dt.name)!''}">
+		                            </div>
+		                        </div>
+		                        <div class="layui-form-item">
+		                            <label class="layui-form-label">手机号：</label>
+		                            <div class="layui-input-block">
+		                                <input type="text" id="phone" name="phone" class="layui-input" value="${(dt.phone)!''}">
+		                            </div>
+		                        </div>
+		                        
+		                        <div class="layui-form-item">
+		                            <div class="layui-input-block text-center">
+		                                <input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+		                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+					</form>
+				</div>
+			</div>
+		</section>
+		
+		<script type="text/javascript">
+			layui.use(['jquery', 'form'], function() {
+				var form = layui.form();
+				 
+			});
+ 			
+			function submitForm() {
+				$.ajax({
+					type : 'post',
+					url :"${ctx}/webdevicetechnician/admin/deviceupdateDT",
+					data : $("#myForm").serialize(),
+					dataType : "json",
+					success : function(data) {
+						var erc = data.errorCode;
+						var msg= "";
+						if(erc==0){
+							msg="操作成功！";
+						}else{
+							msg="操作失败！";
+						}
+						
+						closeiframe(window.name);
+						refresh();
+						parent.layer.msg(msg, {time : 2000});
+					}
+				});
+			};
+			
+		</script>
+	</body>
+	
+
+</html>

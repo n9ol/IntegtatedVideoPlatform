@@ -16,7 +16,6 @@ function auditCourRes(id){
 	LayerOpen('审核', '964px', '830px', ctx+"/adminCourRes/auditCourRes?id="+id);
 }
 
-
 //全选
 $("#selected-all-operation").click(function() {
 	if (this.checked) {
@@ -90,3 +89,5 @@ function batchDel(){
 function editCourRes(id){
 	LayerOpen('编辑', '640px', '530px', ctx+'/adminCourRes/editCourRes?id=' + id+"&type=H");
 }
+
+

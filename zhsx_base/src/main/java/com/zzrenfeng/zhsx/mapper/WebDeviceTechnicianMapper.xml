@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebDeviceTechnicianMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebDeviceTechnician" >
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="phone" property="phone" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,name,phone,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_technician
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_device_technician
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebDeviceTechnician" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_device_technician (id,name,phone,bak1,bak2,bak3)
+		values (#{id},#{name},#{phone},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebDeviceTechnician" >
+		update web_device_technician
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="name != null" >
+				name = #{name},
+			</if>
+			<if test="phone != null" >
+				phone = #{phone},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebDeviceTechnician" >
+		update web_device_technician
+		set 
+		id = #{id},
+		name = #{name},
+		phone = #{phone},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="name != null" >
+				and name = #{name}
+			</if>
+			<if test="phone != null" >
+				and phone = #{phone}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebDeviceTechnician" resultType="WebDeviceTechnician">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_technician
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebDeviceTechnician" resultType="WebDeviceTechnician">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_technician
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

@@ -49,17 +49,17 @@
 						</#list></#if>
 						<div class="row">
 							<div class="layui-form-item">
-		                      <label class="layui-form-label" id="jj">专业科目：</label>
+		                      <label class="layui-form-label" id="jj">年级科目：</label>
 		                      <div class="layui-input-inline" style="margin-left:20px;">
 		                          <select name="gradeName" lay-filter="gradeName" id="gradeName">
-		                              <option value="">请选择专业</option>
+		                              <option value="">请选择年级</option>
 									  <#if gradeList?? && (gradeList?size>0)><#list gradeList as l>
 									　　		<option value="${l.value!''}" id="${l.id!''}">${l.value!''}</option>
 									　　</#list></#if>
 		                          </select>
 		                      </div>
 		                      <div class="layui-input-inline">
-		                          <select id="subjectsName" name="subjectsName" lay-filter="subjectsName" title="专业科目">
+		                          <select id="subjectsName" name="subjectsName" lay-filter="subjectsName" title="年级科目">
 		                              <option value="">请选择科目</option>
 		                          </select>
 		                      </div>

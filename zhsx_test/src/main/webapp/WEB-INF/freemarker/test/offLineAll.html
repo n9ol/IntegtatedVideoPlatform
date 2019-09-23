@@ -12,7 +12,7 @@
 								<span>班级：${l.classId!''}</span>
 								<span>及格率：${l.percentage!''}</span>
 								<span>平均分：${l.averScore!''}分</span>
-								<span>专业：${l.gradeName!''}</span>
+								<span>年级：${l.gradeName!''}</span>
 								<span>科目：${l.subjectName!''}</span>
 								<span>发布时间：${(l.addTime)?string('yyyy-MM-dd')}</span>
 							</div>
@@ -32,11 +32,46 @@
 					</#list></#if>	
 				</ul>
 <!-- 分页 -->
-				<div id="page"></div>
-<#include "/commons/comPage.html" encoding="utf-8"/>
-<script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		offLineAll();
-	}
-</script>				
+				<div id="pagerss">
+				</div>
+				
+		<script type="text/javascript">
+			var skinColor = "#4596E5";
+			var skinName = "${skinName!''}";
+			switch (skinName) {
+				case "springtime":
+					skinColor = "#1cc8d2";
+					break;
+				case "summer":
+					skinColor = "#ee336e";
+					break;
+				case "autumn":
+					skinColor = "#ff9900";
+					break;
+				case "winter":
+					skinColor = "#1ca5d2";
+					break;
+				default:
+					skinColor = "#4596E5";
+					break;
+			}
+		
+			layui.use('laypage' , function() {
+				laypage = layui.laypage;
+				 laypage({
+							cont: "pagerss",
+							pages: "${pages!'1'}",
+							curr : "${pageNum!'1'}",
+							skip: false,
+							skin: skinColor,
+							groups: 10,
+							jump: function(e, first) {
+								if (!first) {
+									$("input[name='p']").val(e.curr);
+									offLineAll();
+								}
+								
+							}
+						}); 
+				}); 
+		 </script>

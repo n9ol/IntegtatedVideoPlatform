@@ -1,351 +1,258 @@
 package com.zzrenfeng.zhsx.model;
 
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * TODO 在此加入类描述
  * @copyright {@link zzrenfeng.com}
  * @author zzrenfeng.com
- * @version  2017-08-08 15:16:16
+ * @version  2018-07-23 16:03:27
  * @see com.zzrenfeng.zhsx.model.WebDeviceManage
  */
 
 public class WebDeviceManage {
-	//alias
-	/*
-	public static final String TABLE_ALIAS = "设备管理表";
-	public static final String ALIAS_DEVICE_ID = "id";
-	public static final String ALIAS_DEVICE_CODE = "设备编号";
-	public static final String ALIAS_DEVICE_TYPE = "设备型号";
-	public static final String ALIAS_DEVICE_PROVINCE = "省份";
-	public static final String ALIAS_DEVICE_CITY = "地市";
-	public static final String ALIAS_DEVICE_AREA = "地区";
-	public static final String ALIAS_SCHOOL_ID = "学校id";
-	public static final String ALIAS_SCHOOL_NAME = "学校名字";
-	public static final String ALIAS_DEVICE_STATE = "设备状态（0 启用  1 未启用）";
-	public static final String ALIAS_DEVICE_CLIENT_VERSION_NUM = "设备客户端版本号";
-	public static final String ALIAS_DEVICE_IP = "设备ip";
-	public static final String ALIAS_DEVICE_MAC = "网卡的mac地址";
-	public static final String ALIAS_DEVICE_ISVALID = "是否有效( 0 启用 1 未启用) ";
-	public static final String ALIAS_CREATE_TIME = "创建时间";
-	public static final String ALIAS_MODIFY_TIME = "更新时间";
-	public static final String ALIAS_CREATE_ID = "创建人id";
-	public static final String ALIAS_MODIFY_ID = "更新人id";
-    */
-	//date formats
-	//public static final String FORMAT_CREATE_TIME = DateUtils.DATETIME_FORMAT;
-	//public static final String FORMAT_MODIFY_TIME = DateUtils.DATETIME_FORMAT;
-	
-	//columns START
-	
+		
 	public static final String  DEVICE_ONLINE_STATE="0";	
-	public static final String  DEVICE_UNLINE_STATE="1";	
-	
-	
-	
-	
+	public static final String  DEVICE_UNLINE_STATE="1";
+	public static final String  DEVICE_ISVALID_YES="0";	
+	public static final String  DEVICE_ISVALID_NO="1";	
+
 	/**
 	 * id
 	 */
-	private java.lang.String device_id;
+	private java.lang.String id;
 	/**
 	 * 设备编号
 	 */
-	private java.lang.String device_code;
-	/**
-	 * 设备型号
-	 */
-	private java.lang.String device_type;
-	/**
-	 * 省份
-	 */
-	private java.lang.String device_province;
-	/**
-	 * 地市
-	 */
-	private java.lang.String device_city;
-	/**
-	 * 地区
-	 */
-	private java.lang.String device_area;
-	/**
-	 * 学校id
-	 */
-	private java.lang.String school_id;
-	/**
-	 * 学校名字
-	 */
-	private java.lang.String school_name;
-	/**
-	 * 设备状态（0 在线  1 不在线）
-	 */
-	private java.lang.String device_state;
-	/**
-	 * 设备客户端版本号
-	 */
-	private java.lang.String device_client_version_num;
-	/**
-	 * 设备ip
-	 */
-	private java.lang.String device_ip;
+	private java.lang.String deviceCode;
 	/**
 	 * 网卡的mac地址
 	 */
-	private java.lang.String device_mac;
+	private java.lang.String deviceMac;
 	/**
-	 * 是否有效( 0 启用 1 未启用) 
+	 * 设备型号
 	 */
-	private java.lang.String device_isvalid;
+	private java.lang.String deviceType;
+	/**
+	 * 省份
+	 */
+	private java.lang.String deviceProvince;
+	/**
+	 * 地市
+	 */
+	private java.lang.String deviceCity;
+	/**
+	 * 地区
+	 */
+	private java.lang.String deviceArea;
+	/**
+	 * 学校id
+	 */
+	private java.lang.String schoolId;
+	/**
+	 * 设备状态（0 在线  1 未在线）
+	 */
+	private java.lang.String deviceState;
+	/**
+	 * 设备客户端版本号
+	 */
+	private java.lang.String deviceClientVersionNum;
+	/**
+	 * 设备ip
+	 */
+	private java.lang.String deviceIp;
+	/**
+	 * 是否有效( 0 在用 1 已经过期,不可查询但统计时会用) 
+	 */
+	private java.lang.String isvalid;
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date create_time;
+	private java.util.Date createTime;
 	/**
 	 * 更新时间
 	 */
-	private java.util.Date modify_time;
+	private java.util.Date modifyTime;
 	/**
 	 * 创建人id
 	 */
-	private java.lang.String create_id;
+	private java.lang.String createId;
 	/**
 	 * 更新人id
 	 */
-	private java.lang.String modify_id;
-	//columns END 数据库字段结束
+	private java.lang.String modifyId;
 	
-	//concstructor
-
-	public WebDeviceManage(){
-	}
-
-	public WebDeviceManage(
-		java.lang.String device_id,
-		java.lang.String device_code
-	){
-		this.device_id = device_id;
-		this.device_code = device_code;
-	}
+	private java.lang.String bak1;
+	private java.lang.String bak2;
+	private java.lang.String bak3;
+	
+	
+	
 
 	//get and set
-	public void setDevice_id(java.lang.String value) {
-		this.device_id = value;
+	public void setId(java.lang.String value) {
+		this.id = value;
 	}
 	
-	public java.lang.String getDevice_id() {
-		return this.device_id;
+	public java.lang.String getId() {
+		return this.id;
 	}
-	public void setDevice_code(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_code = value;
+	public void setDeviceCode(java.lang.String value) {
+		this.deviceCode = value;
 	}
 	
-	public java.lang.String getDevice_code() {
-		return this.device_code;
+	public java.lang.String getDeviceCode() {
+		return this.deviceCode;
 	}
-	public void setDevice_type(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_type = value;
+	public void setDeviceMac(java.lang.String value) {
+		this.deviceMac = value;
 	}
 	
-	public java.lang.String getDevice_type() {
-		return this.device_type;
+	public java.lang.String getDeviceMac() {
+		return this.deviceMac;
 	}
-	public void setDevice_province(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_province = value;
+	public void setDeviceType(java.lang.String value) {
+		this.deviceType = value;
 	}
 	
-	public java.lang.String getDevice_province() {
-		return this.device_province;
+	public java.lang.String getDeviceType() {
+		return this.deviceType;
 	}
-	public void setDevice_city(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_city = value;
+	public void setDeviceProvince(java.lang.String value) {
+		this.deviceProvince = value;
 	}
 	
-	public java.lang.String getDevice_city() {
-		return this.device_city;
+	public java.lang.String getDeviceProvince() {
+		return this.deviceProvince;
 	}
-	public void setDevice_area(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_area = value;
+	public void setDeviceCity(java.lang.String value) {
+		this.deviceCity = value;
 	}
 	
-	public java.lang.String getDevice_area() {
-		return this.device_area;
+	public java.lang.String getDeviceCity() {
+		return this.deviceCity;
 	}
-	public void setSchool_id(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.school_id = value;
+	public void setDeviceArea(java.lang.String value) {
+		this.deviceArea = value;
 	}
 	
-	public java.lang.String getSchool_id() {
-		return this.school_id;
+	public java.lang.String getDeviceArea() {
+		return this.deviceArea;
 	}
-	public void setSchool_name(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.school_name = value;
+	public void setSchoolId(java.lang.String value) {
+		this.schoolId = value;
 	}
 	
-	public java.lang.String getSchool_name() {
-		return this.school_name;
+	public java.lang.String getSchoolId() {
+		return this.schoolId;
 	}
-	public void setDevice_state(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_state = value;
+	public void setDeviceState(java.lang.String value) {
+		this.deviceState = value;
 	}
 	
-	public java.lang.String getDevice_state() {
-		return this.device_state;
+	public java.lang.String getDeviceState() {
+		return this.deviceState;
 	}
-	public void setDevice_client_version_num(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_client_version_num = value;
+	public void setDeviceClientVersionNum(java.lang.String value) {
+		this.deviceClientVersionNum = value;
 	}
 	
-	public java.lang.String getDevice_client_version_num() {
-		return this.device_client_version_num;
+	public java.lang.String getDeviceClientVersionNum() {
+		return this.deviceClientVersionNum;
 	}
-	public void setDevice_ip(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_ip = value;
+	public void setDeviceIp(java.lang.String value) {
+		this.deviceIp = value;
 	}
 	
-	public java.lang.String getDevice_ip() {
-		return this.device_ip;
+	public java.lang.String getDeviceIp() {
+		return this.deviceIp;
 	}
-	public void setDevice_mac(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_mac = value;
+	public void setIsvalid(java.lang.String value) {
+		this.isvalid = value;
 	}
 	
-	public java.lang.String getDevice_mac() {
-		return this.device_mac;
+	public java.lang.String getIsvalid() {
+		return this.isvalid;
 	}
-	public void setDevice_isvalid(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.device_isvalid = value;
+
+	
+	public void setCreateTime(java.util.Date value) {
+		this.createTime = value;
 	}
 	
-	public java.lang.String getDevice_isvalid() {
-		return this.device_isvalid;
+	public java.util.Date getCreateTime() {
+		return this.createTime;
 	}
-		/*
-	public String getcreate_timeString() {
-		return DateUtils.convertDate2String(FORMAT_CREATE_TIME, getcreate_time());
-	}
-	public void setcreate_timeString(String value) throws ParseException{
-		setcreate_time(DateUtils.convertString2Date(FORMAT_CREATE_TIME,value));
-	}*/
+
 	
-	public void setCreate_time(java.util.Date value) {
-		this.create_time = value;
+	public void setModifyTime(java.util.Date value) {
+		this.modifyTime = value;
 	}
 	
-	public java.util.Date getCreate_time() {
-		return this.create_time;
+	public java.util.Date getModifyTime() {
+		return this.modifyTime;
 	}
-		/*
-	public String getmodify_timeString() {
-		return DateUtils.convertDate2String(FORMAT_MODIFY_TIME, getmodify_time());
-	}
-	public void setmodify_timeString(String value) throws ParseException{
-		setmodify_time(DateUtils.convertString2Date(FORMAT_MODIFY_TIME,value));
-	}*/
-	
-	public void setModify_time(java.util.Date value) {
-		this.modify_time = value;
+	public void setCreateId(java.lang.String value) {
+		this.createId = value;
 	}
 	
-	public java.util.Date getModify_time() {
-		return this.modify_time;
+	public java.lang.String getCreateId() {
+		return this.createId;
 	}
-	public void setCreate_id(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.create_id = value;
+	public void setModifyId(java.lang.String value) {
+		this.modifyId = value;
 	}
 	
-	public java.lang.String getCreate_id() {
-		return this.create_id;
-	}
-	public void setModify_id(java.lang.String value) {
-		    if(StringUtils.isNotBlank(value)){
-			 value=value.trim();
-			}
-		this.modify_id = value;
+	public java.lang.String getModifyId() {
+		return this.modifyId;
 	}
 	
-	public java.lang.String getModify_id() {
-		return this.modify_id;
+	public java.lang.String getBak1() {
+		return bak1;
 	}
-	
+
+	public void setBak1(java.lang.String bak1) {
+		this.bak1 = bak1;
+	}
+
+	public java.lang.String getBak2() {
+		return bak2;
+	}
+
+	public void setBak2(java.lang.String bak2) {
+		this.bak2 = bak2;
+	}
+
+	public java.lang.String getBak3() {
+		return bak3;
+	}
+
+	public void setBak3(java.lang.String bak3) {
+		this.bak3 = bak3;
+	}
+
 	public String toString() {
 		return new StringBuffer()
-			.append("id[").append(getDevice_id()).append("],")
-			.append("设备编号[").append(getDevice_code()).append("],")
-			.append("设备型号[").append(getDevice_type()).append("],")
-			.append("省份[").append(getDevice_province()).append("],")
-			.append("地市[").append(getDevice_city()).append("],")
-			.append("地区[").append(getDevice_area()).append("],")
-			.append("学校id[").append(getSchool_id()).append("],")
-			.append("学校名字[").append(getSchool_name()).append("],")
-			.append("设备状态（0 启用  1 未启用）[").append(getDevice_state()).append("],")
-			.append("设备客户端版本号[").append(getDevice_client_version_num()).append("],")
-			.append("设备ip[").append(getDevice_ip()).append("],")
-			.append("网卡的mac地址[").append(getDevice_mac()).append("],")
-			.append("是否有效( 0 启用 1 未启用) [").append(getDevice_isvalid()).append("],")
-			.append("创建时间[").append(getCreate_time()).append("],")
-			.append("更新时间[").append(getModify_time()).append("],")
-			.append("创建人id[").append(getCreate_id()).append("],")
-			.append("更新人id[").append(getModify_id()).append("],")
+			.append("id[").append(getId()).append("],")
+			.append("设备编号[").append(getDeviceCode()).append("],")
+			.append("网卡的mac地址[").append(getDeviceMac()).append("],")
+			.append("设备型号[").append(getDeviceType()).append("],")
+			.append("省份[").append(getDeviceProvince()).append("],")
+			.append("地市[").append(getDeviceCity()).append("],")
+			.append("地区[").append(getDeviceArea()).append("],")
+			.append("学校id[").append(getSchoolId()).append("],")
+			.append("设备状态（0 启用  1 未启用）[").append(getDeviceState()).append("],")
+			.append("设备客户端版本号[").append(getDeviceClientVersionNum()).append("],")
+			.append("设备ip[").append(getDeviceIp()).append("],")
+			.append("isvalid[").append(getIsvalid()).append("],")
+			.append("创建时间[").append(getCreateTime()).append("],")
+			.append("更新时间[").append(getModifyTime()).append("],")
+			.append("创建人id[").append(getCreateId()).append("],")
+			.append("更新人id[").append(getModifyId()).append("],")
 			.toString();
 	}
 	
-	public int hashCode() {
-		return new HashCodeBuilder()
-			.append(getDevice_id())
-			.append(getDevice_code())
-			.toHashCode();
-	}
-	
-	public boolean equals(Object obj) {
-		if(obj instanceof WebDeviceManage == false) return false;
-		if(this == obj) return true;
-		WebDeviceManage other = (WebDeviceManage)obj;
-		return new EqualsBuilder()
-			.append(getDevice_id(),other.getDevice_id())
-			.append(getDevice_code(),other.getDevice_code())
-			.isEquals();
-	}
+
 }
 
 	

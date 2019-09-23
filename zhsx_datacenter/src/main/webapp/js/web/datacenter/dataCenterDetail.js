@@ -4,11 +4,11 @@ $(function(){
 
 
 $(".tap_nei img").click(function() {
-	$(".tap_nei img").eq(0).attr("src", ctx+"/img/b0.png");
-	$(".tap_nei img").eq(1).attr("src", ctx+"/img/b1.png");
-	$(".tap_nei img").eq(2).attr("src", ctx+"/img/b2.png");
-	$(".tap_nei img").eq(3).attr("src", ctx+"/img/b3.png");
-	$(this).attr("src", ctx+"/img/a" + ($(this).index()) + ".png");
+	$(".tap_nei img").eq(0).attr("src", ctx+"/skin/"+skinName+"/img/b0.png");
+	$(".tap_nei img").eq(1).attr("src", ctx+"/skin/"+skinName+"/img/b1.png");
+	$(".tap_nei img").eq(2).attr("src", ctx+"/skin/"+skinName+"/img/b2.png");
+	$(".tap_nei img").eq(3).attr("src", ctx+"/skin/"+skinName+"/img/b3.png");
+	$(this).attr("src", ctx+"/skin/"+skinName+"/img/a" + ($(this).index()) + ".png");
 	
 	
 	$(".tap_zi p").removeClass('tap_zi_color');

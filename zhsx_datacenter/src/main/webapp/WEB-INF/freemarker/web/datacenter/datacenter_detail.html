@@ -3,10 +3,10 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/sjzx_sjzx.css" />
 	</head>
 
 	<body>
@@ -333,7 +333,7 @@
 <!-- 	<script src="${ctx}/js/web/sjzx_sjzx.js" type="text/javascript" charset="utf-8"></script> -->
 	<script type="text/javascript">
 		layui.use(['form', 'laydate'], function() {
-			var form = layui.form,
+			var form = layui.form(),
 				laydate = layui.laydate;
 			//监听提交
 			form.on('submit(formDemo)', function(data) {

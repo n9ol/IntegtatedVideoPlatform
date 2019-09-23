@@ -32,11 +32,22 @@
 							</#if>
 						
 							</ul>
-							<div id="page" ></div>
-							<#include "/commons/comPage.html" encoding="utf-8"/>
+							<div id="pagerss" ></div>
 							<script type="text/javascript">
-								function turnPage(p) {
-									$("input[name='p']").val(p);
-									getByQid();
-								}
+								layui.use([ 'laypage' ], function() {
+									 var laypage = layui.laypage;
+										laypage({
+											cont : "pagerss",
+											pages : "${pages!'1'}",
+											curr : "${pageNum!'1'}",
+											skip : false,skin : "#4596e5",
+											groups : 10,
+											jump : function(e, first) {
+												if (!first) {
+													$("input[name='p']").val(e.curr);
+													getByQid();
+												}
+											}
+										});
+								});
 							</script>

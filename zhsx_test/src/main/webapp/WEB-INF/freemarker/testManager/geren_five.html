@@ -6,7 +6,7 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/geren_five.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/geren_five.css" />
 	</head>
 
 	<body>
@@ -209,8 +209,8 @@
 	<script type="text/javascript">
 		layui.use(['layer', 'form', 'element'], function() {
 			var layer = layui.layer,
-				form = layui.form,
-				element = layui.element;
+				form = layui.form(),
+				element = layui.element();
 
 		});
 		

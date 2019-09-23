@@ -42,9 +42,9 @@ public class AndroidiosVideoController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/videoResources")
 	public AndroidiosModel videoResources(OffLineVideoResources videoResources, Integer p) {
-		if (p == null) {
+		if (p == null)
 			p = 1;
-		}
+
 		videoResources.setReleaseState("Y");
 		videoResources.setTranscodingState("O");
 		videoResources.setIsShow("Y");
@@ -90,7 +90,6 @@ public class AndroidiosVideoController extends BaseController {
 		String videoPath = offLineVideoResourcesService.findVideoPathById(id);
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(videoUrl + videoPath);
 		return androidiosModel;
 	}

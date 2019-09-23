@@ -46,15 +46,14 @@ public class AdminCommentsController extends BaseController {
 			p = 1;
 		model.addAttribute("pageNum", p);// 当前页
 
+		// String search = request.getParameter("search");
+		// if (search != null && !search.equals("")) {
+		// comments.setSearch(search);
+		// }
 		model.addAttribute("search", comments.getSearch());
 		Page<WebComments> pageInfo = webCommentsService.findPageSelective(comments, p, 12);
 		int pages = pageInfo.getPages();// 总页数
 		List<WebComments> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
 		model.addAttribute("contextType", comments.getContextType());

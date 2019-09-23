@@ -2,7 +2,7 @@ var layer;
 
 layui.use([ 'layer', 'form', 'upload' ], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 
 	// 获得科目
 	form.on('select(grade)', function(data) {
@@ -27,23 +27,25 @@ layui.use([ 'layer', 'form', 'upload' ], function() {
 		var type = data.value;
 		if (type == "G") {
 			$(".inMany").css("display", "block");
-			$(".onlinePg").css("display", "none");
+			$(".onlineTypeG").css("display", "inline-block");
 		} else if (type == "A") {
 			$(".inMany").css("display", "none");
 			$(".onlinePg").css("display", "block");
+			$(".onlineTypeG").css("display", "none");
 		}else{
 			$(".inMany").css("display", "none");
 			$(".onlinePg").css("display", "none");
+			$(".onlineTypeG").css("display", "none");
 		}
 	});
 	
 	// 评估模式监听
 	form.on('radio(pgType)', function(data) {
 		var type = data.value;
-		if (type == "G") {
-			$(".pgUser").css("display", "none");
-		} else if (type == "S") {
+		if (type == "S") {
 			$(".pgUser").css("display", "block");
+		} else {
+			$(".pgUser").css("display", "none");
 		}
 	});
 	

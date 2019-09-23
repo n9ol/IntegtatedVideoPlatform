@@ -35,7 +35,6 @@ function connect() {
 	var socket = new SockJS(base + "/endpointWisely");
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function(frame) {
-		console.log("---" + frame);
 		stompClient.subscribe("/topic/getResponse/" + channel, function(
 				respnose) {
 			PCLoginPlatform(JSON.parse(respnose.body).responseMessage);

@@ -74,6 +74,7 @@ public class UDPRece implements Runnable {
 			// 获取网站跟路径
 			String _url = "http://127.0.0.1:" + webPortUrl + "/pgSelfMotion/insteraqc?classCode=" + classCode
 					+ "&timelength=" + timelength + "&type=" + type;
+			System.out.println(_url);
 			try {
 				java.net.URL url = new java.net.URL(_url);
 				java.net.HttpURLConnection conn = (java.net.HttpURLConnection) url.openConnection();

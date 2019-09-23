@@ -56,18 +56,13 @@ public class AdminSysRoleController extends BaseController {
 		if (p == null) {
 			p = 1;
 		}
+
 		Page<SysRole> pageInfo = sysRoleService.findPageSelective(sysRole, p, 10);
 		List<SysRole> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		int pages = pageInfo.getPages();
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("pages", pages);// 总页数
 		model.addAttribute("lists", lists);
-		model.addAttribute("menuType", sysRole.getRoleType());
 		return "/admin/sysrole/sysrole";
 	}
 
@@ -94,8 +89,7 @@ public class AdminSysRoleController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/addSysRole")
-	public String addSysRole(String roleType, Model model) {
-		model.addAttribute("roleType", roleType);
+	public String addSysRole() {
 		return "/admin/sysrole/addSysRole";
 	}
 
@@ -152,16 +146,14 @@ public class AdminSysRoleController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/accreditTree")
-	public String accreditTree(Model model, @RequestParam String id, @RequestParam String menuType) {
+	public String accredit(Model model, @RequestParam String id) {
 		SysPermission sysPermission = new SysPermission();
 		sysPermission.setAvailable(true);
 		List<SysPermission> sysPermissions = sysPermissionService.findSelective(sysPermission);
 		model.addAttribute("sysPermissions", sysPermissions);
 		List<SysPermission> firstSysPermissions = new ArrayList<>();
 		for (SysPermission sysPermission2 : sysPermissions) {
-			boolean isBase = "menu".equals(sysPermission2.getResourceType()) && "0".equals(sysPermission2.getParentId())
-					&& menuType.equals(sysPermission2.getUrl());
-			if (isBase) {
+			if (sysPermission2.getParentId().equals("0") && sysPermission2.getResourceType().equals("menu")) {
 				firstSysPermissions.add(sysPermission2);
 			}
 		}

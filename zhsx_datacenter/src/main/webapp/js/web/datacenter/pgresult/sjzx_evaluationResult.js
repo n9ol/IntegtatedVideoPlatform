@@ -6,7 +6,7 @@ $(function(){
 function setiframeheight(){
 	var body = $(document.body);
 	var iframe = $(parent.document.getElementById('parentIframesjzx'));
-	iframe.height(body.height()+100);
+	iframe.height(body.height()+10);
 }
 
 
@@ -49,11 +49,11 @@ function search(){
 }
 
 
-function lookPgResult(id,addTime){
+function lookPgResult(id){
 	var p = $("input[name='p']").val();
 	var gradeId = $("input[name='gradeId']").val();
 	var subjectId = $("input[name='subjectId']").val();
 	var search = $("input[name='search']").val();
 	
-	location.href= ctx+"/pgResult/PgResult?id="+id+"&p="+p+"&gradeId="+gradeId+"&subjectId="+subjectId+"&search="+search+"&addTime="+addTime;
+	location.href= ctx+"/pgResult/PgResult?id="+id+"&p="+p+"&gradeId="+gradeId+"&subjectId="+subjectId+"&search="+search;
 }

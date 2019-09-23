@@ -62,4 +62,13 @@ public interface LoScheduleMapper extends BaseMapper<LoSchedule> {
 	 * @return
 	 */
 	List<LoSchedule> listLoscheduleIncludeLoFschedule(LoSchedule loSchedule);
+	
+	/**
+	 * 根据条件查询当前正在上课的课程表
+	 * @param t
+	 * @return
+	 */
+	List<LoSchedule> findSelectiveNow(LoSchedule t);
+
+	List<LoSchedule> getLoScheduleBySC(LoSchedule loSchedule);
 }

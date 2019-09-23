@@ -6,7 +6,7 @@ $(function(){
 var layer;
 layui.use(['layer', 'element'], function() {
 	 layer = layui.layer;
-	 var element = layui.element;
+	 var element = layui.element();
 });
 
 var isLoop = false;

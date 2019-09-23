@@ -1,7 +1,7 @@
 layui.use([ 'jquery', 'layer', 'form' ], function() {
 	window.jQuery = window.$ = layui.jquery;
 	window.layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	
 	// 全选
 	$("#selected-all-operation").click(function() {

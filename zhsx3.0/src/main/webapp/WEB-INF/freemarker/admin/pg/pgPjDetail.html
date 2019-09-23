@@ -5,7 +5,8 @@
 <title>仁峰后台管理系统</title>
 <meta name="renderer" content="webkit">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
@@ -13,10 +14,9 @@
 <style type="text/css">
 .layui-elem-quote {
 	height: 70px;
-	overfllow: hidden;
+	overfllow:hidden;
 }
-
-.typel {
+.typel{
 	margin-left: 10px;
 }
 </style>
@@ -28,20 +28,21 @@
 				<blockquote class="layui-elem-quote mylog-info-tit">
 					<ul class="pull-left typel">
 						<li class="layui-form">
-							<div class="layui-form-item">
-								<div class="layui-input-inline">
-									<select id="pjinfoId" lay-filter="pjinfo" lay-search>
-										<option value="">请选择评估项</option>
-										<#if pgPjinfos?? && (pgPjinfos?size>0)><#list pgPjinfos as p> <#assign sel=''> <#if pjinfoId?? &&
-										p.id==pjinfoId><#assign sel='selected'></#if>
-										<option value="${p.id!''}"${sel} >${p.title!''}</option>
-										</#list></#if>
-									</select>
-								</div>
-							</div>
+							  <div class="layui-form-item">
+							   <div class="layui-input-inline">
+							      <select id="pjinfoId" lay-filter="pjinfo" lay-search>
+							         <option value="">请选择评估项</option>
+							         <#if pgPjinfos?? && (pgPjinfos?size>0)><#list pgPjinfos as p>
+							         	<#assign sel=''>
+							         	<#if pjinfoId?? && p.id==pjinfoId><#assign sel='selected'></#if>
+							         	<option value="${p.id!''}" ${sel} >${p.title!''}</option>
+							         </#list></#if>
+							      </select>
+							    </div>
+							  </div>
 						</li>
 					</ul>
-					<ul class="layui-tab-title" style="display: inline-block; margin-left: 30px;">
+					<ul class="layui-tab-title" style ="display:inline-block;margin-left:30px;">
 						<li class="layui-btn layui-this" onclick="add();">添加评估内容</li>
 					</ul>
 					<ul class="pull-right">
@@ -53,7 +54,8 @@
 					</ul>
 				</blockquote>
 				<div class="larry-separate"></div>
-				<div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+				<div
+					class="layui-tab-content larry-personal-body clearfix mylog-info-box">
 					<div class="layui-tab-item layui-field-box layui-show">
 						<form id="myform">
 							<table class="layui-table table-hover" lay-skin="nob">
@@ -76,22 +78,13 @@
 										<td>${l.content!''}</td>
 										<td>${l.weight!''}</td>
 										<td>
-											<#if l.type=='F'>
-											<span style="color: #F7B824;">课前</span>
-											</#if> <#if l.type=='I'>
-											<span style="color: #FF5722;">课中</span>
-											</#if>
+											<#if l.type=='F'><span style="color:#F7B824;">课前</span></#if>
+											<#if l.type=='I'><span style="color:#FF5722;">课中</span></#if>
 										</td>
 										<td>${l.bak!''}</td>
 										<td>
-											<a href="javascript:;" class="check_look" onclick="edit('${l.id}','${l.type}');">
-												<i class="layui-icon">&#xe642;</i>
-												&nbsp;编辑
-											</a>
-											<a href="javascript:;" class="check_look" onclick="del('${l.id}');">
-												<i class="layui-icon">&#xe640;</i>
-												&nbsp;删除
-											</a>
+											<a href="javascript:;" class="check_look" onclick="edit('${l.id}','${l.type}');"><i class="layui-icon">&#xe642;</i>&nbsp;编辑</a>
+											<a href="javascript:;" class="check_look" onclick="del('${l.id}');"><i class="layui-icon">&#xe640;</i>&nbsp;删除</a>
 										</td>
 									</tr>
 									</#list> </#if>
@@ -107,16 +100,77 @@
 		</div>
 		<div>
 			<form id="myform1" action="${ctx}/pg/pg_pjdetail" method="post">
-				<input type="hidden" name="p" value="${pageNum!'1'}">
+				<input type="hidden" name="p" value="${pageNum!'1'}"> 
 				<input type="hidden" name="pjinfoId" value="${pjinfoId!''}">
 				<input type="hidden" name="type" value="${type!''}">
 			</form>
 		</div>
 	</section>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		var ctx = "${ctx}";
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({
+				cont : "page",
+				pages : "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip : false,
+				skin : "molv",
+				groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						refreshPage();
+					}
+				}
+			});
+		});
 	</script>
-	<script type="text/javascript" src="${ctx}/js/admin/pg/pgPjDetail.js"></script>
+	<script type="text/javascript">
+		var layer;
+		layui.use([ 'layer','form' ], function() {
+			layer = layui.layer;
+			var form = layui.form();
+			
+			form.on('select(pgtype)', function(data){
+				$("input[name='type']").val(data.value);
+				$("input[name='pjinfoId']").val(null);
+				refreshPage();
+			});
+			
+			form.on('select(pjinfo)', function(data){
+				$("input[name='pjinfoId']").val(data.value);
+				refreshPage();
+			});
+			
+		});
+		
+		function refreshPage(){
+			$("#myform1").submit();
+		}
+
+		function add() {
+			LayerOpen('添加评估内容', '640px', '400px','${ctx}/pg/addPjDetail');
+		}
+		
+
+		function del(id) {
+			$.ajax({
+				type : "POST",
+				url : "${ctx}/pg/delPjDetail",
+				data : {id : id},
+				success : function(data) {
+					layer.msg(data,{time : 1200},function() {
+						if (data == "操作成功")
+							refreshPage();
+					});
+				}
+			});
+		}
+
+		function edit(id,type) {
+			LayerOpen('编辑评估内容', '640px', '400px','${ctx}/pg/editPjDetail?id=' + id+'&type='+type);
+		}
+
+	</script>
 </body>
 </html>

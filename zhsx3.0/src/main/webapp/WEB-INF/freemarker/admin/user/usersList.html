@@ -71,10 +71,8 @@
 										<th style="white-space:nowrap;">昵称</th>
 										<th style="white-space:nowrap;">用户类型</th>
 										<th style="white-space:nowrap;">管理员</th>
-										<#if schoolLevel !="Y">
 										<th style="white-space:nowrap;">所在地区</th>
 										<th style="white-space:nowrap;">所在学校</th>
-										</#if>
 										<th style="white-space:nowrap;">手机号</th>
 										<th style="white-space:nowrap;">邮箱</th>
 										<th style="white-space:nowrap;">状态</th>
@@ -83,9 +81,7 @@
 										<#if principal?? && principal.bak1 != 'SA' && principal.bak1 != 'NA' >
 											<th>授权</th>
 										</#if>
-										<#if principal?? && principal.bak1 == 'OA'>
-											<th>密码初始化</th>
-										</#if>
+										<th>密码初始化</th>
 										<th>操作</th>
 									</tr>
 								</thead>
@@ -112,11 +108,8 @@
 											<#if l.bak1=='SA'>校级管理员</#if>	
 											<#if l.bak1=='NA'>否</#if>		
 										</td>
-										<#if schoolLevel !="Y">
 										<td>${l.areaName!''}</td>
 										<td>${l.schoolName!''}</td>
-										</#if>
-										
 										<td>${l.phone!''}</td>
 										<td>${l.email!''}</td>
 										<td>
@@ -130,11 +123,9 @@
 											<a href="javascript:;" class="check_look" onclick="authorize('${l.id}');"><i class="layui-icon">&#xe642;</i>&nbsp;授权</a>
 										</td>
 										</#if>
-										<#if principal?? && principal.bak1 == 'OA'>
-											<td style="white-space:nowrap;">
-												<a href="javascript:;" class="check_look" onclick="initializePassword('${l.id}','${l.userCode}')">密码初始化</a>
-											</td>
-										</#if>
+										<td style="white-space:nowrap;">
+											<a href="javascript:;" class="check_look" onclick="initializePassword('${l.id}','${l.userCode}')">密码初始化</a>
+										</td>
 										<td>
 											<#if l.bak=='Y'><a  style="white-space:nowrap;" href="javascript:;" class="check_look" onclick="bal('${l.id}','N');"><i class="layui-icon">&#x1007;</i>&nbsp;禁用</a></#if>	
 											<#if l.bak=='N'><a  style="white-space:nowrap;" href="javascript:;" class="check_look" onclick="bal('${l.id}','Y');"><i class="layui-icon">&#xe618;</i>&nbsp;启用</a></#if>	
@@ -160,12 +151,18 @@
 		</div>
 	</section>
 	<script type="text/javascript" src="${ctx}/js/admin/user/usersList.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			$("#myform1").submit();
-		}
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : "molv",groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						$("#myform1").submit();
+					}
+				}
+			});
+		});
 	</script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -14,6 +14,14 @@
 		
 		<!--各页面单独引入的CSS文件-->
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/bbtIndex.css"/>
+		
+		<style type="text/css">
+			.mianbaoxue button{
+			    height: 30px;
+    			line-height: 30px;
+    			float:right;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -29,8 +37,12 @@
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
 		            <a href="../index.html">首页</a>
-		            <a><cite>班班通</cite></a>
+		            <a><cite>设备管理</cite></a>
 		        </span>
+		        
+		        <#if principal.bak1 == "SA">
+		        	<a href="${ctx}/webdevicerepair/reachDR"> <button class="layui-btn layui-btn-xs">一键报修</button></a>
+		        </#if>
 			</div>
 
 			<div class="bbt_con">
@@ -127,7 +139,7 @@
 								</div>
 							</div>
 						</div>
-						<input class="layui-btn search-btn01 pull-left" style="background-color: #4596E5" type="button" onclick="search()" value="搜索">
+						<input class="layui-btn search-btn01 pull-left btncolor" type="button" onclick="search()" value="搜索">
 						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 					</form>
 
@@ -146,7 +158,7 @@
 							<div class="pic1_son" id="pic1_son2"></div>
 						</div>
 						<div class="pic1_son3 fr">
-							<div class="tableTile">班班通使用率排行榜</div>
+							<div class="tableTile">设备平均使用率排行榜（TOP10）/每天</div>
 							<div class="pic1_son" id="pic1_son3"></div>
 						</div>
 					</div>
@@ -156,7 +168,7 @@
 							<div class="pic2_son" id="pic2_son4"></div>
 						</div>
 						<div class="pic2_son2 fr">
-							<div class="tableTile">接入班班通累计数量
+							<div class="tableTile">接入设备累计数量
 								<!-- <div class="layui-btn-group  termiinal-btnGroup">
 									<button class="layui-btn layui-btn-sm layui-btn-normal">市</button>
 									<button class="layui-btn layui-btn-primary">区县</button>
@@ -183,7 +195,7 @@
 		
 		layui.use(['jquery','form', 'laydate'], function() {
 			/* var form = layui.form; */
-			var form = layui.form;
+			var form = layui.form();
 		    //借用地区插件
 	        form.on('select(province)', function(data){
 	    	   $("#city").empty();
@@ -312,24 +324,27 @@
 			},
 			grid: {
 				left: '3%',
-				right: '4%',
+				right: '10%',
 				bottom: '13%',
 				containLabel: true
 			},
 			xAxis: [{
 				type: 'category',
 				boundaryGap: false,
-				data: XData1/* ,
+				show : true,
+				name : "天",
+				data: XData1,
 				//设置字体倾斜  
                 axisLabel:{  
                     rotate:-45//倾斜度 -90 至 90 默认为0  
-                } */ 
+                } 
 			}],
 			yAxis: [{
-				type: 'value'
+				type: 'value',
+				name:'台'
 			}],
 			series: [{
-				name: '上线数量',
+				name: '上线数量（台）',
 				type: 'line',
 				//stack: '总量',
 				areaStyle: {
@@ -351,15 +366,15 @@
 				//formatter: "{a} <br/>{b} : {c}%"
 			},
 			series: [{
-				name: '数量',
+				name: '在线设备数量（台）',
 				type: 'gauge',
-				max: totalCount,
+				max: totalCount*10,//为了保证不出现小数
 				detail: {
 					//formatter: '{value}%'
 				},
 				data: [{
 					value: totalOnlineCount,
-					name: '数量'
+					name: '数量（台）'
 				}]
 			}]
 		};
@@ -376,7 +391,7 @@
 		 	</#list>
 		</#if>
 		
-		//班班通使用率排行榜		
+		//设备使用率排行榜		
 		var myChart3 = echarts.init(document.getElementById("pic1_son3"));
 		var option3 = {
 			color: ['#C23531'], //可选色：'#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'
@@ -388,23 +403,25 @@
 			},
 			grid: {
 				left: '3%',
-				right: '4%',
+				right: '10%',
 				bottom: '3%',
 				containLabel: true
 			},
 			xAxis: [{
-				type: 'value'
-
+				type: 'value',
+				show : true,
+				name : "分钟"
 			}],
 			yAxis: [{
 				type: 'category',
+				name: '学校',
 				data: schools,//['一小', '二小', '三小', '四小', '五小', '六小']
 				axisTick: {
 					alignWithLabel: true
 				}
 			}],
 			series: [{
-				name: 'min',//
+				name: '分钟',//
 				type: 'bar',
 				barWidth: '60%',
 				data: usageRateValue//[10, 2, 5, 6, 8, 9]
@@ -448,20 +465,23 @@
 			},
 			grid: {
 				left: '3%',
-				right: '4%',
+				right: '7%',
 				bottom: '13%',
 				containLabel: true
 			},
 			xAxis: [{
 				type: 'category',
 				boundaryGap: false,
-				data: XData3
+				data: XData3,
+				show : true,
+				name : "月"
 			}],
 			yAxis: [{
-				type: 'value'
+				type: 'value',
+				name: '台'
 			}],
 			series: [{
-				name: '维修数',
+				name: '维修数量（台）',
 				type: 'line',
 				stack: '总量',
 				smooth: true,
@@ -480,7 +500,7 @@
 	    	XData2.push("${dateKey2!''}");
 	    	seriesData2.push("${(resultMap2[dateKey2])?default(0)}");
 	    </#list>
-		//接入班班通累计数量 
+		//接入设备累计数量 
 		var myChart5 = echarts.init(document.getElementById("pic2_son5"));
 		var color2 = ['#63869E'];
 		var option5 = {
@@ -509,20 +529,24 @@
 			},
 			grid: {
 				left: '3%',
-				right: '4%',
+				right: '7%',
 				bottom: '13%',
 				containLabel: true
 			},
 			xAxis: [{
 				type: 'category',
 				boundaryGap: false,
-				data: XData2
+				data: XData2,
+				show : true,
+				name : "月"
+					
 			}],
 			yAxis: [{
-				type: 'value'
+				type: 'value',
+				name: '台'
 			}],
 			series: [{
-				name: '数量',
+				name: '接入数量（台）',
 				type: 'line',
 				//stack: '总量',
 				smooth: true,

@@ -1,0 +1,587 @@
+.biaodanji {
+	/*padding: 30px 18px;*/
+	height: 440px;
+	width: 915px;
+	margin: 0 auto;
+}
+
+/**************************基本属性**********************/
+.layui-tab-title {
+	text-align: center;
+	border-bottom: none;
+	margin-bottom: 30px;
+}
+
+.layui-tab-brief>.layui-tab-more li.layui-this:after, .layui-tab-brief>.layui-tab-title .layui-this:after
+	{
+	border: none;
+	border-radius: 0;
+	border-bottom: 4px solid #ff9900;
+	height: 30px;
+	width: 90px;
+}
+
+.layui-tab-brief>.layui-tab-title .layui-this {
+	color: #ff9900;
+	background-color: #fff;
+}
+
+.layui-tab-title li {
+	display: inline-block;
+	vertical-align: middle;
+	font-size: 13px;
+	position: relative;
+	line-height: 30px;
+	width: 90px;
+	background-color: #f2f2f5;
+	height: 30px;
+	border: 1px solid #D9D9D9;
+	padding: 0;
+}
+
+.layui-tab-item {
+	width: 915px;
+}
+
+.top1, .top2, .top3 {
+	float: left;
+}
+
+.top1 {
+	width: 82px;
+	height: 76px;
+	line-height: 76px;
+}
+
+.top2 {
+	width: 750px;
+/* 	line-height: 38px; */
+}
+
+.top3 {
+	width: 72px;
+	height: 28px;
+	text-align: center;
+	background-color: #ff9900;
+	color: #fff;
+	border-radius: 2px;
+	cursor: pointer;
+	line-height: 28px;
+	float: right;
+	margin-top: -51px;
+}
+.top2{
+	
+	padding:20px;
+}
+.top2 .top2-span {
+	float: left;
+}
+
+.top2Grade {
+	margin-top: 12px;
+	margin-right: 15px;
+}
+
+.jindutiao {
+	padding-top: 14px;
+	padding-left: 20px;
+}
+
+.bigJindu {
+	background-color: rgb(226,226,226);
+	width: 200px;
+	height: 14px;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	
+}
+
+.bgJindu {
+	width:30%;
+	background-color: #ff9900;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	line-height: 14px;
+	text-align:right;
+	color:#fff;
+	padding-right:5px;
+	font-size:12px;
+	heigth:100%;
+}
+
+.top2Name {
+	font-weight: 900;
+	margin-right: 15px;
+	line-height:38px;
+}
+
+.layui-small {
+	height: 12px;
+}
+
+.layui-progress-text {
+	display: none;
+}
+
+.layui_top_top {
+	border-bottom: 1px solid #e5e5e5;
+	margin: 20px;
+	height: 75px;
+}
+
+.layui-tab-content {
+	padding: 0;
+}
+
+.layui_top_bottom {
+	margin: 20px;
+	height: 56px;
+	padding-bottom: 20px;
+}
+
+.layui-jindu {
+	position: relative;
+	height: 13px;
+	border-radius: 20px;
+	background-color: #fff;
+	margin: 10px auto;
+}
+
+.layui-bg-orange {
+	background-color: #fa7d3c;
+}
+
+.layui-small {
+	width: 223px;
+}
+
+.layui-progress-bg {
+	height: 13px;
+}
+
+.layui_top_bottom p {
+	line-height: 25px;
+}
+
+.layui-tap-item-left, .layui-tap-item-right {
+	width: 420px;
+	background-color: #f2f2f5;
+/* 	height: 187px; */
+	padding: 16px;
+}
+
+.layui-tap-item-left img, .layui-tap-item-right img {
+	margin-right: 15px;
+}
+
+.layui-tap-item-left {
+	float: left;
+}
+
+.layui-tap-item-left div {
+	height: 60px;
+	line-height: 60px;
+}
+
+.layui-tap-item-right {
+	float: right;
+}
+
+.layui-tap-item-right div {
+/* 	height: 60px; */
+	line-height: 35px;
+}
+
+.layui-tap-item-top {
+	background-color: #f2f2f5;
+}
+
+.task {
+	font-weight: bold;
+}
+
+.guanzhu {
+	border-top: 1px solid #E5E5E5;
+	border-bottom: 1px solid #E5E5E5;
+}
+
+.over {
+	display: inline-block;
+	width: 72px;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	background-color: #ff9900;
+	color: #fff;
+	border-radius: 3px;
+	float: right;
+	margin-top: 16px;
+	cursor: pointer;
+}
+
+.ok {
+	float: right;
+}
+/*********************************基本信息************************************/
+.keep {
+	width: 122px;
+	height: 47px;
+	border: 6px solid #E5E5E5;
+	border-radius: 5px;
+	line-height: 47px;
+	text-align: center;
+	position: absolute;
+	right: 0;
+	top: -47px;
+	background-color: #fff;
+	display: none;
+}
+
+.liLeft {
+	float: left;
+	width: 16%;
+	text-align: right;
+	color: #000;
+	line-height: 40px;
+}
+
+.liRight {
+	width: 81%;
+	text-align: left;
+	float: right;
+	color: #000;
+	line-height: 40px;
+}
+
+.liRight .inputText {
+	width: 200px;
+	height: 30px;
+	line-height: 30px;
+	padding-left: 10px;
+	background-color: #cce8cf;
+	border: none;
+	border-radius: 2px;
+}
+
+.jbxx {
+	font-weight: 800;
+}
+
+.xian {
+	display: inline-block;
+	width: 760px;
+	margin: 0 10;
+	border-bottom: 1px solid #e6e6e6;
+	margin-bottom: 6px;
+}
+
+.bj {
+	display: inline-block;
+	border: 1px solid #F2F2F2;
+	background-color: #f2f2f2;
+	width: 47px;
+	height: 24px;
+	border-radius: 12px;
+	text-align: center;
+	line-height: 24px;
+	cursor: pointer;
+}
+
+.liRight select {
+	line-height: 24px;
+	padding: 3px;
+	border: 1px solid #CCCCCC;
+	font-size: 14px;
+}
+
+.liRight select option {
+	line-height: 24px;
+	color: #E3E3E3;
+}
+
+.base {
+	display: none;
+	position: relative;
+}
+
+/************************************************等级说明***********************************************/
+.gradeDefinition {
+	margin-bottom: 30px;
+}
+
+.gradeDefinition_p1 {
+	font-weight: 800;
+	padding-left: 18px;
+	font-size: 17px;
+}
+
+.gradeDefinition_p2 {
+	padding-left: 18px;
+}
+
+.xian2 {
+	border-bottom: 1px solid #F2F2F5;
+	margin: 10px 0;
+}
+
+.gradeDefinition_renwu {
+	margin-bottom: 30px;
+}
+
+.layui-table {
+	width: 605px;
+	text-align: center;
+}
+
+.layui-table thead tr th {
+	text-align: center;
+}
+
+.layui-table2 {
+	width: 635px;
+}
+
+.layui-table3 {
+	width: 690px;
+}
+
+.grade {
+	display: inline-block;
+	width: 42px;
+	height: 16px;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	color: #fff;
+	text-align: center;
+	line-height: 16px;
+	font-size: 12px;
+}
+
+.grade1 {
+	background-color: #ff9900;
+}
+
+.grade2 {
+	background-color: #fe7e00;
+}
+
+.grade3 {
+	background-color: #fd4d17;
+}
+
+.grade4 {
+	background-color: #d60000;
+}
+
+/*************************************排行榜************************************/
+/*等级图*/
+.teachPicture1 {
+	display: inline-block;
+	position: relative;
+	width: 54px;
+	height: 54px;
+	border-radius: 50%;
+	overflow: hidden;
+}
+
+.teachPicture1 img {
+	position: absolute;
+	left: -10px;
+	top: -15px;
+}
+
+.teachPicture {
+	margin-top: 20px;
+}
+
+.teachPicture2 img {
+	position: absolute;
+	left: -10px;
+	top: -82px;
+}
+
+.teachPicture3 img {
+	position: absolute;
+	left: -10px;
+	top: -149px;
+}
+
+.teachPicture4 img {
+	position: absolute;
+	left: -10px;
+	top: -216px;
+}
+
+.teachPicture5 img {
+	position: absolute;
+	left: -10px;
+	top: -285px;
+}
+
+.teachPicture6 img {
+	position: absolute;
+	left: -10px;
+	top: -356px;
+}
+
+.teachGrade1 {
+	display: inline-block;
+	position: relative;
+	width: 17px;
+	height: 15px;
+	overflow: hidden;
+	margin: 0 10px;
+	margin-top: 8px;
+}
+
+.teachGrade1 img {
+	position: absolute;
+	left: -4px;
+	top: -10px;
+}
+
+.teachGrade2 img {
+	position: absolute;
+	left: -4px;
+	top: -34px;
+}
+
+.teachGrade3 img {
+	position: absolute;
+	left: -4px;
+	top: -59px;
+}
+
+.teachGrade4 img {
+	position: absolute;
+	left: -4px;
+	top: -84px;
+}
+
+.teachGrade5 img {
+	position: absolute;
+	left: -4px;
+	top: -109px;
+}
+
+.teachGrade6 img {
+	position: absolute;
+	left: -4px;
+	top: -134px;
+}
+
+.toupicture {
+	width: 52px;
+	height: 52px;
+	margin-top: 22.5px;
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+.toupicture img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
+.number {
+	width: 23px;
+	height: 23px;
+	text-align: center;
+	line-height: 23px;
+	border-radius: 50%;
+	background-color: #ff9900;
+	color: #fff;
+	margin-top: 37px;
+}
+
+.number2 {
+	background-color: #696e78;
+}
+/*关注的样式*/
+.attention {
+	color: orangered;
+	display: inline-block;
+	margin-top: 31.5px;
+	line-height: 26px;
+	text-align: center;
+	float: right;
+	cursor: pointer;
+	padding: 0 12px;
+	height: 26px;
+	border: 1px solid #D9D9D9;
+}
+
+.add {
+	margin-top: 7px;
+	font-size: 26px;
+	float: left;
+}
+
+.atten {
+	display: inline-block;
+	color: #333;
+	line-height: 26px;
+	float: right;
+}
+
+.listUl .listLi {
+	height: 96px;
+	border-bottom: 1px dashed #E2E2E2;
+}
+
+.experience {
+	width: 300px;
+	line-height: 96px;
+	color: #808080;
+	height:100%;
+}
+
+.teachPicture {
+	width: 150px;
+	text-align: center;
+}
+
+.attenAbout {
+	width: 130px;
+	text-align: center;
+}
+
+.Introduc {
+	width: 300px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.Introduc p {
+	line-height: 30px;
+}
+
+.span1 {
+	float: left;
+}
+
+.ellipsisSpan {
+	display: inline-block;
+	width: 100px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.ellipsisDiv {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.dengji {
+	margin-top: 7px;
+}

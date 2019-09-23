@@ -75,11 +75,6 @@ public class AdminTestOffLineController extends BaseController {
 		Page<TestWebOffLine> pageInfo = testWebOffLineService.findPageSelective(offLine, p, 10);
 		int pages = pageInfo.getPages();
 		List<TestWebOffLine> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 
 		int page = 0;
 		int sum = 1;

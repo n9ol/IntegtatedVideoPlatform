@@ -4,10 +4,8 @@
 <head>
 <meta charset="UTF-8">
 <title></title> <#include "/commons/comWeb.html" encoding="utf-8"/>
-<link rel="stylesheet" type="text/css"
-	href="${ctx}/css/web/sjzx_survey.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_survey.css" />
 </head>
-
 <body>
 	<div class="box clear">
 		<div class="layui-tab">
@@ -66,13 +64,11 @@
 												<td>${o.num!''}</td>
 												<td style="width: 20%;">
 													<div class="layui-progress  td_progress" lay-showpercent="true" style="width: 200px; display: inline-block;">
-													
-													<#if l.anwernum ==0> <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"> </div> 
-													
-													<#else>
-													<div class="layui-progress-bar layui-bg-blue" lay-percent="${(o.num / l.anwernum)*100 !'0'}%"> </div>
-													</#if>
-													
+														<#if l.anwernum ==0> 
+															<div class="layui-progress-bar btnColor" lay-percent="0%"> </div> 
+														<#else>
+															<div class="layui-progress-bar btnColor" lay-percent="${(o.num / l.anwernum)*100 !'0'}%"> </div>
+														</#if>
 													</div>
 												</td>
 											</tr>
@@ -92,28 +88,13 @@
 						</div>
 					</div>
 					</#list> </#if>
-
-
-
-
 				</div>
-				<!-- 						<div class="kkk"> -->
-				<!-- 							<p>13.有什么建议？[填空题]</p> -->
-				<!-- 							<div style="margin-bottom: 20px; width: 500px;"> -->
-				<!-- 							<textarea class="layui-textarea" id="LAY_demo1" style="display: none"></textarea> -->
-				<!-- 							</div> -->
-				<!-- 						</div> -->
-
 				<div style="text-align: right; padding-top: 20px;">
-					<a class="layui-btn layui-btn-normal" href="javascript:downFile()">下载调查报告（Word格式） </a>
+					<a class="layui-btn btnColor" href="javascript:downFile()">下载调查报告（Word格式） </a>
 				</div>
-
 			</div>
-
 		</div>
 	</div>
-	</div>
-
 </body>
 <script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 <script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
@@ -124,18 +105,20 @@
 		function setIframeH33() {
 			var body = $(document.body);
 			var iframe = $(parent.document.getElementById('parentIframeSurvey'));
-			iframe.height(body.height() + 500);
+			var iframe1 = $(parent.parent.document.getElementById('parentIframesjzx'));
+			iframe.height(body.height()+200);
+			iframe1.height(body.height()+200);
 		}
 	})
 	
-		function downFile(){
-			location.href = "${ctx}/datacenter/downloadWord?id=1&type=analysis";
+	function downFile(){
+		location.href = "${ctx}/datacenter/downloadWord?id=1&type=analysis";
 	}
 	layui
 			.use(
 					[ 'element', 'form', 'layedit' ],
 					function() {
-						var element = layui.element, form = layui.form, layedit = layui.layedit, $ = layui.jquery;
+						var element = layui.element(), form = layui.form(), layedit = layui.layedit, $ = layui.jquery;
 						//构建一个默认的编辑器
 						var index = layedit.build('LAY_demo1',{
 							height: 100,

@@ -1,6 +1,5 @@
 package com.zzrenfeng.zhsx.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -28,6 +27,10 @@ public class SysDictServiceImpl extends BaseServiceImpl<BaseMapper<SysDict>, Sys
 
 	@Resource
 	private SysDictMapper sysDictMapper;
+	@Resource
+	private String platformLevel;
+	@Resource
+	private String platformLevelId;
 
 	@Resource
 	public void setBaseMapper(BaseMapper<SysDict> sysDictMapper) {
@@ -73,24 +76,48 @@ public class SysDictServiceImpl extends BaseServiceImpl<BaseMapper<SysDict>, Sys
 	}
 
 	@Override
-	public List<SysDict> listSpecialty() {
-		SysDict dict = new SysDict(SysDict.KEYNAME_GRADE);
-		return sysDictMapper.findSelective(dict);
+	public void changeSkin(String skinName) {
+		sysDictMapper.updateSkin(skinName);
 	}
 
 	@Override
-	public List<SysDict> listSubject() {
-		SysDict dict = new SysDict(SysDict.KEYNAME_SUBJECTS);
-		List<SysDict> subjects = new ArrayList<SysDict>();
-		List<SysDict> subject = sysDictMapper.findSelective(dict);
-		String tem = "1";
-		for (SysDict o : subject) {
-			if (!tem.contains(o.getValue())) {
-				subjects.add(o);
-			}
-			tem += o.getValue();
+	public String getSkinName() {
+		String skinName = "default";
+		SysDict sysDict = new SysDict();
+		sysDict.setKeyname(SysDict.KEYNAME_SKIN);
+		List<SysDict> listSysDict = sysDictMapper.findSelective(sysDict);
+		if (listSysDict != null && listSysDict.size() > 0) {
+			skinName = listSysDict.get(0).getValue();
 		}
-		return subjects;
+		return skinName;
 	}
 
+	@Override
+	public List<SysDict> listAreaInfo(String bak1, String bak2) {
+		SysDict sysDict = new SysDict();
+		if (User.bak1_city.equals(bak1)) {
+			sysDict.setKeyname(SysDict.KEYNAME_AREA);
+			sysDict.setPid(findByKey(bak2).getPid());
+		} else if (User.bak1_province.equals(bak1)) {
+			sysDict.setKeyname(SysDict.KEYNAME_CITY);
+			sysDict.setPid(findByKey(findByKey(bak2).getPid()).getPid());
+		} else if (User.bak1_operator.equals(bak1)) {
+			if ("N".equals(platformLevel)) {
+				sysDict.setKeyname(SysDict.KEYNAME_PROVINCE);
+			} else if ("P".equals(platformLevel)) {
+				sysDict.setKeyname(SysDict.KEYNAME_CITY);
+				sysDict.setPid(platformLevelId);
+			} else if ("C".equals(platformLevel)) {
+				sysDict.setKeyname(SysDict.KEYNAME_AREA);
+				sysDict.setPid(platformLevelId);
+			}
+		}
+		boolean b = "A".equals(platformLevel) || "T".equals(platformLevel) || User.bak1_county.equals(bak1)
+				|| User.bak1_schoool.equals(bak1);
+		if (b) {
+			return null;
+		}
+		List<SysDict> sysDicts = findSelective(sysDict);
+		return sysDicts;
+	}
 }

@@ -1,0 +1,360 @@
+/*===============/页脚部分/====================*/
+#module-footer {
+	width: 100%;
+	border-top: 1px solid #e5e5e5;
+	padding: 0;
+	overflow: hidden;
+}
+
+/*===============/下：关于我们部分/====================*/
+#module-footer .foot-area {
+	margin: 20px 0;
+	height: 60px;
+}
+
+#module-footer .foot-area p {
+	text-align: center;
+	line-height: 180%;
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+}
+
+#module-footer .foot-area p a {
+	padding: 0 5px;
+}
+
+#module-footer .foot-area p.link {
+	padding-top: 15px;
+}
+
+.foot_active {
+	color: red;
+}
+
+.foot-area a:hover {
+	color: #4596e5;
+}
+
+/*头部*/
+.p {
+	background-color: #4c4c4c;
+	height: 40px;
+	line-height: 40px;
+}
+
+.p_middle {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.p_middle a {
+	color: white;
+	display: inline-block;
+	height: 100%;
+	margin-right: 15px;
+	font-size: 12px;
+}
+
+/*搜索框内容*/
+.top_sou {
+	width: 1200px;
+	margin: 30px auto;
+}
+
+.top_logo {
+	float: left;
+}
+
+.top_kuang {
+	float: left;
+	/*margin-left: 20px;*/
+}
+
+.gif {
+	margin: 0 50px;
+}
+
+.top_input {
+	border: 2px solid #4596E5;
+	width: 350px;
+	height: 30px;
+	float: left;
+}
+
+#input1 {
+	border: none;
+	height: 100%;
+	width: 90%;
+	font-size: 14px;
+	color: gray;
+	padding-left: 10px;
+}
+
+.top_more {
+	margin-top: 5px;
+}
+
+.top_more a {
+	margin-right: 10px;
+	font-size: 15px;
+}
+
+.btn {
+	color: white;
+	background-color: #4596E5;
+	border: none;
+	font-size: 15px;
+	height: 34px;
+	padding: 0 15px;
+	float: left;
+}
+
+.top_more {
+	clear: both;
+}
+
+.top_more a {
+	font-size: 13px;
+	color: gray;
+}
+
+.top_more a:hover {
+	color: #4596E5;
+}
+
+/*内容部分*/
+.con {
+	background-color: #F5F5F5;
+	/* 	padding-bottom: 25px; */
+	/* 	min-width:1500px; */
+	min-height: 520px;
+}
+
+.mianbaoxue {
+	width: 1200px;
+	margin: 0 auto;
+	height: 30px;
+	padding-top: 5px;
+}
+
+.apple {
+	overflow: hidden;
+	padding: 2px;
+	border: 4px solid white;
+	position: fixed;
+	right: 110px;
+	z-index: 100;
+	background-color: #fff;
+}
+
+.apple {
+	top: 350px;
+}
+
+.anzhuo {
+	position: fixed;
+	right: 122px;
+	width: 80px;
+	top: 561px;
+	height: 80px;
+	z-index: 12122121;
+	cursor: pointer;
+}
+
+/*公用样式*/
+.activess {
+	background-color: #4596E5;
+	color: white;
+}
+
+.shai_kuang {
+	height: 25px;
+	border-radius: 3px;
+	background-color: #4596E5;
+	color: white;
+}
+
+.shai_kuang a {
+	color: #fff;
+}
+
+.breadcrumb {
+	width: 1200px;
+	margin: 0 auto;
+	height: 40px;
+	line-height: 30px;
+}
+
+.shai {
+	width: 1200px;
+	background-color: #fff;
+	margin: 0 auto;
+	font-size: 16px;
+	border: 1px solid gainsboro;
+	padding: 5px 0;
+}
+
+.shai>ul {
+	padding: 0 15px;
+}
+
+.c1 {
+	/* 	height: 35px; */
+	padding: 10px 0;
+}
+
+.mianbaoxue {
+	width: 1200px;
+	margin: 0 auto;
+	height: 30px;
+	padding-top: 5px;
+}
+
+.sa {
+	float: left;
+	width: 80px;
+	text-align: right;
+	font-size: 15px;
+	margin-top: 13px;
+}
+
+.sa span {
+	margin-left: 25px;
+}
+
+.sa1, .sa2, .sa3, .sa4, .sa5 {
+	float: left;
+	margin-left: 55px;
+	width: 80%;
+}
+/* .sa1{ */
+/* 	margin-left: 55px; */
+/* 	float: left; */
+/* 	width: 50%; */
+/* } */
+.sa1 a {
+	display: inline-block;
+	margin-right: 20px;
+	padding-bottom: 10px;
+	font-size: 14px;
+}
+
+.duos {
+	color: #4596E5;
+	border-bottom: 3px solid #4596E5;
+}
+
+.ul1 li {
+	float: left;
+	/* 	width: 7%; */
+	text-align: center;
+	height: 50%;
+	cursor: pointer;
+	font-size: 14px;
+	padding: 3px 15px;
+	margin: 10px 0;
+}
+
+.ul1 li:hover {
+	color: orangered;
+}
+
+.c1 {
+	border-bottom: 1px dashed gainsboro;
+}
+
+/*span省略号样式*/
+.ellipsesSpan {
+	display: inline-block;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+/*p或div省略号样式*/
+.ellipsesDiv {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.swiper-slide {
+	cursor: pointer;
+}
+
+/*地区选择按钮的样式*/
+.quxiao {
+	display: inline-block;
+	width: 25px;
+	line-height: 25px;
+	background-color: #ff9900;
+	color: #fff;
+	text-align: center;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	cursor: pointer;
+	float: left;
+}
+
+.zonghe .area-danxuan {
+	color: white;
+	height: 25px;
+	line-height: 25px;
+	display: inline-block;
+	padding: 0 5px;
+	width: 67px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+}
+
+.choosess {
+	display: inline-block;
+	background-color: #ff9900;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	margin-top: 12.5px;
+}
+
+/*筛选框的样式*/
+.isShow {
+	display: none;
+}
+
+/*播放页导航栏样式*/
+.newsTop {
+	background-color: #ff9900;
+}
+
+.ddd .kkk {
+	background-color: #ff9900;
+	color: #fff;
+}
+
+.ddd .pitchOn {
+	background-color: #fff;
+	color: #000;
+}
+input.btncolor{
+	background-color: #ff9900;	
+}
+button.btnColor{
+	background-color: #ff9900;	
+}
+a.btnColor{
+	background-color: #ff9900;	
+}
+div.btnColor{
+	background-color: #ff9900;	
+}
+.btnColor{
+	background-color: #ff9900;	
+}
+.no3 a {
+	color: #ff9900;
+}

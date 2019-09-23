@@ -3,11 +3,11 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<!-- <#global ctx=rc.contextPath/> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 		<style type="text/css">
 			.layui-input-block{
 					width:400px;
@@ -125,9 +125,9 @@
 						
 						
 						<div class="layui-form-item">
-							<label class="layui-form-label">选择专业：</label>
+							<label class="layui-form-label">选择年级：</label>
 							<div class="layui-input-block">
-								<select id="gradeName" name="gradeName" title="专业"  lay-search>
+								<select id="gradeName" name="gradeName" title="年级"  lay-search>
 									<#if grades??&&(grades?size>0)><#list grades as g>
 										 <#assign grade="">
 										<#if question.gradeName=="${g.value}">
@@ -235,7 +235,7 @@
 						
 						<div class="layui-form-item">
 							<div class="layui-input-block">
-								<input type="button" class="layui-btn layui-btn-normal" value="下一步">
+								<input type="button" class="layui-btn layui-btn-normal btnColor" value="下一步">
 								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 							</div>
 						</div>

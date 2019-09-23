@@ -4,7 +4,7 @@ layui.use([ 'layer' ], function() {
 });
 
 function addclassRoom() {
-	LayerOpen('添加教室', '640px', '700px', ctx+'/adminBaseData/addclassRoom');
+	LayerOpen('添加教室', '640px', '620px', ctx+'/adminBaseData/addclassRoom');
 }
 
 function del(id) {
@@ -24,7 +24,7 @@ function del(id) {
 }
 
 function edit(id) {
-	LayerOpen('编辑教室', '640px', '700px', ctx+'/adminBaseData/editClassRoom?id=' + id);
+	LayerOpen('编辑教室', '640px', '620px', ctx+'/adminBaseData/editClassRoom?id=' + id);
 }
 
 //全选
@@ -74,6 +74,12 @@ function batchUpdateState(state){
 }
 
 
+
+
+
+
+
+
 //下载模板
 function download() {
 	location.href = ctx+"/adminBaseData/downloadTem?filename=classRoomTem.xlsx";
@@ -82,6 +88,7 @@ function download() {
 function batchAdd() {
 	LayerOpen('批量添加', '600px', '450px', ctx+'/adminBaseData/batchAddClassRoom');
 }
+
 
 //搜索框键盘enter事件
 $("#searchval").keyup(function(){

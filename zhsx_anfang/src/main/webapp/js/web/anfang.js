@@ -16,9 +16,26 @@ function chooseSchool(schoolid,src){
 		"border-left": " none",
 		"color": "gray"
 	});
+	switch (skinName) {
+		case "springtime":
+			skinColor = "#1cc8d2";
+			break;
+		case "summer":
+			skinColor = "#ee336e";
+			break;
+		case "autumn":
+			skinColor = "#ff9900";
+			break;
+		case "winter":
+			skinColor = "#1ca5d2";
+			break;
+		default:
+			skinColor = "#4596E5";
+			break;
+	}
 	$(src).css({
 		"backgroundColor": "#f4f7fc",
-		"border-left": " 3px solid #4596E5",
+		"border-left": " 3px solid " + skinColor,
 		"color": "#000"
 	});
 	
@@ -52,22 +69,15 @@ function getAfSchool(p){
 		
 		for (var int = 0; int < json.lists.length; int++) {
 			var array_element = json.lists[int];
-			$(".left_li").append("<li id='"+array_element.id+"' onclick = chooseSchool('"+array_element.id+"',this);>"+array_element.schoolName+"</li>");
+			$(".left_li").append("<li class='schoolLi' id='"+array_element.id+"' onclick = chooseSchool('"+array_element.id+"',this);>"+array_element.schoolName+"</li>");
 		}
 		
 		var state = $("input[name='state']").val();
 		if(state === '1'){
 			$("input[name='state']").val(2);
-			$("#"+json.lists[0].id).css({
-				"backgroundColor": "#f4f7fc",
-				"border-left": " 3px solid #4596E5",
-				"color": "#000"
-			});
 			$("input[name='schoolid']").val(json.lists[0].id);
 			getAfManager(1);
-			//添加
 			findDhBySchool(json.lists[0].id);
-			
 		}
 	});
 }
@@ -162,9 +172,27 @@ function addData(l){
 
 //分页器
 function pagehtml(pages,pageNum){
+	var skinColor = "#4596E5";
+	switch (skinName) {
+		case "springtime":
+			skinColor = "#1cc8d2";
+			break;
+		case "summer":
+			skinColor = "#ee336e";
+			break;
+		case "autumn":
+			skinColor = "#ff9900";
+			break;
+		case "winter":
+			skinColor = "#1ca5d2";
+			break;
+		default:
+			skinColor = "#4596E5";
+			break;
+	}
 	layui.use(['laypage'], function() {
 		var laypage = layui.laypage;
-		laypage({cont : "page",pages :pages,curr :pageNum, skip : false,skin : "#4596E5",groups : 10,
+		laypage({cont : "page",pages :pages,curr :pageNum, skip : false,skin : skinColor,groups : 10,
 			jump : function(e, first) {
 				if (!first) {
 					getAfManager(e.curr);

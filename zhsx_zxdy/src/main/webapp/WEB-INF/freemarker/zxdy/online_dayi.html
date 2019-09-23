@@ -6,10 +6,10 @@
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/filter.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/dayi.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/dayi.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/pageGroup.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/ziyuan.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/zyzn_1.css" />
 	</head>
 	<body>
 		<!--头部start-->
@@ -22,12 +22,13 @@
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
   					<a href="${ctx}/index">首页</a>
+  					<a><cite>考试交流</cite></a>
   					<a><cite>在线答疑</cite></a>
 				</span>
 			</div>
 			<ul class="filter1">
 				<li class="filter2 borderBottom clear">
-					<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+					<span class="category1">年&nbsp;&nbsp;&nbsp;&nbsp;级 ></span>
 					<ul class="filter3 clear">
 						<li class="filterActive" onclick="selectGrade()">全部</li>
 						<#if grades?? && (grades?size>0)><#list grades as g>
@@ -62,6 +63,12 @@
 							<li onclick="getResolve();">已解决问题</li>
 							<li onclick="getNotAnswer();">未解决问题</li>
 						</ul>
+						<div class="addressAll">
+							
+							<input class="area-danxuan" name="diqu" data-value="" value="" type="text"  placeholder="请选择地区" />
+							<span class="quxia">X</span>
+							
+						</div>
 						<div class="layui-tab-content">
 							
 							
@@ -99,7 +106,6 @@
 			<input type="hidden" name="ifShow" value="1">
 			<input type="hidden" name="area" >
 			<input type="hidden" name="memberId" value="${memberId!''}" >
-			
 		</form>
 	</body>
 	<!--公共js-->
@@ -108,16 +114,15 @@
 	<script type="text/javascript">
 	
 	$(function(){
-		$("#dayiTop").attr("class","has-sub active");
-		
+		$("#testTop").attr("class","has-sub active");
+		$("#dayiTop").attr("class","active2");
 		getNew();
 		getBest();
 	});	
 	
-	//专业查询
+	//年级查询
 	function selectGrade(gradeId){
 		$("input[name='gradeId']").val(gradeId);
-		agradeSubject(gradeId);
 		var textVal = $(".layui-tab-title").find("li.layui-this").text();
 		if(textVal === "最新提问"){
 			allQue();
@@ -150,19 +155,18 @@
 	//地区查询
 	//地区搜索事件
 	function updateData(Cityname){
-			$("input[name='p']").val(1);
-			$("input[name='area']").val(Cityname);
-			var textVal = $(".layui-tab-title").find("li.layui-this").text();
-			if(textVal === "最新提问"){
-				allQue();
-			}else if(textVal === "我的提问"){
-				myQue();
-			}else if(textVal === "已解决问题"){
-				getResolve();
-			}else if(textVal === "未解决问题"){
-				getNotAnswer();
-			}
-			
+		$("input[name='p']").val(1);
+		$("input[name='area']").val(Cityname);
+		var textVal = $(".layui-tab-title").find("li.layui-this").text();
+		if(textVal === "最新提问"){
+			allQue();
+		}else if(textVal === "我的提问"){
+			myQue();
+		}else if(textVal === "已解决问题"){
+			getResolve();
+		}else if(textVal === "未解决问题"){
+			getNotAnswer();
+		}
 	}
 
 	//取消地区筛选
@@ -181,20 +185,9 @@
 		}else if(textVal === "未解决问题"){
 			getNotAnswer();
 		}
-		
 	});
 
-	//获得科目
-	function agradeSubject(id){
-		$("#hhh").empty();
-		$("#hhh").append("<li class='filterActive' onclick=selectSubjects('"+''+"',this)>全部</li>");
-		$.getJSON("${ctx}/adminBaseData/getSubjects", { gradeId: id}, function(json){
- 			for (var int = 0; int < json.length; int++) {
-				var arrayJson=json[int];
-				$("#hhh").append("<li onclick=selectSubjects('"+arrayJson.id+"',this)>"+arrayJson.value+"</li>");
-			} 
-		});
-	}
+
 	
 	function getNew(){
 		$.ajax({
@@ -205,11 +198,10 @@
 			   		$(".layui-tab-content").html(msg);
 			   }
 			});	
-		
 	}
 	
 	function findOne(id){
-			location.href="${ctx}/zxdy/getById?id="+id;
+		location.href="${ctx}/zxdy/getById?id="+id;
 	}
 	
 	function getResolve(){
@@ -218,13 +210,9 @@
 			url: "${ctx}/zxdy/getResolve",
 			data: $("#myform").serialize(),
 			 success: function(msg){
-				 
-			   	$(".layui-tab-content").html(msg);
-			   		
+			   		$(".layui-tab-content").html(msg);
 			   }
-			
 		});
-		
 	}
 	function getNotAnswer(){
 		$.ajax({
@@ -232,13 +220,9 @@
 			url: "${ctx}/zxdy/getNotAnswer",
 			data: $("#myform").serialize(),
 			 success: function(msg){
-				 	
 			   	$(".layui-tab-content").html(msg);
-			   		
-			   }
-			
+			  }
 		});
-		
 	}
 	function getBest(){
 		$.ajax({
@@ -255,7 +239,6 @@
 	}
 	
 	function myQue(src){
-		
 		if(principal != ""){
 			$("input[name='search1']").val("S");
 			$("input[name='p']").val(1);
@@ -267,8 +250,6 @@
 	}
 	
 	function allQue(src){
-		//$("#mytiwen").removeClass("shai_kuang");
-		//$("#zuixintiwen").addClass("shai_kuang");
 		$("input[name='p']").val(1);
 		$("input[name='memberId']").val(null);
 		$("input[name='search1']").val(null);

@@ -5,10 +5,10 @@
 <title>综合视讯</title> 
 <#include "/commons/comWeb.html" encoding="utf-8"/>
 <!--各页面单独引入的CSS文件-->
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/play.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/play.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
 <style type="text/css">
 .swiper-container {
@@ -33,18 +33,23 @@
 <body>
 	<!--内容start-->
 	<div class="con">
-		<#if isNotGoBack?? && isNotGoBack == 'Y'>
+		
+		<#if isReturn?? && isReturn == "N">
 		<#else>
 			<div class="returns" onclick="returns();">
 				<i><img alt="" src="${ctx}/img/return.png" title="返回"></i>
 			</div>
 		</#if>
+		
 		<div class="jilu">
 			<div class="jilu_top">
 				<div class="layui-tab layui-tab-card iii">
-					<ul class="layui-tab-title uuu" style="background-color: #4596E5;">
+					<ul class="layui-tab-title uuu zbBg">
 					<#if principal?? && principal.userType != 'S'>
 						<li class="layui-this kkk">评估结果</li>
+					</#if>
+					<#if duke?? && duke == 'D'>
+						<li>课后督课</li>
 					</#if>
 					</ul>
 				</div>
@@ -60,11 +65,11 @@
 	var userType = "${principal.userType!''}";
 	var receive = {};
 	receive.id = "${id!''}";
+	var duke = "${duke!''}";
 	var p = "${p!''}";
 	var gradeId = "${gradeId!''}";
 	var subjectId = "${subjectId!''}";
 	var search = "${search!''}";
-	var addTime = "${addTime?string('yyyy-MM-dd')}";
 </script>
 <script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
 <script type="text/javascript" src="${ctx}/js/web/datacenter/pgresult/PgResult.js"></script>

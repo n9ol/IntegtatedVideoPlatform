@@ -9,7 +9,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.crypto.hash.Md5Hash;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,6 @@ import com.zzrenfeng.zhsx.service.SysDictService;
 import com.zzrenfeng.zhsx.service.SysHistoryService;
 import com.zzrenfeng.zhsx.service.SysSchoolService;
 import com.zzrenfeng.zhsx.service.UserService;
-import com.zzrenfeng.zhsx.service.usersynchronization.UserSynchronizationService;
 import com.zzrenfeng.zhsx.util.DateUtil;
 import com.zzrenfeng.zhsx.util.MessageUtils;
 import com.zzrenfeng.zhsx.util.WriterUtils;
@@ -52,10 +50,6 @@ public class PersonalCenterUserController extends BaseController {
 	private String platformLevel;
 	@Resource
 	private String platformLevelId;
-	@Resource
-	private Environment environment;
-	@Resource
-	private UserSynchronizationService userSynchronizationService;
 
 	/**
 	 * 进入个人中心基本信息
@@ -127,18 +121,14 @@ public class PersonalCenterUserController extends BaseController {
 
 		}
 
-		String schoolLevel = environment.getProperty("school.level");
-		String schoolId = environment.getProperty("school.id");
-		if (!"Y".equals(schoolLevel)) {
-			// 获得学校
-			List<SysSchool> schoolList = sysSchoolService.findSelective(school);
-			model.addAttribute("schoolList", schoolList);
-		}
-		model.addAttribute("schoolLevel", schoolLevel);
-		model.addAttribute("schoolId", schoolId);
+		// 获得学校
+		List<SysSchool> schoolList = sysSchoolService.findSelective(school);
+
 		model.addAttribute("user", user);
+		model.addAttribute("schoolList", schoolList);
 		model.addAttribute("platformLevel", platformLevel);
 		model.addAttribute("platformLevelId", platformLevelId);
+
 		return "/personalCenter/userInfo";
 	}
 
@@ -267,11 +257,6 @@ public class PersonalCenterUserController extends BaseController {
 		user.setSortord("EXP");
 		Page<User> pageInfo = userService.findPageSelective(user, 1, 6);
 		List<User> userList = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		for (User user2 : userList) {
 			user2.setUserGrade(userService.getUserGrade(user2.getEXP()));
 		}
@@ -308,16 +293,15 @@ public class PersonalCenterUserController extends BaseController {
 	}
 
 	/**
-	 * 修改用户密码 (同步修改电子班牌用户密码)
+	 * 修改用户密码
 	 */
 	@RequestMapping("/updateUserPassword")
 	public void updateUserPassword(HttpServletResponse response, String password) {
-		// User user = new User();
-		// user.setId(getUserId());
-		// user.setPassword(new Md5Hash(password, getUserCode(), 2).toString());
+		User user = new User();
+		user.setId(getUserId());
+		user.setPassword(new Md5Hash(password, getUserCode(), 2).toString());
 		try {
-			// userService.updateByKeySelective(user);
-			userSynchronizationService.updatePasswordSynchronization(getUserCode(), password);
+			userService.updateByKeySelective(user);
 			WriterUtils.toHtml(response, MessageUtils.SUCCESS);
 		} catch (Exception e) {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);

@@ -1,14 +1,10 @@
 package com.zzrenfeng.zhsx.service;
 
-import java.text.ParseException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import com.github.pagehelper.Page;
 import com.zzrenfeng.zhsx.base.BaseService;
 import com.zzrenfeng.zhsx.model.LoSchedule;
-import com.zzrenfeng.zhsx.model.eclassbrand.course.CourseSchedule;
 
 /**
  * TODO 在此加入类描述
@@ -105,14 +101,14 @@ public interface LoScheduleService extends BaseService<LoSchedule> {
 	 * @return
 	 */
 	List<LoSchedule> listLoscheduleIncludeLoFschedule(LoSchedule loSchedule);
+	
 
 	/**
-	 * CourseSchedule 一一转换成 LoSchedule
-	 * 
-	 * @param courseSchedule
+	 * 根据条件查询当前正在上课的课程表
+	 * @param t
 	 * @return
 	 */
-	List<LoSchedule> listLoschedule(HttpServletRequest request, List<CourseSchedule> listCourseSchedule)
-			throws ParseException;
+	List<LoSchedule> findSelectiveNow(LoSchedule t);
 
+	List<LoSchedule> getLoScheduleBySC(LoSchedule loSchedule);
 }

@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,8 +12,53 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="format-detection" content="telephone=no">
 		
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/global.css" media="all">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
+		<style type="text/css">
+			.shebei {
+				width: 950px;
+				margin: 0 auto;
+			}
+			
+			.layui-form .layui-form-item label.layui-form-label {
+				width: 120px;
+				font-family: "Microsoft YaHei";
+			}
+			
+			.layui-input-block {
+				margin-left: 160px;
+				text-align: right;
+			}
+			
+			#shebeiTable {
+				/*display:none;*/
+				width: 930px;
+			}
+			
+			.row {
+				float: left;
+				width: 50%;
+			}
+			
+			#form1 {
+				overflow: hidden;
+			}
+			
+			header.larry-personal-tit span {
+				display: block;
+				text-align: center;
+				font-size: 25px;
+/* 				line-height: 97px; */
+				font-weight: bold;
+				color: #000;
+			}
+			.fl{
+				float:left;
+			}
+			.larry-personal{
+				width:1200px;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -23,7 +68,7 @@
 		<div class="mianbaoxue">
 			<span class="layui-breadcrumb">
   					<a href="../index.html">首页</a>
-  					<a><cite>班班通</cite></a>
+  					<a><cite>设备管理</cite></a>
   					<a><cite>设备维护</cite></a>
   					<a><cite>设备报修</cite></a>
 				</span>
@@ -39,108 +84,149 @@
 					<div class="layui-tab-content larry-personal-body clearfix">
 						<form id="form1" class="layui-form" action="" method="post">
 							<div class="row">
-								
-								<div class="col-md-6 pull-left">
-									<div class="layui-form-item">
-										<label class="layui-form-label">联系人：</label>
-										<div class="layui-input-block">
-											<input type="text" id="repair_person" name="repair_person" class="layui-input" value="${(dr.repair_person)!''}" disabled>
+									<div class="col-md-6 pull-left">
+										<input type="hidden" id="id" name="id" value="${(dr.id)!''}" >
+										<!-- 报修设备单位  默认从单位中取出 -->								
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修单位：</label>
+											<div class="layui-input-block">
+												<#if (dr.school)?exists && (dr.school)?size != 0 > 
+												<input type="hidden" id="school.id" name="school.id"
+													value="${dr.school.id!''}" class="layui-input" readonly>
+												<input type="text" id="school.schoolName"
+													name="school.schoolName" value="${dr.school.schoolName!''}"
+													class="layui-input" readonly>
+												</#if>	
+												
+											</div>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">联系电话：</label>
-										<div class="layui-input-block">
-											<input type="tel" id="repair_tel" name="repair_tel" class="layui-input" value="${(dr.repair_tel)!''}" disabled>
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修班级：</label>
+											<div class="layui-input-block">
+												<select id="sysClassId" name="sysClass.id"
+													lay-filter="sysClassId" disabled>
+													<!-- onchange="getDeviceByClassId()" -->
+													<#if (dr.sysClass)?exists && (dr.sysClass)?size != 0 > 
+														<option value="${dr.sysClass.id}" selected>${dr.sysClass.className}</option>
+													</#if>	
+												</select>
+											</div>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">报修型号：</label>
-										<div class="layui-input-block">
-											<input type="text" id="device_type" name="device_type" class="layui-input" value="${(dr.device_type)!''}" disabled>
+										
+										<!-- 根据选择的报修班级选择设备mac     先选择班级然后根据班级选择对应的mac地址 -->
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修设备类型：</label>
+											<div class="layui-input-block">
+												
+												<select id="sysDictId" name="sysDict.id"
+													lay-filter="sysDictId" disabled>
+													<#if (dr.sysDict)?exists && ((dr.sysDict)?size != 0)> 
+														<option value="${dr.sysDict.id}" selected>${dr.sysDict.value}</option>
+													</#if>
+												</select>
+												
+											</div>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">所在城市：</label>
-										<div class="layui-input-block">
-											<input type="text" name="pca" class="layui-input" value="${(pca)!''}" disabled>
+										<!-- 申报的报修人就是该登录人员 -->
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修人员：</label>
+											<div class="layui-input-block">
+												<#if (dr.user)?exists && (dr.user)?size != 0 > 
+													<input type="hidden" id="user.id" name="user.id"
+														value="${dr.user.id!''}" class="layui-input" readonly>
+													
+													<input type="text" id="user.nickName" name="user.nickName"
+														value="${dr.user.nickName!''}" class="layui-input" readonly>
+												</#if>	
+												
+											</div>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">上门地址：</label>
-										<div class="layui-input-block">
-											<input type="text" id="repair_addr" name="repair_addr" class="layui-input" value="${(dr.repair_addr)!''}" disabled>
-										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">购机时间：</label>
-										<div class="layui-input-block">
-											<input class="layui-input" name="repair_buy_time" placeholder="购机时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" value="${(dr.repair_buy_time?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
-										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">服务时间：</label>
-										<div class="layui-input-block">
-											<input class="layui-input" name="repair_service_time" placeholder="服务时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" value="${(dr.repair_service_time?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
-										</div>
-									</div>
-									<div class="layui-form-item layui-form-text">
-										<label class="layui-form-label">故障描述：</label>
-										<div class="layui-input-block">
-											<textarea id="repair_description" name="repair_description" class="layui-textarea" disabled>${(dr.repair_description)!''}</textarea>
+										<!-- 申报的报修人手机号从登录人员用户表中获取  -->
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修人手机：</label>
+											<div class="layui-input-block">
+												<#if (dr.user)?exists && (dr.user)?size != 0 > 
+													<input type="text" id="user.phone" name="user.phone"
+														value="${dr.user.phone!''}" class="layui-input" readonly>
+												</#if>	
+											</div>
 										</div>
 									</div>
 								</div>
 								
-								<!-- 根据用户进行判断 -->
-								<div class="col-md-6 pull-left">
-									
-									<div class="layui-form-item layui-form-text">
-		                            <label class="layui-form-label">维修状态：</label>
-			                            <div class="layui-input-block">
-			                                <select id="repair_state" name="repair_state" lay-filter="area" disabled>
-			                            		<#assign sel1="">
-			                                	<#if (((dr.repair_state)!'') == '1')> <#assign sel1="selected"> </#if>
-			                            		<option id="state1" value="1" ${sel1}>未维修</option>
-			                            		<#assign sel2="">
-			                                	<#if (((dr.repair_state)!'') == '2')> <#assign sel2="selected"> </#if>
-			                                	<option id="state2" value="2" ${sel2}>维修中</option>
-			                                	<#assign sel0="">
-			                                	<#if (((dr.repair_state)!'') == '0')> <#assign sel0="selected"> </#if>
-			                            		<option id="state0" value="0" ${sel0}>已维修</option>
-			                                </select>
-			                            </div>
-			                        </div>
-			                        <div class="layui-form-item layui-form-text">
-			                            <label class="layui-form-label">维修人：</label>
-			                            <div class="layui-input-block">
-			                                 <input type="text" id="maintenance_man" name="maintenance_man" class="layui-input" value="${(dr.maintenance_man)!''}" disabled>
-			                            </div>
-			                        </div>
-			                        <div class="layui-form-item layui-form-text">
-			                            <label class="layui-form-label">维修人电话：</label>
-			                            <div class="layui-input-block">
-			                                 <input type="text" id="maintenance_tel" name="maintenance_tel" class="layui-input" value="${(dr.maintenance_tel)!''}" disabled>
-			                            </div>
-			                        </div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">维修历史：</label>
-										<div class="layui-input-block">
-											<textarea id="repair_record_description" name="repair_record_description" class="layui-textarea" disabled>${(dr.repair_record_description)!''}</textarea>
+								<div class="row">
+									<div class="col-md-6 pull-left">
+			
+										<div class="layui-form-item layui-form-text">
+											<label class="layui-form-label">故障描述：</label>
+											<div class="layui-input-block">
+												<textarea id="repairDescription" name="repairDescription"
+													class="layui-textarea" readonly>${(dr.repairDescription)!''}</textarea>
+											</div>
 										</div>
+			
 									</div>
-									<div class="layui-form-item layui-form-text">
-										<label class="layui-form-label">您的建议：</label>
-										<div class="layui-input-block">
-											<textarea id="maintenance_suggestion" name="maintenance_suggestion" class="layui-textarea" disabled>${(dr.maintenance_suggestion)!''}</textarea>
-										</div>
-									</div>
-
+									<div class="col-md-6 pull-left">
+							<div class="layui-form-item">
+								<label class="layui-form-label">授理人：</label>
+								<div class="layui-input-block">
+									<#if (dr.manager)?exists && (dr.manager)?size != 0 > 
+										<input type="hidden" id="manager.id" name="manager.id"
+											value="${principal.id!''}" class="layui-input" readonly>
+										<input type="text" id="manager.nickName"
+											name="manager.nickName" value="${dr.manager.nickName!''}"
+											class="layui-input" readonly>
+									<#else>
+		                        	</#if>
 								</div>
-								
+							</div>
+						</div>
+						<div class="col-md-6 pull-left">
+							<div class="layui-form-item">
+								<label class="layui-form-label">授理人手机：</label>
+								<div class="layui-input-block">
+								<#if (dr.manager)?exists && (dr.manager)?size != 0 > 
+									<input type="text" id="manager.phone" name="manager.phone"
+										value="${dr.manager.phone!''}" class="layui-input" readonly>
+								<#else>
+		                        </#if>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-6 pull-left">
+							<div class="layui-form-item">
+								<label class="layui-form-label">维修人员：</label>
+								<div class="layui-input-block">
+									<select id="webDeviceTechnician.id" name="webDeviceTechnician.id" lay-filter="webDeviceTechnicianId" disabled>
+										<#if (dr.webDeviceTechnician)?exists && (dr.webDeviceTechnician)?size != 0 > 
+											<option value="${dr.webDeviceTechnician.id!''}" selected>${dr.webDeviceTechnician.name!''}</option>
+				                        </#if>
+									</select>
+								</div>
 								
 							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label">维修人手机号：</label>
+								<div class="layui-input-block">
+									<select id="webDeviceTechnician.id" name="webDeviceTechnician.id" lay-filter="webDeviceTechnicianId" disabled>
+										<#if (dr.webDeviceTechnician)?exists && (dr.webDeviceTechnician)?size != 0 > 
+											<option value="${dr.webDeviceTechnician.phone!''}" selected>${dr.webDeviceTechnician.phone!''}</option>
+				                        </#if>
+									</select>
+								</div>
+								
+							</div>
+						</div>
+								</div>
 						</form>
-
+				<form id="submitForm" class="layui-form" action="" method="post">
+					<input type="hidden" id="id" name="id" value="${(dr.id)!''}">
+					<div class="row">
+						
+						
+					</div>
+				</form>
 					</div>
 				</div>
 			</div>
@@ -153,7 +239,7 @@
 		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
 		<script type="text/javascript">
 			layui.use(['form', 'upload','laydate'], function() {
-				var form = layui.form;
+				var form = layui.form();
 				var laydate = layui.laydate;
 				
 				layui.upload({

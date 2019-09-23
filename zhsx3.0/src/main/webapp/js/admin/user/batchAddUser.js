@@ -1,7 +1,7 @@
 var layer;
 layui.use([ 'layer','form','upload'], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 });
 
 

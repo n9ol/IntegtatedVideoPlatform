@@ -22,19 +22,27 @@
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">设备编号：</label>
 		                            <div class="layui-input-block">
-		                            	<input type="text" id="device_code" name="device_code"  class="layui-input" value="${(webDRecord.device_code)!''}" disabled>
+		                            	<input type="text" id="deviceCode" name="deviceCode"  class="layui-input" value="${(webDRecord.deviceCode)!''}" disabled>
 		                            </div>
 		                        </div>
+		                        
+		                        <div class="layui-form-item">
+		                            <label class="layui-form-label">设备MAC：</label>
+		                            <div class="layui-input-block">
+		                            	<input type="text" id="deviceMac" name="deviceMac"  class="layui-input" value="${(webDRecord.deviceMac)!''}" disabled>
+		                            </div>
+		                        </div>
+		                        
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">开始时间：</label>
 		                            <div class="layui-input-block">
-		                                <input type="text" id="dr_start_time" name="dr_start_time" class="layui-input" value="${(webDRecord.dr_start_time?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
+		                                <input type="text" id="drStartTime" name="drStartTime" class="layui-input" value="${(webDRecord.drStartTime?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
 		                            </div>
 		                        </div>
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">结束时间：</label>
 		                            <div class="layui-input-block">
-		                                <input type="text" id="dr_end_time" name="dr_end_time" class="layui-input" value="${(webDRecord.dr_end_time?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
+		                                <input type="text" id="drEndTime" name="drEndTime" class="layui-input" value="${(webDRecord.drEndTime?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
 		                            </div>
 		                        </div>
 		                    </div>
@@ -46,7 +54,7 @@
 		
 		<script type="text/javascript">
 			layui.use(['jquery', 'form'], function() {
-				var form = layui.form;
+				var form = layui.form();
 				
 		       //借用地区插件
 		        

@@ -11,6 +11,7 @@ function getListData(){
 	   data: $("#myform").serialize(),
 	   success: function(msg){
 	     $("#pjRecord").html(msg);
+	   
 	   }
 	});
 }

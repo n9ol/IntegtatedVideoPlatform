@@ -14,7 +14,7 @@
 									<p class="jjj0"><span>${l.name!''}</span></p>
 									<p class="jjj">
 										<span>
-														专业： <span style="color: orange;">${l.gradeName!''}</span>
+														年级： <span style="color: orange;">${l.gradeName!''}</span>
 										</span>
 										<span>
 													  	科目：<span style="color: orange;">${l.subjectsName!''}</span>
@@ -105,7 +105,7 @@
 												主讲教师： <span style="color: orange;">${l.vTeacherNickName!''}</span>
 										</span>
 										<span>
-												专业：<span style="color: orange;">${l.vGradeName!''}</span>
+												年级：<span style="color: orange;">${l.vGradeName!''}</span>
 										</span>
 										<span>
 												科目：<span style="color: orange;">${l.vSubjectName!''}</span>
@@ -245,15 +245,41 @@
 							</#if>
 					</#list>
 				</#if>
-				
-<#include "/commons/comPage.html" encoding="utf-8"/>
 <script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		getListData();
+	var skinColor = "#4596E5";
+	var skinName = "${skinName!''}";
+	switch (skinName) {
+		case "springtime":
+			skinColor = "#1cc8d2";
+			break;
+		case "summer":
+			skinColor = "#ee336e";
+			break;
+		case "autumn":
+			skinColor = "#ff9900";
+			break;
+		case "winter":
+			skinColor = "#1ca5d2";
+			break;
+		default:
+			skinColor = "#4596E5";
+			break;
 	}
-</script>				
-<script type="text/javascript">
+
+	layui.use([ 'laypage' ], function() {
+		laypage = layui.laypage;
+		laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : skinColor,groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					getListData();
+				}
+			}
+		});
+	});
+	
+	
 	//下载资源
 	function downloadCourRes(id){
 		if(principal != ""){

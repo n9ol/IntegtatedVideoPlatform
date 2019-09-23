@@ -136,7 +136,7 @@ public class ClientController extends BaseController {
 	}
 
 	/**
-	 * 获得课表
+	 * 获得区县列表
 	 * 
 	 * @param request
 	 * @param response
@@ -186,12 +186,14 @@ public class ClientController extends BaseController {
 		String title1 = "";
 		String title2 = "";
 		String title3 = "";
+		String code = "";
 
 		LoSchedule schedule = loScheduleService.findByKey(zid);
 		model.addAttribute("schedule", schedule);
 
 		SysClassroom classroom = sysClassroomService.findByKey(schedule.getClassId());
 		if (classroom != null) {
+			code = classroom.getClassCode();
 			// String ipPort = classroom.getServiceIp();
 			String ipPort = Utils.getAccessPathUrlOrIP(request, classroom.getServiceIp());
 			String[] ArrayServiceip = ipPort.split(":|：");
@@ -230,6 +232,7 @@ public class ClientController extends BaseController {
 			}
 		}
 
+		model.addAttribute("code", code);
 		model.addAttribute("ip", ip);
 		model.addAttribute("port1", port1);
 		model.addAttribute("port2", port2);

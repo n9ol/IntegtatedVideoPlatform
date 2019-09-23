@@ -61,11 +61,7 @@ public class AdminQuestionnaireController extends BaseController {
 		Page<WebQuestionnaire> pageInfo = webQuestionnaireService.findPageSelective(wq, p, 10);
 		int pages = pageInfo.getPages();
 		List<WebQuestionnaire> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
@@ -92,11 +88,7 @@ public class AdminQuestionnaireController extends BaseController {
 		Page<WebQuestionnaire> pageInfo = webQuestionnaireService.findPageSelective(wq, p, 10);
 		int pages = pageInfo.getPages();
 		List<WebQuestionnaire> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
@@ -257,11 +249,6 @@ public class AdminQuestionnaireController extends BaseController {
 			webQuestionnaireQuestion.setOption(op.toString());
 			webQuestionnaireQuestion.setBak(op2.toString());
 		}
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
@@ -322,11 +309,6 @@ public class AdminQuestionnaireController extends BaseController {
 			webQuestionnaireLibrary.setBak(op2.toString());
 		}
 
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
@@ -377,11 +359,7 @@ public class AdminQuestionnaireController extends BaseController {
 		Page<WebQuestionnaireLibrary> pageInfo = webQuestionnaireLibraryService.findPageSelective(wq, p, 10);
 		int pages = pageInfo.getPages();
 		List<WebQuestionnaireLibrary> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
@@ -402,6 +380,18 @@ public class AdminQuestionnaireController extends BaseController {
 	@RequestMapping(value = "/addQuestion")
 	public String addQuestion(HttpServletRequest request, HttpServletResponse response, Model model, Integer p,
 			WebQuestionnaireLibrary wq) {
+		// if (p == null) {
+		// p = 1;
+		// }
+		// Page<WebQuestionnaireLibrary> pageInfo =
+		// webQuestionnaireLibraryService.findPageSelective(wq, p, 10);
+		// int pages = pageInfo.getPages();
+		// List<WebQuestionnaireLibrary> lists = pageInfo.getResult();
+		//
+		//
+		// model.addAttribute("pageNum", p);
+		// model.addAttribute("pages", pages);
+		// model.addAttribute("lists", lists);
 		return "/admin/questionnaire/addQuestion";
 	}
 
@@ -520,11 +510,7 @@ public class AdminQuestionnaireController extends BaseController {
 		Page<WebQuestionnaireOption> pageInfo = webQuestionnaireOptionService.findPageSelective(wq, p, 10);
 		int pages = pageInfo.getPages();
 		List<WebQuestionnaireOption> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);

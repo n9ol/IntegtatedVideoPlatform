@@ -42,42 +42,20 @@
 					<form id="form" class="layui-form">
 						<input type="hidden" name="id" value="${classroom.id!''}">
 						<div class="row">
-							<#if schoollevel?? && schoollevel=="Y"> 
-								<input type="hidden" name="schoolId" id="schoolId" value="${schoolId!''}"> 
-							<#else>
-								<div class="layui-form-item">
-			                      <label class="layui-form-label" id="jj">选择学校：</label>
-			                      <div class="layui-input-block">
-			                          <select name="schoolId"  id="schoolId" lay-search>
-			                              <option value="">请选择学校</option>
-										  <#if schools?? && (schools?size>0)><#list schools as l>
-										  	<#assign sel="">
-										  	<#if classroom.schoolId=l.id><#assign sel="selected"> </#if>
-										　　	<option value="${l.id!''}" ${sel} >${l.schoolName!''}</option>
-										　　</#list></#if>
-			                          </select>
-			                      </div>
-			                      <span id="schoolId_msg" class="msg" style="color:red;">*</span>
-				                </div>
-				              </#if>
-				            <div class="layui-form-item">
-								<label class="layui-form-label" id="jj">教学楼名称：</label>
-								<div class="layui-input-block">
-									<select name="teachingBuildingId" id="teachingBuildingId" lay-search  lay-filter="teachingBuildingId">
-										<option value="">请选择教学楼</option>
-										<#if listBuilding?? && (listBuilding?size>0)><#list listBuilding as l>
-											<#assign sel="">
-									  		<#if classroom.teachingBuildingId?? && classroom.teachingBuildingId=l.id><#assign sel="selected"> </#if>
-											<option value="${l.id!''}" ${sel}>${l.buildName}</option>
-										</#list></#if>
-									</select>
-								</div>
-								<span id="teachingBuildingId_msg" class="msg" style="color: red;">*</span>
-								<input type="hidden" id="teachingBuildingName" name="teachingBuildingName" value="${classroom.teachingBuildingName!''}">
-							</div>
-			                
-			                
-			                
+							<div class="layui-form-item">
+		                      <label class="layui-form-label" id="jj">选择学校：</label>
+		                      <div class="layui-input-block">
+		                          <select name="schoolId"  id="schoolId" lay-search>
+		                              <option value="">请选择学校</option>
+									  <#if schools?? && (schools?size>0)><#list schools as l>
+									  	<#assign sel="">
+									  	<#if classroom.schoolId=l.id><#assign sel="selected"> </#if>
+									　　	<option value="${l.id!''}" ${sel} >${l.schoolName!''}</option>
+									　　</#list></#if>
+		                          </select>
+		                      </div>
+		                      <span id="schoolId_msg" class="msg" style="color:red;">*</span>
+			                </div>
 			                <div class="layui-form-item">
 								<label class="layui-form-label" id="jj">教室名称：</label>
 								<div class="layui-input-block">
@@ -126,20 +104,7 @@
 									<input type="text" id="uid" title="用户编号" name="uid" class="layui-input" onblur="javascript:checkOk(this,checkString(this));" value="${classroom.uid!''}">
 								</div>
 								<span id="uid_msg" class="msg" style="color:red;">*</span>
-							</div>
-							<div class="layui-form-item">
-								<label class="layui-form-label" id="jj">老师视频路径：</label>
-								<div class="layui-input-block">
-									<input type="text" id="bak2" title="老师视频路径" name="bak2" class="layui-input" value="${classroom.bak2!''}">
-								</div>
-							</div>
-						    <div class="layui-form-item">
-								<label class="layui-form-label" id="jj">学生视频路径：</label>
-								<div class="layui-input-block">
-									<input type="text" id="studentUrl" title="学生视频路径" name="studentUrl" class="layui-input" value="${classroom.studentUrl!''}">
-								</div>
-							</div>
-							<br>
+							</div><br>
 							<span style="margin-left:42px;color:#FF5722;">注意：<span id="ipClassCode_msg" style="margin-left:10px;">同一 直播服务器IP:Port 下 ,教室编号不能相同</span></span> <br><br>
 							<div class="layui-form-item">
 								<div class="layui-input-block">

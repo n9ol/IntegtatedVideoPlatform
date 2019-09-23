@@ -1,7 +1,8 @@
 package com.zzrenfeng.zhsx.service;
 
-import java.text.ParseException;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import com.zzrenfeng.zhsx.base.BaseService;
 import com.zzrenfeng.zhsx.model.OffLineVideoResources;
@@ -48,7 +49,7 @@ public interface OffLineVideoResourcesService extends BaseService<OffLineVideoRe
 	 * 
 	 * @param offLineVideoResources
 	 */
-	void append(OffLineVideoResources offLineVideoResources);
+	void append(HttpServletRequest request, OffLineVideoResources offLineVideoResources) throws InterruptedException;
 
 	/**
 	 * 获得视频播放路径
@@ -64,32 +65,5 @@ public interface OffLineVideoResourcesService extends BaseService<OffLineVideoRe
 	 * @param offLineVideoResources
 	 */
 	int appendOffLineVideoResources(OffLineVideoResources offLineVideoResources);
-
-	/**
-	 * 通过相差时间为1s的11个id集合查询录制的评估视频信息
-	 * 
-	 * @param ids
-	 * @return
-	 */
-	OffLineVideoResources getOffLineVideoResourcesByIds(List<String> ids);
-
-	/**
-	 * 通过当前id获取11个相差1s的连续的id集合
-	 * 
-	 * @param id
-	 * @return
-	 */
-	List<String> listIds(String id) throws ParseException;
-	
-	/**
-	 * @功能描述：重写updateByKeySelective方法，避免日志拦截器拦截，导致调用者因与之返回类型不一致而报错
-	 * @创  建  者：zhoujincheng
-	 * @版        本：V1.0.0
-	 * @创建日期：2019年3月6日 下午1:52:18
-	 * 
-	 * @param offLineVideoResources
-	 * @return
-	 */
-	int reUpdateByKeySelective(OffLineVideoResources offLineVideoResources);
 
 }

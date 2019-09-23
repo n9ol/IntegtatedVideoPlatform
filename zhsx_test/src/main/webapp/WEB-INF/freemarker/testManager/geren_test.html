@@ -7,81 +7,7 @@
 		<!-- <#global ctx=rc.contextPath/> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<style type="text/css">
-			.testbody {
-				width: 800px;
-				margin: 0 auto;
-			}
-			
-			.testbody .viewdiv {
-				margin-top: 5px;
-				margin-bottom: 5px;
-				padding: 20px;
-				border: 1px solid #ccc;
-				background: #f6f6f6;
-			}
-			
-			.testbody .testtitle {
-				font-size: 20px;
-				font-weight: bold;
-				color: #4596E5;
-				padding-top: 20px;
-				padding-bottom: 5px;
-			}
-			
-			.testinfo2 {
-				padding-top: 3px;
-				padding-bottom: 3px;
-				font-family: arial;
-				font-size: 12px;
-				color: #666;
-			}
-			
-			.testbody .score .text1 {
-				padding-top: 32px;
-				padding-left: 10px;
-				font-size: 12px;
-				color: #666;
-			}
-			
-			.testbody .score .score1 {
-				padding-top: 25px;
-				font-size: 20px;
-				color: #666;
-			}
-			
-			.testbody .score .text2 {
-				padding-top: 32px;
-				padding-left: 3px;
-				font-size: 12px;
-				color: #666;
-			}
-			
-			.testbody .score .score2 {
-				padding-top: 12px;
-				font-size: 32px;
-				font-weight: bold;
-				color: #4596E5;
-			}
-			
-			.fontred {
-				color: #f00;
-			}
-			
-			.dotline2 {
-				height: 11px;
-				margin-top: 10px;
-				border-top: 1px dotted #999;
-			}
-			
-			.hsplit {
-				height: 10px;
-			}
-			
-			.fontarial {
-				font-family: arial;
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/personalCenter/geren_test.css" />
 	</head>
 
 	<body>
@@ -269,7 +195,7 @@
 			<!-- 分割线 -->
 			
 
-			<div id="page" style="text-align: center;"></div>
+			<div id="pager" style="text-align: center;"></div>
 		</div>
 		<form id="form" action="${ctx}/testwebstutestquestionanswer/findOne"method="post">
 			<input type="hidden" name="p" value="${pageNum!''}">
@@ -282,13 +208,27 @@
 	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
 	<script src="${ctx}/js/web/mstd_geren.js" type="text/javascript" charset="utf-8"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
-		}
-	</script>
+	
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;	
+			laypage({
+				cont: "pager",
+				pages: "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip: false,
+				skin: "#4596e5",
+				groups: 10,
+				jump: function(e, first) {
+					if(!first){
+						$("input[name='p']").val(e.curr);
+						refreshPage();
+					}
+				}
+			});
+			setIframeH();
+		});
+</script>
 <script type="text/javascript">
 	$(function(){
 		setIframeH();

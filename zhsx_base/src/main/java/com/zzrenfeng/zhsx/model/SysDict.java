@@ -31,7 +31,7 @@ public class SysDict {
 	 */
 	public final static String KEYNAME_AREA = "A";
 	/**
-	 * 标识符-年级(如果是大学,改字段表示专业)
+	 * 标识符-年级
 	 */
 	public final static String KEYNAME_GRADE = "G";
 	/**
@@ -50,6 +50,14 @@ public class SysDict {
 	public final static String KEYNAME_M = "M";
 
 	/**
+	 * 标识符-皮肤路径
+	 */
+	public final static String KEYNAME_SKIN = "K";
+	/**
+	 * 标识符-设备类型
+	 */
+	public final static String KEYNAME_DEVICE_TYPE = "DT";
+	/**
 	 * id
 	 */
 	private java.lang.String id;
@@ -58,9 +66,9 @@ public class SysDict {
 	 */
 	private java.lang.String pid;
 	/**
-	 * 标识符（V 版本,G 年级,S 科目,M上下册,P 省,C 市, A区县）
+	 * 标识符（V 版本,G 年级,S 科目,M上下册,P 省,C 市, A区县,K 皮肤）
 	 */
-	@Pattern(regexp = "[V|G|S|M|P|C|A]", message = "{tag}")
+	@Pattern(regexp = "[V|G|S|M|P|C|A|K]", message = "{tag}")
 	private java.lang.String keyname;
 	/**
 	 * 值
@@ -92,6 +100,10 @@ public class SysDict {
 	// concstructor
 
 	public SysDict() {
+	}
+
+	public SysDict(java.lang.String id) {
+		this.id = id;
 	}
 
 	// get and set
@@ -205,10 +217,4 @@ public class SysDict {
 		SysDict other = (SysDict) obj;
 		return new EqualsBuilder().append(getId(), other.getId()).isEquals();
 	}
-
-	public SysDict(String keyname) {
-		super();
-		this.keyname = keyname;
-	}
-
 }

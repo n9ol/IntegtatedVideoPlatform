@@ -68,30 +68,10 @@ public class UdpSend {
 	}
 
 	public void sendStopData(String ip, int port) {
-		byte[] sendStop = { 0x01, 0x68, 0x33, 0x05 };
+		byte[] sendStart = { 0x01, 0x68, 0x33, 0x05 };
 		// 指定需要发送的数据内容,数据长度,目的IP和目的端口号
 		try {
-			dp = new DatagramPacket(sendStop, sendStop.length, InetAddress.getByName(ip), port);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		// 发送数据
-		if (ds != null) {
-			try {
-				ds.send(dp);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public void sendStopData(String ip, int port, String classcode) {
-		String sendData = "publish_stop|";
-		sendData = sendData + classcode + "\n";
-		byte[] sendStop = sendData.getBytes();
-		// 指定需要发送的数据内容,数据长度,目的IP和目的端口号
-		try {
-			dp = new DatagramPacket(sendStop, sendStop.length, InetAddress.getByName(ip), port);
+			dp = new DatagramPacket(sendStart, sendStart.length, InetAddress.getByName(ip), port);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}

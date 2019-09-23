@@ -36,11 +36,6 @@ public class AdminLogController extends BaseController {
 		Page<SysLog> pageInfo = logService.findPageSelective(log, p, 12);
 		int pages = pageInfo.getPages();
 		List<SysLog> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("pages", pages);// 总页数
 		model.addAttribute("lists", lists);

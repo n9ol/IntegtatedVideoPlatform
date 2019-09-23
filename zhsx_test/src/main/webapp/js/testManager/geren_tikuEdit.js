@@ -1,7 +1,7 @@
 var layer;
 layui.use([ 'layer', 'form', 'jquery' ], function() {
 	var $ = layui.jquery;
-	var form = layui.form;
+	var form = layui.form();
 	layer = layui.layer;
 });
 

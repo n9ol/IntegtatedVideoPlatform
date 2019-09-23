@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.zzrenfeng.zhsx.model.ShiroUser;
+import com.zzrenfeng.zhsx.service.SysDictService;
 
 /**
  * 公共Controller类
@@ -26,6 +27,9 @@ public abstract class BaseController {
 
 	@Resource
 	private Environment env;
+
+	@Resource
+	private SysDictService sysDictService;
 
 	@ModelAttribute("principal")
 	public ShiroUser getShiroUser() {
@@ -51,10 +55,9 @@ public abstract class BaseController {
 		return iosDownloadPath;
 	}
 
-	@ModelAttribute("EClassBrandPath")
-	public String EClassBrandPath() {
-		String iosDownloadPath = env.getProperty("EClassBrand.path");
-		return iosDownloadPath;
+	@ModelAttribute("skinName")
+	public String skinName() {
+		return sysDictService.getSkinName();
 	}
 
 	public boolean isLogined() {

@@ -18,11 +18,9 @@ import com.zzrenfeng.zhsx.controller.base.BaseController;
 import com.zzrenfeng.zhsx.model.AnswerQuestionsCollected;
 import com.zzrenfeng.zhsx.model.LoFschedule;
 import com.zzrenfeng.zhsx.model.LoSchedule;
-import com.zzrenfeng.zhsx.model.eclassbrand.course.CourseSchedule;
 import com.zzrenfeng.zhsx.service.AnswerQuestionsCollectedService;
 import com.zzrenfeng.zhsx.service.LoFscheduleService;
 import com.zzrenfeng.zhsx.service.LoScheduleService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleService;
 
 /**
  * 自动评估控制器
@@ -40,8 +38,6 @@ public class PgSelfMotionController extends BaseController {
 	private LoScheduleService loScheduleService;
 	@Resource
 	private LoFscheduleService loFscheduleService;
-	@Resource
-	private CourseScheduleService courseScheduleService;
 
 	/**
 	 * 添加数据到数据库
@@ -102,12 +98,11 @@ public class PgSelfMotionController extends BaseController {
 		// 课堂活跃度统计获取
 		if (pgId != null) {
 
-			// LoSchedule los = loScheduleService.findByKey(pgId);
-			CourseSchedule los = courseScheduleService.getCourseSchedule(pgId);
+			LoSchedule los = loScheduleService.findByKey(pgId);
 
 			AnswerQuestionsCollected answerQuestionsCollected = new AnswerQuestionsCollected();
 			answerQuestionsCollected.setZid(pgId);
-			answerQuestionsCollected.setClassid(los.getClassroomId());
+			answerQuestionsCollected.setClassid(los.getClassId());
 
 			String legendData = "'本地教室'";
 			String seriesdata = "{ name:'本地教室',type:'line', data:[";
@@ -120,7 +115,7 @@ public class PgSelfMotionController extends BaseController {
 
 			String seriesdatanum = "{ name:'本地教室',type:'bar', data:[";
 			List<AnswerQuestionsCollected> zListnum = answerQuestionsCollectedService.findNumByzid(pgId,
-					los.getClassroomId());
+					los.getClassId());
 			for (int i = 1; i <= 4; i++) {
 				int j = 0;
 				for (AnswerQuestionsCollected anum : zListnum) {

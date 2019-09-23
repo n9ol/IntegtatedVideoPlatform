@@ -14,7 +14,7 @@ import com.zzrenfeng.zhsx.service.SysPermissionService;
  * @copyright {@link zzrenfeng.com}
  * @author zzrenfeng.com
  * @version 2017-12-14 16:22:38
- * @see com.zzrenfeng.zhsx.controller.ESysPermission
+ * @see com.zzrenfeng.zhsx.controller.SysPermission
  */
 @Controller
 @RequestMapping(value = "/syspermission")

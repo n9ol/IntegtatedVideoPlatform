@@ -1,13 +1,10 @@
 package com.zzrenfeng.zhsx.util;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-
-import com.zzrenfeng.zhsx.constant.Constant;
 
 /**
  * 工具类
@@ -69,7 +66,7 @@ public class Utils {
 		String ip = request.getServerName();
 		String ipBlock = ip.substring(0, ip.lastIndexOf("."));
 
-		String[] urlOrIPArray = urlOrIPs.split(",");
+		String[] urlOrIPArray = urlOrIPs.split(",|，");
 		if (urlOrIPArray.length <= 1) {
 			urlOrIP = urlOrIPs;
 		} else {
@@ -125,53 +122,6 @@ public class Utils {
 			XFor = request.getRemoteAddr();
 		}
 		return XFor;
-	}
-
-	/**
-	 * 星级评分计算
-	 * 
-	 * @param score
-	 * @return 当小数部分等于0.1 和 0.2 时 丢弃取整 .当小数部分等于0.3,0.4,0.5,0.6,0.7
-	 *         时取0.5.当小数部分等于0.8,0.9时进位取整
-	 */
-	public static BigDecimal getScore(double score) {
-		double returnScore = score;
-		int i = (int) score;
-		double j = new BigDecimal(score - i).setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
-		if (j == 0.1 || j == 0.2) {
-			returnScore = score - j;
-		} else if (j >= 0.3 && j <= 0.7) {
-			returnScore = i + 0.5;
-		} else if (j == 0.8 || j == 0.9) {
-			returnScore = i + 1.0;
-		}
-		return new BigDecimal(returnScore);
-	}
-
-	/**
-	 * 将六分制数转换成百分制数(两位小数)
-	 * 
-	 * @param score
-	 * @return
-	 */
-	public static BigDecimal sixPointSystemConvertedIntoPercentageSystem(BigDecimal score) {
-		BigDecimal divisor = new BigDecimal(Constant.PG_RATE_MAX);
-		BigDecimal multiplicand = new BigDecimal(100);
-		BigDecimal doubleValue = score.divide(divisor, 2, BigDecimal.ROUND_HALF_UP).multiply(multiplicand);
-		return doubleValue;
-	}
-
-	/**
-	 * 将百分制数转换成六分制数(一位小数)
-	 * 
-	 * @param score
-	 * @return
-	 */
-	public static BigDecimal percentageSystemConvertedIntoSixPointSystem(BigDecimal score) {
-		BigDecimal multiplicand = new BigDecimal(Constant.PG_RATE_MAX);
-		BigDecimal divisor = new BigDecimal(100);
-		BigDecimal doubleValue = score.divide(divisor, 1, BigDecimal.ROUND_HALF_UP).multiply(multiplicand);
-		return doubleValue;
 	}
 
 }

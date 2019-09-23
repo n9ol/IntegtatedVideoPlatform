@@ -1,242 +1,281 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.zzrenfeng.zhsx.mapper.WebDeviceRepairMapper" >
- 
+ 	<!-- 暂时不用  BaseResultMap-->
 	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebDeviceRepair" >
-		<result column="repair_id" property="repair_id" />
-		<result column="repair_unit" property="repair_unit" />
-		<result column="repair_unit_name" property="repair_unit_name" />
-		<result column="repair_person" property="repair_person" />
-		<result column="repair_tel" property="repair_tel" />
-		<result column="repair_time" property="repair_time" />
-		<result column="repair_state" property="repair_state" />
-		<result column="repair_description" property="repair_description" />
-		<result column="device_id" property="device_id" />
-		<result column="device_type" property="device_type" />
-		<result column="repair_addr" property="repair_addr" />
-		<result column="repair_buy_time" property="repair_buy_time" />
-		<result column="repair_service_time" property="repair_service_time" />
-		<result column="repair_record_description" property="repair_record_description" />
-		<result column="maintenance_man" property="maintenance_man" />
-		<result column="maintenance_tel" property="maintenance_tel" />
-		<result column="maintenance_suggestion" property="maintenance_suggestion" />
-		<result column="maintenance_time" property="maintenance_time" />
-		<result column="evaluation_grade" property="evaluation_grade" />
-		<result column="repair_isvalid" property="repair_isvalid" />
-		<result column="create_time" property="create_time" />
-		<result column="modify_time" property="modify_time" />
-		<result column="create_id" property="create_id" />
-		<result column="modify_id" property="modify_id" />
+		<result column="id" property="id" />
+		<result column="school_id" property="schoolId" />
+		<result column="class_id" property="classId" />
+		<result column="user_id" property="userId" />
+		<result column="device_id" property="deviceId" />
+		<result column="repair_time" property="repairTime" />
+		<result column="repair_phone" property="repairPhone" />
+		<result column="repair_state" property="repairState" />
+		<result column="repair_description" property="repairDescription" />
+		<result column="manager_id" property="managerId" />
+		<result column="manager_time" property="managerTime" />
+		<result column="mana_overdue_state" property="manaOverdueState" />
+		<result column="manager_phone" property="managerPhone" />
+		<result column="service_evaluation_grade" property="serviceEvaluationGrade" />
+		<result column="technician_id" property="technicianId" />
+		<result column="tech_overdue_state" property="techOverdueState" />
+		<result column="technician_time" property="technicianTime" />
+		<result column="technician_phone" property="technicianPhone" />
+		<result column="isvalid" property="isvalid" />
+		<result column="create_time" property="createTime" />
+		<result column="modify_time" property="modifyTime" />
+		<result column="create_id" property="createId" />
+		<result column="modify_id" property="modifyId" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		repair_id,repair_unit,repair_unit_name,repair_person,repair_tel,repair_time,repair_state,repair_description,device_id,device_type,repair_addr,repair_buy_time,repair_service_time,repair_record_description,maintenance_man,maintenance_tel,maintenance_suggestion,maintenance_time,evaluation_grade,repair_isvalid,create_time,modify_time,create_id,modify_id
+		dre.id  AS "id",
+		dre.school_id AS "school.id",
+		s.schoolName AS "school.schoolName",
+		dre.class_id AS "sysClass.id",
+		c.className AS "sysClass.className",
+		dre.user_id AS "user.id",
+		u.nickName AS "user.nickName",
+		dre.device_id AS "webDeviceManage.id",
+		<!-- wdm.device_mac AS "webDeviceManage.deviceMac", -->
+		sd.id AS "sysDict.id",
+		sd.value AS "sysDict.value",
+		
+		dre.repair_time AS "repairTime",
+		u.phone AS "user.phone",
+		dre.repair_state AS "repairState",
+		dre.repair_description AS "repairDescription",
+		u2.id AS "manager.id",
+		u2.nickName AS "manager.nickName",
+		
+		dre.manager_time AS "managerTime",
+		dre.mana_overdue_state AS "manaOverdueState",
+		u2.phone AS "manager.phone",
+		
+		dre.service_evaluation_grade AS "serviceEvaluationGrade",
+		dre.technician_id AS "webDeviceTechnician.id",
+		wdt.name AS "webDeviceTechnician.name",
+		
+		dre.tech_overdue_state AS "techOverdueState",
+		dre.technician_time AS "technicianTime",
+		wdt.phone AS "webDeviceTechnician.phone",
+		
+		dre.isvalid AS "isvalid",
+		dre.create_time AS "createTime",
+		dre.modify_time AS "modifyTime",
+		dre.create_id AS "createId",
+		dre.modify_id AS "modifyId"
 	</sql>
-
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	<sql id="WebDeviceRepairJoins">
+		INNER JOIN sys_school s ON dre.school_id=s.id
+		LEFT JOIN sys_classroom c ON dre.class_id=c.id
+		LEFT JOIN user u ON dre.user_id=u.id
+		<!-- LEFT JOIN web_device_manage wdm ON dre.device_id=wdm.id -->
+		LEFT JOIN sys_dict sd ON sd.id=dre.device_id<!-- 实质上这里的device_id存储的是设备类型的id -->
+		LEFT JOIN user u2 ON dre.manager_id=u2.id
+		LEFT JOIN web_device_technician wdt ON dre.technician_id=wdt.id
+	</sql>
+	<!--使用 resultType="WebDeviceRepair"替换 resultMap="BaseResultMap" -->
+	<select id="selectByPrimaryKey" resultType="WebDeviceRepair" parameterType="java.lang.String" >
 		select 
 		<include refid="Base_Column_List" />
-		from web_device_repair
-		where repair_id = #{repair_id}
+	    FROM
+		web_device_repair dre
+		<include refid="WebDeviceRepairJoins"/>
+		where dre.id = #{id}
 	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
 		delete from web_device_repair
-		where repair_id = #{repair_id}
+		where id = #{id}
 	</delete>
 
 
 	<insert id="dataInsert" parameterType="WebDeviceRepair" >
-		<selectKey keyProperty="repair_id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
-		insert into web_device_repair (repair_id,repair_unit,repair_unit_name,repair_person,repair_tel,repair_time,repair_state,repair_description,device_id,device_type,repair_addr,repair_buy_time,repair_service_time,repair_record_description,maintenance_man,maintenance_tel,maintenance_suggestion,maintenance_time,evaluation_grade,repair_isvalid,create_time,modify_time,create_id,modify_id)
-		values (#{repair_id},#{repair_unit},#{repair_unit_name},#{repair_person},#{repair_tel},#{repair_time},#{repair_state},#{repair_description},#{device_id},#{device_type},#{repair_addr},#{repair_buy_time},#{repair_service_time},#{repair_record_description},#{maintenance_man},#{maintenance_tel},#{maintenance_suggestion},#{maintenance_time},#{evaluation_grade},#{repair_isvalid},#{create_time},#{modify_time},#{create_id},#{modify_id})
+	<!--将device_id中修改 #{webDeviceManage.id} 为  #{sysDict.id} -->
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_device_repair (id,school_id,class_id,user_id,device_id,repair_time,repair_phone,repair_state,repair_description,manager_id,manager_time,mana_overdue_state,manager_phone,service_evaluation_grade,technician_id,tech_overdue_state,technician_time,technician_phone,isvalid,create_time,modify_time,create_id,modify_id)
+		values (#{id},#{school.id},#{sysClass.id},#{user.id},#{sysDict.id},#{repairTime},#{user.phone},#{repairState},#{repairDescription},#{manager.id},#{managerTime},#{manaOverdueState},#{manager.phone},#{serviceEvaluationGrade},#{webDeviceTechnician.id},#{techOverdueState},#{technicianTime},#{webDeviceTechnician.phone},#{isvalid},#{createTime},#{modifyTime},#{createId},#{modifyId})
 	</insert>
 
 
 	<update id="updateByPrimaryKeySelective" parameterType="WebDeviceRepair" >
 		update web_device_repair
 		<set >
-			<!-- <if test="repair_id != null" >
-				repair_id = #{repair_id},
+			<!-- <if test="id != null" >
+				id = #{id},
 			</if> -->
-			<if test="repair_unit != null" >
-				repair_unit = #{repair_unit},
+			<!-- <if test="school.id != null" >
+				school_id = #{school.id},
 			</if>
-			<if test="repair_unit_name != null" >
-				repair_unit_name = #{repair_unit_name},
+			<if test="sysClass.id != null" >
+				class_id = #{sysClass.id},
 			</if>
-			<if test="repair_person != null" >
-				repair_person = #{repair_person},
+			<if test="user.id != null" >
+				user_id = #{userId},
 			</if>
-			<if test="repair_tel != null" >
-				repair_tel = #{repair_tel},
+			<if test="webDeviceManage.id != null" >
+				device_id = #{webDeviceManage.id},
 			</if>
 			<if test="repair_time != null" >
-				repair_time = #{repair_time},
+				repair_time = #{repairTime},
+			</if>
+			<if test="user.phone != null" >
+				repair_phone = #{user.phone},
 			</if>
 			<if test="repair_state != null" >
-				repair_state = #{repair_state},
+				repair_state = #{repairState},
 			</if>
 			<if test="repair_description != null" >
-				repair_description = #{repair_description},
+				repair_description = #{repairDescription},
+			</if> -->
+			<if test="manager.id != null" >
+				manager_id = #{manager.id},
 			</if>
-			<if test="device_id != null" >
-				device_id = #{device_id},
+			<if test="managerTime != null" >
+				manager_time = #{managerTime},
 			</if>
-			<if test="device_type != null" >
-				device_type = #{device_type},
+			 <if test="manaOverdueState != null" >
+				mana_overdue_state = #{manaOverdueState},
+			</if> 
+			<if test="manager.phone != null" >
+				manager_phone = #{manager.phone},
 			</if>
-			<if test="repair_addr != null" >
-				repair_addr = #{repair_addr},
+			<!-- <if test="service_evaluation_grade != null" >
+				service_evaluation_grade = #{serviceEvaluationGrade},
+			</if> -->
+			<if test="webDeviceTechnician.id != null" >
+				technician_id = #{webDeviceTechnician.id},
 			</if>
-			<if test="repair_buy_time != null" >
-				repair_buy_time = #{repair_buy_time},
+			<!--<if test="techOverdueState != null" >
+				tech_overdue_state = #{techOverdueState},
 			</if>
-			<if test="repair_service_time != null" >
-				repair_service_time = #{repair_service_time},
+			<if test="technician_time != null" >
+				technician_time = #{technicianTime},
 			</if>
-			<if test="repair_record_description != null" >
-				repair_record_description = #{repair_record_description},
-			</if>
-			<if test="maintenance_man != null" >
-				maintenance_man = #{maintenance_man},
-			</if>
-			<if test="maintenance_tel != null" >
-				maintenance_tel = #{maintenance_tel},
-			</if>
-			<if test="maintenance_suggestion != null" >
-				maintenance_suggestion = #{maintenance_suggestion},
-			</if>
-			<if test="maintenance_time != null" >
-				maintenance_time = #{maintenance_time},
-			</if>
-			<if test="evaluation_grade != null" >
-				evaluation_grade = #{evaluation_grade},
-			</if>
-			<if test="repair_isvalid != null" >
-				repair_isvalid = #{repair_isvalid},
+			<if test="webDeviceTechnician.phone != null" >
+				technician_phone = #{webDeviceTechnician.phone},
+			</if> -->
+			<!-- <if test="isvalid != null" >
+				isvalid = #{isvalid},
 			</if>
 			<if test="create_time != null" >
-				create_time = #{create_time},
-			</if>
+				create_time = #{createTime},
+			</if> 
 			<if test="modify_time != null" >
-				modify_time = #{modify_time},
-			</if>
-			<if test="create_id != null" >
-				create_id = #{create_id},
+				modify_time = #{modifyTime},
+			</if>-->
+			<!-- <if test="create_id != null" >
+				create_id = #{createId},
 			</if>
 			<if test="modify_id != null" >
-				modify_id = #{modify_id}
-			</if>
+				modify_id = #{modifyId}
+			</if> -->
 		</set>
-		where repair_id = #{repair_id}
+		where id = #{id}
 	</update>
 	
 
 	<update id="updateByPrimaryKey" parameterType="WebDeviceRepair" >
 		update web_device_repair
 		set 
-		<!-- repair_id = #{repair_id}, -->
-		repair_unit = #{repair_unit},
-		repair_unit_name = #{repair_unit_name},
-		repair_person = #{repair_person},
-		repair_tel = #{repair_tel},
-		repair_time = #{repair_time},
-		repair_state = #{repair_state},
-		repair_description = #{repair_description},
-		device_id = #{device_id},
-		device_type = #{device_type},
-		repair_addr = #{repair_addr},
-		repair_buy_time = #{repair_buy_time},
-		repair_service_time = #{repair_service_time},
-		repair_record_description = #{repair_record_description},
-		maintenance_man = #{maintenance_man},
-		maintenance_tel = #{maintenance_tel},
-		maintenance_suggestion = #{maintenance_suggestion},
-		maintenance_time = #{maintenance_time},
-		evaluation_grade = #{evaluation_grade},
-		repair_isvalid = #{repair_isvalid},
-		create_time = #{create_time},
-		modify_time = #{modify_time},
-		create_id = #{create_id},
-		modify_id = #{modify_id}
-		where repair_id = #{repair_id}
+		<!-- id = #{id}, -->
+		school_id = #{schoolId},
+		class_id = #{classId},
+		user_id = #{userId},
+		device_id = #{deviceId},
+		repair_time = #{repairTime},
+		repair_phone = #{repairPhone},
+		repair_state = #{repairState},
+		repair_description = #{repairDescription},
+		manager_id = #{managerId},
+		manager_time = #{managerTime},
+		mana_overdue_state = #{manaOverdueState},
+		manager_phone = #{managerPhone},
+		service_evaluation_grade = #{serviceEvaluationGrade},
+		technician_id = #{technicianId},
+		tech_overdue_state = #{techOverdueState},
+		technician_time = #{technicianTime},
+		technician_phone = #{technicianPhone},
+		isvalid = #{isvalid},
+		create_time = #{createTime},
+		modify_time = #{modifyTime},
+		create_id = #{createId},
+		modify_id = #{modifyId}
+		where id = #{id}
 	</update>
 	
 	<sql id="Dynamic_Conditions">
 		<where>
 			1=1
-			<if test="repair_id != null" >
-				and repair_id = #{repair_id}
+			<if test="id != null" >
+				and id = #{id}
 			</if>
-			<if test="repair_unit != null" >
-				and repair_unit = #{repair_unit}
+			<if test="school_id != null" >
+				and school_id = #{schoolId}
 			</if>
-			<if test="repair_unit_name != null" >
-				and repair_unit_name = #{repair_unit_name}
+			<if test="class_id != null" >
+				and class_id = #{classId}
 			</if>
-			<if test="repair_person != null" >
-				and repair_person = #{repair_person}
-			</if>
-			<if test="repair_tel != null" >
-				and repair_tel = #{repair_tel}
-			</if>
-			<if test="repair_time != null" >
-				and repair_time = #{repair_time}
-			</if>
-			<if test="repair_state != null" >
-				and repair_state = #{repair_state}
-			</if>
-			<if test="repair_description != null" >
-				and repair_description = #{repair_description}
+			<if test="user_id != null" >
+				and user_id = #{userId}
 			</if>
 			<if test="device_id != null" >
-				and device_id = #{device_id}
+				and device_id = #{deviceId}
 			</if>
-			<if test="device_type != null" >
-				and device_type = #{device_type}
+			<if test="repair_time != null" >
+				and repair_time = #{repairTime}
 			</if>
-			<if test="repair_addr != null" >
-				and repair_addr = #{repair_addr}
+			<if test="repair_phone != null" >
+				and repair_phone = #{repairPhone}
 			</if>
-			<if test="repair_buy_time != null" >
-				and repair_buy_time = #{repair_buy_time}
+			<if test="repair_state != null" >
+				and repair_state = #{repairState}
 			</if>
-			<if test="repair_service_time != null" >
-				and repair_service_time = #{repair_service_time}
+			<if test="repair_description != null" >
+				and repair_description = #{repairDescription}
 			</if>
-			<if test="repair_record_description != null" >
-				and repair_record_description = #{repair_record_description}
+			<if test="manager_id != null" >
+				and manager_id = #{managerId}
 			</if>
-			<if test="maintenance_man != null" >
-				and maintenance_man = #{maintenance_man}
+			<if test="manager_time != null" >
+				and manager_time = #{managerTime}
 			</if>
-			<if test="maintenance_tel != null" >
-				and maintenance_tel = #{maintenance_tel}
+			<if test="mana_overdue_state != null" >
+				and mana_overdue_state = #{manaOverdueState}
 			</if>
-			<if test="maintenance_suggestion != null" >
-				and maintenance_suggestion = #{maintenance_suggestion}
+			<if test="manager_phone != null" >
+				and manager_phone = #{managerPhone}
 			</if>
-			<if test="maintenance_time != null" >
-				and maintenance_time = #{maintenance_time}
+			<if test="service_evaluation_grade != null" >
+				and service_evaluation_grade = #{serviceEvaluationGrade}
 			</if>
-			<if test="evaluation_grade != null" >
-				and evaluation_grade = #{evaluation_grade}
+			<if test="technician_id != null" >
+				and technician_id = #{technicianId}
 			</if>
-			<if test="repair_isvalid != null" >
-				and repair_isvalid = #{repair_isvalid}
+			<if test="tech_overdue_state != null" >
+				and tech_overdue_state = #{techOverdueState}
+			</if>
+			<if test="technician_time != null" >
+				and technician_time = #{technicianTime}
+			</if>
+			<if test="technician_phone != null" >
+				and technician_phone = #{technicianPhone}
+			</if>
+			<if test="isvalid != null" >
+				and isvalid = #{isvalid}
 			</if>
 			<if test="create_time != null" >
-				and create_time = #{create_time}
+				and create_time = #{createTime}
 			</if>
 			<if test="modify_time != null" >
-				and modify_time = #{modify_time}
+				and modify_time = #{modifyTime}
 			</if>
 			<if test="create_id != null" >
-				and create_id = #{create_id}
+				and create_id = #{createId}
 			</if>
 			<if test="modify_id != null" >
-				and modify_id = #{modify_id}
+				and modify_id = #{modifyId}
 			</if>
 		</where>
 	</sql>
@@ -245,7 +284,9 @@
 	<select id="findSelective" parameterType="WebDeviceRepair" resultType="WebDeviceRepair">
 		select 
 		<include refid="Base_Column_List" />
-		from web_device_repair
+	    FROM
+		web_device_repair dre
+		<include refid="WebDeviceRepairJoins"/>
 		<include refid="Dynamic_Conditions"/>
 	</select>
 
@@ -253,7 +294,9 @@
 	<select id="findPageSelective" parameterType="WebDeviceRepair" resultType="WebDeviceRepair">
 		select 
 		<include refid="Base_Column_List" />
-		from web_device_repair
+	    FROM
+		web_device_repair dre
+		<include refid="WebDeviceRepairJoins"/>
 		<include refid="Dynamic_Conditions"/>
 	</select>
 	<!-- 多功能查询 -->
@@ -261,11 +304,12 @@
 	    select 
 	    <include refid="Base_Column_List" />
 	    FROM
-			sys_school s INNER JOIN web_device_repair dre ON s.id=dre.repair_unit
+			web_device_repair dre
+		<include refid="WebDeviceRepairJoins"/>
 		<where>
 			1=1 
-			<if test="repair_isvalid != null" >
-				and dre.repair_isvalid = #{repair_isvalid}
+			<if test="isvalid != null" >
+				and dre.isvalid = #{isvalid}
 			</if>
 			<if test="province != null" >
 				and s.provinceId = #{province}
@@ -280,15 +324,17 @@
 				and s.id = #{schoolId}
 			</if>
 			<if test="startTime != null" >
-				and <![CDATA[  dre.repair_time > #{startTime} ]]>
+				and <![CDATA[  dre.create_time >= #{startTime} ]]>
 			</if>
 			<if test="endTime != null" >
-				and <![CDATA[  dre.repair_time < #{endTime} ]]>
+				and <![CDATA[  dre.create_time <= #{endTime} ]]>
 			</if>
+			order by s.schoolName
 		</where>
 		
 		
 	</select>
-	
+
+
 
 </mapper>

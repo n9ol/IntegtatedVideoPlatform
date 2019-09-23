@@ -18,7 +18,7 @@ layui.use([ 'laypage' ], function() {
 layui.use([ 'jquery', 'layer', 'form' ], function() {
 	window.jQuery = window.$ = layui.jquery;
 	window.layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 
 	// 全选
 	$("#selected-all-operation").click(function() {
@@ -58,10 +58,11 @@ layui.use([ 'jquery', 'layer', 'form' ], function() {
 		location.href = ctx + "/adminLoPgGroup/pgGroup?search=" + searchval;
 	}
 
-	window.del = function(id) {
+	window.del = function(id,obj) {
 		$.post(ctx + "/adminLoPgGroup/delPgGroup", {
 			id : id
 		}, function(data) {
+			$(obj).parent().parent().remove();
 			layer.msg(data);
 		});
 	}

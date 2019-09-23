@@ -3,6 +3,7 @@ package com.zzrenfeng.zhsx.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.zzrenfeng.zhsx.model.AndroidiosModel;
+import com.zzrenfeng.zhsx.service.SysDictService;
 
 /**
  * 自定义异常处理器
@@ -21,6 +23,9 @@ import com.zzrenfeng.zhsx.model.AndroidiosModel;
  */
 @ControllerAdvice
 public class ExceptionResolver {
+
+	@Resource
+	private SysDictService sysDictService;
 
 	/**
 	 * 全局异常捕捉处理
@@ -62,12 +67,13 @@ public class ExceptionResolver {
 			em = new ExceptionMessage("未知异常");
 		}
 		message = em.getMessage();
+		String skinName = sysDictService.getSkinName();
+
 		ModelAndView Mav = new ModelAndView();
 		Mav.addObject("em", em);
 		Mav.addObject("message", message);
-
+		Mav.addObject("skinName", skinName);
 		Mav.setViewName("error");
-
 		return Mav;
 	}
 

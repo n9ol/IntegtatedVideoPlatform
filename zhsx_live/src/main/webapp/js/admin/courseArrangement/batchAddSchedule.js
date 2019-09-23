@@ -2,7 +2,7 @@ var layer;
 
 layui.use([ 'layer', 'form', 'upload' ], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 
 	// 获得科目
 	form.on('select(grade)', function(data) {
@@ -33,8 +33,10 @@ layui.use([ 'layer', 'form', 'upload' ], function() {
 		var type = data.value;
 		if (type == "G") {
 			$(".inMany").css("display", "block");
+			$(".onlinePg").css("display", "block");
 		} else if (type == "A" || type == "Z") {
 			$(".inMany").css("display", "none");
+			$(".onlinePg").css("display", "none");
 		}
 	});
 
@@ -269,7 +271,6 @@ function chkForm() {
 				$("#fs_msg").text("辅讲教室不能相同!");
 			}
 		}
-
 	}
 	if (type == "A" || type == "Z") {
 		$(".inMany").empty();

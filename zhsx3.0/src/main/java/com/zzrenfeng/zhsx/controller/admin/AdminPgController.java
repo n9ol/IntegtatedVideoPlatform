@@ -45,17 +45,14 @@ public class AdminPgController extends BaseController {
 	 */
 	@RequestMapping("/pg_pjinfo")
 	public String pgPjinfo(Model model, Integer p, PgPjinfo pgPjinfo) {
-		if (p == null) {
+		if (p == null)
 			p = 1;
-		}
 		Page<PgPjinfo> pageInfo = pgPjinfoService.findPageSelective(pgPjinfo, p, 12);
+		int pages = pageInfo.getPages();
 		List<PgPjinfo> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
 		model.addAttribute("pageNum", p);// 当前页
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("pages", pages);// 总页数
 		model.addAttribute("lists", lists);
 		model.addAttribute("type", pgPjinfo.getType());
 		return "/admin/pg/pgPjInfo";
@@ -153,23 +150,19 @@ public class AdminPgController extends BaseController {
 		type = "I";
 		pgPjdetail.setType(type);
 		Page<PgPjdetail> pageInfo = pgPjdetailService.findPageSelective(pgPjdetail, p, 12);
+		int pages = pageInfo.getPages();
 		List<PgPjdetail> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
+		model.addAttribute("pageNum", p);// 当前页
+		model.addAttribute("pages", pages);// 总页数
+		model.addAttribute("lists", lists);
 		if (type != null) {
 			PgPjinfo pgPjinfo = new PgPjinfo();
 			pgPjinfo.setType(type);
 			List<PgPjinfo> pgPjinfos = pgPjinfoService.findSelective(pgPjinfo);
 			model.addAttribute("pgPjinfos", pgPjinfos);
 		}
-
 		model.addAttribute("pjinfoId", pgPjdetail.getPjinfoId());
 		model.addAttribute("type", type);
-		model.addAttribute("lists", lists);
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("pageNum", p);
 		return "/admin/pg/pgPjDetail";
 	}
 

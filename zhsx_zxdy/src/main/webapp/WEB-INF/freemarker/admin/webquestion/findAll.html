@@ -137,12 +137,39 @@
 				<input type="hidden" name="contextType" value="${contextType!''}">
 		</form>
 	</section>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
+		var skinColor = "#4596E5";
+		var skinName = "${skinName!''}";
+		switch (skinName) {
+			case "springtime":
+				skinColor = "#1cc8d2";
+				break;
+			case "summer":
+				skinColor = "#ee336e";
+				break;
+			case "autumn":
+				skinColor = "#ff9900";
+				break;
+			case "winter":
+				skinColor = "#1ca5d2";
+				break;
+			default:
+				skinColor = "#4596E5";
+				break;
 		}
+		
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+				skip : false,skin : skinColor,groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						refreshPage();
+					}
+				}
+			});
+		});
 	</script>
 	<script type="text/javascript">
 		var layer;

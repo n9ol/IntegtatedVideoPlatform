@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 	</head>
 	<body>
 		<div class="biaoBox">
@@ -24,24 +24,20 @@
 				</thead>
 				<tbody>
 					<#assign seq = [0,1,2,3,4,5,6]>
-					<#if listCourseScheduleBigTime?? &&(listCourseScheduleBigTime?size>0)><#list listCourseScheduleBigTime as c>
+					<#if classTimes?? &&(classTimes?size>0)><#list classTimes as c>
 					<tr>
-						<td title="${(c.startTime)?string('HH:mm')} - ${(c.endTime)?string('HH:mm')}" style="min-width:3em;white-space:nowrap;">第${c.oddSectionOfDay!''}-${c.evenSectionOfDay!''}节</td>
+						<td title="${(c.starttime)?string('HH:mm')} - ${(c.endtime)?string('HH:mm')}" style="min-width:3em;white-space:nowrap;">第${c.sectionofDay!''}节</td>
 						<#list seq as l>
 						<td style="position: relative;">
-							<#if listCourseSchedule?? && (listCourseSchedule?size>0)>
-								<#list listCourseSchedule as lo>
-										<#if (lo.bigSectionOfDay==c.bigSectionOfDayString) && (lo.dayOfWeek)==l>
+							<#if loSchedules?? && (loSchedules?size>0)>
+								<#list loSchedules as lo>
+										<#if (lo.sectionofday==c.sectionofDay) && (lo.dayofweek)==l>
 											 <#assign col="">
-											 <#if lo.isGoClass == 0><#assign col="color:gray;"></#if>
-											 <#if lo.isGoClass == 1><#assign col="color:orange;"></#if>
-											 <#if lo.isGoClass == 2><#assign col="color:#4596E5;"></#if>
-											 <span class="ellipsesSpan" style="cursor:pointer;${col}" title="${lo.subjectName!''}(${lo.classroomName!''})" onclick="setPgCour('${lo.id}','${lo.isGoClass}');"> 
-											 	${lo.classroomName!''}<br>
-											 	${lo.subjectName!''}<br>
-											 	${lo.className!''}<br>
-											 	<#if lo.oddEvenAll == 'odd'>单周<#elseif lo.oddEvenAll == 'even'>双周</#if>
-											 	(${lo.beginWeek!''}-${lo.endWeek!''})[${lo.sectionOfDay!''}节]
+											 <#if lo.isGoClass == 0><#assign col="style='color:gray'"></#if>
+											 <#if lo.isGoClass == 1><#assign col="style='color:orange'"></#if>
+											 <#if lo.isGoClass == 2><#assign col="style='color:#4596E5'"></#if>
+											 <span ${col} onclick="setPgCour('${lo.id}','${lo.isGoClass}');" class="ellipsesSpan" style="cursor:pointer;" title="${lo.subjectId!''}(${lo.className!''})"> 
+											 	${lo.subjectId!''}<br>${lo.className!''}
 											 </span>
 										</#if>
 								</#list>

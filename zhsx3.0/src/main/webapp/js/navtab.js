@@ -1,5 +1,5 @@
 layui.define(['element'], function(exports){
-   var  element = layui.element,
+   var  element = layui.element(),
         $ = layui.jquery,
 		layer = parent.layer === undefined ? layui.layer : parent.layer,
 		module_name = 'navtab',

@@ -63,11 +63,7 @@ public class TestWebStuTestController extends BaseController {
 		Page<TestWebStuTest> pageInfo = testWebStuTestService.findPageSelective(twst, p, 10);
 		List<TestWebStuTest> lists = pageInfo.getResult();
 		int pages = pageInfo.getPages();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
+		// model.addAttribute("memberId", memberId);
 		model.addAttribute("lists", lists);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
@@ -134,11 +130,6 @@ public class TestWebStuTestController extends BaseController {
 		Page<TestWebStuTest> pageInfo = testWebStuTestService.findPageSelective(twst, p, 10);
 		List<TestWebStuTest> lists = pageInfo.getResult();
 		int pages = pageInfo.getPages();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("memberId", getUserId());
 		model.addAttribute("lists", lists);
 		model.addAttribute("pageNum", p);

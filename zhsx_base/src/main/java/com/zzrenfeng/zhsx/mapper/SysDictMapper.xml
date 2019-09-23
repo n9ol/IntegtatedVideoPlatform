@@ -89,6 +89,11 @@
 		where id = #{id}
 	</update>
 	
+	<update id="updateSkin">
+		update sys_dict set  value = #{value} , modiyTime = NOW()  where keyname = 'K'
+	</update>
+	
+	
 	<sql id="Dynamic_Conditions">
 		<where>
 			1=1

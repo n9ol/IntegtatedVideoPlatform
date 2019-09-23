@@ -1,0 +1,73 @@
+.testbody {
+	width: 800px;
+	margin: 0 auto;
+}
+
+.testbody .viewdiv {
+	margin-top: 5px;
+	margin-bottom: 5px;
+	padding: 20px;
+	border: 1px solid #ccc;
+	background: #f6f6f6;
+}
+
+.testbody .testtitle {
+	font-size: 20px;
+	font-weight: bold;
+	color: #1cc8d2;
+	padding-top: 20px;
+	padding-bottom: 5px;
+}
+
+.testinfo2 {
+	padding-top: 3px;
+	padding-bottom: 3px;
+	font-family: arial;
+	font-size: 12px;
+	color: #666;
+}
+
+.testbody .score .text1 {
+	padding-top: 32px;
+	padding-left: 10px;
+	font-size: 12px;
+	color: #666;
+}
+
+.testbody .score .score1 {
+	padding-top: 25px;
+	font-size: 20px;
+	color: #666;
+}
+
+.testbody .score .text2 {
+	padding-top: 32px;
+	padding-left: 3px;
+	font-size: 12px;
+	color: #666;
+}
+
+.testbody .score .score2 {
+	padding-top: 12px;
+	font-size: 32px;
+	font-weight: bold;
+	color: #1cc8d2;
+}
+
+.fontred {
+	color: #f00;
+}
+
+.dotline2 {
+	height: 11px;
+	margin-top: 10px;
+	border-top: 1px dotted #999;
+}
+
+.hsplit {
+	height: 10px;
+}
+
+.fontarial {
+	font-family: arial;
+}

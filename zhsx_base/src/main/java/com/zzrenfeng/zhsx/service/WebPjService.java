@@ -20,20 +20,24 @@ import com.zzrenfeng.zhsx.model.WebPjInfoExt;
 public interface WebPjService extends BaseService<WebPj> {
 
 	/**
-	 * 计算得分(有权重)
+	 * 批量添加当前评估信息
+	 * 
+	 * @param userId
+	 *            用户id
+	 * @param pgId
+	 *            评估对象id
+	 * @param onOff
+	 *            评估类型(ON 在线 ，OFF 离线)
+	 */
+	void insterPgMessage(String userId, String pgId, String onOff, String type);
+
+	/**
+	 * 计算得分
 	 * 
 	 * @param webPjInfoExt
 	 * @return
 	 */
 	double calculateTotal(WebPjInfoExt webPjInfoExt);
-
-	/**
-	 * 计算得分(无权重)
-	 * 
-	 * @param webPjInfoExt
-	 * @return
-	 */
-	double calculateTotalNotWeight(WebPjInfoExt webPjInfoExt);
 
 	/**
 	 * 获得评估总分平均分
@@ -126,6 +130,21 @@ public interface WebPjService extends BaseService<WebPj> {
 	List<Map<String, Object>> getLeaderCommonentAVGAndEXPMiddle(Map<String, Object> paramMap);
 
 	/**
+	 * 获取当前用户的总评和一级评估项
+	 * 
+	 * @param currUserId
+	 *            当前用户
+	 * @param pgId
+	 *            评估对象
+	 * @param onOff
+	 *            在线离线
+	 * @param Bak1
+	 *            课前，课中
+	 * @return
+	 */
+	Map<String, Object> getPjInfo(String currUserId, String pgId, String onOff, String pgType);
+
+	/**
 	 * 删除用户的评估记录
 	 * 
 	 * @param currUserId
@@ -133,29 +152,4 @@ public interface WebPjService extends BaseService<WebPj> {
 	 */
 	void deleteWebPg(String currUserId, String pgId);
 
-	/**
-	 * 获取总评,(无、添加后获取)
-	 * 
-	 * @param currUserId
-	 * @param pgId
-	 * @param onOff
-	 * @return
-	 */
-	WebPj getWebPj(String currUserId, String pgId, String onOff);
-
-	/**
-	 * 直播课程 - 在线评估,评估结果查询
-	 * 
-	 * @param webPj
-	 * @return
-	 */
-	Page<WebPj> listWebPjResult(WebPj webPj, int p, int pageSize);
-
-	/**
-	 * 查询个人的评估记录
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	Page<WebPj> listPersonalWebPjRecord(String userId, int p, int pageSize);
 }

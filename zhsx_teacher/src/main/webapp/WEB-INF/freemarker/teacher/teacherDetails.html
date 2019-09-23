@@ -3,10 +3,10 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 <#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_people.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_people.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/imagehover.min.css" />
 	</head>
 
@@ -20,8 +20,8 @@
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
   					<a href="${ctx}/index">首页</a>
-  					
-  					<a><cite>名师团队</cite></a>
+  					<a href="${ctx}/teacher/teacherList">名师风采</a>
+  					<a><cite>个人详情</cite></a>
 				</span>
 			</div>
 			<div class="jianjie clear">
@@ -58,7 +58,7 @@
 									<span>教龄：<span>${teacher.stature!'0'}年</span></span>
 <!-- 									<span>浏览次数：<span>99次</span></span> -->
 									<span>关注度：<span>${gzd!'0'}</span></span>
-									<span>专业：<span>${teacher.gradeName!''}</span></span>
+									<span>年级：<span>${teacher.gradeName!''}</span></span>
 <!-- 									<span>班级：<span>六年一、二班</span></span> -->
 									<span>科目：<span>${teacher.subjectName!''}</span></span>
 									<span>市级：<span>${teacher.city!''}</span></span>

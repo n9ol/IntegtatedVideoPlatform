@@ -3,11 +3,11 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 	<!-- 		<#global ctx=rc.contextPath/> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 		<style type="text/css">
 			.layui-input-block{
 					width:400px;
@@ -77,11 +77,11 @@
 							
 					<div style="height:20px;"></div>
 			   <div class="layui-form-item">
-					    <label class="layui-form-label" >选择专业：</label>
+					    <label class="layui-form-label" >选择年级：</label>
 					    <div class="layui-input-block" >
-					      <select type="text" id="gradeId" name="gradeName" title="专业" lay-filter="gradeId" lay-search>
+					      <select type="text" id="gradeId" name="gradeName" title="年级" lay-filter="gradeId" lay-search>
 					     
-					         	<option value="">请选择专业</option>
+					         	<option value="">请选择年级</option>
 					        <#if grades??&&(grades?size>0)><#list grades as g>
        							<option  name="${g.id}"  value="${g.id}">${g.value}</option>
        						</#list></#if>
@@ -189,7 +189,7 @@
 				<div style="height: 20px;"></div>		
 					<div class="layui-form-item">
 				    <div class="layui-input-block">
-				      <input type="button" class="layui-btn" value="确认提交">
+				      <input type="button" class="layui-btn btnColor" value="确认提交">
 				      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 				    </div>
 				  </div>	
@@ -226,7 +226,7 @@
 
 	layui.use([ 'layer','form','laydate'], function() {
 		layer = layui.layer;
-		var form = layui.form;
+		var form = layui.form();
 		 var laydate = layui.laydate;
 		form.on('select(gradeId)', function(data){
 			$("#subjectId").empty();
@@ -255,10 +255,10 @@
 			$("#testTitle_msg").html("<img src='${ctx}/images/chk_ok.jpg' border=0>");
 		}
 		var  gradeId=$("#gradeId").find("option:selected").val();
-		if(gradeId=="" || gradeId=="请选择专业"){
+		if(gradeId=="" || gradeId=="请选择年级"){
 			isok = false;
 			$("#gradeId_msg").css("color","#f00");
-			$("#gradeId_msg").text("请选择专业!");
+			$("#gradeId_msg").text("请选择年级!");
 		}else{
 			$("#gradeId_msg").css("color","#060");
 			$("#gradeId_msg").html("<img src='${ctx}/images/chk_ok.jpg' border=0>");

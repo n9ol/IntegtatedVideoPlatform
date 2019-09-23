@@ -1,119 +1,159 @@
-<!-- <#global ctx=rc.contextPath/> -->
-<#if lists??&&(lists?size>0)><#list lists as l> 
-<#if l.onOff=='OFF'>
-<li class="clear">
-	<div class="con_left_li">
-		<div class="zdb bg1">离线评估</div>
-		<div class="ke_img">
-			<img class="zbimg" src="${fileWebPath}/videoRes/${l.offLineVideoPicPath!''}"
-				onerror="this.src='${ctx}/img/lunbo4.png'" />
-		</div>
-	</div>
-	<div class="jilujieshao">
-		<p class="jjj0">
-			<span>${l.offLineVideoTitle!''}</span>
-		</p>
-		<p class="jjj">
-			<!-- 				<span> -->
-			<!-- 					授课教师： -->
-			<!-- 					<span style="color: orange;">${l.nickName!''}</span> -->
-			<!-- 				</span> -->
-			<span>
-				科目：
-				<span style="color: orange;">${l.offLineVideoSubjectName!''}</span>
-			</span>
-		</p>
-		<p class="jjj">
-			<span>
-				授课时长：
-				<span>${l.offLineVideoTimeLength!''}</span>
-			</span>
-			<span>
-				浏览：
-				<span>${l.offLineVideoPageView!'0'}</span>
-			</span>
-			<span>
-				评估时间：
-				<span>${l.addTime?string('yyyy-MM-dd HH:MM:ss')}</span>
-			</span>
-		</p>
-	</div>
-	<div class="jilu_anniu">
-		<span class="layui-btn layui-btn-mini see">
-			<img alt="" src="${ctx}/img/eye2.png">
-			<a href="javascript:watchofflineVideo('${l.pgId}');">&nbsp;查&nbsp;&nbsp;&nbsp;&nbsp;看&nbsp;</a>
-		</span>
-	</div>
-</li>
-<#elseif l.onOff=='ON'>
-<li class="clear">
-	
-	<div class="con_left_li">
-		<#if l.courScheduleType?? && l.courScheduleType=='G'>
-			<div class="zdb bg5">专递课堂</div>
-			<div class="ke_img">
-				<img src="${ctx}/images/zhuandi270.png" />
-			</div>
-		<#else>
-			<div class="zdb">在线评估</div>
-			<div class="ke_img">
-				<img src="${ctx}/images/pinggu270.png" />
-			</div>
-		</#if>
-	</div>
-	
-	<div class="jilujieshao">
-		<p class="jjj0">
-			<span>${l.courScheduleClassroomName!''} -- ${l.courScheduleTeacherName!''} </span>
-		</p>
-		<p class="jjj">
-			<span>
-				科目：
-				<span style="color: orange;">${l.courScheduleSubjectName!''}</span>
-			</span>
-			
-			<#if l.courScheduleSpecialtyName??>
-				<span>
-					专业：
-					<span style="color: orange;">${l.courScheduleSpecialtyName!''}</span>
-				</span>
-			</#if>
-			
-			<span>
-				直播时间：
-				<span style="color: orange;">${l.addTime?string('yyyy-MM-dd')} 	${l.courScheduleStartTime?string('HH:mm:ss')}-${l.courScheduleEndTime?string('HH:mm:ss')}</span>
-			</span>
-		</p>
-		<p class="jjj">
-			<span>
-				评估时间：
-				<span>${l.addTime?string('yyyy-MM-dd HH:MM:ss')}</span>
-			</span>
-		</p>
-	</div>
-	<div class="jilu_anniu">
-		<span class="layui-btn layui-btn-mini see">
-			<img alt="" src="${ctx}/img/eye2.png">
-			<a href="javascript:enterPlay('${l.pgId}','${l.addTime?string('yyyy-MM-dd')}');">查看</a>
-		</span>
-	</div>
-</li>
-</#if> 
-</#list></#if> 
-<#include "/commons/comPage.html" encoding="utf-8"/>
-<script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		getListData();
-	}
-</script>
-<script type="text/javascript">
-	//观看离线视频
-	function watchofflineVideo(id, type) {
-		window.open(ctx + "/offLine/videoPlayback?id=" + id,"_blank");
-	}
+<!-- 		<#global ctx=rc.contextPath/> -->
+<#if lists??&&(lists?size>0)>
+						<#list lists as l>
+						  <#if l.onOff=='OFF'>
+									<li class="clear">
+								<div class="con_left_li">
+								<#if l.oType = 'P'> <div class="zdb bg1">离线评估 </div></#if>
+								<#if l.oType = 'B'> <div class="zdb bg2">课堂回放 </div></#if>
+								<#if l.oType = 'S'> <div class="zdb bg3">精品微课 </div></#if>
+								<#if l.oType = 'H'> <div class="zdb bg4">优质课程 </div></#if>
+								   <div class="ke_img">
+										<img class="zbimg" src="${fileWebPath}/videoRes/${l.oPicPath!''}"  onerror="this.src='${ctx}/img/lunbo4.png'"/>
+									</div>
+									</div>
+								<div class="jilujieshao">
+									<p class="jjj0"><span>${l.oTitle!''}</span></p>
+									<p class="jjj">
+										<span>
+														授课教师： <span style="color: orange;">${l.nickName!''}</span>
+										</span>
+										<span>
+													  	科目：<span style="color: orange;">${l.oSubjectName!''}</span>
+										</span>
+									</p>
+									<p class="jjj">
+										<span>
+														授课时长：<span>${l.oTimeLength!''}</span>
+										</span>
+										<span>
+														系列课程：<span>${l.oGradeName!''}</span>
+										</span>
+										<span>
+														浏览：<span>${l.oPageView!'0'}</span>
+										</span>
+										<span>
+														发布时间：<span>${l.oCreateTime!''}</span>
+										</span>
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini see">
+										<img alt="" src="${ctx}/img/eye2.png">
+										<a href="javascript:watchofflineVideo('${l.oId}','${l.oType}');">&nbsp;查&nbsp;&nbsp;&nbsp;&nbsp;看&nbsp;</a>
+									</span>
+								</div>
+							</li>
+							<#elseif l.onOff=='ON'>
+								<li class="clear">
+								
+								<div class="con_left_li">
+									<#if l.lType?? && l.lType=='G'>
+										 <div class="zdb bg5"> 专递课堂  </div>
+									<#else>
+										<div class="zdb" style="background-color: orange;"> 在线评估 </div>
+									</#if>
+									
+									<div class="ke_img">
+										
+										<#if l.lType?? && l.lType=='G'>
+											<img src="${ctx}/images/zhuandi270.png" />
+										<#else>
+											<img src="${ctx}/images/pinggu270.png" />
+										</#if>
+							       </div>
+							       </div>
+								<div class="jilujieshao">
+									<p class="jjj0"><span>${l.schoolName!''} -- ${l.lNickName!''} </span></p>
+									<p class="jjj">
+									   
+							
+										<span>
+													  	科目：<span style="color: orange;">${l.lSubjectName!''}</span>
+										</span>
+										<span>
+														年级： <span style="color: orange;">${l.lGradeName!''}</span>
+										</span>
+										<span>
+														教室： <span style="color: orange;">${l.className!''}</span>
+										</span>
+									</p>
+									<p class="jjj">
 
-	function enterPlay(id,addTime) {
-		window.open(ctx+"/pgResult/PgResult?id="+id+"&addTime="+addTime+"&isNotGoBack=Y","_blank");
+
+										<span>
+														直播时间：<span>${l.z_date!''} (${l.starttime!'00:00:00'}--${l.endtime!'00:00:00'})</span>
+										</span>
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini see">
+										<img alt="" src="${ctx}/img/eye2.png">
+										<a href="javascript:enterPlay('${l.lType}','${l.lId}');">查看</a> 
+									</span>
+									<span class="layui-btn layui-btn-mini du">
+										<img alt="" src="${ctx}/img/bj.png">
+										<a href="javascript:duke_on('${l.id}','${l.lType}');">课后督课</a> 
+									</span>
+				
+								</div>
+							</li>
+							</#if>
+					</#list>
+				</#if>
+<script type="text/javascript">
+	var skinColor = "#4596E5";
+	var skinName = "${skinName!''}";
+	switch (skinName) {
+		case "springtime":
+			skinColor = "#1cc8d2";
+			break;
+		case "summer":
+			skinColor = "#ee336e";
+			break;
+		case "autumn":
+			skinColor = "#ff9900";
+			break;
+		case "winter":
+			skinColor = "#1ca5d2";
+			break;
+		default:
+			skinColor = "#4596E5";
+			break;
+	}
+	layui.use([ 'laypage' ], function() {
+		laypage = layui.laypage;
+		laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : skinColor,groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					getListData();
+				}
+			}
+		});
+	});
+	
+	//观看离线视频
+	function watchofflineVideo(id,type){
+		window.open(ctx+"/offLine/videoPlayback?id="+id+"&type="+type,"_blank");
+	}
+	//离线
+	function duke_off(id,type){
+		parent.$(".zhong_right iframe").attr("src",ctx+"/personalCenter/geren_kehou");
+		setIframeH();
+		
+	}
+	//在线
+	function duke_on(id,type){
+		parent.$(".zhong_right iframe").attr("src",ctx+"/personalCenter/geren_kehou?id="+id);
+		setIframeH();
+		
+	}
+	
+	function enterPlay(type,id){
+		window.open(ctx+"/pgResult/PgResult?id="+id+"&isReturn=N","_blank");
 	}
 </script>

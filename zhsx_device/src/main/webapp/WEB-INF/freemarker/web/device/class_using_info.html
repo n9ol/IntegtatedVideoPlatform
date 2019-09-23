@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,7 +12,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="format-detection" content="telephone=no">
 		
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/global.css" media="all">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
 
 	</head>
@@ -27,8 +27,8 @@
 		<div class="mianbaoxue">
 			<span class="layui-breadcrumb">
   					<a href="../index.html">首页</a>
-  					<a><cite>班班通</cite></a>
   					<a><cite>设备管理</cite></a>
+  					<a><cite>设备信息</cite></a>
   					<a><cite>班级使用统计</cite></a>
 				</span>
 		</div>
@@ -38,7 +38,7 @@
 					<blockquote class="layui-elem-quote mylog-info-tit">
 
 						<form id="myform" class="layui-form col-lg-11 search-box03" action="" method="post">
-							<label class="layui-form-label">统计地区：</label>
+							<!-- <label class="layui-form-label">统计地区：</label> -->
 							<div class="pull-left">
 								<#if platformLevel?? && platformLevel != 'A'>
 								<#if platformLevel?? && platformLevel == 'N'>
@@ -116,7 +116,7 @@
 								</div>
 							</div>
 							
-							<label class="layui-form-label">统计日期：</label>
+							<!-- <label class="layui-form-label">统计日期：</label> -->
 	                        <div class="layui-input-inline pull-left">
 	                            <input class="layui-input" placeholder="开始日" name="startTime" id="LAY_demorange_s2" value="${startTimeAgu!''}" lay-verify="required">
 	                        </div>
@@ -124,8 +124,9 @@
 	                            <input class="layui-input" placeholder="截止日" name="endTime" id="LAY_demorange_e2" value="${endTimeAgu!''}" lay-verify="required">
 	                        </div>
 		                    <!-- <button class="layui-btn search-btn01 pull-left" type="submit" lay-filter="">搜索</button> -->
-		                    <input class="layui-btn search-btn01 pull-left" type="button" onclick="search()" value="搜索">
+		                    <input class="layui-btn search-btn01 pull-left" type="button" onclick="search(1)" value="搜索">
 		                    <button class="layui-btn layui-btn-primary search-btn01 pull-left" type="reset" lay-filter="">重置</button>
+		                    <input class="layui-btn search-btn01 pull-left" type="button" onclick="search(2)" value="导出数据">
 						</form>
 					</blockquote>
 					
@@ -185,7 +186,7 @@
 		                            </tbody>
 								</table>
 								<!-- 分页 -->
-								<div id="page"></div>
+								<div id="pagerss"></div>
 							</div>
 						</div>
 
@@ -197,30 +198,8 @@
 		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
 		<!--底部 end-->
 		<#include "/commons/comWebjs.html" encoding="utf-8"/>
-		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
-		<#include "/commons/comPage.html" encoding="utf-8"/>
-		<script type="text/javascript">
-			function turnPage(p) {
-				var province = $("#province").val();
-				var city = $("#city").val();
-				var area = $("#area").val();
-				var schoolid = $("#schoolid").val();
-				
-				var startTime = $("#LAY_demorange_s2").val();
-				var endTime = $("#LAY_demorange_e2").val(); 
-				
-				if(platformLevel=='N'){
-					location.href="${ctx}/webdevicemanage/classUsingCount?p="+p+"&province="+province+"&city="+city+"&area="+area+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
-	          	}else if(platformLevel=='P'){
-	          		location.href="${ctx}/webdevicemanage/classUsingCount?p="+p+"&city="+city+"&area="+area+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
-	          	}else if(platformLevel=='C'){
-	          		location.href="${ctx}/webdevicemanage/classUsingCount?p="+p+"&area="+area+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
-	          	}else if(platformLevel=='A'){
-	          		location.href="${ctx}/webdevicemanage/classUsingCount?p="+p+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
-	          	}
-			}
-		</script>
 		
+		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
 		
 		<script type="text/javascript">
 		var platformLevel = "${platformLevel}";
@@ -230,10 +209,11 @@
 		var $form;
 		layui.use(['jquery', 'form','laypage'], function() {
 		    $ = layui.jquery;
-		    form = layui.form;
+		    form = layui.form();
 		    $form = $('form');
 		    
 		  	//分页
+		    laypage = layui.laypage;
 		    
 		  	form.on('select(province)', function(data){
 		    	   $("#city").empty();
@@ -305,6 +285,31 @@
 			       	 return false;
 		  		}); 
 		    
+		        laypage({
+					cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : "molv",groups : 5,
+					jump : function(e, first) {
+						if (!first) {
+							var province = $("#province").val();
+							var city = $("#city").val();
+							var area = $("#area").val();
+							var schoolid = $("#schoolid").val();
+							
+							var startTime = $("#LAY_demorange_s2").val();
+							var endTime = $("#LAY_demorange_e2").val(); 
+							
+							if(platformLevel=='N'){
+								location.href="${ctx}/webdevicemanage/classUsingCount?p="+e.curr+"&province="+province+"&city="+city+"&area="+area+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
+				          	}else if(platformLevel=='P'){
+				          		location.href="${ctx}/webdevicemanage/classUsingCount?p="+e.curr+"&city="+city+"&area="+area+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
+				          	}else if(platformLevel=='C'){
+				          		location.href="${ctx}/webdevicemanage/classUsingCount?p="+e.curr+"&area="+area+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
+				          	}else if(platformLevel=='A'){
+				          		location.href="${ctx}/webdevicemanage/classUsingCount?p="+e.curr+"&schoolid="+schoolid+"&startTime="+startTime+"&endTime="+endTime;
+				          	}
+							 
+						}
+					}
+				}); 
 		    
 		    
 		    
@@ -409,7 +414,7 @@
 	        }
 	    });
 		
-		function search(){
+		function search(flag){
 			//验证
 			if(platformLevel=='N'){
 				var pe=$("#province").val();
@@ -446,14 +451,18 @@
 	            }
           	}
 			
-			
 			var sd=$("#schoolid").val();
 			if(sd == null || sd.length == 0 ){
             	alert('请选择学校');
 				return false;
             }
 			
-			$("#myform").attr("action","${ctx}/webdevicemanage/classUsingCount");
+			if(flag == 1){
+				$("#myform").attr("action","${ctx}/webdevicemanage/classUsingCount");
+			}else{
+				$("#myform").attr("action","${ctx}/webdevicemanage/exportClassCount");
+			}
+			
 			$("#myform").submit();  
 			
 		}

@@ -46,7 +46,7 @@ function getPgAverageDraw(){
 	   data: { pgId: pgId,onOff:onOff},
 	   dataType: "json",
 	   success: function(json){
-			if(json.xDataArray == "总分" || json.xDataArray == "课前总分,课中总分"){
+			if(json.xDataArray == "总分" ||json.xDataArray == "课前总分,课中总分"){
 				$(".xiangqingtu").empty();
 				return;
 			}

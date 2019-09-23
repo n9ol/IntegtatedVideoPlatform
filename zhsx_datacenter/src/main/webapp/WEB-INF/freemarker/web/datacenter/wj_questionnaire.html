@@ -5,7 +5,7 @@
 		<meta charset="UTF-8">
 		<title>调查问卷</title>
 				<#include "/commons/comWeb.html" encoding="utf-8"/>
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/sjzx_sjzx.css" />
 	
 	</head>
 
@@ -22,7 +22,7 @@
 				</div>
 			</div>
 			<div id="dc">
-				<iframe src="${ctx}/datacenter/wj_questionnaire?searchType=wenjuan" width="100%" height="100%" id="parentIframeSurvey"></iframe>
+				<iframe id="parentIframeSurvey" src="${ctx}/datacenter/wj_questionnaire?searchType=wenjuan" scrolling="no" width="100%" height="100%" ></iframe>
 			</div>
 		</div>
 	</body>
@@ -32,14 +32,13 @@
 	<script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/template.js"></script>
 	<!--单独的js-->
 	<script src="${ctx}/js/web/henan.js" type="text/javascript" charset="utf-8"></script>
-<!-- 	<script src="${ctx}/js/web/sjzx_sjzx.js" type="text/javascript" charset="utf-8"></script> -->
 	<script type="text/javascript">
 		setIframeH2();
 
 		function setIframeH2() {
 			var body = $(document.body);
 			var iframe = $(parent.document.getElementById('parentIframesjzx'));
-			iframe.height(body.height()+1300);
+			iframe.height(body.height());
 		}
 
 		/********************************调查问卷**********************************/
@@ -48,7 +47,7 @@
 			$(src1).addClass("bg1")
 			$(".shuoming_download").addClass("bg2");
 			$("#parentIframeSurvey").attr("src", "${ctx}/datacenter/wj_questionnaire?searchType=wenjuan");
-
+			setIframeH2();
 		}
 
 		function fenxixiazai(src) {
@@ -56,7 +55,7 @@
 			$(src).addClass("bg1")
 			$(".shuoming_wenjuan").addClass("bg2");
 			$("#parentIframeSurvey").attr("src", "${ctx}/datacenter/wj_questionnaire?searchType=survey")
-			
+			setIframeH2();
 		}
 	</script>
 

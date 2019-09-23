@@ -90,7 +90,7 @@
 									</td>
 		                            <td>
 		                            
-		                                <a class="check_look" title="删除" href="javascript:deleteById('${(l.id)!''}');">
+		                                <a class="btn btn-danger" title="删除" href="javascript:deleteById('${(l.id)!''}');">
 		                                    <i class="layui-icon">&#xe640;</i>&nbsp;删除
 		                                </a>
 		                            </td>
@@ -104,15 +104,7 @@
 		</div>
 	</div>
 </section>
-<#include "/commons/comPage.html" encoding="utf-8"/>
-<script type="text/javascript">
-	function turnPage(p) {
-		var type = $("#type").val();
-		var question = $("#question").val();
-		window.location.href = "${ctx}/questionnaire/findAllQues?p=" + p
-				+ "&qid=" + qid + "&type=" + type + "&question=" + question;
-	}
-</script>
+	<script type="text/javascript" src="${ctx}/common/layui/lay/modules/laypage.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	var tipsi;
@@ -135,7 +127,7 @@ $(document).ready(function(){
 	
 	layui.use(['jquery', 'form'], function() {
 		$ = layui.jquery;
-		form = layui.form;
+		form = layui.form();
 		$form = $('form');
 		
 		
@@ -151,6 +143,18 @@ $(document).ready(function(){
     
 	var keyWord = $("#keyWord").val();
 	
+	var laypage = layui.laypage;
+	laypage({
+		  cont: "page",pages: "${pages!'1'}",curr: "${pageNum!'1'}",skip: false,skin: "molv",groups: 5, 
+		  jump: function(e, first){ 
+		    if(!first){ 
+		    	 var type = $("#type").val();
+		    	 var question = $("#question").val();
+ 		    	window.location.href="${ctx}/questionnaire/findAllQues?p="+e.curr+"&qid="+qid+"&type="+type+"&question="+question;
+		 //   	window.location.href="${ctx}/questionnaire/findAllQues?qid="+qid;
+		    }
+		  }
+	});
 	
 	function add(){
 		var qid = $("#qid").val();

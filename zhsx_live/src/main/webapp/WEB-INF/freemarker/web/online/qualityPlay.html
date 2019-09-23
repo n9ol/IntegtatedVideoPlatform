@@ -5,10 +5,10 @@
 <title>综合视讯</title>
 <#include "/commons/comWeb.html" encoding="utf-8"/>
 <!--各页面单独引入的CSS文件-->
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/play.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/play.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
 <style type="text/css">
 .swiper-container {
@@ -25,14 +25,14 @@
 		<div class="mianbaoxue">
 			<span class="layui-breadcrumb">
 				<a href="${ctx}/index">首页</a>
-				<a href="${ctx}/online/zb_online?type=A">质量评估</a>
+				<a href="${ctx}/online/zb_online?type=A">在线评估</a>
 				<a>
 					<cite>课程播放</cite>
 				</a>
 			</span>
 			<span class="qualityPlayTime">
 				<img class="qualityPlayPng" alt="" src="${ctx}/img/time.png">
-				开始时间：${schedule.startTime?string('HH:mm:ss')} &nbsp; 结束时间：${schedule.endTime?string('HH:mm:ss')}
+				开始时间：${schedule.startDate!''} &nbsp; 结束时间：${schedule.endDate!''}
 			</span>
 		</div>
 		<!--视频窗口-->
@@ -56,10 +56,11 @@
 					<div class="shouke clear">
 						<img src="${fileWebPath}/userheadPortrait/${schedule.userPic!''}" onerror="this.src='${ctx}/img/user80.jpg'" />
 						<div class="shouke_right">
-							<p class="ellipsesDiv" style="color: orange; font-size: 15px; line-height: 28px;">${schedule.teacherName!''}</p>
-							<p class="ellipsesDiv" style="color: gainsboro; font-size: 15px; line-height: 28px;">${schedule.classroomName!''}</p>
-							<p class="ellipsesDiv" style="color: gainsboro; line-height: 28px;">${schedule.specialtyName!''}	${schedule.subjectName!''}</p>
+							<p class="ellipsesDiv" style="color: orange; font-size: 15px; line-height: 28px;">${schedule.userName!''}</p>
+							<p class="ellipsesDiv" style="color: gainsboro; font-size: 15px; line-height: 28px;">${schedule.schoolName!''}</p>
+							<p class="ellipsesDiv" style="color: gainsboro; line-height: 28px;">${schedule.gradeId!''}&nbsp;&nbsp;${schedule.subjectId!''}</p>
 						</div>
+
 					</div>
 					<div style="background: url(${ctx}/img/fengexian.png) no-repeat; height: 5px;" class="clear"></div>
 					<div class="kecheng">
@@ -67,7 +68,7 @@
 							<input type="hidden" id="RCListsLength" value="${RCLists?size!'0'}">
 							<div class="swiper-wrapper">
 								<#if RCLists?? && (RCLists?size>0)><#list RCLists as l>
-								<div class="swiper-slide" onclick="enterPlay('${l.type}','${l.id}','${l.isGoClass!''}')">
+								<div class="swiper-slide" onclick="enterPlay('${l.type}','${l.id}','${l.isGoClass}')">
 									<#if l.type?? && l.type=='G'>
 									<img src="${ctx}/images/zhuandi100.png" />
 									<#else>
@@ -75,20 +76,14 @@
 									</#if>
 									<div class="kecheng_right clear">
 										<p>
-											<span class="ellipsesSpan" style="width: 60px; float: left; color: orange;" title="${l.teacherName!''}">${l.teacherName!''}</span>
-											<span class="ellipsesSpan" style="width: 100px; float: left; margin-top: 2px;" title="${l.classroomName!''}">${l.classroomName!''}</span>
+											<span class="ellipsesSpan" style="width: 60px; float: left; color: orange;" title="${l.userName!''}">${l.userName!''}</span>
+											<span class="ellipsesSpan" style="width: 100px; float: left;" title="${l.schoolName!''}">${l.schoolName!''}</span>
 										</p>
 										<p>
-											<span class="school12 ellipsesSpan" title="${l.specialtyName!''}  ${l.subjectName!''}">
-												${l.specialtyName!''} ${l.subjectName!''} 
-											</span>
+											<span class="school12 ellipsesSpan" title="${l.gradeId!''}  ${l.subjectId!''}">${l.gradeId!''}&nbsp;&nbsp;${l.subjectId!''}</span>
 										</p>
 										<p>
-											<span class="timeB">
-												<#if l.isGoClass?? && l.isGoClass == 1> <span style="color: green;">正在直播 </span></#if>
-												<#if l.isGoClass?? && l.isGoClass == 2> <span style="color: red;">即将直播</span></#if>
-											</span>
-											<span class="timeB">${l.startTime?string('HH:mm')} - ${l.endTime?string('HH:mm')} </span>
+											<span class="timeB">${l.z_date?string('yyyy-MM-dd')} ${l.startDate!''}-${l.endDate!''} </span>
 										</p>
 									</div>
 								</div>
@@ -102,15 +97,15 @@
 		<div class="jilu">
 			<div class="jilu_top">
 				<div class="layui-tab layui-tab-card iii">
-					<ul class="layui-tab-title uuu" style="background-color: #4596E5;">
+					<ul class="layui-tab-title uuu zbBg">
 						<#if principal?? && principal.userType != 'S' && isPgAuthority == 'Y'>
-						<li>课前备课</li>
-						<li class="layui-this kkk">课中评课</li>
-						<li>查看结果</li>
+							<li>课前备课</li>
+							<li class="layui-this kkk">课中评课</li>
+							<li>查看结果</li>
 						</#if>
 						<li>点评信息</li>
 						<#if duke?? && duke == 'D'>
-						<li>课后督课</li>
+							<li>课后督课</li>
 						</#if>
 					</ul>
 				</div>
@@ -159,7 +154,7 @@
 	attributes.id = "RFLVideo";
 	attributes.name = "RFLVideo";
 	attributes.align = "middle";
-	swfobject.embedSWF("${ctx}/Inc/RFLVideo${svc}.swf", "flashContent", "100%",
+	swfobject.embedSWF("${ctx}/Inc/RFLVideo.swf", "flashContent", "100%",
 			"100%", swfVersionStr, xiSwfUrlStr, flashvars, params, attributes);
 	// JavaScript enabled so display the flashContent div in case it is not replaced with a swf object.
 	swfobject.createCSS("#flashContent", "display:block;text-align:left;");
@@ -173,13 +168,6 @@
 				return false;
 			}
 		});
-
-		$("#video_shipin_left").hover(function() {
-			$(this).find('.fullScreen').css("display", "block");
-		}, function() {
-			$(this).find('.fullScreen').css("display", "none");
-		})
-
 	});
 </script>
 </html>

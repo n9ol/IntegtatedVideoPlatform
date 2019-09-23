@@ -6,7 +6,7 @@
 				<th><input type="checkbox" id="selected-all-operation"></th>
 				<th>NO</th>
 				<th>类型</th>
-				<th>专业</th>
+				<th>年级</th>
 				<th>科目</th>
 				<th>考题标题</th>
 				<th>状态</th>
@@ -24,12 +24,10 @@
 						<#elseif l.questionType==2> 多选
 					</#if>
 				</td>
-				
-				  
 				<td>${l.gradeName!''}</td>
 				<td>${l.subjectName!''}</td>
 				<td>
-					<a href="javascript:;" style="color: blue;" onclick="findTi('${l.id!''}')">${l.questionText!''}</a>
+					<a class="fontColor" href="javascript:;"  onclick="findTi('${l.id!''}')">${l.questionText!''}</a>
 				</td>
 				<td>
 				   <#if l.isDrop?? && l.isDrop == 1 > <span style="color:#F7B824"> 已发布 </span>   <#else> 草稿  </#if>
@@ -43,17 +41,42 @@
 		</tbody>
 	</table>
 </form>
-<a href="javascript:;" class="layui-btn layui-btn-small" style="background-color: #4596E5;" onclick="batchDel();">
+<a href="javascript:;" class="layui-btn layui-btn-small btnColor" onclick="batchDel();">
 <i class="iconfont icon-shanchu1"></i>删除</a>
-<div id="page" style="text-align: center;"></div>
-<#include "/commons/comPage.html" encoding="utf-8"/>
+<div id="kaoping2" style="text-align: center;"></div>
 <script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		getdata();
-	}
-</script>
-<script type="text/javascript">
+var skinColor = "#4596E5";
+var skinName = "${skinName!''}";
+switch (skinName) {
+	case "springtime":
+		skinColor = "#1cc8d2";
+		break;
+	case "summer":
+		skinColor = "#ee336e";
+		break;
+	case "autumn":
+		skinColor = "#ff9900";
+		break;
+	case "winter":
+		skinColor = "#1ca5d2";
+		break;
+	default:
+		skinColor = "#4596E5";
+		break;
+}
+
+layui.use('laypage' , function() {
+	laypage = layui.laypage;
+	laypage({cont : "kaoping2",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : skinColor,groups : 10,
+		jump : function(e, first) {
+			if (!first) {
+				$("input[name='p']").val(e.curr);
+				getdata();
+			}
+		}
+	});
+});
+
 //全选
 $("#selected-all-operation").click(function() {
 	if (this.checked) {

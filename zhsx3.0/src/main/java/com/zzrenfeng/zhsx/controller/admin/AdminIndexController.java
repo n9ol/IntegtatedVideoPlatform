@@ -14,9 +14,7 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zzrenfeng.zhsx.base.ExceptionMessage;
 import com.zzrenfeng.zhsx.controller.base.BaseController;
@@ -38,7 +36,6 @@ import com.zzrenfeng.zhsx.util.ValidationUtils;
  * @author 田杰熠
  *
  */
-@Validated
 @Controller
 public class AdminIndexController extends BaseController {
 
@@ -69,18 +66,7 @@ public class AdminIndexController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/adminIndex")
-	public String adminIndex() {
-		return "/admin/login/index";
-	}
-
-	/**
-	 * 获取对象权限菜单 - _zhsx数据库
-	 * 
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("/listSysPermissionsMenu")
-	public String listSysPermissionsMenu(Model model, @RequestParam String menuType) {
+	public String adminIndex(Model model) {
 		List<String> roleIds = sysUserRoleService.findroleIdsByUserId(getUserId());
 		if (roleIds != null && roleIds.size() > 0) {
 			List<String> permissionIds = sysRolePermissionService.findPermissionIdSByRoleIds(roleIds);
@@ -89,9 +75,7 @@ public class AdminIndexController extends BaseController {
 
 				List<SysPermission> firstSysPermissions = new ArrayList<>();
 				for (SysPermission sysPermission : sysPermissions) {
-					boolean isBase = "menu".equals(sysPermission.getResourceType())
-							&& "0".equals(sysPermission.getParentId()) && menuType.equals(sysPermission.getUrl());
-					if (isBase) {
+					if (sysPermission.getParentId().equals("0") && sysPermission.getResourceType().equals("menu")) {
 						firstSysPermissions.add(sysPermission);
 					}
 				}
@@ -99,9 +83,7 @@ public class AdminIndexController extends BaseController {
 				model.addAttribute("sysPermissions", sysPermissions);
 			}
 		}
-
-		model.addAttribute("menuType", menuType);
-		return "/admin/t/adminLeft";
+		return "/admin/login/index";
 	}
 
 	/**

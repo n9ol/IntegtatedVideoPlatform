@@ -17,10 +17,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class LoSchedule {
 
 	/**
-	 * 评估模式 (G 公开模式，S 私有模式 )
+	 * 评估模式 (G 公开模式，S 私有模式 , N 禁止评估)
 	 */
 	public final static String PG_BAK2_S = "S";
 	public final static String PG_BAK2_G = "G";
+	public final static String PG_BAK2_N = "N";
 
 	/**
 	 * 主键

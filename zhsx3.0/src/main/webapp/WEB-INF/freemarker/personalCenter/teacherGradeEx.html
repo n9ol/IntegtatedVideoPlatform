@@ -25,7 +25,7 @@
 	<div><span class="task">成长任务</span></div>
 	<div>
 		<#if principal?? && (principal.filePath)?? >
-			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span><img src="${ctx}/skin/${skinName}/img/orangeYes.png"/></span>
 			<span>上传头像，奖励 20 经验值</span>
 		<#else>
 			<span><img src="${ctx}/img/yes.png"/></span>
@@ -39,7 +39,7 @@
 			<span>完成基本资料，奖励 60 经验值</span>
 			<span class="over" onclick="perfectInfo()">完善资料</span>
 		<#else>
-			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span><img src="${ctx}/skin/${skinName}/img/orangeYes.png"/></span>
 			<span>完成基本资料，奖励 60 经验值</span>
 		</#if>
 	</div>
@@ -59,7 +59,7 @@
 			<span>发布一个课件, 奖励 10  经验 (每天上限 100 经验)</span>
 			<span class="over" onclick="issueCourRes()">去完成</span>
 		<#else>
-			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span><img src="${ctx}/skin/${skinName}/img/orangeYes.png"/></span>
 			<span>发布一个课件, 奖励 10  经验 (每天上限 100 经验)</span>
 		</#if>
 	</div>
@@ -69,7 +69,7 @@
 			<span>发布一套试卷, 奖励 20 经验 (每天上限 100 经验)</span>
 			<span class="over" onclick="issueTestPaper()">去完成</span>
 		<#else>
-			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span><img src="${ctx}/skin/${skinName}/img/orangeYes.png"/></span>
 			<span>发布一套试卷, 奖励 20 经验 (每天上限 100 经验)</span>
 		</#if>
 	</div>
@@ -79,7 +79,7 @@
 	<div class="clear">
 		<#if syshList?? && (syshList?size>0)><#list syshList as l>
 			<#if l.bak1??>
-			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span><img src="${ctx}/skin/${skinName}/img/orangeYes.png"/></span>
 			<span>${l.bak1!''}</span><br>
 			</#if>
 		</#list></#if>

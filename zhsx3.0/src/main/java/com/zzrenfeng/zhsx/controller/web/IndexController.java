@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.github.pagehelper.Page;
 import com.zzrenfeng.zhsx.controller.base.BaseController;
 import com.zzrenfeng.zhsx.model.CourResource;
+import com.zzrenfeng.zhsx.model.LoSchedule;
 import com.zzrenfeng.zhsx.model.OffLineVideoResources;
 import com.zzrenfeng.zhsx.model.User;
 import com.zzrenfeng.zhsx.model.WebNews;
 import com.zzrenfeng.zhsx.model.WebQuestion;
-import com.zzrenfeng.zhsx.model.eclassbrand.course.CourseSchedule;
 import com.zzrenfeng.zhsx.service.CourResourceService;
 import com.zzrenfeng.zhsx.service.LoScheduleService;
 import com.zzrenfeng.zhsx.service.OffLineVideoResourcesService;
@@ -30,10 +30,6 @@ import com.zzrenfeng.zhsx.service.TeacherService;
 import com.zzrenfeng.zhsx.service.UserService;
 import com.zzrenfeng.zhsx.service.WebNewsService;
 import com.zzrenfeng.zhsx.service.WebQuestionService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleTimeService;
-import com.zzrenfeng.zhsx.service.usersynchronization.UserSynchronizationService;
-import com.zzrenfeng.zhsx.util.DateUtil;
 import com.zzrenfeng.zhsx.util.MailUtil;
 import com.zzrenfeng.zhsx.util.MessageUtils;
 import com.zzrenfeng.zhsx.util.WriterUtils;
@@ -58,12 +54,6 @@ public class IndexController extends BaseController {
 	private TeacherService teacherService;
 	@Resource
 	private UserService userService;
-	@Resource
-	private CourseScheduleService courseScheduleService;
-	@Resource
-	private CourseScheduleTimeService courseScheduleTimeService;
-	@Resource
-	private UserSynchronizationService userSynchronizationService;
 
 	/**
 	 * 进入前台首页
@@ -75,9 +65,21 @@ public class IndexController extends BaseController {
 	 */
 	@RequestMapping({ "/", "/index" })
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
-		// 直播模块数据
-		List<CourseSchedule> listRecommendVideos = courseScheduleService.listRecommendVideos(new CourseSchedule(), 4);
-		model.addAttribute("onlineLists", listRecommendVideos);
+		// 在线评估
+		LoSchedule loSchedule = new LoSchedule();
+		loSchedule.setType(null);
+		// 如果bak2不等于N,_sql查 s.bak2 != 'N'
+		loSchedule.setBak2(LoSchedule.PG_BAK2_G);
+		Page<LoSchedule> pageInfo = loScheduleService.findPage(loSchedule, 1, 4);
+		List<LoSchedule> lists = pageInfo.getResult();
+		model.addAttribute("onlineLists", lists);
+
+		// 专递课堂
+		loSchedule.setType("G");
+		loSchedule.setBak2(null);
+		Page<LoSchedule> pageInfoG = loScheduleService.findPage(loSchedule, 1, 4);
+		List<LoSchedule> listsG = pageInfoG.getResult();
+		model.addAttribute("onlineListsG", listsG);
 
 		// 点播模块数据
 		OffLineVideoResources videoResources = new OffLineVideoResources();
@@ -85,6 +87,7 @@ public class IndexController extends BaseController {
 		videoResources.setTranscodingState("O");
 		videoResources.setIsShow("Y");
 		videoResources.setSortord("view");
+		videoResources.setType(OffLineVideoResources.TYPE_P);
 		Page<OffLineVideoResources> pageInfo1 = videoResourcesService.findPageSelective(videoResources, 1, 4);
 		List<OffLineVideoResources> lists1 = pageInfo1.getResult();
 		model.addAttribute("olVideoLists", lists1);
@@ -114,14 +117,18 @@ public class IndexController extends BaseController {
 		Page<Map<String, Object>> teachers = teacherService.findHotTheacher(1, 10);
 		List<Map<String, Object>> t = teachers.getResult();
 		for (Map<String, Object> map : t) {
-
 			int a = Integer.parseInt(map.get("EXP").toString());
-
 			double x = map.get("EXP") == null ? 0.0d : a;
 			map.put("EXP", getGrade(x) + "");
 		}
 		model.addAttribute("teachers", t);
-		return "/zhsx/index";
+
+		String skinNameUrl = "default";
+		String skinName = skinName();
+		if (!"default".equals(skinName)) {
+			skinNameUrl = "springtime";
+		}
+		return "/zhsx/" + skinNameUrl + "/index";
 	}
 
 	/**
@@ -210,7 +217,7 @@ public class IndexController extends BaseController {
 		request.getSession().setAttribute(VAR_EMAIL, userEmail);
 		request.getSession().setAttribute(VAR_EMAIL_CODE, value);
 		try {
-			MailUtil.send_mail(userEmail, userCode, value, "教育综合视讯管理平台-重置密码");
+			MailUtil.send_mail(userEmail, userCode, value, "淇县教育综合视讯管理平台-重置密码");
 			WriterUtils.toHtml(response, MessageUtils.SENDSUCCESS);
 		} catch (Exception e) {
 			WriterUtils.toHtml(response, MessageUtils.SENDFAILURE);
@@ -254,8 +261,7 @@ public class IndexController extends BaseController {
 	 */
 	@RequestMapping("/resetPassword")
 	public String resetPassword(String userCode, String newPasseord) {
-		// userService.recomposeUserPassword(userCode, newPasseord);
-		userSynchronizationService.updatePasswordSynchronization(userCode, newPasseord);
+		userService.recomposeUserPassword(userCode, newPasseord);
 		return "/zhsx/forgetPwd4";
 	}
 

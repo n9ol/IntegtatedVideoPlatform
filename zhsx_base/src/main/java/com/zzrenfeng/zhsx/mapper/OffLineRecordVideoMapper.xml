@@ -143,11 +143,6 @@
 		<include refid="Dynamic_Conditions"/>
 	</select>
 
-	<select id="getListByCidStime" parameterType="OffLineRecordVideo"	resultMap="BaseResultMap">
-		select 
-		<include refid="Base_Column_List" />
-		from offLine_record_video
-		where classroomId=#{classroomid} and (create_date between #{createDateStr1} and #{createDateStr2})
-	</select>
+
 
 </mapper>

@@ -4,14 +4,12 @@
  
 	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebClassDevice" >
 		<result column="id" property="id" />
-		<result column="classid" property="classid" />
-		<result column="classname" property="classname" />
-		<result column="device_id" property="device_id" />
-		<result column="device_code" property="device_code" />
+		<result column="class_id" property="classId" />
+		<result column="device_id" property="deviceId" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,classid,classname,device_id,device_code
+		id,class_id,device_id
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -25,36 +23,31 @@
 		delete from web_class_device
 		where id = #{id}
 	</delete>
-	
+	<!-- 添加的方法 -->
 	<delete id="deleteBySelective" parameterType="WebClassDevice" >
 		delete from web_class_device
 		<include refid="Dynamic_Conditions"/>
 	</delete>
 
+
 	<insert id="insert" parameterType="WebClassDevice" >
 		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
-		insert into web_class_device (id,classid,classname,device_id,device_code)
-		values (#{id},#{classid},#{classname},#{device_id},#{device_code})
+		insert into web_class_device (id,class_id,device_id)
+		values (#{id},#{classId},#{deviceId})
 	</insert>
 
 
 	<update id="updateByPrimaryKeySelective" parameterType="WebClassDevice" >
 		update web_class_device
 		<set >
-			<if test="id != null" >
+			<!-- <if test="id != null" >
 				id = #{id},
+			</if> -->
+			<if test="classId != null" >
+				class_id = #{classId},
 			</if>
-			<if test="classid != null" >
-				classid = #{classid},
-			</if>
-			<if test="classname != null" >
-				classname = #{classname},
-			</if>
-			<if test="device_id != null" >
-				device_id = #{device_id},
-			</if>
-			<if test="device_code != null" >
-				device_code = #{device_code}
+			<if test="deviceId != null" >
+				device_id = #{deviceId}
 			</if>
 		</set>
 		where id = #{id}
@@ -64,11 +57,9 @@
 	<update id="updateByPrimaryKey" parameterType="WebClassDevice" >
 		update web_class_device
 		set 
-		id = #{id},
-		classid = #{classid},
-		classname = #{classname},
-		device_id = #{device_id},
-		device_code = #{device_code}
+		<!-- id = #{id}, -->
+		class_id = #{classId},
+		device_id = #{deviceId}
 		where id = #{id}
 	</update>
 	
@@ -78,17 +69,11 @@
 			<if test="id != null" >
 				and id = #{id}
 			</if>
-			<if test="classid != null" >
-				and classid = #{classid}
+			<if test="classId != null" >
+				and class_id = #{classId}
 			</if>
-			<if test="classname != null" >
-				and classname = #{classname}
-			</if>
-			<if test="device_id != null" >
-				and device_id = #{device_id}
-			</if>
-			<if test="device_code != null" >
-				and device_code = #{device_code}
+			<if test="deviceId != null" >
+				and device_id = #{deviceId}
 			</if>
 		</where>
 	</sql>
@@ -108,5 +93,7 @@
 		from web_class_device
 		<include refid="Dynamic_Conditions"/>
 	</select>
+
+
 
 </mapper>

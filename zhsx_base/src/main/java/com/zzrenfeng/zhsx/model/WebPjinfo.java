@@ -62,7 +62,7 @@ public class WebPjinfo {
 	 */
 	private java.lang.String bak1;
 	/**
-	 * webPjId (web_pj 表的主键id)
+	 * 备用
 	 */
 	private java.lang.String bak2;
 	// columns END 数据库字段结束
@@ -78,7 +78,15 @@ public class WebPjinfo {
 	 * 评估人ids
 	 */
 	private List<String> userIds;
-	private List<String> webPjIds;
+
+	// concstructor
+
+	public WebPjinfo() {
+	}
+
+	public WebPjinfo(java.lang.String id) {
+		this.id = id;
+	}
 
 	// get and set
 	public void setId(java.lang.String value) {
@@ -86,14 +94,6 @@ public class WebPjinfo {
 			value = value.trim();
 		}
 		this.id = value;
-	}
-
-	public List<String> getWebPjIds() {
-		return webPjIds;
-	}
-
-	public void setWebPjIds(List<String> webPjIds) {
-		this.webPjIds = webPjIds;
 	}
 
 	public List<String> getUserIds() {
@@ -256,22 +256,4 @@ public class WebPjinfo {
 		WebPjinfo other = (WebPjinfo) obj;
 		return new EqualsBuilder().append(getId(), other.getId()).isEquals();
 	}
-
-	public WebPjinfo() {
-	}
-
-	public WebPjinfo(String bak2) {
-		super();
-		this.bak2 = bak2;
-	}
-
-	public WebPjinfo(String userId, String pgId, String onOff, String bak1, String bak2) {
-		super();
-		this.userId = userId;
-		this.pgId = pgId;
-		this.onOff = onOff;
-		this.bak1 = bak1;
-		this.bak2 = bak2;
-	}
-
 }

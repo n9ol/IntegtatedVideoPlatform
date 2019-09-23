@@ -38,7 +38,6 @@ public class TestWebOffLineController extends BaseController {
 
 	@Resource
 	private TestWebOffLineService testWebOffLineService;
-
 	@Resource
 	private UserService userService;
 	@Resource
@@ -131,11 +130,6 @@ public class TestWebOffLineController extends BaseController {
 			}
 		}
 		int pages = pageInfo.getPages();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
@@ -200,12 +194,6 @@ public class TestWebOffLineController extends BaseController {
 				lists.get(i).setPercentage(x + "%");
 			}
 		}
-
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
@@ -214,6 +202,7 @@ public class TestWebOffLineController extends BaseController {
 		model.addAttribute("gradeId", gradeId);
 		model.addAttribute("subjectId", subjectId);
 		model.addAttribute("search", search);
+
 		return "/testManager/geren_offLine";
 	}
 

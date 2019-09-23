@@ -2,10 +2,10 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 	</head>
 	<body>
 		<!--头部start-->
@@ -41,13 +41,13 @@
 						<#if principal.userType != 'S'>
 						    <li data_url="${ctx}/personalCenter/geren_kechengbiao">我的课程表</li>
 						    <li id="iVideoRes" data_url="${ctx}/adminOffLine/videoRes">我的点播资源</li>
-						   	<#if isAutomaticRecording?? && isAutomaticRecording == 'Y'>
-						    	<li id="recordVideo" data_url="${ctx}/adminOffLine/recordVideoRes">本校评估录制资源</li>
+						    <#if isAutomaticRecording?? && isAutomaticRecording == 'Y'>
+						    <li id="recordVideo" data_url="${ctx}/adminOffLine/recordVideoRes">本校评估录制资源</li>
 						    </#if>
 						    <li id="iCourRes" data_url="${ctx}/adminCourRes/courRes">我的课件资源</li>
 							<li class="myPingGu">我的评估</li>
 							<div class="pingGu" style="display: none;">
-								<!-- <div  data_url="${ctx}/personalCenter/myPgLoSchedule" >· 评估通知</div> -->
+								<div  data_url="${ctx}/personalCenter/myPgLoSchedule" >· 评估通知</div>
 								<div  data_url="${ctx}/personalCenter/geren_pingkejilu">· 评估记录</div>
 							</div>
 						</#if> 
@@ -63,7 +63,7 @@
 							</#if>
 						</div>
 						<li id="iKaopingCenter" class="kaopingCenter">考评中心</li>
-						<div class="kaoping" style="display: none;">
+						<div class="kaoping" style="display: none;">  
 						<#if principal.userType != "S">
 							<div data_url="${ctx}/testwebstutest/list">·我的学员考卷管理</div>
 							<div data_url="${ctx}/test/paperlist?memberId=${principal.id!''}">· 我的试卷库</div>
@@ -74,6 +74,8 @@
 							<div  data_url="${ctx}/testwebstutestquestionanswer/findMyErrors" >· 我的错题库</div>
 							<div  data_url="${ctx}/testwebstutest/histogram">· 考评分析</div>
 						</#if>
+						
+						
 						</div>
 						<li id="modifyPassword" data_url="${ctx}/personalCenterUser/modifyPassword">修改密码</li>
 					</ul>

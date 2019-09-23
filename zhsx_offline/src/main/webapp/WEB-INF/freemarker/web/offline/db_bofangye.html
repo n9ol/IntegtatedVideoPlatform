@@ -2,13 +2,13 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_kezhong.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_dianping.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_chakan.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/db_bofangye.css" />
 	</head>
@@ -22,14 +22,13 @@
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
   					<a href="${ctx}/index">首页</a>
-  					<a href="${ctx}/offLine/dianbo">点播</a>
   					 <#if type??>
   					 	<a href="${ctx}/offLine/dianbo?type=${type!''}">
 	  						<#if type == "P">离线评估 </#if>
 	  						<#if type == "B">课堂回放</#if>
 	  						<#if type == "S">精品微课</#if>
 	  						<#if type == "H">优质课程</#if>
-  						</a>
+	  					</a>
   					</#if>
   					<a><cite>课程播放</cite></a>
 				</span>
@@ -96,13 +95,13 @@
 			<div class="jilu">
 				<div class="jilu_top">
 					<div class="layui-tab layui-tab-card iii">
-						<ul class="ddd clear" style="background-color: #4596E5;">
+						<ul class="ddd clear newsTop">
 							<#if type?? && type == "P" && principal.userType != 'S'>
-								<li class="kkk" style="color: black;">离线评估</li>
-								<li>查看结果</li>
-								<li>点评信息</li>
+								<li class="kkk pitchOn">离线评估</li>
+								<li class="kkk">查看结果</li>
+								<li class="kkk">点评信息</li>
 							<#else>
-								<li class="kkk" style="color: black;">点评信息</li>
+								<li class="kkk pitchOn">点评信息</li>
 							</#if>
 						</ul>
 					</div>

@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TouchPadMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TouchPad" >
+		<result column="id" property="id" />
+		<result column="class_code" property="class_code" />
+		<result column="time_code" property="time_code" />
+		<result column="hand_written_board_code" property="hand_written_board_code" />
+		<result column="data" property="data" />
+		<result column="create_by" property="create_by" />
+		<result column="create_date" property="create_date" />
+		<result column="update_by" property="update_by" />
+		<result column="update_date" property="update_date" />
+		<result column="remarks" property="remarks" />
+		<result column="del_flag" property="del_flag" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+		<result column="bak4" property="bak4" />
+		<result column="bak5" property="bak5" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,class_code,time_code,hand_written_board_code,data,create_by,create_date,update_by,update_date,remarks,del_flag,bak1,bak2,bak3,bak4,bak5
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from touch_pad
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from touch_pad
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TouchPad" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into touch_pad (id,class_code,time_code,hand_written_board_code,data,create_by,create_date,update_by,update_date,remarks,del_flag,bak1,bak2,bak3,bak4,bak5)
+		values (#{id},#{class_code},#{time_code},#{hand_written_board_code},#{data},#{create_by},#{create_date},#{update_by},#{update_date},#{remarks},#{del_flag},#{bak1},#{bak2},#{bak3},#{bak4},#{bak5})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TouchPad" >
+		update touch_pad
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="class_code != null" >
+				class_code = #{class_code},
+			</if>
+			<if test="time_code != null" >
+				time_code = #{time_code},
+			</if>
+			<if test="hand_written_board_code != null" >
+				hand_written_board_code = #{hand_written_board_code},
+			</if>
+			<if test="data != null" >
+				data = #{data},
+			</if>
+			<if test="create_by != null" >
+				create_by = #{create_by},
+			</if>
+			<if test="create_date != null" >
+				create_date = #{create_date},
+			</if>
+			<if test="update_by != null" >
+				update_by = #{update_by},
+			</if>
+			<if test="update_date != null" >
+				update_date = #{update_date},
+			</if>
+			<if test="remarks != null" >
+				remarks = #{remarks},
+			</if>
+			<if test="del_flag != null" >
+				del_flag = #{del_flag},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3},
+			</if>
+			<if test="bak4 != null" >
+				bak4 = #{bak4},
+			</if>
+			<if test="bak5 != null" >
+				bak5 = #{bak5}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TouchPad" >
+		update touch_pad
+		set 
+		id = #{id},
+		class_code = #{class_code},
+		time_code = #{time_code},
+		hand_written_board_code = #{hand_written_board_code},
+		data = #{data},
+		create_by = #{create_by},
+		create_date = #{create_date},
+		update_by = #{update_by},
+		update_date = #{update_date},
+		remarks = #{remarks},
+		del_flag = #{del_flag},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3},
+		bak4 = #{bak4},
+		bak5 = #{bak5}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="class_code != null" >
+				and class_code = #{class_code}
+			</if>
+			<if test="time_code != null" >
+				and time_code = #{time_code}
+			</if>
+			<if test="hand_written_board_code != null" >
+				and hand_written_board_code = #{hand_written_board_code}
+			</if>
+			<if test="data != null" >
+				and data = #{data}
+			</if>
+			<if test="create_by != null" >
+				and create_by = #{create_by}
+			</if>
+			<if test="create_date != null" >
+				and create_date = #{create_date}
+			</if>
+			<if test="update_by != null" >
+				and update_by = #{update_by}
+			</if>
+			<if test="update_date != null" >
+				and update_date = #{update_date}
+			</if>
+			<if test="remarks != null" >
+				and remarks = #{remarks}
+			</if>
+			<if test="del_flag != null" >
+				and del_flag = #{del_flag}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+			<if test="bak4 != null" >
+				and bak4 = #{bak4}
+			</if>
+			<if test="bak5 != null" >
+				and bak5 = #{bak5}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TouchPad" resultType="TouchPad">
+		select 
+		<include refid="Base_Column_List" />
+		from touch_pad
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TouchPad" resultType="TouchPad">
+		select 
+		<include refid="Base_Column_List" />
+		from touch_pad
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<select id="findHandWrittenBoardCodeByClassCode" parameterType="TouchPad" resultType="java.lang.String">
+		select 
+			hand_written_board_code
+		from touch_pad
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<delete id="delBatch" parameterType="java.util.Map">
+		delete from touch_pad
+		where class_code in
+		<foreach collection="classCodes" open="(" close=")" separator="," item="classCode" > 
+			#{classCode}
+		</foreach>
+	</delete>
+	
+
+
+</mapper>

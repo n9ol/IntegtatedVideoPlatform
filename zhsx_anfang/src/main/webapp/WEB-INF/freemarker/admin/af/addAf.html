@@ -41,22 +41,18 @@
 				<div class="larry-personal-body clearfix">
 					<form id="form" class="layui-form">
 						<div class="row">
-							<#if schoolLevel?? && schoolLevel == 'Y'>
-								<input type="hidden" id="schoolid" name="schoolid" value="${schoolId!''}">
-							<#else>
-								<div class="layui-form-item">
-			                      <label class="layui-form-label" id="jj">选择学校：</label>
-			                      <div class="layui-input-block">
-			                          <select name="schoolid"  id="schoolid" lay-search>
-			                              <option value="">请选择学校</option>
-										  <#if schools?? && (schools?size>0)><#list schools as l>
-										　　	<option value="${l.id!''}">${l.schoolName!''}</option>
-										　　</#list></#if>
-			                          </select>
-			                      </div>
-			                      <span id="schoolId_msg" class="msg" style="color:red;">*</span>
-				                </div>
-			                </#if>
+							<div class="layui-form-item">
+		                      <label class="layui-form-label" id="jj">选择学校：</label>
+		                      <div class="layui-input-block">
+		                          <select name="schoolid"  id="schoolid" lay-search>
+		                              <option value="">请选择学校</option>
+									  <#if schools?? && (schools?size>0)><#list schools as l>
+									　　	<option value="${l.id!''}">${l.schoolName!''}</option>
+									　　</#list></#if>
+		                          </select>
+		                      </div>
+		                      <span id="schoolId_msg" class="msg" style="color:red;">*</span>
+			                </div>
 			                <div class="layui-form-item">
 								<label class="layui-form-label" id="jj">区域名称：</label>
 								<div class="layui-input-block">
@@ -107,7 +103,7 @@
 		var layer;
 		layui.use([ 'layer','form'], function() {
 			layer = layui.layer;
-			var form = layui.form;
+			var form = layui.form();
 		});
 	   
 	   

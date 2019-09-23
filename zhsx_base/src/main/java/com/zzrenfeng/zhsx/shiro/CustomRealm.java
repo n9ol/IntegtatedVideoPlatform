@@ -47,7 +47,6 @@ public class CustomRealm extends AuthorizingRealm {
 		}
 
 		ShiroUser shiroUser = new ShiroUser();
-		shiroUser.setPassword(user.getPassword());
 		shiroUser.setId(user.getId());
 		shiroUser.setUserCode(user.getUserCode());
 		shiroUser.setNickName(user.getNickName());
@@ -60,7 +59,7 @@ public class CustomRealm extends AuthorizingRealm {
 		shiroUser.seteXP(user.getEXP());
 		shiroUser.setSchoolId(user.getSchoolId());
 		shiroUser.setUserType(user.getUserType());
-		shiroUser.setPhone(user.getPhoto());
+		shiroUser.setPhone(user.getPhone());
 		shiroUser.setPhoneOk(user.getPhoneOk());
 		shiroUser.setqQ(user.getQQ());
 		shiroUser.setEmail(user.getEmail());
@@ -80,7 +79,7 @@ public class CustomRealm extends AuthorizingRealm {
 
 	/**
 	 * 授权 从principalCollection 获取 Principal主体信息 getPrimaryPrincipal方法返回值(
-	 * doGetAuthenticationInfo认证通过后填充到SimpleAuthenticationInfo的principal主题信息)
+	 * doGetAuthenticationInfo认证通过后填充到SimpleAuthenticationInfo的principal  主题信息)
 	 * 
 	 * 
 	 */

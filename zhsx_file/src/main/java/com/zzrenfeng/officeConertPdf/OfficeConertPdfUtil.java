@@ -2,6 +2,7 @@ package com.zzrenfeng.officeConertPdf;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -22,28 +23,40 @@ public class OfficeConertPdfUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static void officeConversionPDF(String filePath) throws Exception {
-		// 获取文件后缀
-		String suffix = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
-		String filePaths = filePath.substring(0, filePath.lastIndexOf("."));
+	public static void officeConversionPDF(final String filePath) {
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				// 获取文件后缀
+				String suffix = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
+				String filePaths = filePath.substring(0, filePath.lastIndexOf("."));
 
-		// 获取需要转换文档的所在路径
-		File officeFile = new File(filePath);
-		File outputFile = new File(filePaths + ".pdf");// PDF保存文件路径
+				// 获取需要转换文档的所在路径
+				File officeFile = new File(filePath);
+				File outputFile = new File(filePaths + ".pdf");// PDF保存文件路径
 
-		if (!outputFile.exists()) {
-			InputStream inputStream = new FileInputStream(officeFile);
-			OutputStream outputStream = new FileOutputStream(outputFile);
+				try {
+					if (!outputFile.exists()) {
+						InputStream inputStream = new FileInputStream(officeFile);
+						OutputStream outputStream = new FileOutputStream(outputFile);
 
-			// 开始转换
-			if (suffix.equalsIgnoreCase("docx") || suffix.equalsIgnoreCase("doc")) {
-				wordConvert2Pdf(inputStream, outputStream);
-			} else if (suffix.equalsIgnoreCase("pptx") || suffix.equalsIgnoreCase("ppt")) {
-				pptConvert2Pdf(inputStream, outputStream);
-			} else if (suffix.equalsIgnoreCase("xlsx") || suffix.equalsIgnoreCase("xls")) {
-				excelConvert2Pdf(inputStream, outputStream);
+						// 开始转换
+						if (suffix.equalsIgnoreCase("docx") || suffix.equalsIgnoreCase("doc")) {
+							wordConvert2Pdf(inputStream, outputStream);
+						} else if (suffix.equalsIgnoreCase("pptx") || suffix.equalsIgnoreCase("ppt")) {
+							pptConvert2Pdf(inputStream, outputStream);
+						} else if (suffix.equalsIgnoreCase("xlsx") || suffix.equalsIgnoreCase("xls")) {
+							excelConvert2Pdf(inputStream, outputStream);
+						}
+					}
+
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				super.run();
 			}
-		}
+		};
+		thread.start();
 	}
 
 	/**

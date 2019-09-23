@@ -8,7 +8,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,8 +41,6 @@ public class AdminAfManagerController extends BaseController {
 	private SysSchoolService sysSchoolService;
 	@Resource
 	private AfDhService afDhService;
-	@Resource
-	private Environment environment;
 
 	/**
 	 * 进入安防管理列表
@@ -51,24 +48,21 @@ public class AdminAfManagerController extends BaseController {
 	@RequestMapping("/afmanager")
 	public String afmanager(HttpServletRequest request, HttpServletResponse response, Model model, AfManager af,
 			Integer p) {
-		if (p == null) {
+
+		if (p == null)
 			p = 1;
-		}
-		Page<AfManager> pageInfo = afManagerService.findPageSelective(af, p, 10);
-		List<AfManager> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
-		int pages = pageInfo.getPages();// 总页数
-		String schoolLevel = environment.getProperty("school.level");
-
-		model.addAttribute("search", af.getSearch());
 		model.addAttribute("pageNum", p);// 当前页
+
+		// String search = request.getParameter("search");
+		// if (search != null && !search.equals("")) {
+		// af.setSearch(search);
+		// }
+		model.addAttribute("search", af.getSearch());
+		Page<AfManager> pageInfo = afManagerService.findPageSelective(af, p, 10);
+		int pages = pageInfo.getPages();// 总页数
+		List<AfManager> lists = pageInfo.getResult();
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
-		model.addAttribute("schoolLevel", schoolLevel);
 		return "/admin/af/afmanager";
 
 	}
@@ -78,10 +72,12 @@ public class AdminAfManagerController extends BaseController {
 		try {
 			afManagerService.deleteByKey(id);
 			WriterUtils.toHtml(response, MessageUtils.SUCCESS);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 		}
+
 	}
 
 	@RequestMapping("/updateStatus")
@@ -89,6 +85,7 @@ public class AdminAfManagerController extends BaseController {
 		try {
 			afManagerService.updateByKeySelective(af);
 			WriterUtils.toHtml(response, MessageUtils.SUCCESS);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
@@ -122,14 +119,10 @@ public class AdminAfManagerController extends BaseController {
 		SysSchool school = new SysSchool();
 		school.setIsaf("Y");
 		List<SysSchool> list = sysSchoolService.findSelective(school);
+		// 选择区域
 		List<AfDh> afdhs = afDhService.findSelective(afd);
-		String schoolLevel = environment.getProperty("school.level");
-		String schoolId = environment.getProperty("school.id");
-
 		model.addAttribute("schools", list);
 		model.addAttribute("afdh", afdhs);
-		model.addAttribute("schoolLevel", schoolLevel);
-		model.addAttribute("schoolId", schoolId);
 		return "/admin/af/addAf";
 	}
 
@@ -203,11 +196,6 @@ public class AdminAfManagerController extends BaseController {
 		Page<AfDh> pageInfo = afDhService.findPageSelective(dh, p, 12);
 		int pages = pageInfo.getPages();// 总页数
 		List<AfDh> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
 		return "/admin/af/afdh";

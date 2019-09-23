@@ -1,5 +1,7 @@
 $(function(){
+	
 	$("#zbTop").attr("class","has-sub active");
+	$("#zbTopA").attr("class","active2");
 	if(userType === 'S' || isPgAuthority != 'Y'){
 		$(".tap00").css("display","none");
 		$(".tap11").css("display","none");
@@ -20,7 +22,7 @@ $(function(){
 var layer;
 layui.use(['layer', 'element'], function() {
 	 layer = layui.layer;
-	 var element = layui.element;
+	 var element = layui.element();
 });
 
 var isLoop = false;
@@ -47,7 +49,7 @@ $(".swiper-container").mouseenter(function () {
 function getCommentData(p){
 	$.ajax({
 	   type: "get",
-	   url: ctx +"/timelyReview/timelyWindow",
+	   url: ctx +"/timelyReview/timelyWindow",// "/timelyReview/timelyWindow",///webComments/comment
 	   data: {contextType:'L',contextId:receive.id,p:p},
 	   success: function(msg){
 	     $(".tap33").html(msg);
@@ -131,7 +133,7 @@ function getpgPagetData(){
 	   }
 	});
 }
-//获得质量评估课后评估
+//获得质量评估项
 function getPjInfoDuke(){
 	$.ajax({
 	   type: "POST",
@@ -153,12 +155,10 @@ function refreshPage(data){
 
 //查看结果
 function viewResults(){
-	var nowDate = new Date();
-	var addTime = nowDate.getFullYear()+"-"+(nowDate.getMonth()+1)+"-"+nowDate.getDate();
 	$.ajax({
 	   type: "POST",
 	   url: ctx + "/pgInfo/viewResults",
-	   data: {type:'I',pgId:receive.id,onOff:'ON',addTime:addTime},
+	   data: {type:'I',pgId:receive.id,onOff:'ON'},
 	   success: function(msg){
 	     $(".tap22").html(msg);
 	     getzidongpg();

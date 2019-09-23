@@ -43,5 +43,4 @@ public interface OffLineVideoResourcesMapper extends BaseMapper<OffLineVideoReso
 	 */
 	int appendOffLineVideoResources(OffLineVideoResources offLineVideoResources);
 
-	List<OffLineVideoResources> listOffLineVideoResourcesByIds(List<String> ids);
 }

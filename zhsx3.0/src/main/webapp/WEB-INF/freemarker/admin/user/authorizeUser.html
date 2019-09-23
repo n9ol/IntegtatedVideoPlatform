@@ -56,127 +56,69 @@
 								<input type="radio" name="isadmin" value="0" title="否" ${chk8} lay-filter="isadmin">
 							</div>
 						</div>
-						
-						
 						<div id="isadmin" ${display}>
-							<#if schoolLevel?? && schoolLevel == "Y">
-								<input type="hidden" name="bak1" value="SA" title="校级管理员" >
-								<input type="hidden" id="schoolId" name="schoolId" value="${schoolId!''}">
-							<#else>
-								<div class="layui-form-item">
-									<label class="layui-form-label" id="jj">区域权限：</label>
-									<div class="layui-input-block">
-										<#assign displaySchool = "style='display: none;'"> 
-										<#assign chk1 = ""> 
-										<#assign chk2 = ""> 
-										<#assign chk3 = ""> 
-										<#assign chk4 = ""> 
-										<#assign chk5 = ""> 
-										<#assign chk6 = ""> 
-										<#if user.bak1?? && user.bak1 == 'OA'> <#assign chk1 = "checked"> </#if> 
-										<#if user.bak1?? && user.bak1 == 'PA'> <#assign chk2 = "checked"> </#if> 
-										<#if user.bak1?? && user.bak1 == 'CA'> <#assign chk3 = "checked"> </#if> 
-										<#if user.bak1?? && user.bak1 == 'AA'> <#assign chk4 = "checked"> </#if> 
-										<#if user.bak1?? && user.bak1 == 'SA'> <#assign chk5 = "checked"> <#assign displaySchool = ""> </#if> 
-										<#if user.bak1?? && user.bak1 == 'NA'> <#assign chk6 = "checked"> </#if> 
-										
-										<#if userbak1??> 
-											<#if userbak1 == 'OA' && (platformLevel == 'N' || platformLevel == 'P')>
-												<input type="radio" name="bak1" value="PA" title="省级管理员"${chk2} lay-filter="isSaAdmin">
-											</#if> 
-											<#if (userbak1 == 'OA' || userbak1 == 'PA') && (platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C')>
-												<input type="radio" name="bak1" value="CA" title="市级管理员"${chk3} lay-filter="isSaAdmin">
-											</#if>
-											<#if userbak1 == 'OA' || userbak1 == 'PA' || userbak1 == 'CA'>
-												<input type="radio" name="bak1" value="AA" title="县(区)管理员"${chk4} lay-filter="isSaAdmin">
-											</#if>
-											<input type="radio" name="bak1" value="SA" title="校级管理员"${chk5} lay-filter="isSaAdmin">
-										</#if>
-									</div>
-								</div>
-								<div class="layui-form-item school" ${displaySchool}>
-									<label class="layui-form-label" id="jj">选择学校：</label>
-									<div class="layui-input-block">
-										<select name="schoolId" id="schoolId" lay-search>
-											<option value="">请选择学校</option>
-											<#if schools?? && (schools?size>0)><#list schools as l> 
-												<#assign sel = ""> 
-												<#if user.schoolId?? && user.schoolId == l.id><#assign sel = "selected"></#if>
-												<option value="${l.id!''}" ${sel}>${l.schoolName!''}</option>
-											</#list></#if>
-										</select>
-									</div>
-									<span id="schoolId_msg" class="msg" style="color: #F7B824;"> *&nbsp;&nbsp;校级管理员,必选 </span>
-								</div>
-							</#if>
-							
-							
-						    <div class="layui-form-item">
-								<label class="layui-form-label" id="jj">基本信息管理权：</label>
-								<div class="layui-input-block">
-									<#if sysRoles?? && (sysRoles?size>0)><#list sysRoles as r>
-										<#if r.roleType=="base">
-											<#assign dis = "">  
-											<#if !(r.available)> <#assign dis = "disabled"> </#if> 
-											<#assign chk = ""> 
-											<#if sysUserRoles?? && (sysUserRoles?size>0)><#list sysUserRoles as u> 
-												<#if u.roleId == r.id> <#assign chk = "checked"> <#break> </#if> 
-											</#list></#if>
-											<input type="checkbox" name="role_id" title="${r.role!''}" ${dis} value="${r.id!''}" ${chk}>
-										</#if>
-									</#list></#if>
-								</div>
-							</div>
-							
-							
 							<div class="layui-form-item">
-								<label class="layui-form-label" id="jj">课程安排管理权：</label>
+								<label class="layui-form-label" id="jj">区域权限：</label>
 								<div class="layui-input-block">
-									<#if listESysRole?? && (listESysRole?size>0)><#list listESysRole as role>
-										<#if role.roleType?? && role.roleType == "schedule">
-											<#assign chk = ""> 
-											<#if role.isHave> <#assign chk = "checked"> </#if> 
-											<input type="checkbox" name="roleIds" title="${role.description!''}" value="${role.id!''}" ${chk}>
+									<#assign displaySchool = "style='display: none;'"> 
+									<#assign chk1 = ""> 
+									<#assign chk2 = ""> 
+									<#assign chk3 = ""> 
+									<#assign chk4 = ""> 
+									<#assign chk5 = ""> 
+									<#assign chk6 = ""> 
+									<#if user.bak1?? && user.bak1 == 'OA'> <#assign chk1 = "checked"> </#if> 
+									<#if user.bak1?? && user.bak1 == 'PA'> <#assign chk2 = "checked"> </#if> 
+									<#if user.bak1?? && user.bak1 == 'CA'> <#assign chk3 = "checked"> </#if> 
+									<#if user.bak1?? && user.bak1 == 'AA'> <#assign chk4 = "checked"> </#if> 
+									<#if user.bak1?? && user.bak1 == 'SA'> <#assign chk5 = "checked"> <#assign displaySchool = ""> </#if> 
+									<#if user.bak1?? && user.bak1 == 'NA'> <#assign chk6 = "checked"> </#if> 
+									
+									<#if userbak1??> 
+										<#if userbak1 == 'OA' && (platformLevel == 'N' || platformLevel == 'P')>
+											<input type="radio" name="bak1" value="PA" title="省级管理员"${chk2} lay-filter="isSaAdmin">
+										</#if> 
+										<#if (userbak1 == 'OA' || userbak1 == 'PA') && (platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C')>
+											<input type="radio" name="bak1" value="CA" title="市级管理员"${chk3} lay-filter="isSaAdmin">
 										</#if>
-									</#list></#if>
+										<#if userbak1 == 'OA' || userbak1 == 'PA' || userbak1 == 'CA'>
+											<input type="radio" name="bak1" value="AA" title="县(区)管理员"${chk4} lay-filter="isSaAdmin">
+										</#if>
+										<input type="radio" name="bak1" value="SA" title="校级管理员"${chk5} lay-filter="isSaAdmin">
+									</#if>
 								</div>
 							</div>
 							
 							
-							<div class="layui-form-item">
-								<label class="layui-form-label" id="jj">综合视讯管理权：</label>
+							
+							<div class="layui-form-item school" ${displaySchool}>
+								<label class="layui-form-label" id="jj">选择学校：</label>
 								<div class="layui-input-block">
-									<#if sysRoles?? && (sysRoles?size>0)><#list sysRoles as r>
-										<#if r.roleType=="zhsx">
-											<#assign dis = "">  
-											<#if !(r.available)> <#assign dis = "disabled"> </#if> 
-											<#assign chk = ""> 
-											<#if sysUserRoles?? && (sysUserRoles?size>0)><#list sysUserRoles as u> 
-												<#if u.roleId == r.id> <#assign chk = "checked"> <#break> </#if> 
-											</#list></#if>
-											<input type="checkbox" name="role_id" title="${r.role!''}" ${dis} value="${r.id!''}" ${chk}>
-										</#if>
-									</#list></#if>
-								</div>
-							</div>
-							
-							
-							<#if iSEClassBrand?? && iSEClassBrand == "Y">
-								<div class="layui-form-item">
-									<label class="layui-form-label" id="jj">电子班牌管理权：</label>
-									<div class="layui-input-block">
-										<#if listESysRole?? && (listESysRole?size>0)><#list listESysRole as role>
-											<#if role.roleType?? && role.roleType == "EClassBrand">
-												<#assign chk = ""> 
-												<#if role.isHave> <#assign chk = "checked"> </#if> 
-												<input type="checkbox" name="roleIds" title="${role.description!''}" value="${role.id!''}" ${chk}>
-											</#if>
+									<select name="schoolId" id="schoolId" lay-search>
+										<option value="">请选择学校</option>
+										<#if schools?? && (schools?size>0)><#list schools as l> 
+											<#assign sel = ""> 
+											<#if user.schoolId?? && user.schoolId == l.id><#assign sel = "selected"></#if>
+											<option value="${l.id!''}" ${sel}>${l.schoolName!''}</option>
 										</#list></#if>
-									</div>
+									</select>
 								</div>
-							</#if>
-							
-							
+								<span id="schoolId_msg" class="msg" style="color: #F7B824;"> *&nbsp;&nbsp;校级管理员,必选 </span>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">特殊权限：</label>
+								<div class="layui-input-block">
+									<#if sysRoles?? && (sysRoles?size>0)><#list sysRoles as r>
+										<#assign dis = "">  
+										<#if !(r.available)> <#assign dis = "disabled"> </#if> 
+										<#assign chk = ""> 
+										<#if sysUserRoles?? && (sysUserRoles?size>0)><#list sysUserRoles as u> 
+											<#if u.roleId == r.id> <#assign chk = "checked"> <#break> </#if> 
+										</#list></#if>
+										<input type="checkbox" name="role_id" title="${r.role!''}" ${dis} value="${r.id!''}" ${chk}>
+									</#list></#if>
+								</div>
+							</div>
 						</div>
 						<div class="layui-form-item">
 							<div class="layui-input-block">

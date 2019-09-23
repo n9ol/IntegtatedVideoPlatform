@@ -16,6 +16,4 @@
 	<context:component-scan base-package="com.zzrenfeng.zhsx.service.impl"/>
 	<context:component-scan base-package="com.zzrenfeng.zhsx.aspect" />
 	
-	<bean class="com.zzrenfeng.zhsx.util.SpringUtil"/>
-	
 </beans>

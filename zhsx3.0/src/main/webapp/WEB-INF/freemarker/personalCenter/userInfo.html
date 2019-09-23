@@ -102,11 +102,7 @@
 		</li>
 		<li class="clear">
 			<div class="liLeft">教龄</div>
-			<div class="liRight">
-				<input type="text" class="inputText" name="stature" value="${user.stature!''}" style="width: 100px;" id="stature"/>
-				<span>年</span>
-				<span id="stature_msg" class="msg" style="color:#F7B824;"></span>
-			</div>
+			<div class="liRight"><input type="text" class="inputText" name="stature" value="${user.stature!''}"/></div>
 		</li>
 		
 		<#if platformLevel?? && platformLevel != 'A'>
@@ -154,30 +150,24 @@
 			</li>
 		</#if>
 		
-		<#if schoolLevel?? && schoolLevel == 'Y'>
-			<li>
-				<input type="hidden" name="schoolId" value="${schoolId!''}" id="schoolId">
-			</li>
-		<#else>
-			<li class="clear">
-				<div class="liLeft">所在学校</div>
-				<div class="liRight">
-					<select name="schoolId" id="schoolId" title="学校">
-						<#if schoolList?? && (schoolList?size>0)><#list schoolList as l>
-							<#assign sel ="">
-							<#if user.schoolId?? && user.schoolId = l.id> <#assign sel ="selected"></#if>
-							<option value="${l.id}" ${sel} >${l.schoolName!''}</option>
-						</#list></#if>
-					</select>
-					<span id="schoolId_msg" class="msg" style="color:#F7B824;">
-						<#if user.userType == "T" || user.userType == "S">
-							&nbsp;&nbsp;*&nbsp;必填  
-						</#if>
-					</span>
-				</div>
-			</li>
-		</#if>
 		
+		<li class="clear">
+			<div class="liLeft">所在学校</div>
+			<div class="liRight">
+				<select name="schoolId" id="schoolId" title="学校">
+					<#if schoolList?? && (schoolList?size>0)><#list schoolList as l>
+						<#assign sel ="">
+						<#if user.schoolId?? && user.schoolId = l.id> <#assign sel ="selected"></#if>
+						<option value="${l.id}" ${sel} >${l.schoolName!''}</option>
+					</#list></#if>
+				</select>
+				<span id="schoolId_msg" class="msg" style="color:#F7B824;">
+				<#if user.userType == "T" || user.userType == "S">
+					&nbsp;&nbsp;*&nbsp;必填  
+				</#if>
+				</span>
+			</div>
+		</li>
 		<li class="clear">
 			<div class="liLeft">政治面貌</div>
 			<div class="liRight"><input type="text" class="inputText" name="politicsStatus" value="${user.politicsStatus!''}"/></div>

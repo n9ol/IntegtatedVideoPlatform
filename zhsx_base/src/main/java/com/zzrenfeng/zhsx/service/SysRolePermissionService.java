@@ -11,7 +11,7 @@ import com.zzrenfeng.zhsx.model.SysRolePermission;
  * @copyright {@link zzrenfeng.com}
  * @author zzrenfeng.com
  * @version 2017-12-14 16:23:00
- * @see com.zzrenfeng.zhsx.service.ESysRolePermission
+ * @see com.zzrenfeng.zhsx.service.SysRolePermission
  */
 public interface SysRolePermissionService extends BaseService<SysRolePermission> {
 

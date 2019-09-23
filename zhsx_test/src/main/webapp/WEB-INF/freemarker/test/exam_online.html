@@ -2,11 +2,11 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<!--公共样式表-->
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/bootstrap/css/bootstrap.min.css">
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/index2222.css"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/index2222.css"/>
 	</head>
 	<body>
 		<!--头部start-->
@@ -31,11 +31,11 @@
 								<div style="width: 100%;">
 									<div style="width: 80%;margin: 0px auto">
 										<div style="width: 100%;height:100px;border: 1px solid #CCC;border-bottom:none;background:#FFF;">
-											<div class="middle-top" style="width: 100%;height: 50px;border-bottom: 1px solid #CCC;background:#4596E5; position:relative;">
-												<div class="middle-top-left pull-left" style="height: 100%;padding-left: 20px;;background:#4596E5;color:#FFF;">
-													<div class="text-center pull-left progress-left" style="border: 1px solid #A2C69A;background:#FFF;border-radius:10px;line-height:20px;height:20px;margin:15px 0px 15px 0px;font-size: 11px;position:relative;">
-														<div class="progress pull-left" style="background: #609E53;width: 0px;height:18px;position:absolute;left: 0px;"></div>
-														<div class="pro-text" style="left: 0px;color: #609E53;position:absolute;top:0px;width:100%;"> 已完成<span class="progres"></span></div>
+											<div class="middle-top">
+												<div class="middle-top-left pull-left">
+													<div class="text-center pull-left progress-left">
+														<div class="progress pull-left"></div>
+														<div class="pro-text"> 已完成<span class="progres"></span></div>
 													</div>
 													<div class="pull-left" style=" width:135px;line-height:20px;height:20px;margin:15px;font-size:15px;">
 														<!--已做答的数量和考题总数-->
@@ -135,7 +135,7 @@
 	<script type="text/javascript">
 	 layui.use(['layer','element'],function(){
 		var layer = layui.layer,
-		    element = layui.element;
+		    element = layui.element();
 		
 		 	$("#submitQuestions").click(function() {
 				setTop();

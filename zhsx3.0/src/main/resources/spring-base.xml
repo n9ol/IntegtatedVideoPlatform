@@ -15,8 +15,8 @@
 
 
 	<!-- 加载配置文件 -->
-	<bean id="propertyConfigure"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+	<bean id="encryptPropertyPlaceholderConfigurer"
+		class="com.zzrenfeng.zhsx.config.EncryptPropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
 				<value>classpath:db.properties</value>
@@ -25,9 +25,8 @@
 		</property>
 	</bean>
 
-
 	<!-- 数据库连接池 -->
-	<bean id="dataSourceOne" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="${jdbc.driver}" />
 		<property name="url" value="${jdbc.url}" />
@@ -44,37 +43,6 @@
 		<property name="validationQuery" value="select 1" />
 	</bean>
 
-	<bean id="dataSourceTwo" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${jdbc2.driver}" />
-		<property name="url" value="${jdbc2.url}" />
-		<property name="username" value="${jdbc2.username}" />
-		<property name="password" value="${jdbc2.password}" />
-		<property name="initialSize" value="3" />
-		<property name="minIdle" value="3" />
-		<property name="maxActive" value="15" />
-		<property name="maxWait" value="5000" />
-		<property name="timeBetweenEvictionRunsMillis" value="90000" />
-		<property name="minEvictableIdleTimeMillis" value="1800000" />
-		<property name="testOnBorrow" value="false" />
-		<property name="testWhileIdle" value="true" />
-		<property name="validationQuery" value="select 1" />
-	</bean>
-
-
-	<bean id="dataSource" class="com.zzrenfeng.zhsx.jdbc.DynamicDataSource">
-		<property name="targetDataSources">
-			<map key-type="java.lang.String">
-				<!-- 指定lookupKey和与之对应的数据源 -->
-				<entry key="1" value-ref="dataSourceOne"></entry>
-				<entry key="2" value-ref="dataSourceTwo"></entry>
-			</map>
-		</property>
-		<!-- 这里可以指定默认的数据源 -->
-		<property name="defaultTargetDataSource" ref="dataSourceOne" />
-	</bean>
-
-
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="classpath:SqlMapConfig.xml" />
@@ -87,17 +55,6 @@
 		<property name="basePackage" value="com.zzrenfeng.zhsx.mapper" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
 	</bean>
-
-	<!-- 配置数据库源 @DataSource注解拦截 -->
-	<bean id="dataSourceAspect" class="com.zzrenfeng.zhsx.jdbc.DataSourceAspect" />
-	<aop:config>
-		<aop:aspect ref="dataSourceAspect">
-			<aop:pointcut id="dataSourcePointcut"
-				expression="execution(*  com.zzrenfeng.zhsx.mapper.eclassbrand..*(..))" />
-			<aop:before pointcut-ref="dataSourcePointcut" method="intercept" />
-			<aop:after  pointcut-ref="dataSourcePointcut" method="clearDataSource"/>
-		</aop:aspect>
-	</aop:config>
 
 
 	<!-- 事务 start -->

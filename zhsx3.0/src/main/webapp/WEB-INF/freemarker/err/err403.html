@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>淇县教育综合视讯管理平台</title>
+<!-- <#global ctx=rc.contextPath/> -->
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/template.css" />
+<!--公共样式表-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+<!--去除默认行为-->
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/denglu.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/dengluwrong.css" />
+</head>
+<body>
+	<!--头部start-->
+	<div class="top">
+		<div class="top_zhong">
+			<a href="#">综合视讯平台</a>
+		</div>
+	</div>
+	<div class="conss clear">
+		<img class="bg_deng" src="${ctx}/img/denglu.png" />
+		<div class="passwordWrong fr">
+			<img src="${ctx}/img/none_bangding.png" />
+			<div class="gantan clear">
+				<img src="${ctx}/skin/${skinName}/img/gantan.png" />权限不足
+			</div>
+			<a href="${ctx}/login/denglu">
+				<div class="once">返回登录页</div>
+			</a>
+			<a href="${ctx}/index.action">
+				<div class="once indexPage">返回首页</div>
+			</a>
+		</div>
+	</div>
+	<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+</body>
+</html>

@@ -58,63 +58,61 @@
 							<span id="schoolName_msg" class="msg" style="color: red;">*</span>
 						</div>
 
+						
+						
+						<#if principal?? && (principal.bak1 == "SA"  || principal.bak1 == "AA" || platformLevel == "A" || platformLevel == "T")>
+							<input type="hidden" name="provinceId" value="${provinceId!''}">
+							<input type="hidden" name="cityId" value="${cityId!''}">
+							<input type="hidden" name="countyId" value="${countyId!''}" id="countyId">
+ 						<#else>
+	 						<div class="layui-form-item area">
+			                      <label class="layui-form-label" id="jj">地区选择：</label>
+			                      
+		                       			<#if principal.bak1 == "OA" && platformLevel == "N">
+			 								 <div class="layui-input-inline" style="margin-left:20px;">
+						                          <select name="provinceId" lay-filter="province" id="provinceId" lay-search>
+						                              <option value="">请选择省</option>
+													  <#if sysDicts?? && (sysDicts?size>0)><#list sysDicts as l>
+													　　	<option value="${l.id!''}">${l.value!''}</option>
+													　　</#list></#if>
+						                          </select>
+						                      </div>
+						                <#else>
+						                	<input type="hidden" name="provinceId" value="${provinceId!''}">
+			 							</#if>
+			 							
+			 							<#assign marginLeftP = "">
+		                      			<#if principal.bak1 == "PA" || platformLevel == "P" ><#assign marginLeftP = "margin-left:20px;"></#if>
+			 							<#if (principal.bak1 == "PA" || principal.bak1 == "OA") && (platformLevel == "N" || platformLevel == "P") >
+											  <div class="layui-input-inline" style="${marginLeftP}">
+						                          <select id="cityId" name="cityId" lay-filter="city" lay-search>
+						                              <option value="">请选择市</option>
+						                           	   <#if (principal.bak1 == "PA" || platformLevel == "P") && sysDicts?? && (sysDicts?size>0)><#list sysDicts as l>
+													　　		<option value="${l.id!''}">${l.value!''}</option>
+													　　</#list></#if>
+						                          </select>
+						                      </div>
+						                <#else>
+						                	<input type="hidden" name="cityId" value="${cityId!''}">
+			 							</#if>
+			 							
+			 							<#assign marginLeftC = "">
+		                      			<#if principal.bak1 == "CA" || platformLevel == "C" ><#assign marginLeftC = "margin-left:20px;"></#if>
+			 							<#if (principal.bak1 == "CA" || principal.bak1 == "PA" || principal.bak1 == "OA") && (platformLevel != "A" && platformLevel != "T")> 
+			 								<div class="layui-input-inline" style="${marginLeftC}">
+					                          <select id="countyId" name="countyId" lay-filter="county" lay-search>
+					                              <option value="">请选择县/区</option>
+					                              <#if (principal.bak1 == "CA" || platformLevel == "C") && sysDicts?? && (sysDicts?size>0)><#list sysDicts as l>
+												　　	<option value="${l.id!''}">${l.value!''}</option>
+												　　</#list></#if>
+					                          </select>
+					                      	</div>
+					                     <#else>
+					                       <input type="hidden" name="countyId" value="${countyId!''}" id="countyId">
+			 						    </#if>
+			                 </div>
+ 						</#if>
 
-						<div class="layui-form-item">
-							<#if platformLevel?? && platformLevel != 'A'>
-							<label class="layui-form-label" id="jj">地区选择：</label>
-
-							<#if platformLevel == 'N'>
-								<div class="layui-input-inline" style="margin-left: 20px;">
-									<select name="provinceId" lay-filter="province" id="provinceId" lay-search>
-										<option value="">请选择省</option>
-										<#if sysDicts?? && (sysDicts?size>0)><#list sysDicts as l>
-										<option value="${l.id!''}">${l.value!''}</option>
-										</#list></#if>
-									</select>
-								</div>
-							<#else>
-								<input type="hidden" name="provinceId" value="${provinceId!''}">
-							</#if> 
-							
-							
-							<#if platformLevel == 'N' || platformLevel == 'P'> 
-								<#assign marginLeftP = ""> 
-								<#if platformLevel == 'P'> <#assign marginLeftP = "margin-left:20px;"> </#if>
-								<div class="layui-input-inline" style="${marginLeftP!''}">
-									<select id="cityId" name="cityId" lay-filter="city" lay-search>
-										<option value="">请选择市</option>
-										<#if platformLevel == 'P' && sysDicts?? && (sysDicts?size>0)><#list sysDicts as l>
-										<option value="${l.id!''}">${l.value!''}</option>
-										</#list></#if>
-									</select>
-								</div>
-							<#else>
-								<input type="hidden" name="cityId" value="${cityId!''}">
-							</#if> 
-							
-							<#if platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C'> 
-								<#assign marginLeftC = ""> 
-								<#if platformLevel == 'C'><#assign marginLeftC = "margin-left:20px;"></#if>
-								<div class="layui-input-inline" style="${marginLeftC!''}">
-									<select id="countyId" name="countyId" lay-filter=county lay-search title="地区选择">
-										<option value="">请选择县/区</option>
-										<#if platformLevel == 'C' && sysDicts?? && (sysDicts?size>0)><#list sysDicts as l>
-										<option value="${l.id!''}">${l.value!''}</option>
-										</#list></#if>
-									</select>
-								</div>
-							<#else>
-								<input type="hidden" name="countyId" value="${countyId!''}">
-							</#if>
-							
-							
-							<span id="countyId_msg" class="msg1" style="color: red;">*</span>
-							<#else>
-								<input type="hidden" name="provinceId" value="${provinceId!''}">
-								<input type="hidden" name="cityId" value="${cityId!''}">
-								<input type="hidden" name="countyId" value="${countyId!''}" id="countyId"> 
-							</#if>
-						</div>
 
 
 

@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.Page;
 import com.zzrenfeng.zhsx.controller.base.BaseController;
-import com.zzrenfeng.zhsx.model.OffLineRecordVideo;
 import com.zzrenfeng.zhsx.model.OffLineVideoResources;
 import com.zzrenfeng.zhsx.model.SysDict;
 import com.zzrenfeng.zhsx.model.SysHistory;
-import com.zzrenfeng.zhsx.service.OffLineRecordVideoService;
 import com.zzrenfeng.zhsx.service.OffLineVideoResourcesService;
 import com.zzrenfeng.zhsx.service.SysDictService;
 import com.zzrenfeng.zhsx.service.SysHistoryService;
@@ -43,14 +40,6 @@ public class OffLineController extends BaseController {
 	private String fileWebPath;
 	@Resource
 	private SysHistoryService sysHistoryService;
-	@Resource
-	private OffLineRecordVideoService offLineRecordVideoService;
-	@Resource
-	private Environment env;
-
-	private final String IS_YES = "Y";
-
-	private final String DEFAULTVALUE = "3";
 
 	/**
 	 * 进入点播首页
@@ -93,12 +82,8 @@ public class OffLineController extends BaseController {
 		videoResources.setSortord("view");
 		Page<OffLineVideoResources> pageInfo = videoResourcesService.findPageSelective(videoResources, 1, 4);
 		List<OffLineVideoResources> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("hotLists", lists);
+
 		return "/web/offline/dianbo";
 	}
 
@@ -126,13 +111,11 @@ public class OffLineController extends BaseController {
 		int pages = pageInfo.getPages(); // 总页数
 		long total = pageInfo.getTotal();
 		List<OffLineVideoResources> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
+
 		return "/web/offline/dianboData";
 	}
 
@@ -144,27 +127,22 @@ public class OffLineController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/videoPlayback")
-	public String videoPlayback(Model model, String id) {
+	public String videoPlayback(Model model, String id, String type) {
+
 		OffLineVideoResources vr = videoResourcesService.findByKey(id);
-		String type = vr.getType();
 		model.addAttribute("vr", vr);
 		model.addAttribute("type", type);
 
 		// 获得推荐课程
 		OffLineVideoResources videoResources = new OffLineVideoResources();
-		videoResources.setReleaseState(IS_YES);
+		videoResources.setReleaseState("Y");
 		videoResources.setTranscodingState("O");
-		videoResources.setIsShow(IS_YES);
+		videoResources.setIsShow("Y");
 		videoResources.setType(type);
 		videoResources.setGradeName(vr.getGradeName());
 		videoResources.setSubjectName(vr.getSubjectName());
 		Page<OffLineVideoResources> pageInfo = videoResourcesService.findPageSelective(videoResources, 1, 8);
 		List<OffLineVideoResources> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("hotLists", lists);
 
 		// 添加观看记录
@@ -182,7 +160,7 @@ public class OffLineController extends BaseController {
 		sysh.setPubFlag(SysHistory.PUBFLAG_C);
 		syshList = sysHistoryService.findSelective(sysh);
 		if (syshList != null && syshList.size() > 0) {
-			model.addAttribute("isCollect", IS_YES);
+			model.addAttribute("isCollect", "Y");
 		} else {
 			model.addAttribute("isCollect", "N");
 		}
@@ -190,50 +168,6 @@ public class OffLineController extends BaseController {
 		// 更新浏览量
 		videoResourcesService.updatePageView(id);
 
-		String isRecord = vr.getIsRecord();
-		if (isRecord != null && IS_YES.equals(isRecord)) {
-			String video1Url = null;
-			String video2Url = null;
-			String video3Url = null;
-			String videoaUrl = null;
-			List<OffLineRecordVideo> listOffLineRecordVideoByOfflinevideoId = offLineRecordVideoService
-					.listOffLineRecordVideoByOfflinevideoId(vr.getId());
-			for (OffLineRecordVideo offLineRecordVideo : listOffLineRecordVideoByOfflinevideoId) {
-				String streamtype = offLineRecordVideo.getStreamtype();
-				switch (streamtype) {
-				case "1":
-					video1Url = offLineRecordVideo.getVideopatch();
-					break;
-				case "2":
-					video2Url = offLineRecordVideo.getVideopatch();
-					break;
-				case "3":
-					video3Url = offLineRecordVideo.getVideopatch();
-					break;
-				case "a":
-					videoaUrl = offLineRecordVideo.getVideopatch();
-					break;
-				default:
-					break;
-				}
-			}
-			String streamingAddress = env.getProperty("web.videourl");
-			String vsc = env.getProperty("video.split.screen", DEFAULTVALUE);
-
-			int indexOf1 = streamingAddress.indexOf("://");
-			int indexOf2 = streamingAddress.lastIndexOf(":");
-			int indexOf3 = streamingAddress.indexOf("/vod");
-			String ip = streamingAddress.substring(indexOf1 + 3, indexOf2);
-			String port = streamingAddress.substring(indexOf2 + 1, indexOf3);
-			model.addAttribute("ip", ip);
-			model.addAttribute("port", port);
-			model.addAttribute("video1Url", video1Url);
-			model.addAttribute("video2Url", video2Url);
-			model.addAttribute("video3Url", video3Url);
-			model.addAttribute("videoaUrl", videoaUrl);
-			model.addAttribute("vsc", vsc);
-			return "/web/offline/db_bofangye2";
-		}
 		return "/web/offline/db_bofangye";
 	}
 

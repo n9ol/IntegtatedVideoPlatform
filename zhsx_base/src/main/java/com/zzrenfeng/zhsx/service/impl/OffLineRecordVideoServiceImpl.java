@@ -1,7 +1,5 @@
 package com.zzrenfeng.zhsx.service.impl;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -21,7 +19,7 @@ import com.zzrenfeng.zhsx.service.impl.base.BaseServiceImpl;
  * @see com.zzrenfeng.zhsx.service.impl.OffLineRecordVideo
  */
 
-@Service("offLineRecordVideoService")
+@Service
 public class OffLineRecordVideoServiceImpl extends BaseServiceImpl<BaseMapper<OffLineRecordVideo>, OffLineRecordVideo>
 		implements OffLineRecordVideoService {
 
@@ -37,22 +35,6 @@ public class OffLineRecordVideoServiceImpl extends BaseServiceImpl<BaseMapper<Of
 	@Override
 	public int tInsert(OffLineRecordVideo offLineRecordVideo) {
 		return offLineRecordVideoMapper.insert(offLineRecordVideo);
-	}
-
-	@Override
-	public List<OffLineRecordVideo> listOffLineRecordVideoByOfflinevideoId(String offlinevideoid) {
-		OffLineRecordVideo offLineRecordVideo = new OffLineRecordVideo();
-		offLineRecordVideo.setOfflinevideoid(offlinevideoid);
-		return offLineRecordVideoMapper.findSelective(offLineRecordVideo);
-	}
-
-	@Override
-	public List<OffLineRecordVideo> getListByCidStime(String classroomId, String createDateStr1, String createDateStr2) {
-		OffLineRecordVideo offLineRecordVideo = new OffLineRecordVideo();
-		offLineRecordVideo.setClassroomid(classroomId);
-		offLineRecordVideo.setCreateDateStr1(createDateStr1);
-		offLineRecordVideo.setCreateDateStr2(createDateStr2);
-		return offLineRecordVideoMapper.getListByCidStime(offLineRecordVideo);
 	}
 
 }

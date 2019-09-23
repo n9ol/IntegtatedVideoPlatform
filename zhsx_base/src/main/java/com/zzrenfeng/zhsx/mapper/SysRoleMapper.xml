@@ -7,11 +7,10 @@
 		<result column="role" property="role" />
 		<result column="description" property="description" />
 		<result column="available" property="available" />
-		<result column="role_type" property="roleType" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		id,role,description,available,role_type
+		id,role,description,available
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
@@ -36,8 +35,8 @@
 
 	<insert id="insert" parameterType="SysRole" >
 		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
-		insert into sys_role (id,role,description,available,role_type)
-		values (#{id},#{role},#{description},#{available},#{roleType})
+		insert into sys_role (id,role,description,available)
+		values (#{id},#{role},#{description},#{available})
 	</insert>
 
 
@@ -54,10 +53,7 @@
 				description = #{description},
 			</if>
 			<if test="available != null" >
-				available = #{available},
-			</if>
-			<if test="roleType != null" >
-				role_type = #{roleType}
+				available = #{available}
 			</if>
 		</set>
 		where id = #{id}
@@ -70,8 +66,7 @@
 		id = #{id},
 		role = #{role},
 		description = #{description},
-		available = #{available},
-		role_type = #{roleType}
+		available = #{available}
 		where id = #{id}
 	</update>
 	
@@ -90,15 +85,12 @@
 			<if test="available != null" >
 				and available = #{available}
 			</if>
-			<if test="roleType != null" >
-				and role_type = #{roleType}
-			</if>
 		</where>
 		ORDER BY id
 	</sql>
 	
 	
-	<select id="findSelective" parameterType="SysRole" resultMap="BaseResultMap">
+	<select id="findSelective" parameterType="SysRole" resultType="SysRole">
 		select 
 		<include refid="Base_Column_List" />
 		from sys_role
@@ -106,7 +98,7 @@
 	</select>
 
 
-	<select id="findPageSelective" parameterType="SysRole" resultMap="BaseResultMap">
+	<select id="findPageSelective" parameterType="SysRole" resultType="SysRole">
 		select 
 		<include refid="Base_Column_List" />
 		from sys_role

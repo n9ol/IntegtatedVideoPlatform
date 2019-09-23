@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 格式转换_Servlet
+ * 视频格式转换-file工程文件路径_Servlet
  * 
  * @author 田杰熠
  *
@@ -30,16 +30,25 @@ public class FormatConversionServlet extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 
 		String path = request.getParameter("path");
-		if (path == null)
+		if (path == null) {
 			path = "/upload";
-		String uploadPath = request.getSession().getServletContext().getRealPath(path);
-		String filePath = request.getParameter("filePath");
-		String id = request.getParameter("id");
-		String webpath = request.getParameter("webpath");
-		String filePath1 = filePath.substring(0, filePath.lastIndexOf("."));
-		boolean isok = VideoTranscodingUtil.videoTranscodeUpload(uploadPath + filePath, filePath1 + ".flv",
-				uploadPath + filePath1 + ".jpg", id, webpath);
-		response.getWriter().append("" + isok);
+		}
+		final String uploadPath = request.getSession().getServletContext().getRealPath(path);
+		final String filePath = request.getParameter("filePath");
+		final String id = request.getParameter("id");
+		final String webpath = request.getParameter("webpath");
+		final String filePath1 = filePath.substring(0, filePath.lastIndexOf("."));
+
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				VideoTranscodingUtil.videoTranscodeUpload(uploadPath + filePath, filePath1 + ".flv",
+						uploadPath + filePath1 + ".jpg", id, webpath);
+				super.run();
+			}
+		};
+		thread.start();
+		response.getWriter().append("" + true);
 	}
 
 	@Override

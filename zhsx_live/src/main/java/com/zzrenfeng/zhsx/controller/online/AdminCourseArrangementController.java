@@ -116,11 +116,7 @@ public class AdminCourseArrangementController extends BaseController {
 		Page<SysSchool> pageInfo = sysSchoolService.findPageSelective(sysSchool, p, 20);
 		int pages = pageInfo.getPages();// 总页数
 		List<SysSchool> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
-		hm.put("total", total);
-		hm.put("pageSize", pageSize);
 		hm.put("pageNum", p);
 		hm.put("pages", pages);
 		hm.put("lists", lists);
@@ -461,16 +457,8 @@ public class AdminCourseArrangementController extends BaseController {
 		List<SysDict> sysDicts = sysDictService.findSelective(sysDict);
 		model.addAttribute("sysDicts", sysDicts);
 
-		// 获得学校
+		// 获得学校 - 用于辅教室的选择(可选择所有学校)
 		SysSchool school = new SysSchool();
-		String bak1 = getUserBak1();
-		String bak2 = getUserBak2();
-		if (!bak1.equals(User.bak1_no) && !bak1.equals(User.bak1_operator)) {
-			school.setAuthority(bak1);
-			List<String> ids = userService.getUserSchoolIds(bak1, bak2, getUserSchoolId());
-			if (ids != null && ids.size() > 0)
-				school.setIds(ids);
-		}
 		List<SysSchool> schoolList = sysSchoolService.findSelective(school);
 		model.addAttribute("schoolList", schoolList);
 
@@ -613,14 +601,6 @@ public class AdminCourseArrangementController extends BaseController {
 
 		// 获得学校
 		SysSchool school = new SysSchool();
-		String bak1 = getUserBak1();
-		String bak2 = getUserBak2();
-		if (!bak1.equals(User.bak1_no) && !bak1.equals(User.bak1_operator)) {
-			school.setAuthority(bak1);
-			List<String> ids = userService.getUserSchoolIds(bak1, bak2, getUserSchoolId());
-			if (ids != null && ids.size() > 0)
-				school.setIds(ids);
-		}
 		List<SysSchool> schoolList = sysSchoolService.findSelective(school);
 		model.addAttribute("schoolList", schoolList);
 
@@ -758,16 +738,8 @@ public class AdminCourseArrangementController extends BaseController {
 		List<LoClassTime> loClassTimes = loClassTimeService.findSelective(loClassTime);
 		model.addAttribute("loClassTimes", loClassTimes);
 
-		// 获得学校
+		// 获得学校- 辅教室学校选择开放为所有学校都可以选择
 		SysSchool school = new SysSchool();
-		String bak1 = getUserBak1();
-		String bak2 = getUserBak2();
-		if (!bak1.equals(User.bak1_no) && !bak1.equals(User.bak1_operator)) {
-			school.setAuthority(bak1);
-			List<String> ids = userService.getUserSchoolIds(bak1, bak2, getUserSchoolId());
-			if (ids != null && ids.size() > 0)
-				school.setIds(ids);
-		}
 		List<SysSchool> schoolList = sysSchoolService.findSelective(school);
 		model.addAttribute("schoolList", schoolList);
 

@@ -6,8 +6,8 @@
 <!-- <#global ctx=rc.contextPath /> -->
 <link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
-<link rel="stylesheet" type="text/css" href="${ctx}/css/courRes.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/common/webuploader/webuploader.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/courRes.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/webuploader/webuploader.css">
 </head>
 <body>
 	<div class="box clear">
@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class="box_nav_sou clear">
-				<input type="search" id="searchval" style="width: 210px; outline: none; border: none; background-color: #f1f2f4;" placeholder="文件名/专业/科目/版本/上下册" />
+				<input type="search" id="searchval" style="width: 210px; outline: none; border: none; background-color: #f1f2f4;" placeholder="文件名/年级/科目/版本/上下册" />
 				<i class="layui-icon" style="color: gray; line-height: 40px; float: right; margin-right: 20px; margin-top: 3px;" id="search">&#xe615;</i>
 			</div>
 			<div class="box_nav_bianji">
@@ -41,11 +41,11 @@
 				</div>
 				<div class="box_nav_xbs btn">
 					<a href="javascript:void(0);" class="b_button" onclick="batchEdit();">
-						<i class="layui-icon" style="color: #4E97FF;">&#xe642;</i>
+						<i class="layui-icon btnColor">&#xe642;</i>
 						<span>编辑</span>
 					</a>
 					<a href="javascript:void(0);" class="b_button border_left" onclick="batchDel();">
-						<i class="layui-icon" style="color: #4E97FF;">&#xe640;</i>
+						<i class="layui-icon btnColor" >&#xe640;</i>
 						<span>删除</span>
 					</a>
 				</div>
@@ -69,16 +69,16 @@
 							</span>
 							<span class="text1">文件名</span>
 						</li>
-						<li class="size" style="width: 7%;">
-							<span class="text2">专业</span>
+						<li class="size" style="width: 8%;">
+							<span class="text2">年级</span>
 						</li>
-						<li class="size" style="width: 7%;">
+						<li class="size" style="width: 8%;">
 							<span class="text2">科目</span>
 						</li>
-						<li class="size" style="width: 7%;">
+						<li class="size" style="width: 8%;">
 							<span class="text2">版本</span>
 						</li>
-						<li class="size" style="width: 7%;">
+						<li class="size" style="width: 8%;">
 							<span class="text2">上下册</span>
 						</li>
 						<li class="size" style="width: 8%;">

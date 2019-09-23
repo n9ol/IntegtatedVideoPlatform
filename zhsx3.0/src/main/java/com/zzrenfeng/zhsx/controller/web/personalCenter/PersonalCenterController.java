@@ -19,13 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.github.pagehelper.Page;
 import com.zzrenfeng.zhsx.controller.base.BaseController;
 import com.zzrenfeng.zhsx.model.CourResource;
+import com.zzrenfeng.zhsx.model.LoClassTime;
 import com.zzrenfeng.zhsx.model.LoPgCour;
 import com.zzrenfeng.zhsx.model.LoSchedule;
 import com.zzrenfeng.zhsx.model.PgPjinfo;
 import com.zzrenfeng.zhsx.model.SysHistory;
 import com.zzrenfeng.zhsx.model.WebPj;
-import com.zzrenfeng.zhsx.model.eclassbrand.course.CourseSchedule;
-import com.zzrenfeng.zhsx.model.eclassbrand.course.CourseScheduleBigTime;
 import com.zzrenfeng.zhsx.service.CourResourceService;
 import com.zzrenfeng.zhsx.service.LoClassTimeService;
 import com.zzrenfeng.zhsx.service.LoPgCourService;
@@ -35,8 +34,7 @@ import com.zzrenfeng.zhsx.service.OffLineVideoResourcesService;
 import com.zzrenfeng.zhsx.service.PgPjinfoService;
 import com.zzrenfeng.zhsx.service.SysHistoryService;
 import com.zzrenfeng.zhsx.service.WebPjService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleBigTimeService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleService;
+import com.zzrenfeng.zhsx.util.DateUtil;
 import com.zzrenfeng.zhsx.util.MessageUtils;
 import com.zzrenfeng.zhsx.util.WriterUtils;
 
@@ -69,11 +67,7 @@ public class PersonalCenterController extends BaseController {
 	@Resource
 	private SysHistoryService sysHistoryService;
 	@Resource
-	private CourseScheduleService courseScheduleService;
-	@Resource
-	private CourseScheduleBigTimeService courseScheduleBigTimeService;
-	@Resource
-	private Environment env;
+	private Environment environment;
 
 	/**
 	 * 进入个人中心页面
@@ -85,9 +79,9 @@ public class PersonalCenterController extends BaseController {
 	 */
 	@RequestMapping("/mstd_geren")
 	public String mstd_geren(Model model, String rapidTAG) {
-		String isAutomaticRecording = env.getProperty("is.automatic.recording");
-		model.addAttribute("isAutomaticRecording", isAutomaticRecording);
+		String isAutomaticRecording = environment.getProperty("is.automatic.recording");
 		model.addAttribute("rapidTAG", rapidTAG);
+		model.addAttribute("isAutomaticRecording", isAutomaticRecording);
 		return "/personalCenter/mstd_geren";
 	}
 
@@ -99,24 +93,27 @@ public class PersonalCenterController extends BaseController {
 	 */
 	@RequestMapping("/geren_pingkejilu")
 	public String geren_pingkejilu(Model model, Integer p) {
+
 		return "/personalCenter/geren_pingkejilu";
 	}
 
 	@RequestMapping("/getRecord")
 	public String getRecord(Model model, Integer p) {
-		if (p == null) {
+		if (p == null)
 			p = 1;
-		}
-		String userId = getUserId();
-		Page<WebPj> pageInfo = webPjService.listPersonalWebPjRecord(userId, p, 6);
-		List<WebPj> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
+		String userId = getShiroUser().getId();
+
+		Page<Map<String, String>> pageInfo = webPjService.findPjRecord(userId, p, 6);
+
+		int pages = pageInfo.getPages(); // 总页数
+		long total = pageInfo.getTotal();
+		List<Map<String, String>> lists = pageInfo.getResult();
+		model.addAttribute("pages", pages);
 		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("lists", lists);
 		model.addAttribute("pageNum", p);
+
 		return "/personalCenter/geren_pingkejilu_data";
 	}
 
@@ -143,13 +140,10 @@ public class PersonalCenterController extends BaseController {
 		Page<Map<String, String>> pageInfo = sysHistoryService.findWatchRecord(m, p, 6);
 
 		int pages = pageInfo.getPages(); // 总页数
-		List<Map<String, String>> lists = pageInfo.getResult();
 		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
+		List<Map<String, String>> lists = pageInfo.getResult();
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
 		model.addAttribute("pageNum", p);
 
@@ -194,13 +188,10 @@ public class PersonalCenterController extends BaseController {
 		Page<Map<String, String>> pageInfo = sysHistoryService.findCollectRecord(m, p, 6);
 
 		int pages = pageInfo.getPages(); // 总页数
-		List<Map<String, String>> lists = pageInfo.getResult();
 		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
+		List<Map<String, String>> lists = pageInfo.getResult();
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
 		model.addAttribute("pageNum", p);
 
@@ -245,13 +236,30 @@ public class PersonalCenterController extends BaseController {
 	 */
 	@RequestMapping("/geren_kechengbiao")
 	public String geren_kechengbiao(Model model) throws ParseException {
-		CourseSchedule courseSchedule = new CourseSchedule(getUserId());
-		List<CourseSchedule> listCourseSchedule = courseScheduleService.listCourseSchedule(courseSchedule);
-		List<CourseScheduleBigTime> listCourseScheduleBigTime = courseScheduleBigTimeService.findAll();
-		courseScheduleBigTimeService.bigSectionOfDayStringFrombigSectionOfDay(listCourseScheduleBigTime);
 
-		model.addAttribute("listCourseSchedule", listCourseSchedule);
-		model.addAttribute("listCourseScheduleBigTime", listCourseScheduleBigTime);
+		Map<String, Object> s = loTermTimeService.getCurrTermTimeWeeks(getUserSchoolId());
+		if (s != null && s.size() > 0) {
+			// Integer weeks = (Integer) s.get("weeks");
+			String termTimeId = (String) s.get("termTimeId");
+
+			Map<String, Object> hm = DateUtil.getOneWeekDate(new Date(), "yyyy-MM-dd");
+
+			LoSchedule loSchedule = new LoSchedule();
+			// loSchedule.setWeeks(weeks);
+			loSchedule.setStartDate((String) hm.get("SundayDate"));
+			loSchedule.setEndDate((String) hm.get("SaturdayDate"));
+			loSchedule.setUserId(getUserId());
+			List<LoSchedule> loSchedules = loScheduleService.findSelective(loSchedule);
+			model.addAttribute("loSchedules", loSchedules);
+			model.addAttribute("totalWeeks", s.get("totalWeeks"));
+			if (termTimeId != null) {
+				LoClassTime classTime = new LoClassTime();
+				classTime.setTermTimeId(termTimeId);
+				List<LoClassTime> classTimes = loClassTimeService.findSelective(classTime);
+				model.addAttribute("classTimes", classTimes);
+			}
+		}
+
 		return "/personalCenter/geren_kechengbiao";
 	}
 
@@ -287,7 +295,6 @@ public class PersonalCenterController extends BaseController {
 		CourResource courRes = new CourResource();
 		courRes.setUploadPersonId(getUserId());
 		courRes.setSortord("time");
-		courRes.setState("Y");
 		List<CourResource> courresList = courResourceService.findSelective(courRes);
 		model.addAttribute("courresList", courresList);
 		model.addAttribute("pjInfoId", pjInfoId);
@@ -350,15 +357,12 @@ public class PersonalCenterController extends BaseController {
 		}
 		Page<LoSchedule> pageInfo = loScheduleService.findMyPgLoSchedule(getUserId(), p);
 		List<LoSchedule> loSchedules = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		int pages = pageInfo.getPages();
+		long total = pageInfo.getTotal();
 
 		model.addAttribute("loSchedules", loSchedules);
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("pageNum", p);
 		return "/personalCenter/myPgLoSchedule";
 	}

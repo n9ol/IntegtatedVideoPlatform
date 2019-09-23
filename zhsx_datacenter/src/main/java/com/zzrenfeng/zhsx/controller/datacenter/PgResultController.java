@@ -1,6 +1,6 @@
 package com.zzrenfeng.zhsx.controller.datacenter;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.github.pagehelper.Page;
 import com.zzrenfeng.zhsx.controller.base.BaseController;
+import com.zzrenfeng.zhsx.model.LoSchedule;
 import com.zzrenfeng.zhsx.model.SysDict;
-import com.zzrenfeng.zhsx.model.WebPj;
 import com.zzrenfeng.zhsx.service.LoScheduleService;
 import com.zzrenfeng.zhsx.service.SysDictService;
 import com.zzrenfeng.zhsx.service.WebPjService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleService;
 
 /**
  * 数据中心 - 直播课程评估结果查看 控制器
@@ -35,8 +34,6 @@ public class PgResultController extends BaseController {
 	private LoScheduleService loScheduleService;
 	@Resource
 	private SysDictService sysDictService;
-	@Resource
-	private CourseScheduleService courseScheduleService;
 
 	/**
 	 * 进入评估列表页面
@@ -47,17 +44,29 @@ public class PgResultController extends BaseController {
 	public String sjzxEvaluationResult(Model model, Integer p, String gradeId, String subjectId, String search) {
 
 		// 获得年级
-		List<SysDict> grades = sysDictService.listSpecialty();
+		SysDict dict = new SysDict();
+		dict.setKeyname("G");
+		List<SysDict> grades = sysDictService.findSelective(dict);
 		model.addAttribute("grades", grades);
 
 		// 获得科目 去重复
-		List<SysDict> listSubject = sysDictService.listSubject();
-		model.addAttribute("subjects", listSubject);
+		List<SysDict> subjects = new ArrayList<SysDict>();
+		dict.setKeyname("S");
+		List<SysDict> subject = sysDictService.findSelective(dict);
+		String tem = "1";
+		for (SysDict o : subject) {
+			if (!tem.contains(o.getValue())) {
+				subjects.add(o);
+			}
+			tem += o.getValue();
+		}
+		model.addAttribute("subjects", subjects);
 
 		model.addAttribute("p", p);
 		model.addAttribute("gradeId", gradeId);
 		model.addAttribute("subjectId", subjectId);
 		model.addAttribute("search", search);
+
 		return "/web/datacenter/pgresult/sjzx_evaluationResult";
 	}
 
@@ -70,45 +79,40 @@ public class PgResultController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/sjzx_evaluationResultData")
-	public String sjzx_evaluationResultData(Model model, Integer p, WebPj webPj, String gradeId, String subjectId) {
-		if (p == null) {
+	public String sjzx_evaluationResultData(Model model, Integer p, LoSchedule loSchedule) {
+
+		if (p == null)
 			p = 1;
-		}
-		webPj.setCourScheduleSpecialtyName(gradeId);
-		webPj.setCourScheduleSubjectName(subjectId);
-		Page<WebPj> pageInfo = webPjService.listWebPjResult(webPj, p, 6);
-		List<WebPj> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-		model.addAttribute("pageNum", p);
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
+		model.addAttribute("pageNum", p);// 当前页
+
+		loSchedule.setTimeSorting("G");
+		loSchedule.setIspj("Y");
+		loSchedule.setShootingWay("DESC");
+		Page<LoSchedule> pageInfo = loScheduleService.findPageSelective(loSchedule, p, 6);
+		int pages = pageInfo.getPages();// 总页数
+		List<LoSchedule> lists = pageInfo.getResult();
+		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
+
 		return "/web/datacenter/pgresult/sjzx_evaluationResultData";
 	}
 
 	/**
 	 * 查看评估结果
 	 * 
-	 * @param model
-	 * @param id
-	 * @param p,gradeId,subjectId,search
-	 *            用于从数据中心查看评估结果时,点击返回按钮查询信息一致
-	 * @param addTime
-	 * @param isNotGoBack
-	 *            当从个人中心进入评估结果查看页面时不显示返回键
 	 * @return
 	 */
 	@RequestMapping("/PgResult")
 	public String PgResult(Model model, @RequestParam String id, Integer p, String gradeId, String subjectId,
-			String search, Date addTime, String isNotGoBack) {
+			String search, String isReturn) {
 		model.addAttribute("id", id);
+		model.addAttribute("duke", "D");
+
 		model.addAttribute("p", p);
 		model.addAttribute("gradeId", gradeId);
 		model.addAttribute("subjectId", subjectId);
 		model.addAttribute("search", search);
-		model.addAttribute("addTime", addTime);
-		model.addAttribute("isNotGoBack", isNotGoBack);
+		model.addAttribute("isReturn", isReturn);
 		return "/web/datacenter/pgresult/PgResult";
 	}
 

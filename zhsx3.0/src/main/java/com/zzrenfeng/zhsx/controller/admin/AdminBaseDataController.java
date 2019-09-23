@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -29,18 +28,12 @@ import com.zzrenfeng.zhsx.model.SysClassroom;
 import com.zzrenfeng.zhsx.model.SysDict;
 import com.zzrenfeng.zhsx.model.SysSchool;
 import com.zzrenfeng.zhsx.model.User;
-import com.zzrenfeng.zhsx.model.base.BaseTeachingBuilding;
 import com.zzrenfeng.zhsx.service.LoFscheduleService;
 import com.zzrenfeng.zhsx.service.LoScheduleService;
 import com.zzrenfeng.zhsx.service.SysClassroomService;
 import com.zzrenfeng.zhsx.service.SysDictService;
 import com.zzrenfeng.zhsx.service.SysSchoolService;
 import com.zzrenfeng.zhsx.service.UserService;
-import com.zzrenfeng.zhsx.service.base.BaseTeachingBuildingService;
-import com.zzrenfeng.zhsx.service.eclassbrand.classroom.ClassroomProfileService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleService;
-import com.zzrenfeng.zhsx.service.eclassbrand.social.SocialExam2Service;
-import com.zzrenfeng.zhsx.service.eclassbrand.social.SocialExamService;
 import com.zzrenfeng.zhsx.util.DownloadUtils;
 import com.zzrenfeng.zhsx.util.ExcelUtil;
 import com.zzrenfeng.zhsx.util.MessageUtils;
@@ -75,18 +68,6 @@ public class AdminBaseDataController extends BaseController {
 	private String platformLevel;
 	@Resource
 	private String platformLevelId;
-	@Resource
-	private Environment environment;
-	@Resource
-	private BaseTeachingBuildingService baseTeachingBuildingService;
-	@Resource
-	private CourseScheduleService courseScheduleService;
-	@Resource
-	private SocialExamService socialExamService;
-	@Resource
-	private SocialExam2Service socialExam2Service;
-	@Resource
-	private ClassroomProfileService classroomProfileService;
 
 	/**
 	 * 进入区域管理页面
@@ -393,7 +374,7 @@ public class AdminBaseDataController extends BaseController {
 	}
 
 	/**
-	 * 修改年级科目、版本
+	 * 修改年级科目、版本、设备类型
 	 * 
 	 * @param response
 	 * @param sysDict
@@ -447,19 +428,15 @@ public class AdminBaseDataController extends BaseController {
 	 */
 	@RequestMapping("/version")
 	public String version(HttpServletRequest request, Model model, Integer p) {
-		if (p == null) {
+		if (p == null)
 			p = 1;
-		}
+		model.addAttribute("pageNum", p);// 当前页
+
 		SysDict version = new SysDict();
 		version.setKeyname(SysDict.KEYNAME_VERSION);
 		Page<SysDict> pageInfo = sysDictService.findPageSelective(version, p, 12);
+		int pages = pageInfo.getPages();// 总页数
 		List<SysDict> lists = pageInfo.getResult();
-		int pages = pageInfo.getPages();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
 		return "/admin/base/version";
@@ -529,6 +506,7 @@ public class AdminBaseDataController extends BaseController {
 
 	/**
 	 * 批量删除版本信息
+	 * 批量删除设备管理信息,没有修改方法(20180730)
 	 * 
 	 * @param response
 	 * @param del_id
@@ -569,21 +547,10 @@ public class AdminBaseDataController extends BaseController {
 				sysSchool.setIds(ids);
 		}
 		Page<SysSchool> pageInfo = sysSchoolService.findPageSelective(sysSchool, p, 12);
-
+		int pages = pageInfo.getPages();// 总页数
 		List<SysSchool> lists = pageInfo.getResult();
-		int pages = pageInfo.getPages();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
-
-		// 是否为校级平台
-		String schoolLevel = environment.getProperty("school.level");
-		model.addAttribute("schoolLevel", schoolLevel);
-
 		return "/admin/base/sysSchool";
 	}
 
@@ -595,45 +562,19 @@ public class AdminBaseDataController extends BaseController {
 	 */
 	@RequestMapping("/addSchool")
 	public String addSchool(Model model) {
-		SysDict sysDict = new SysDict();
 		String bak1 = getUserBak1();
 		String bak2 = getUserBak2();
-		if (!bak1.equals(User.bak1_no) && !bak1.equals(User.bak1_operator)) {
-			SysDict sysDict2 = sysDictService.findByKey(bak2);
-			if (sysDict2 != null) {
-				SysDict sysDict3 = sysDictService.findByKey(sysDict2.getPid());
-				if (sysDict3 != null) {
-					sysDict.setId(sysDict3.getPid());
-				}
-			}
-		}
 
 		// 获取平台对应地区
-		if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {
-			sysDict.setKeyname("P");
-		} else if (platformLevel.equals("P")) {
-			sysDict.setKeyname("C");
-			sysDict.setPid(platformLevelId);
-			model.addAttribute("provinceId", platformLevelId);
-		} else if (platformLevel.equals("C")) {
-			sysDict.setKeyname("A");
-			sysDict.setPid(platformLevelId);
-			SysDict sysDict2 = sysDictService.findByKey(platformLevelId);
-			model.addAttribute("provinceId", sysDict2.getPid());
-			model.addAttribute("cityId", platformLevelId);
-		} else if (platformLevel.equals("A")) {
-			sysDict.setKeyname("T");
-			sysDict.setPid(platformLevelId);
-			SysDict sysDict2 = sysDictService.findByKey(platformLevelId);
-			SysDict sysDict3 = sysDictService.findByKey(sysDict2.getPid());
-			model.addAttribute("provinceId", sysDict3.getPid());
-			model.addAttribute("cityId", sysDict2.getPid());
-			model.addAttribute("countyId", platformLevelId);
-		}
+		List<SysDict> listAreaInfo = sysDictService.listAreaInfo(bak1, bak2);
+		model.addAttribute("sysDicts", listAreaInfo);
 		model.addAttribute("platformLevel", platformLevel);
+		model.addAttribute("platformLevelId", platformLevelId);
 
-		List<SysDict> sysDicts = sysDictService.findSelective(sysDict);
-		model.addAttribute("sysDicts", sysDicts);
+		// 如果平台等级为区县或者乡镇级别,或者 用户管理等级为区县或者校级时 -- 用户添加学校时不需要进行地区选择 直接给出默认值
+		model.addAttribute("provinceId", sysDictService.findByKey(sysDictService.findByKey(bak2).getPid()).getPid());
+		model.addAttribute("cityId", sysDictService.findByKey(bak2).getPid());
+		model.addAttribute("countyId", bak2);
 
 		return "/admin/base/addSchool";
 	}
@@ -987,17 +928,8 @@ public class AdminBaseDataController extends BaseController {
 		Page<SysClassroom> pageInfo = sysClassroomService.findPageSelective(classroom, p, 12);
 		int pages = pageInfo.getPages(); // 总页数
 		List<SysClassroom> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
-
-		// 获取是否为校级平台
-		String schoollevel = environment.getProperty("school.level");
-		model.addAttribute("schoollevel", schoollevel);
 		return "/admin/base/classRoom";
 	}
 
@@ -1009,8 +941,6 @@ public class AdminBaseDataController extends BaseController {
 	 */
 	@RequestMapping("/addclassRoom")
 	public String addclassRoom(Model model) {
-
-		// 获取学校
 		SysSchool school = new SysSchool();
 		String bak1 = getUserBak1();
 		String bak2 = getUserBak2();
@@ -1022,16 +952,6 @@ public class AdminBaseDataController extends BaseController {
 		}
 		List<SysSchool> schools = sysSchoolService.findSelective(school);
 		model.addAttribute("schools", schools);
-
-		// 获取教学楼
-		List<BaseTeachingBuilding> listBuilding = baseTeachingBuildingService.findAll();
-		model.addAttribute("listBuilding", listBuilding);
-
-		// 获取是否为校级平台
-		String schoollevel = environment.getProperty("school.level");
-		String schoolId = environment.getProperty("school.id");
-		model.addAttribute("schoollevel", schoollevel);
-		model.addAttribute("schoolId", schoolId);
 		return "/admin/base/addclassRoom";
 	}
 
@@ -1112,16 +1032,6 @@ public class AdminBaseDataController extends BaseController {
 		}
 		List<SysSchool> schools = sysSchoolService.findSelective(school);
 		model.addAttribute("schools", schools);
-
-		// 获取教学楼
-		List<BaseTeachingBuilding> listBuilding = baseTeachingBuildingService.findAll();
-		model.addAttribute("listBuilding", listBuilding);
-
-		// 获取是否为校级平台
-		String schoollevel = environment.getProperty("school.level");
-		String schoolId = environment.getProperty("school.id");
-		model.addAttribute("schoollevel", schoollevel);
-		model.addAttribute("schoolId", schoolId);
 		return "/admin/base/editClassRoom";
 	}
 
@@ -1140,13 +1050,6 @@ public class AdminBaseDataController extends BaseController {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 			e.printStackTrace();
 		}
-		// 同步修改上课课表教室名称
-		String classroomId = sysClassroom.getId();
-		String classroomName = sysClassroom.getClassName();
-		courseScheduleService.updateClassroomNameByClassroomId(classroomId, classroomName);
-		socialExamService.updateClassroomName(classroomId, classroomName);
-		classroomProfileService.updateClassroomName(classroomId, classroomName);
-		socialExam2Service.updateClassroomName(classroomId, classroomName);
 	}
 
 	/**
@@ -1194,6 +1097,20 @@ public class AdminBaseDataController extends BaseController {
 	 */
 	@RequestMapping("/batchAddClassRoom")
 	public String batchAddClassRoom(Model model) {
+
+		// SysSchool school = new SysSchool();
+		// String bak1 = getUserBak1();
+		// String bak2 = getUserBak2();
+		// if (!bak1.equals(User.bak1_no) && !bak1.equals(User.bak1_operator)) {
+		// school.setAuthority(bak1);
+		// List<String> ids = userService.getUserSchoolIds(bak1, bak2,
+		// getUserSchoolId());
+		// if (ids != null && ids.size() > 0)
+		// school.setIds(ids);
+		// }
+		// List<SysSchool> schools = sysSchoolService.findSelective(school);
+		// model.addAttribute("schools", schools);
+
 		return "/admin/base/batchAddClassRoom";
 	}
 
@@ -1206,7 +1123,8 @@ public class AdminBaseDataController extends BaseController {
 	 * @param classroom
 	 */
 	@RequestMapping("/batchInsertClassRoom")
-	public void batchInsertClassRoom(HttpServletRequest request, HttpServletResponse response, String filePath) {
+	public void batchInsertClassRoom(HttpServletRequest request, HttpServletResponse response, String filePath,
+			String schoolId) {
 		String uploadPath = request.getSession().getServletContext().getRealPath("/upload");
 		filePath = uploadPath + filePath;
 		Map<String, Object> hm = null;
@@ -1223,7 +1141,7 @@ public class AdminBaseDataController extends BaseController {
 		Row rowHead = (Row) hm.get("rowHead");
 		Integer totalRowNum = (Integer) hm.get("totalRowNum");
 		// 判断表头是否正确
-		if (rowHead.getPhysicalNumberOfCells() != 11) {
+		if (rowHead.getPhysicalNumberOfCells() != 8) {
 			WriterUtils.toHtml(response, "表头的数量不对,请下载导入模板");
 		} else {
 			String className = "";
@@ -1234,19 +1152,14 @@ public class AdminBaseDataController extends BaseController {
 			String uid = "";
 			String clientIp = "";
 			String schoolName = "";
-			String teachingBuildingName = "";
-			String bak2 = "";
-			String studentUrl = "";
 
 			List<SysClassroom> sList = new ArrayList<SysClassroom>();
 			StringBuilder errorMessage = new StringBuilder();
 			StringBuilder classCodes = new StringBuilder();
 			StringBuilder ipClassCodes = new StringBuilder();
-			SysClassroom classroom = null;
-			SysSchool school = null;
-			BaseTeachingBuilding build = null;
 			for (int i = 1; i <= totalRowNum; i++) {
-				classroom = new SysClassroom();
+				SysClassroom classroom = new SysClassroom();
+				classroom.setSchoolId(schoolId);
 				classroom.setBak("Y");
 				// 获得第i行对象
 				Row row = sheet.getRow(i);
@@ -1333,7 +1246,7 @@ public class AdminBaseDataController extends BaseController {
 					continue;
 				}
 
-				school = new SysSchool();
+				SysSchool school = new SysSchool();
 				school.setSchoolName(schoolName);
 				List<SysSchool> schools = sysSchoolService.findSelective(school);
 				if (schools == null || schools.size() <= 0) {
@@ -1341,30 +1254,6 @@ public class AdminBaseDataController extends BaseController {
 					continue;
 				}
 				classroom.setSchoolId(schools.get(0).getId());
-
-				cell = row.getCell((short) 8);
-				teachingBuildingName = ExcelUtil.formatCell(cell);
-				if (teachingBuildingName == null || teachingBuildingName.equals("")) {
-					errorMessage.append("第" + (i + 1) + "行的教学楼名称不能为空<br>");
-					continue;
-				}
-				build = new BaseTeachingBuilding();
-				build.setBuildName(teachingBuildingName);
-				List<BaseTeachingBuilding> listBuild = baseTeachingBuildingService.findSelective(build);
-				if (listBuild == null || listBuild.size() <= 0) {
-					errorMessage.append("第" + (i + 1) + "行的教学楼不存在<br>");
-					continue;
-				}
-				classroom.setTeachingBuildingId(listBuild.get(0).getId());
-				classroom.setTeachingBuildingName(teachingBuildingName);
-
-				cell = row.getCell((short) 9);
-				bak2 = ExcelUtil.formatCell(cell);
-				classroom.setBak2(bak2);
-
-				cell = row.getCell((short) 10);
-				studentUrl = ExcelUtil.formatCell(cell);
-				classroom.setStudentUrl(studentUrl);
 
 				sList.add(classroom);
 			}
@@ -1375,11 +1264,10 @@ public class AdminBaseDataController extends BaseController {
 				}
 
 				sysClassroomService.insertBatch(sList);
-				String errorMessageString = errorMessage.toString();
-				if (errorMessageString == null || "".equals(errorMessageString)) {
+				if (errorMessage.toString() == null || errorMessage.toString().equals("")) {
 					WriterUtils.toHtml(response, MessageUtils.SUCCESS);
 				} else {
-					WriterUtils.toHtml(response, errorMessageString);
+					WriterUtils.toHtml(response, errorMessage.toString());
 				}
 			} catch (Exception e) {
 				WriterUtils.toHtml(response, MessageUtils.FAilURE);
@@ -1459,5 +1347,86 @@ public class AdminBaseDataController extends BaseController {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 		}
 
+	}
+	/**
+	 * 获取设备类型列表
+	 * @param request
+	 * @param model
+	 * @param p
+	 * @return
+	 */
+	@RequestMapping("/deviceType")
+	public String deviceType(HttpServletRequest request, Model model, Integer p) {
+		if (p == null)
+			p = 1;
+		model.addAttribute("pageNum", p);// 当前页
+
+		SysDict version = new SysDict();
+		version.setKeyname(SysDict.KEYNAME_DEVICE_TYPE);
+		Page<SysDict> pageInfo = sysDictService.findPageSelective(version, p, 12);
+		int pages = pageInfo.getPages();// 总页数
+		List<SysDict> lists = pageInfo.getResult();
+		model.addAttribute("pages", pages);
+		model.addAttribute("lists", lists);
+		return "/admin/base/deviceType";
+	}
+	
+	/**
+	 * 进入添加设备类型页面
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/addDeviceType")
+	public String addDeviceType() {
+		return "/admin/base/addDeviceType";
+	}
+	/**
+	 * 添加设备信息到数据库
+	 * 
+	 * @param response
+	 */
+	@RequestMapping("/insertDeviceType")
+	public void insertDeviceType(HttpServletResponse response, @Validated SysDict sysDict) {
+		Date date = new Date();
+		sysDict.setCreateTime(date);
+		sysDict.setModiyTime(date);
+		sysDict.setKeyname(SysDict.KEYNAME_DEVICE_TYPE);
+		try {
+			sysDictService.insert(sysDict);
+			WriterUtils.toHtml(response, MessageUtils.SUCCESS);
+		} catch (Exception e) {
+			WriterUtils.toHtml(response, MessageUtils.FAilURE);
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 删除设备类型信息
+	 * 
+	 * @param response
+	 * @param id
+	 */
+	@RequestMapping("/delDeviceType")
+	public void delDeviceType(HttpServletResponse response, String id) {
+		try {
+			sysDictService.deleteByKey(id);
+			WriterUtils.toHtml(response, MessageUtils.SUCCESS);
+		} catch (Exception e) {
+			WriterUtils.toHtml(response, MessageUtils.FAilURE);
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 进入教材版本编辑页面
+	 * 
+	 * @param response
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/editDeviceType")
+	public String editDeviceType(Model model, String id, String value, Integer sort) {
+		model.addAttribute("id", id);
+		model.addAttribute("value", value);
+		model.addAttribute("sort", sort);
+		return "/admin/base/editDeviceType";
 	}
 }

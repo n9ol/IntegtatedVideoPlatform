@@ -9,12 +9,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="format-detection" content="telephone=no">
-
         <#include "/commons/comAdmin.html" encoding="utf-8"/>
-		<link rel="stylesheet" type="text/css" href="${ctx}/common/bootstrap/css/bootstrap.css" media="all">
-        <link rel="stylesheet" type="text/css" href="${ctx}/common/global.css" media="all">
-        <link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
-
     </head>
 <body>
 <section class="layui-larry-box">
@@ -88,23 +83,23 @@
 		                           
 		                            </td>
 		                            <td>
-		                            	<a class="check_look" title="添加问题" href="javascript:question('${(l.id)!''}');" >
+		                            	<a class="btn layui-btn " title="添加问题" href="javascript:question('${(l.id)!''}');" >
 		                                    <i class="layui-icon">&#xe641;</i>&nbsp;添加问题
 		                                </a>
 		                                <#if l.isShown=='N'>
-		                                  <a class="check_look" title="发布" href="javascript:fabu('${(l.id)!''}');" >
+		                                  <a class="btn layui-btn" title="发布" href="javascript:fabu('${(l.id)!''}');" >
 						                    <i class="layui-icon">&#xe642;</i>&nbsp;发布
 						                </a>
 		                                </#if>
 		                                <#if l.isShown=='Y'>
-		                                  <a class="check_look" title="取消发布" href="javascript:cancelFabu('${(l.id)!''}');" >
+		                                  <a class="btn layui-btn" title="取消发布" href="javascript:cancelFabu('${(l.id)!''}');" >
 						                    <i class="layui-icon">&#xe642;</i>&nbsp;取消发布
 						                </a>
 		                                </#if>   
-		                                <a class="check_look" title="编辑" href="javascript:findById('${(l.id)!''}');" >
+		                                <a class="btn btn-info" title="编辑" href="javascript:findById('${(l.id)!''}');" >
 		                                    <i class="layui-icon">&#xe642;</i>&nbsp;编辑
 		                                </a>
-		                                <a class="check_look" title="删除" href="javascript:deleteById('${(l.id)!''}');">
+		                                <a class="btn btn-danger" title="删除" href="javascript:deleteById('${(l.id)!''}');">
 		                                    <i class="layui-icon">&#xe640;</i>&nbsp;删除
 		                                </a>
 		                            </td>
@@ -118,20 +113,11 @@
 		</div>
 	</div>
 </section>
-<#include "/commons/comPage.html" encoding="utf-8"/>
-<script type="text/javascript">
-	function turnPage(p) {
-	   	 var isShown = $("#isShown").val();
-		 var title = $("#title").val();
-		 var nickName = $("#nickName").val();
-	     window.location.href="${ctx}/questionnaire/questionnaire_list?p=${pageNum!'1'}&isShown="+isShown+"&title="+title+"&nickName="+nickName;
-	}
-</script>
-
+	<script type="text/javascript" src="${ctx}/common/layui/lay/modules/laypage.js"></script>
 <script type="text/javascript">
 
     layui.use(['form','upload'],function(){
-        var form = layui.form;
+        var form = layui.form();
         layui.upload({
             url: '' ,//上传接口
             success: function(res){//上传成功后的回调
@@ -148,6 +134,21 @@
    	   	 return false; //禁止 页面自动刷新
         });
     });
+    
+    var laypage = layui.laypage;
+	laypage({
+		  cont: "page",pages: "${pages!'1'}",curr: "${pageNum!'1'}",skip: false,skin: "molv",groups: 5, 
+		  jump: function(e, first){ 
+		    if(!first){ 
+		    	 var isShown = $("#isShown").val();
+		    	 var title = $("#title").val();
+		    	 var nickName = $("#nickName").val();
+			     window.location.href="${ctx}/questionnaire/questionnaire_list?p=${pageNum!'1'}&isShown="+isShown+"&title="+title+"&nickName="+nickName;
+		   	    
+		    }
+		  }
+	});
+	
 	function add(){
 		LayerOpen('添加', '900px', '500px', '${ctx}/questionnaire/addQuestionnaire');
 	}

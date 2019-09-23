@@ -70,13 +70,13 @@ public class DataCenterController extends BaseController {
 
 	@Resource
 	private SysDictService sysDictService;
-	
+
 	@Resource
 	private SysSchoolService sysSchoolService;
-	
+
 	@Resource
 	private String fileWebPath;
-	
+
 	@Resource
 	private String platformLevel;
 	@Resource
@@ -104,24 +104,13 @@ public class DataCenterController extends BaseController {
 	 */
 	@RequestMapping(value = "/dataCenterDetail")
 	public String dataCenterDetail(HttpServletRequest request, HttpServletResponse response, Model model) {
-		// int state = userRole();
-		// /*
-		// * 根据登录的角色来选择进入到那个页面 1.教研员 2.老师 3.领导
-		// */
-		// if (state == 1) {
-		//
-		// return "/web/datacenter/datacenter_detail_staff";
-		// } else if (state == 2) {
-		//
-		// return "/web/datacenter/datacenter_detail_teacher";
-		// } else if(state == 3 ){
-		//
-		// return "/web/datacenter/datacenter_detail_admin";
-		// }
-
+		String userType = getUserType();
+		if (User.userType_students.equals(userType)) {
+			return "/err/err403";
+		}
 		return "/web/datacenter/dataCenterDetail";
 	}
-	
+
 	/**
 	 * 教师贡献榜
 	 * 
@@ -205,13 +194,13 @@ public class DataCenterController extends BaseController {
 				String areaId = getUserBak2(); // 区县id
 				/* 获取登录用户的信息 */
 				String isadmin = getUserBak1(); // 管理员的种类
-				
+
 				String province = "";
 				String city = "";
 				SysDict areaDict = sysDictService.findByKey(areaId);// 区县信息
-				
-				paramMap = getparameterMap(areaDict,paramMap,province,city,areaId,regionId,isadmin);
-				
+
+				paramMap = getparameterMap(areaDict, paramMap, province, city, areaId, regionId, isadmin);
+
 				// else if (User.bak1_operator.equalsIgnoreCase(isadmin)) {//
 				// 运营商
 				// // 查看所有的，不要区域
@@ -805,13 +794,13 @@ public class DataCenterController extends BaseController {
 			for (int i = 0; i < 8; i++) {
 				data.add(0);
 			}
-			
+
 			m.put("teacherId", map.get("id"));
 			for (int i = 0; i < 8; i++) {
 				m.put("week", i);
 				List<Map<String, Object>> dataList = dataStatisticsMapper.KzScoreFormTheSameSchoolTeacher(m);
 				if (dataList != null && dataList.size() > 0) {
-					data.set(i,dataList.get(0).get("score"));
+					data.set(i, dataList.get(0).get("score"));
 				}
 			}
 
@@ -914,10 +903,9 @@ public class DataCenterController extends BaseController {
 		 * 
 		 */
 		Map<String, List<Integer>> resultMap = new TreeMap<String, List<Integer>>();
-		
+
 		/*
-		 * 周一：新手老师 - 特级教师
-		 * EG：周一：新手的平均得分,普通的平均得分,一级的平均得分,二级的平均得分,三级的平均得分,特级的平均得分
+		 * 周一：新手老师 - 特级教师 EG：周一：新手的平均得分,普通的平均得分,一级的平均得分,二级的平均得分,三级的平均得分,特级的平均得分
 		 */
 		Map<String, List<Integer>> tempMap = new HashMap<String, List<Integer>>();
 		// 周几
@@ -929,15 +917,17 @@ public class DataCenterController extends BaseController {
 		weeksDay.add(hm.get("WednesdayDate").toString());
 		weeksDay.add(hm.get("ThursdayDate").toString());
 		weeksDay.add(hm.get("FridayDate").toString());
-		
-		/*weeksDay.add(hm.get("SaturdayDate").toString());
-		weeksDay.add(hm.get("SundayDate").toString());*/
+
+		/*
+		 * weeksDay.add(hm.get("SaturdayDate").toString());
+		 * weeksDay.add(hm.get("SundayDate").toString());
+		 */
 
 		for (int j = 0; j < weeksDay.size(); j++) {
 			int avg1 = 0;// 新手老师的平均值
 			int avg2 = 0;// 普通教师的平均值
 			int avg3 = 0;// 一级老师的平均值
-			int avg4 = 0;// 二级老师的平均值 
+			int avg4 = 0;// 二级老师的平均值
 			int avg5 = 0;// 三级老师的平均值
 			int avg6 = 0;// 特级老师的平均值
 
@@ -1031,21 +1021,22 @@ public class DataCenterController extends BaseController {
 			tempList.add(avg6);
 			tempMap.put("周" + (j + 1), tempList);
 		}
-		
+
 		/*
-		 * 将数据格式转换成为前台所需要的格式
-		 * 将“周几对应各个等级老师的数据”转换成为“一个等级老师对应周一到周日的数据”
-		 * */
+		 * 将数据格式转换成为前台所需要的格式 将“周几对应各个等级老师的数据”转换成为“一个等级老师对应周一到周日的数据”
+		 */
 		List<Integer> week1 = tempMap.get("周1");
 		List<Integer> week2 = tempMap.get("周2");
 		List<Integer> week3 = tempMap.get("周3");
 		List<Integer> week4 = tempMap.get("周4");
 		List<Integer> week5 = tempMap.get("周5");
-		
-		/*List<Integer> week6 = tempMap.get("周6");
-		List<Integer> week7 = tempMap.get("周7");*/
-		
-		/*6个等级老师对应的数据，故循环6次*/
+
+		/*
+		 * List<Integer> week6 = tempMap.get("周6"); List<Integer> week7 =
+		 * tempMap.get("周7");
+		 */
+
+		/* 6个等级老师对应的数据，故循环6次 */
 		for (int k = 0; k < 6; k++) {
 			List<Integer> teacher = new ArrayList<>();// 教师
 			teacher.add(week1.get(k));
@@ -1053,10 +1044,11 @@ public class DataCenterController extends BaseController {
 			teacher.add(week3.get(k));
 			teacher.add(week4.get(k));
 			teacher.add(week5.get(k));
-			
-			/*teacher.add(week6.get(k));
-			teacher.add(week7.get(k));*/
-			
+
+			/*
+			 * teacher.add(week6.get(k)); teacher.add(week7.get(k));
+			 */
+
 			resultMap.put("teacher" + (k + 1), teacher);
 		}
 		model.addAttribute("resultMap", resultMap);
@@ -1729,7 +1721,6 @@ public class DataCenterController extends BaseController {
 		}
 
 		return "/web/datacenter/wj_questionnaire_" + searchType;
-
 	}
 
 	@RequestMapping("/addQuestionnaireResult")
@@ -1996,13 +1987,13 @@ public class DataCenterController extends BaseController {
 			/* 获取登录用户的信息 */
 			String isadmin = getUserBak1(); // 管理员的种类
 			paramMap.put("isadmin", isadmin);
-			
+
 			SysDict areaDict = sysDictService.findByKey(areaId);// 区县信息
-			
-			paramMap = getparameterMap(areaDict,paramMap,province,city,areaId,regionId,isadmin);
-			
+
+			paramMap = getparameterMap(areaDict, paramMap, province, city, areaId, regionId, isadmin);
+
 			listAVGEXP = webPjService.getLeaderCommonentAVGAndEXP(paramMap);// 获取省级区域所有老师的课前备课评估平均分以及EXP
-			
+
 			if (listAVGEXP != null && listAVGEXP.size() > 0) {
 
 				List<String> teacherList1 = new ArrayList<>();// 初级教师
@@ -2163,13 +2154,13 @@ public class DataCenterController extends BaseController {
 			/* 获取登录用户的信息 */
 			String isadmin = getUserBak1(); // 管理员的种类
 			paramMap.put("isadmin", isadmin);
-			
+
 			SysDict areaDict = sysDictService.findByKey(areaId);// 区县信息
-			
-			paramMap = getparameterMap(areaDict,paramMap,province,city,areaId,regionId,isadmin);
+
+			paramMap = getparameterMap(areaDict, paramMap, province, city, areaId, regionId, isadmin);
 
 			listAVGEXP = webPjService.getLeaderCommonentAVGAndEXPMiddle(paramMap);
-			
+
 			if (listAVGEXP != null && listAVGEXP.size() > 0) {
 
 				List<String> teacherList1 = new ArrayList<>();// 初级教师
@@ -2298,12 +2289,11 @@ public class DataCenterController extends BaseController {
 		/* 获取登录用户的信息 */
 		String isadmin = getUserBak1(); // 管理员的种类
 		paramMap.put("isadmin", isadmin);
-		
-		
+
 		SysDict areaDict = sysDictService.findByKey(areaId);// 区县信息
-		
-		paramMap = getparameterMap(areaDict,paramMap,province,city,areaId,regionId,isadmin);
-		
+
+		paramMap = getparameterMap(areaDict, paramMap, province, city, areaId, regionId, isadmin);
+
 		/*
 		 * 判断当前时间是在哪个学期 03.01-09.01 上学期是相对于本学期而言的 以时间点来计算：
 		 * 假如今天是09.29，上学期的计算点是09.01 假如今天是08.01，上学期的计算点是03.01
@@ -2421,10 +2411,10 @@ public class DataCenterController extends BaseController {
 		model.addAttribute("resultMap", resultMap);
 		return "/web/datacenter/leader_ranking_no10";
 	}
-	
+
 	/**
-	 * 获得处理过后的map信息   
-	 * 可以根据配置文件中的相关信息获取 不同级别平台信息，进而在平台控制相关显示
+	 * 获得处理过后的map信息 可以根据配置文件中的相关信息获取 不同级别平台信息，进而在平台控制相关显示
+	 * 
 	 * @param areaDict
 	 * @param paramMap
 	 * @param province
@@ -2434,66 +2424,63 @@ public class DataCenterController extends BaseController {
 	 * @param isadmin
 	 * @return
 	 */
-	private Map<String,Object> getparameterMap(SysDict areaDict,Map<String,Object> paramMap,String province,String city,String areaId,String regionId,String isadmin){
-		if(areaDict==null){//说明用户记录中的地区信息是不对的，不能通过这个地区信息来查看
-			if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {//当是国家级别时
-				//有省、市、县、校管理员
-				// 判断有哪些权限     最终是获得区域级别的id
-				
+	private Map<String, Object> getparameterMap(SysDict areaDict, Map<String, Object> paramMap, String province,
+			String city, String areaId, String regionId, String isadmin) {
+		if (areaDict == null) {// 说明用户记录中的地区信息是不对的，不能通过这个地区信息来查看
+			if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {// 当是国家级别时
+				// 有省、市、县、校管理员
+				// 判断有哪些权限 最终是获得区域级别的id
+
 				/*
-				第一种方式：
-				SysDict sysDict1 = new SysDict();
-				sysDict1.setValue("河南省");
-				List<SysDict> sysDict1L = sysDictService.findSelective(sysDict1);
-				province = sysDict1L.get(0).getId();//410000
-				
-				sysDict1.setValue("郑州市");
-				List<SysDict> sysDict2L = sysDictService.findSelective(sysDict1);
-				city = sysDict2L.get(0).getId();//410100
-				
-				sysDict1.setValue("金水区");
-				List<SysDict> sysDict3L = sysDictService.findSelective(sysDict1);
-				areaId = sysDict3L.get(0).getId();//410105
-				
-				第二种方式：
-				province = "410000";//河南省
-				city = "410100";//郑州市
-				areaId = "410105";//金水区
-				*/
-				province = CommonConfigUtil.getConf("province"); 
-				city = CommonConfigUtil.getConf("city"); 
-				areaId = CommonConfigUtil.getConf("area"); 
-				
+				 * 第一种方式： SysDict sysDict1 = new SysDict();
+				 * sysDict1.setValue("河南省"); List<SysDict> sysDict1L =
+				 * sysDictService.findSelective(sysDict1); province =
+				 * sysDict1L.get(0).getId();//410000
+				 * 
+				 * sysDict1.setValue("郑州市"); List<SysDict> sysDict2L =
+				 * sysDictService.findSelective(sysDict1); city =
+				 * sysDict2L.get(0).getId();//410100
+				 * 
+				 * sysDict1.setValue("金水区"); List<SysDict> sysDict3L =
+				 * sysDictService.findSelective(sysDict1); areaId =
+				 * sysDict3L.get(0).getId();//410105
+				 * 
+				 * 第二种方式： province = "410000";//河南省 city = "410100";//郑州市 areaId
+				 * = "410105";//金水区
+				 */
+				province = CommonConfigUtil.getConf("province");
+				city = CommonConfigUtil.getConf("city");
+				areaId = CommonConfigUtil.getConf("area");
+
 				if (User.bak1_province.equalsIgnoreCase(isadmin)) {// 省级管理员
-					
-					paramMap.put("regionId",province);//
+
+					paramMap.put("regionId", province);//
 				} else if (User.bak1_city.equalsIgnoreCase(isadmin)) {// 市级管理员
-					
+
 					paramMap.put("regionId", city);
 
 				} else if (User.bak1_county.equalsIgnoreCase(isadmin) || User.bak1_no.equalsIgnoreCase(isadmin)) {
 					// 1.区县级管理员
 					// 2.如果没有权限就看区县的（规定）
 					paramMap.put("regionId", areaId);
-					
+
 				} else if (User.bak1_schoool.equalsIgnoreCase(isadmin)) {// 学校管理员
 					SysSchool sysSchool = new SysSchool();
 					sysSchool.setCountyId(areaId);
-					/*方便统计其它   而查询*/
+					/* 方便统计其它 而查询 */
 					List<SysSchool> otherSysSchoolList = sysSchoolService.findSelective(sysSchool);
-					
+
 					regionId = otherSysSchoolList.get(0).getId();
 					paramMap.put("regionId", regionId);
-				} else{//OA  是运营商时 默认给最高级  2018-04-17添加
-					paramMap.put("regionId",province);
+				} else {// OA 是运营商时 默认给最高级 2018-04-17添加
+					paramMap.put("regionId", province);
 				}
-				
-				
-			}else if(platformLevel.equals("P")){
-				//计算省id
-				province = platformLevelId ;
-				//有省、市、县、校管理员
-				// 判断有哪些权限     最终是获得区域级别的id
+
+			} else if (platformLevel.equals("P")) {
+				// 计算省id
+				province = platformLevelId;
+				// 有省、市、县、校管理员
+				// 判断有哪些权限 最终是获得区域级别的id
 				if (User.bak1_province.equalsIgnoreCase(isadmin)) {// 省级管理员
 					paramMap.put("regionId", province);//
 				} else if (User.bak1_city.equalsIgnoreCase(isadmin)) {// 市级管理员
@@ -2501,7 +2488,7 @@ public class DataCenterController extends BaseController {
 					sysDict1.setPid(province);
 					List<SysDict> sysDict1C = sysDictService.findSelective(sysDict1);
 					city = sysDict1C.get(0).getId();
-					
+
 					paramMap.put("regionId", city);
 
 				} else if (User.bak1_county.equalsIgnoreCase(isadmin) || User.bak1_no.equalsIgnoreCase(isadmin)) {
@@ -2511,27 +2498,27 @@ public class DataCenterController extends BaseController {
 					sysDict1.setPid(city);
 					List<SysDict> sysDict1C = sysDictService.findSelective(sysDict1);
 					areaId = sysDict1C.get(0).getId();
-					
+
 					paramMap.put("regionId", areaId);
 				} else if (User.bak1_schoool.equalsIgnoreCase(isadmin)) {// 学校管理员
 					SysSchool sysSchool = new SysSchool();
 					sysSchool.setCountyId(areaId);
-					/*方便统计其它   而查询*/
+					/* 方便统计其它 而查询 */
 					List<SysSchool> otherSysSchoolList = sysSchoolService.findSelective(sysSchool);
-					
+
 					regionId = otherSysSchoolList.get(0).getId();
 					paramMap.put("regionId", regionId);
-				} else{//OA  是运营商时 默认给最高级  2018-04-17添加
+				} else {// OA 是运营商时 默认给最高级 2018-04-17添加
 					paramMap.put("regionId", province);
 				}
-				
-			}else if(platformLevel.equals("C")){
-				//计算市id
+
+			} else if (platformLevel.equals("C")) {
+				// 计算市id
 				city = platformLevelId;
-				//有市、县、校的管理员
-				// 判断有哪些权限     最终是获得区域级别的id
+				// 有市、县、校的管理员
+				// 判断有哪些权限 最终是获得区域级别的id
 				if (User.bak1_city.equalsIgnoreCase(isadmin)) {// 市级管理员
-					
+
 					paramMap.put("regionId", city);
 
 				} else if (User.bak1_county.equalsIgnoreCase(isadmin) || User.bak1_no.equalsIgnoreCase(isadmin)) {// 1.区县级管理员
@@ -2541,51 +2528,52 @@ public class DataCenterController extends BaseController {
 					sysDict1.setPid(city);
 					List<SysDict> sysDict1C = sysDictService.findSelective(sysDict1);
 					areaId = sysDict1C.get(0).getId();
-					
+
 					paramMap.put("regionId", areaId);
 				} else if (User.bak1_schoool.equalsIgnoreCase(isadmin)) {// 学校管理员
 					SysSchool sysSchool = new SysSchool();
 					sysSchool.setCountyId(areaId);
-					/*方便统计其它   而查询*/
+					/* 方便统计其它 而查询 */
 					List<SysSchool> otherSysSchoolList = sysSchoolService.findSelective(sysSchool);
-					
+
 					regionId = otherSysSchoolList.get(0).getId();
 					paramMap.put("regionId", regionId);
-				} else{//OA  是运营商时 默认给最高级   2018-04-17添加
+				} else {// OA 是运营商时 默认给最高级 2018-04-17添加
 					paramMap.put("regionId", city);
 				}
-				
-			}else if(platformLevel.equals("A")){
-				//计算县id
+
+			} else if (platformLevel.equals("A")) {
+				// 计算县id
 				areaId = platformLevelId;
-				//有校管理员
-				
+				// 有校管理员
+
 				if (User.bak1_county.equalsIgnoreCase(isadmin) || User.bak1_no.equalsIgnoreCase(isadmin)) {// 1.区县级管理员
-																													// 2.如果没有权限就看区县的（规定）
+																											// 2.如果没有权限就看区县的（规定）
 					paramMap.put("regionId", areaId);
 				} else if (User.bak1_schoool.equalsIgnoreCase(isadmin)) {// 学校管理员
 					SysSchool sysSchool = new SysSchool();
 					sysSchool.setCountyId(areaId);
-					/*方便统计其它   而查询*/
+					/* 方便统计其它 而查询 */
 					List<SysSchool> otherSysSchoolList = sysSchoolService.findSelective(sysSchool);
-					
+
 					regionId = otherSysSchoolList.get(0).getId();
 					paramMap.put("regionId", regionId);
-				} else{//OA  是运营商时 默认给最高级   2018-04-17添加
+				} else {// OA 是运营商时 默认给最高级 2018-04-17添加
 					paramMap.put("regionId", areaId);
 				}
-				
+
 			}
-			
-		}else{
-			if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")|| platformLevel.equals("P")) {//当是国家级别 或者省级别时
-				
+
+		} else {
+			if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")
+					|| platformLevel.equals("P")) {// 当是国家级别 或者省级别时
+
 				if (User.bak1_province.equalsIgnoreCase(isadmin)) {// 省级管理员
-					
+
 					SysDict cityDict = sysDictService.findByKey(areaDict.getPid());// 区县信息
 					paramMap.put("regionId", cityDict.getPid());//
 				} else if (User.bak1_city.equalsIgnoreCase(isadmin)) {// 市级管理员
-					
+
 					paramMap.put("regionId", areaDict.getPid());
 
 				} else if (User.bak1_county.equalsIgnoreCase(isadmin) || User.bak1_no.equalsIgnoreCase(isadmin)) {// 1.区县级管理员
@@ -2594,14 +2582,14 @@ public class DataCenterController extends BaseController {
 				} else if (User.bak1_schoool.equalsIgnoreCase(isadmin)) {// 学校管理员
 					regionId = getUserSchoolId();
 					paramMap.put("regionId", regionId);
-				}else{//OA  是运营商时 默认给最高级   2018-04-17添加
+				} else {// OA 是运营商时 默认给最高级 2018-04-17添加
 					SysDict cityDict = sysDictService.findByKey(areaDict.getPid());// 区县信息
 					paramMap.put("regionId", cityDict.getPid());//
 				}
 
-			}else if(platformLevel.equals("C")){//
+			} else if (platformLevel.equals("C")) {//
 				if (User.bak1_city.equalsIgnoreCase(isadmin)) {// 市级管理员
-					
+
 					paramMap.put("regionId", areaDict.getPid());
 
 				} else if (User.bak1_county.equalsIgnoreCase(isadmin) || User.bak1_no.equalsIgnoreCase(isadmin)) {// 1.区县级管理员
@@ -2610,26 +2598,24 @@ public class DataCenterController extends BaseController {
 				} else if (User.bak1_schoool.equalsIgnoreCase(isadmin)) {// 学校管理员
 					regionId = getUserSchoolId();
 					paramMap.put("regionId", regionId);
-				}else{//OA  是运营商时 默认给最高级   2018-04-17添加
+				} else {// OA 是运营商时 默认给最高级 2018-04-17添加
 					paramMap.put("regionId", areaDict.getPid());
 				}
 
-			}else if(platformLevel.equals("A")){
+			} else if (platformLevel.equals("A")) {
 				if (User.bak1_county.equalsIgnoreCase(isadmin) || User.bak1_no.equalsIgnoreCase(isadmin)) {// 1.区县级管理员
-																													// 2.如果没有权限就看区县的（规定）
+																											// 2.如果没有权限就看区县的（规定）
 					paramMap.put("regionId", areaId);
 				} else if (User.bak1_schoool.equalsIgnoreCase(isadmin)) {// 学校管理员
 					regionId = getUserSchoolId();
 					paramMap.put("regionId", regionId);
-				}else{//OA  是运营商时 默认给最高级   2018-04-17添加
+				} else {// OA 是运营商时 默认给最高级 2018-04-17添加
 					paramMap.put("regionId", areaId);
 				}
 			}
 		}
-		
+
 		return paramMap;
 	}
 
-	
-	
 }

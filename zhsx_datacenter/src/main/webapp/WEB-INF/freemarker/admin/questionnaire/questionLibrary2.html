@@ -129,15 +129,7 @@
 			</form>
 		</div>
 	</section>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
-	<script type="text/javascript">
-		function turnPage(p) {
-			 var type = $("#type").val();
-        	 var question = $("#question").val();
-        	 var nickName = $("#nickName").val();
-		     window.location.href="${ctx}/questionnaire/questionLibrary2?p="+p+"&type="+type+"&question="+question+"&nickName="+nickName;
-		}
-	</script>
+	<script type="text/javascript" src="${ctx}/common/layui/lay/modules/laypage.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function(){
 		var tipsi;
@@ -149,12 +141,28 @@
 		   });
 	 
 	});
+	
+	
+	layui.use(['laypage'], function() {
+		var laypage = layui.laypage;
+		laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : "molv",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					 var type = $("#type").val();
+		        	 var question = $("#question").val();
+		        	 var nickName = $("#nickName").val();
+				  window.location.href="${ctx}/questionnaire/questionLibrary2?p="+e.curr+"&type="+type+"&question="+question+"&nickName="+nickName;
+				}
+			}
+		});
+	});
 	</script>
 	<script type="text/javascript">
 		var layer;
 		layui.use([ 'layer','form','laydate'], function() {
 			layer = layui.layer;
-			var form = layui.form;
+			var form = layui.form();
 			   form.on('submit(search)', function(data){
 		        	 var type = $("#type").val();
 		        	 var question = $("#question").val();

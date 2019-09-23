@@ -1,22 +1,28 @@
 $(function(){
-	$("#zbTop").attr("class","has-sub active");
+	if(isPgAuthority == "Y"){
+		$("#zbTop").attr("class","has-sub active");
+		$("#zbTopA").attr("class","active2");
+	}else{
+		$("#dianboTop").attr("class","has-sub active");
+		$("#zbTopG").attr("class","active2");
+	}
 	
-//	if(userType === 'S'){
-//		$(".tap00").css("display","none");
-//		$(".tap11").css("display","none");
-//		$(".tap22").css("display","none");
-//		$(".tap33").css("display","block");
-//	}else{
-//		getKeQianPg();
-//		getpgPagetData();
-//	}
+	if(userType === 'S'){
+		$(".tap00").css("display","none");
+		$(".tap11").css("display","none");
+		$(".tap22").css("display","none");
+		$(".tap33").css("display","block");
+	}else{
+		getKeQianPg();
+		getpgPagetData();
+	}
 	getCommentData(1);
 });
 
 var layer;
 layui.use(['layer', 'element'], function() {
 	 layer = layui.layer;
-	 var element = layui.element;
+	 var element = layui.element();
 });
 
 var isLoop = false;
@@ -161,5 +167,3 @@ function getKeQianPg(){
 	   }
 	});
 }
-
-

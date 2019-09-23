@@ -148,11 +148,6 @@ public class TestWebTestController extends BaseController {
 		Page<TestWebTest> pageInfo = testWebTestService.findPageSelective(t, p, 6);
 		int pages = pageInfo.getPages();
 		List<TestWebTest> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		// 获取登录用户id
 		if (isLogined()) {
 			String userId = getUserId();
@@ -261,11 +256,6 @@ public class TestWebTestController extends BaseController {
 		int pages = pageInfo.getPages();
 		model.addAttribute("pages", pages);
 		List<TestWebTest> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		System.out.println(lists.size());
 		Date date = new Date();
 		for (int i = 0; i < lists.size(); i++) {
@@ -470,11 +460,6 @@ public class TestWebTestController extends BaseController {
 		Page<TestWebTestQuestion> pageInfo = testWebTestQuestionService.findPageSelective(tq, p, 10);
 		List<TestWebTestQuestion> lists = pageInfo.getResult();
 		int pages = pageInfo.getPages();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
@@ -555,11 +540,6 @@ public class TestWebTestController extends BaseController {
 		Page<TestWebTestQuestion> pageInfo = testWebTestQuestionService.findPageSelective(twq, p, 4);
 		int pages = pageInfo.getPages();
 		List<TestWebTestQuestion> twqL = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		String[] xuanxiang = { "A", "B", "C", "D", "E", "F", "G" };
 		for (int i = 0; i < twqL.size(); i++) {
 			// 根据questionId获得选项

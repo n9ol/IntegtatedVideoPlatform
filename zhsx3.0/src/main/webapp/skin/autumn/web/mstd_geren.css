@@ -1,0 +1,677 @@
+.zhongxin {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.zhong_left {
+	float: left;
+	width: 220px;
+	background-color: #fff;
+	padding: 10px 0;
+}
+
+.zhong_right {
+	width: 930px;
+	float: right;
+	background-color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.zhong_right2 {
+	background-color: #fff;
+	/*border: 1px solid gainsboro;*/
+	padding: 10px;
+	/*margin: 20px auto;*/
+}
+
+#duke2 {
+	padding: 10px;
+}
+
+.touxiang {
+	text-align: center;
+}
+
+#headPortrait {
+	width: 88px;
+	margin: 20px auto;
+	cursor: pointer;
+	height: 88px;
+	border-radius: 50%;
+}
+
+.changeAvatar {
+	line-height: 88px;
+	font-size: 12px;
+	color: #fff;
+	background-color: rgba(0, 0, 0, 0.5);
+	width: 88px;
+	height: 88px;
+	position: absolute;
+	z-index: 333333;
+	top: 20px;
+	border-radius: 50%;
+	left: 50%;
+	margin-left: -44px;
+	display: none;
+	cursor: pointer;
+}
+
+.avatarFather {
+	position: relative;
+}
+
+.avatarFather:hover p {
+	display: block;
+}
+
+.pp {
+	/* 	height: 45px; */
+	/* 	line-height: 45px; */
+	margin-bottom: 20px;
+}
+
+.pp span {
+	display: inline-block;
+	width: 39px;
+	height: 17px;
+	border-radius: 3px;
+	background-color: #ff9900;
+	color: white;
+	text-align: center;
+	line-height: 17px;
+}
+
+.pp img {
+	margin: 0 3px;
+}
+
+.biaoshi {
+	/* 	padding: 10px; */
+	
+}
+
+.biaoshi li {
+	text-align: center;
+	line-height: 45px;
+	/* 	border-bottom: 1px solid gainsboro; */
+	cursor: pointer;
+}
+
+.biaoshi li:hover {
+	background-color: #f7f8fc;
+	border-left: 2px solid #ff9900;
+}
+
+.qing {
+	background-color: #f7f8fc;
+	border-left: 2px solid #ff9900;
+}
+
+.renxiang {
+	text-align: center;
+}
+
+.shoucang div,.pingGu div {
+	line-height: 35px;
+	text-align: center;
+	border-bottom: 1px solid gainsboro;
+	cursor: pointer;
+}
+
+.shoucang div:hover{
+	background-color: #ff9900;
+	color: #fff;
+}
+.pingGu div:hover{
+	background-color: #ff9900;
+	color: #fff;
+}
+
+.kaoping div {
+	line-height: 35px;
+	text-align: center;
+	border-bottom: 1px solid gainsboro;
+	cursor: pointer;
+}
+
+.kaoping div:hover {
+	background-color: #ff9900;
+	color: #fff;
+}
+
+.kaopingTeacher div {
+	line-height: 35px;
+	text-align: center;
+	border-bottom: 1px solid gainsboro;
+	cursor: pointer;
+}
+
+.kaopingTeacher div:hover {
+	background-color: #ff9900;
+	color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+.xianshi {
+	background-color: #ff9900;
+	color: #fff;
+}
+
+.sonColor {
+	background-color: #d6cefd;
+}
+
+.examTitle {
+	border-bottom: 1px solid gray;
+	line-height: 40px;
+	padding-left: 10px;
+	font-size: 18px;
+}
+
+.guanjian {
+	line-height: 50px;
+	float: right;
+	width:100%;
+	margin: 0px 0 10px 10px;
+}
+
+.cuo_top {
+	border-bottom: 1px dashed gray;
+	line-height: 35px;
+}
+
+.cuo_top span {
+	margin-right: 20px;
+}
+
+.strong {
+	font-size: 18px;
+}
+
+#fenxi {
+	width: 950px;
+	height: 400px;
+}
+
+.cuo_con {
+	padding: 30px;
+}
+
+.cuo_con_ti {
+	line-height: 30px;
+	/* 	text-indent: 2em; */
+	word-spacing: 30px;
+	font-size: 16px;
+}
+
+.cuo_con_xuan {
+	line-height: 35px;
+	font-size: 18px;
+}
+
+.daan {
+	line-height: 30px;
+	border-bottom: 1px dashed gray;
+}
+
+.daan span {
+	margin: 0 20px;
+	overflow: hidden;
+}
+
+.cankao1 {
+	color: red;
+	line-height: 55px;
+	font-size: 18px;
+	border-bottom: 1px dashed gray;
+}
+
+.cankao2 {
+	line-height: 30px;
+}
+
+.kao_right {
+	width: 100%;
+	height: 100%;
+}
+
+.tujing {
+	display: inline-block;
+	height: 22px;
+	width: 48px;
+	background-color: #89b2f0;
+	color: white;
+	text-align: center;
+	line-height: 22px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.biaodanji {
+	border-bottom: 1px dashed gainsboro;
+	padding: 20px 0;
+	/*margin-bottom: 15px;*/
+	height: 440px;
+}
+
+/*我的课程表*/
+.biaoBox {
+	height: 430px;
+	padding-top: 10px;
+}
+
+.kebiao {
+	border-left: 2px solid #ff9900;
+	background-color: #FCFCFC;
+	height: 45px;
+	line-height: 45px;
+	padding-left: 10px;
+}
+
+.table {
+	text-align: center;
+}
+
+.table th {
+	text-align: center;
+}
+
+.jilubiao li {
+	height: 90px;
+	border-bottom: 1px solid gainsboro;
+	padding:20px 0 20px 20px;
+}
+
+.jilubiao .con_left_li img {
+	width: 112px;
+	height: 78px;
+	margin-top: 0px;
+	float: left;
+}
+
+.jilujieshao {
+	float: left;
+	height: 78px;
+	margin-top: 6px;
+	line-height: 26px;
+	margin-left: 15px;
+}
+
+.jjj>span {
+	margin: 0 5px;
+}
+
+.jjj>span span {
+	color: gray;
+}
+
+.jjj0>span {
+	margin: 0 5px;
+	font-size: 17px;
+}
+
+.jilu_anniu {
+/* 	height: 78px; */
+	float: right;
+	line-height: 78px;
+	padding-top:30px;
+}
+
+#pagerss {
+	text-align: center;
+	padding-top: 10px;
+}
+
+/*课后督课*/
+.dukebiao {
+	height: 40px;
+	line-height: 40px;
+	font-size: 20px;
+	border-left: 4px solid #ff9900;
+	padding-left: 5px;
+	background-color: #F4F7FC;
+}
+
+.ldl {
+	margin-left: 50px;
+	margin-top: 30px;
+}
+
+.ldl input {
+	height: 25px;
+	line-height: 25px;
+	padding-left: 5px;
+	width: 70px;
+}
+
+.dafen textarea {
+	/*margin-left: 50px;*/
+	margin: 20px auto;
+	margin-left: 2.5%;
+	width: 95%;
+	resize: none;
+}
+
+.pay {
+	padding: 0 10px;
+	clear: both;
+	margin-top: 10px;
+}
+
+.pay p {
+	text-indent: 2em;
+	line-height: 25px;
+}
+
+#testd {
+	padding: 5px;
+}
+
+/*教师的个人中心*/
+.guanjian>img {
+	float: right;
+	height: 27px;
+	line-height: 27px;
+	/*     margin-top: 12px; */
+}
+
+.guanjian span select {
+	height: 27px;
+	line-height: 27px;
+	width:140px;
+	color:#6d6f71;
+}
+
+.tianjia {
+	position: absolute;
+	right: 30px;
+	top: 50px;
+	border: 1px solid gainsboro;
+	background-color: #ff9900;
+	padding: 8px 15px;
+	text-align: center;
+}
+
+.navbar {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.navbar .barlist {
+	height: 36px;
+	background: #eee;
+}
+
+.navbar .barlist .currbar {
+	height: 36px;
+	background: #ff9900;
+}
+
+.fl {
+	float: left;
+}
+
+.yahei {
+	font-family: Microsoft yahei, 微软雅黑, Arial, Verdana, Tahoma, sans-serif;
+}
+
+.navbar .barlist .currbar .ntext {
+	padding-top: 6px;
+	font-size: 16px;
+	text-align: center;
+	color: #fff;
+}
+
+.navbar .barlist .nextbar {
+	height: 36px;
+	background: #eee;
+}
+
+.navbar .barlist .nextbar .ntext {
+	padding-top: 6px;
+	font-size: 16px;
+	text-align: center;
+	color: #999;
+}
+
+.navbar .barlist .nextsplit {
+	height: 36px;
+	width: 18px;
+	background: #eee url(../img/navarr4.gif) no-repeat;
+}
+
+.currsplit {
+	width: 0px;
+	height: 0px;
+	border-top: 18px solid transparent;
+	border-left: 18px solid #ff9900;
+	border-right: 18px solid transparent;
+	border-bottom: 18px solid transparent;
+}
+
+.hsplit {
+	height: 10px;
+}
+
+.dotline {
+	height: 16px;
+	margin-top: 15px;
+	border-top: 1px dotted #999;
+}
+
+form {
+	display: block;
+	margin-top: 0em;
+}
+
+.font20 {
+	font-size: 20px;
+}
+
+.yahei {
+	font-family: Microsoft yahei, 微软雅黑, Arial, Verdana, Tahoma, sans-serif;
+}
+
+.dotline {
+	height: 16px;
+	margin-top: 15px;
+	border-top: 1px dotted #999;
+}
+
+.sellink .sels {
+	height: 30px;
+	width: 160px;
+}
+
+.fl {
+	float: left;
+}
+
+.sellink .sels .cbox {
+	width: 24px;
+	padding-top: 8px;
+}
+
+.sellink .sels .ctext {
+	line-height: 30px;
+}
+
+.btnsrows {
+	background-color: #ff9900;
+	color: white;
+	padding: 0 5px;
+	line-height: 40px;
+	text-align: center;
+	border: none;
+	font-size: 17px;
+	border-radius: 3px;
+	cursor: pointer;
+}
+
+.btnsrows:hover {
+	box-shadow: 0 0 3px gray;
+}
+
+/*publick部分*/
+.fieldtitle {
+	text-align: left;
+}
+
+.formrow {
+	height: 38px;
+}
+
+.star {
+	color: gray;
+	margin-left: 10px;
+}
+
+.star span {
+	color: #f30;
+}
+
+.comment {
+	padding-left: 10px;
+	font-size: 12px;
+	color: #bbb;
+}
+
+.fl {
+	float: left;
+}
+
+#ispublic {
+	line-height: 19px;
+}
+
+.checkbox {
+	padding-top: 3px;
+	margin-right: 5px;
+}
+
+.fontred {
+	color: #f00;
+	font-size: 23px;
+}
+
+.okinfos .inforow {
+	font-size: 12px;
+	color: #555;
+	padding-bottom: 10px;
+}
+
+.okinfos .linkrow {
+	font-size: 14px;
+	padding-bottom: 6px;
+}
+
+a {
+	/* 	color: #08f; */
+	text-decoration: none;
+	cursor: pointer;
+}
+
+a, input {
+	outline: none;
+}
+/*直播点播的表明*/
+.con_left_li {
+	float: left;
+	margin: 0px 15px;
+	position: relative;
+	overflow: hidden;
+	width: 12%;
+}
+
+.zdb {
+	position: absolute;
+	width: 200px;
+	text-align: center;
+	right: -76px;
+	top: 6px;
+	transform: rotate(35deg);
+	height: 25px;
+	line-height: 25px;
+	background-color: #ff9900;
+	color: white;
+	z-index: 129;
+	font-size: 9px;
+}
+
+.bg1 {
+	background-color: #f56b80;
+}
+
+.bg2 {
+	background-color: #6585d7;
+}
+
+.bg3 {
+	background-color: #ff7743;
+}
+
+.bg4 {
+	background-color: #68c768;
+}
+
+.bg5 {
+	background-color: red;
+}
+
+#subfrm {
+	/*display: none;*/
+	
+}
+
+.minWidth thead tr th {
+	min-width: 3em;
+}
+
+.layui-table td, .layui-table th {
+	font-size: 12px;
+	padding: 9px 12px;
+	max-width: 124px;
+}
+
+/*我的评课记录样式*/
+.see,.du {
+	background-color: white;
+	color: black;
+	border: 1px solid gainsboro;
+	margin: 0 7px;
+	display: block;
+	width: 88px;
+	height: 32px;
+	line-height: 32px;
+	float:left;
+}
+.layui-laypage .layui-laypage-curr .layui-laypage-em {
+    background-color: #ff9900;
+}
+
+/*课件资源收藏记录样式*/
+.tubiao{
+	float:left;
+}
+.Data .btnColor{
+	background-color: #ff9900;
+}
+.btnColor{
+	background-color: #ff9900;
+}
+.fontColor {
+	color: 	#ff9900;
+}

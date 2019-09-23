@@ -22,20 +22,46 @@
 		</figure>
 		<div class="school_zuan">
 			<div class="school">
-				<span class="schoolSpan" title="${l.title!''}">${l.title!''}</span>
+				<span class="schoolSpan">${l.title!''}</span>
 			</div>
 			<div class="zuan">
-				<span style="background-color: #ff8800;">${l.subjectName!''}</span>
-				<span style="background-color: #4596E5;">${l.gradeName!''}</span>
+				<span class="zuanKemu">${l.subjectName!''}</span>
+				<span class="zuanNianji">${l.gradeName!''}</span>
 			</div>
 		</div>
 	</div>
 </li>
 </#list></#if>
-<#include "/commons/comPage.html" encoding="utf-8"/>
 <script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		getdianboData();
+	var skinColor = "#4596E5";
+	var skinName = "${skinName!''}";
+	switch (skinName) {
+		case "springtime":
+			skinColor = "#1cc8d2";
+			break;
+		case "summer":
+			skinColor = "#ee336e";
+			break;
+		case "autumn":
+			skinColor = "#ff9900";
+			break;
+		case "winter":
+			skinColor = "#1ca5d2";
+			break;
+		default:
+			skinColor = "#4596E5";
+			break;
 	}
+	layui.use([ 'laypage' ], function() {
+		laypage = layui.laypage;
+		laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : skinColor,groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					getdianboData();
+				}
+			}
+		});
+	});
 </script>

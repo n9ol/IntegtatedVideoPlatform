@@ -56,9 +56,8 @@
 	
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
 		select 
-		<include refid="Base_Column_List" />,
-		(SELECT nickName FROM `user` u WHERE u.id = p.userId) as userName
-		from web_pj p
+		<include refid="Base_Column_List" />
+		from web_pj
 		where id = #{id}
 	</select>
 
@@ -71,13 +70,7 @@
 	<insert id="insert" parameterType="WebPj" >
 		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
 		insert into web_pj (id,userId,pgId,onOff,allResult,score,ispj,addTime,bak,bak1,bak2)
-		values (#{id},#{userId},#{pgId},#{onOff},#{allResult},#{score},#{ispj},now(),#{bak},#{bak1},#{bak2})
-	</insert>
-	
-	<insert id="insterPgMessage" parameterType="WebPj">
-		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
-		insert into web_pj (id,userId,pgId,onOff,addTime) 
-		values (#{id},#{userId},#{pgId},#{onOff},now());
+		values (#{id},#{userId},#{pgId},#{onOff},#{allResult},#{score},#{ispj},#{addTime},#{bak},#{bak1},#{bak2})
 	</insert>
 
 
@@ -163,6 +156,9 @@
 			<if test="ispj != null" >
 				and ispj = #{ispj}
 			</if>
+			<if test="addTime != null" >
+				and addTime = #{addTime}
+			</if>
 			<if test="bak != null" >
 				and bak = #{bak}
 			</if>
@@ -171,12 +167,6 @@
 			</if>
 			<if test="bak2 != null" >
 				and bak2 = #{bak2}
-			</if>
-			<!-- 当属于在线评估时,userId和pgId判断不了唯一性 。增加日期验证查询
-				addTime != null 的判断是为了数据中心和个人中心查看评估结果时不执行时间判断
-			 -->
-			<if test="onOff != null and onOff == 'ON'.toString() and addTime != null">
-				and DATE_FORMAT(#{addTime},'%Y-%m-%d') = DATE_FORMAT(addTime,'%Y-%m-%d')
 			</if>
 		</where>
 	</sql>
@@ -199,7 +189,15 @@
 	</select>
 
 	
-
+	<insert id="insterPgMessage" parameterType="WebPj">
+		insert into web_pj (id,userId,pgId,onOff,addTime) values ((SELECT UUID()),#{userId},#{pgId},#{onOff},now());
+		
+		insert into web_pjinfo (id,userId,pgId,pgPjInfoId,onOff,title,weight,bak,bak1)
+		(SELECT (SELECT UUID()),#{userId},#{pgId},id AS pgPjInfoId,#{onOff},title,weight,bak,type FROM pg_pjinfo WHERE type = #{type});
+		
+		insert into web_pjdetail (id,userId,pgId,pgPjInfoId,onOff,content,weight,bak)
+		(SELECT (SELECT UUID()),#{userId},#{pgId},pjinfoId AS pgPjInfoId,#{onOff},content,weight,bak FROM pg_pjdetail WHERE pjinfoId IN (SELECT id FROM pg_pjinfo WHERE type = #{type}));
+	</insert>
 	
 	
 	<select id="getPgAverageDraw" parameterType="java.lang.String" resultType="java.util.Map">
@@ -661,49 +659,6 @@
 		delete from web_pjinfo where userId = #{userId} and pgId = #{pgId};
 		delete from web_pj where userId = #{userId} and pgId = #{pgId};
 	</delete>
-	
-	
-	
-	
-	<select id="listWebPjResult" parameterType="WebPj" resultType="WebPj">
-		SELECT 
-			b.*,a.classroom_name as courScheduleClassroomName, a.teacher_name as courScheduleTeacherName, 
-			a.specialty_name as courScheduleSpecialtyName, a.subject_name as courScheduleSubjectName, 
-			a.start_time as courScheduleStartTime, a.end_time as courScheduleEndTime,
-			a.type as courScheduleType 
-		FROM 
-			class_brand.course_schedule a, zhsx_rf.web_pj b 
-		WHERE 
-			a.id = b.pgId AND b.ispj = 1 AND onOff = 'ON'
-			<if test="search != null">
-				<bind name="pattern" value="'%' + search + '%'" />
-				and(
-					a.teacher_name like #{pattern}
-					or a.classroom_name like #{pattern}
-				)
-			</if>
-			<if test="courScheduleSpecialtyName != null">
-				and a.specialty_name = #{courScheduleSpecialtyName}
-			</if>
-			<if test="courScheduleSubjectName != null">
-				and a.subject_name = #{courScheduleSubjectName}
-			</if>
-		GROUP BY 
-			b.pgId ,DATE_FORMAT(b.addTime,'%Y-%m-%d')
-	</select>
-	
-	<select id="listPersonalWebPjRecord" parameterType="java.lang.String" resultType="WebPj">
-		SELECT 
-			a.id, a.userId, a.pgId, a.onOff, a.allResult, a.score, a.ispj, a.addTime, 
-			b.title AS offLineVideoTitle, b.gradeName AS offLineVideoGradeName, b.subjectName AS offLineVideoSubjectName, b.picPath AS offLineVideoPicPath, b.timeLength AS offLineVideoTimeLength, b.pageView AS offLineVideoPageView, 
-		  	c.classroom_name AS courScheduleClassroomName, c.teacher_name AS courScheduleTeacherName, c.specialty_name AS courScheduleSpecialtyName, c.subject_name AS courScheduleSubjectName, c.start_time AS courScheduleStartTime, c.end_time AS courScheduleEndTime, c.type AS courScheduleType 
-		FROM 
-			zhsx_rf.web_pj a, zhsx_rf.offLine_videoResources b, class_brand.course_schedule c 
-		WHERE
-			a.userId = #{userId} AND a.ispj = 1 AND (a.pgId = b.id OR a.pgId = c.id) 
-		GROUP BY 
-			a.pgId, DATE_FORMAT(a.addTime, '%Y-%m-%d')
-	</select>
 	
 	
 	

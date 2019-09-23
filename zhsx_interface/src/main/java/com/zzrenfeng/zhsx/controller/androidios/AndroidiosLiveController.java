@@ -1,37 +1,30 @@
 package com.zzrenfeng.zhsx.controller.androidios;
 
-import java.io.InputStream;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.Page;
-import com.zzrenfeng.zhsx.constant.Constant;
 import com.zzrenfeng.zhsx.controller.base.BaseController;
 import com.zzrenfeng.zhsx.model.AndroidiosModel;
 import com.zzrenfeng.zhsx.model.LoFschedule;
 import com.zzrenfeng.zhsx.model.LoSchedule;
 import com.zzrenfeng.zhsx.model.SysClassroom;
-import com.zzrenfeng.zhsx.model.eclassbrand.course.CourseSchedule;
 import com.zzrenfeng.zhsx.service.LoFscheduleService;
 import com.zzrenfeng.zhsx.service.LoScheduleService;
 import com.zzrenfeng.zhsx.service.SysClassroomService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleBigTimeService;
-import com.zzrenfeng.zhsx.service.eclassbrand.course.CourseScheduleService;
 import com.zzrenfeng.zhsx.util.BaseHttpService;
-import com.zzrenfeng.zhsx.util.DateUtil;
 import com.zzrenfeng.zhsx.util.Utils;
 
 /**
@@ -51,11 +44,9 @@ public class AndroidiosLiveController extends BaseController {
 	@Resource
 	private LoFscheduleService loFscheduleService;
 	@Resource
-	private CourseScheduleService courseScheduleService;
-	@Resource
-	private CourseScheduleBigTimeService courseScheduleBigTimeService;
+	private Environment env;
 
-	private String HttpUrl = "";
+	private final static String NO_LIVE = "该直播已不存在";
 
 	/**
 	 * 获得直播课程信息
@@ -65,34 +56,32 @@ public class AndroidiosLiveController extends BaseController {
 	 * @param p
 	 * @param loSchedule
 	 * @return
-	 * @throws ParseException
 	 */
 	@ResponseBody
 	@RequestMapping("/loSchedule")
 	public AndroidiosModel LoSchedule(HttpServletRequest request, HttpServletResponse response, Integer p,
-			CourseSchedule courseSchedule, String gradeId, String subjectId) throws ParseException {
-		if (p == null) {
+			LoSchedule loSchedule) {
+		if (p == null)
 			p = 1;
+
+		String path = "http://" + request.getServerName() + ":" + request.getServerPort() + "/"
+				+ request.getRequestURI().split("/")[1];
+
+		Page<LoSchedule> pageInfo = loScheduleService.findPage(loSchedule, p, 10);
+		int totalPage = pageInfo.getPages(); // 总页数
+		List<LoSchedule> lists = pageInfo.getResult();
+		for (LoSchedule loSchedule2 : lists) {
+			if (loSchedule2.getType().equals("G")) {
+				loSchedule2.setCoverpath(path + "/images/zhuandi267.png");
+			} else {
+				loSchedule2.setCoverpath(path + "/images/pinggu267.png");
+			}
 		}
-		String timeSorting = courseSchedule.getTimeSorting();
-		if (timeSorting == null || "".equals(timeSorting)) {
-			timeSorting = Constant.COURSE_SCHEDULE_TIMESORTING_Q;
-		}
-		courseSchedule.setTimeSorting(timeSorting);
-		courseSchedule.setDayOfWeek(DateUtil.getIntWeekDay());
-		courseSchedule.setSpecialtyName(gradeId);
-		courseSchedule.setSubjectName(subjectId);
-		Page<CourseSchedule> pageInfo = courseScheduleService.getPageInfo(courseSchedule, p, 6);
-		List<CourseSchedule> listCourseSchedule = pageInfo.getResult();
-		List<LoSchedule> lists = loScheduleService.listLoschedule(request, listCourseSchedule);
-		int pages = pageInfo.getPages(); // 总页数
-		long total = pageInfo.getTotal();
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
 		androidiosModel.setData(lists);
 		androidiosModel.setCurrPage(p);
-		androidiosModel.setTotalPage(pages);
-		androidiosModel.setTotalNum(total);
+		androidiosModel.setTotalPage(totalPage);
 		return androidiosModel;
 	}
 
@@ -104,14 +93,19 @@ public class AndroidiosLiveController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/getURLPg")
 	public AndroidiosModel getURLA(@RequestParam String id, HttpServletRequest request) {
+		AndroidiosModel androidiosModel = new AndroidiosModel();
+
 		Map<String, Object> hm = new HashMap<>();
 		int flag = 2;
-		// LoSchedule schedule = loScheduleService.findByKey(id);
-		CourseSchedule courseSchedule = courseScheduleService.getCourseSchedule(id);
-		SysClassroom classroom = sysClassroomService.findByKey(courseSchedule.getClassroomId());
+		LoSchedule schedule = loScheduleService.findByKey(id);
+		if (schedule == null) {
+			androidiosModel.setData(NO_LIVE);
+			return androidiosModel;
+		}
+
+		SysClassroom classroom = sysClassroomService.findByKey(schedule.getClassId());
 		if (classroom != null) {
 
-			// String ipPort = classroom.getServiceIp();
 			String ipPort = Utils.getAccessPathUrlOrIP(request, classroom.getServiceIp());
 
 			String classcode = classroom.getClassCode().trim();
@@ -140,15 +134,13 @@ public class AndroidiosLiveController extends BaseController {
 
 		hm.put("state", flag);// 2不成功
 
-		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(hm);
 		return androidiosModel;
 	}
 
 	/**
 	 * 获得视频播放路径 - 专题课堂
-	 * 
+	 * 当互动客户端开启时可以正常的访问
 	 * @param id
 	 * @return
 	 */
@@ -156,23 +148,6 @@ public class AndroidiosLiveController extends BaseController {
 	@RequestMapping("/getURLInteractive")
 	public AndroidiosModel getURLInteractive(@RequestParam String id, HttpServletRequest request) {
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
-
-		if (HttpUrl.isEmpty()) {
-			Properties props = new Properties();
-			InputStream in;
-			in = getClass().getResourceAsStream("/commonConfig.properties");
-			try {
-				props.load(in);
-			} catch (Exception e1) {
-				HttpUrl = "http://192.168.1.201:8081/meetingserv/useridinfo";
-			}
-			if (props.isEmpty()) {
-				HttpUrl = "http://192.168.1.201:8081/meetingserv/useridinfo";
-			} else {
-				HttpUrl = props.get("Http.url").toString();
-			}
-		}
 
 		Map<String, Object> hm = new HashMap<>();
 		int flag = 0;
@@ -191,11 +166,20 @@ public class AndroidiosLiveController extends BaseController {
 
 		List<Map<String, Object>> listMap = new ArrayList<Map<String, Object>>();
 		// 获得基本路径
-		// String ipPort = classroom.getServiceIp();
 		String ipPort = Utils.getAccessPathUrlOrIP(request, classroom.getServiceIp());
 		String rid = classroom.getRoomId().trim();
+		String HttpUrl = "";
+		if (HttpUrl.isEmpty()) {
+			String[] split = ipPort.split(":");
+			try {
+				HttpUrl = "http://" + split[0] + ":" + classroom.getWebPort() + env.getProperty("Http.url");
+			} catch (Exception e) {
+				HttpUrl = "http://" + split[0] + ":" + classroom.getWebPort() + "/meetingserv/useridinfo";
+			}
+		}
 		String rtmpVideoUrl = "rtmp://" + ipPort + "/meetingserv/" + rid + "/vd";
 		String rtmpSoundUrl = "rtmp://" + ipPort + "/meetingserv/" + rid + "/mic_";
+		System.out.println(HttpUrl);
 
 		// 设置请求动态路径基本参数
 		Map<String, Object> paramMap = new HashMap<>();

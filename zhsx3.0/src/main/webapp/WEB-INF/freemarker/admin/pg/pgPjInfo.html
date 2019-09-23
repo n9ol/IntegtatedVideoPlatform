@@ -103,8 +103,66 @@
 			</form>
 		</div>
 	</section>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
-	<script type="text/javascript">var ctx = "${ctx}";</script>
-	<script type="text/javascript" src="${ctx}/js/admin/pg/pgPjInfo.js"></script>
+	<script type="text/javascript">
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({
+				cont : "page",
+				pages : "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip : false,
+				skin : "molv",
+				groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						refreshPage();
+					}
+				}
+			});
+		});
+	</script>
+	<script type="text/javascript">
+		var layer;
+		layui.use([ 'layer','form' ], function() {
+			layer = layui.layer;
+			var form = layui.form();
+			
+			form.on('select(pgtype)', function(data){
+				$("input[name='type']").val(data.value);
+				refreshPage();
+			});
+			
+		});
+		
+		function refreshPage(){
+			$("#myform1").submit();
+		}
+
+		function add() {
+			LayerOpen('添加评估项', '640px', '350px','${ctx}/pg/addPjinfo');
+		}
+		
+		
+
+		function del(id) {
+			$.ajax({
+				type : "POST",
+				url : "${ctx}/pg/delPjInfo",
+				data : {id : id},
+				success : function(data) {
+					layer.msg(data,{time : 1200},function() {
+						if (data == "操作成功")
+							refreshPage();
+					});
+				}
+			});
+		}
+
+		function edit(id) {
+			LayerOpen('编辑评估项', '640px', '350px','${ctx}/pg/editPjInfo?id=' + id);
+		}
+
+	</script>
 </body>
 </html>

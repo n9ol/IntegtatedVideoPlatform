@@ -35,21 +35,6 @@ public class DateUtil {
 	/** 星期 E */
 	public static final String E = "E";
 
-	public static void main(String[] args) {
-		try {
-//			Date d1 = getDateByString("2019-03-05 08:00:00", simpleLong);
-//			d1.setTime(d1.getTime() + 5000L);
-			Date d2 = new Date();
-			String d2Str_1 = getStringDate(d2, simpleLong);
-			d2.setTime(d2.getTime() + 5000L);
-			String d2Str_2 = getStringDate(d2, simpleLong);
-			System.out.println("--------------------->>>>str1=" + d2Str_1 + ", str2=" + d2Str_2);
-			System.out.println("=====================>>>>time=" + getStringDate(new Date(), time));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static DateFormat getDateFormat(String format) {
 		DateFormat df = new SimpleDateFormat(format);
 		return df;
@@ -92,12 +77,6 @@ public class DateUtil {
 		String nowdate = sdf.format(new Date());
 		return nowdate;
 	}
-	
-	public static String getCurrDateStr(String format) {
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		String nowdate = sdf.format(new Date());
-		return nowdate;
-	}
 
 	/**
 	 * 获得指定时间,指定模板的date
@@ -109,19 +88,6 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		String nowdate = sdf.format(date);
 		Date datef = sdf.parse(nowdate);
-		return datef;
-	}
-	
-	/**
-	 * 获取指定日期字符的Date类型
-	 * @param dateStr
-	 * @param format
-	 * @return
-	 * @throws ParseException
-	 */
-	public static Date getDateByString(String dateStr, String format) throws ParseException {
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		Date datef = sdf.parse(dateStr);
 		return datef;
 	}
 
@@ -242,7 +208,7 @@ public class DateUtil {
 		long between_days = (time2 - time1) / (1000 * 3600 * 24);
 		return Integer.parseInt(String.valueOf(between_days));
 	}
-	
+
 	/**
 	 * 计算两个日期之间相差的毫秒数 startDate 开始时间 endDate 结束时间
 	 */
@@ -361,10 +327,10 @@ public class DateUtil {
 		calendar.setTime(date);
 		return calendar.get(Calendar.WEEK_OF_YEAR);
 	}
-	
-	
+
 	/**
 	 * 获得两个日期之间的月差值
+	 * 
 	 * @param smdate
 	 * @param bdate
 	 * @return
@@ -373,20 +339,21 @@ public class DateUtil {
 	public static int getMonthsBetween(String smdate, String bdate) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 		Calendar cal = Calendar.getInstance();
-		
+
 		cal.setTime(sdf.parse(smdate));
 		int month1 = cal.get(Calendar.MONTH);
 		int year1 = cal.get(Calendar.YEAR);
-		
+
 		cal.setTime(sdf.parse(bdate));
 		int month2 = cal.get(Calendar.MONTH);
 		int year2 = cal.get(Calendar.YEAR);
-		
+
 		int between_months = month2 - month1;
-		int between_years_M = (year2-year1)*12;
-		
+		int between_years_M = (year2 - year1) * 12;
+
 		return Math.abs(between_years_M + between_months);
 	}
+
 	/**
 	 * 获得指定日期 前几个月，或后几个月的时间
 	 * 
@@ -395,7 +362,7 @@ public class DateUtil {
 	 * @param format
 	 * @return
 	 */
-	public static String getNextMonth( int n, String format) {
+	public static String getNextMonth(int n, String format) {
 		Calendar calendar = Calendar.getInstance();
 		Date date = new Date();
 		calendar.setTime(date);

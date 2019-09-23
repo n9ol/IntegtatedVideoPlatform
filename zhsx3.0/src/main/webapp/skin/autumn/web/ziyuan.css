@@ -1,0 +1,159 @@
+/*中间内容部分*/
+
+.ziyuan_zhong{
+	width: 1200px;
+	margin: 10px auto 0;
+	background-color: #fff;
+	border: 1px solid gainsboro;
+	
+}
+.lists li {
+	height: 105px;
+	margin: 22px;
+	overflow: hidden;
+	border-bottom: 1px dashed #E7E7E7;
+}
+
+.touxiang,
+.zhengwen {
+	float: left;
+	height: 100%;
+}
+.touxiang{
+	width: 64px;
+	padding-top: 20px;
+	margin-right: 20px;
+}
+.touxiang img{
+	width: 100%;
+}
+.zhengwen {
+	padding-top: 10px;
+	width:866px;
+}
+
+.biaoti {
+	font-size: 16px;
+	height: 35px;
+	line-height:35px;
+}
+
+
+
+
+
+.xijie span {
+	color: darkgray;
+	margin-right: 20px;
+	display: inline-block;
+	height: 35px;
+	line-height: 35px;
+}
+
+.lianjie {
+	float: right;
+	width: 200px;
+	height: 100%;
+	position: relative;
+}
+.download,.col{
+	margin-top: 36px;
+	width: 90px;
+	height: 32px;
+	padding: 0;
+	line-height: 32px;
+}
+.leibie span{
+	color: orange;
+}
+
+.shou_shu,.xia_shu{
+	position: absolute;
+	top: 78px;
+	color: gray;
+}
+.shou_shu{
+	right: 150px;
+}
+.xia_shu{
+	right: 60px;
+}
+#pagerss{
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+
+.con_left_div {
+	border-bottom: 1px solid gainsboro;
+	height: 50px;
+}
+
+.zonghe {
+	height: 50px;
+	padding-left: 10px;
+	border-bottom: 1px solid gainsboro;
+}
+.choosess{
+	display:inline-block;
+	background-color: #ff9900;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	margin-top: 12.5px;
+}
+.zonghe .area-danxuan {
+	color: white;
+	height: 25px;
+	line-height: 25px;
+	display:inline-block;
+	padding:0 5px;
+	width:67px;
+	text-align:center;
+	cursor:pointer;
+	float:left;
+}
+.quxiao{
+	display:inline-block;
+	width:25px;
+	line-height:25px;
+	background-color:#ff9900;
+	color:#fff;
+	text-align:center;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	cursor:pointer;
+	float:left;
+	
+}
+.quxiao:hover{
+	color:#c7edcc;
+}
+
+/*搜索框*/
+
+.sousuo input {
+	height: 27px;
+	float: left;
+}
+
+.sousuo img {
+	float: left;
+}
+
+.sousuo {
+	float: right;
+	margin-top: 12.5px;
+	margin-right: 20px;
+}
+
+/*考试中心地区选择新增按钮*/
+.zongheAndtestpaper{
+	margin-top:20px;
+	background-color:#fff;
+}
+
+

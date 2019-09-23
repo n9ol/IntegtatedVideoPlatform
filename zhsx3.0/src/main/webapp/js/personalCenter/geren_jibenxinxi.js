@@ -1,7 +1,8 @@
 var element;
 layui.use(['form', 'element'], function() {
-	var form = layui.form;
-	element = layui.element;
+	var form = layui.form();
+	element = layui.element();
+	
 });
 
 $(function(){

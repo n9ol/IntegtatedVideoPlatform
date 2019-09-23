@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TpPracticeResultMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TpPracticeResult" >
+		<result column="id" property="id" />
+		<result column="questionId" property="questionId" />
+		<result column="userAnswer" property="userAnswer" />
+		<result column="rightAnswer" property="rightAnswer" />
+		<result column="boardId" property="boardId" />
+		<result column="userName" property="userName" />
+		<result column="createTime" property="createTime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="classType" property="classType" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,questionId,userAnswer,rightAnswer,boardId,userName,createTime,bak,bak1,classType
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_result
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from tp_practice_result
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TpPracticeResult" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into tp_practice_result (id,questionId,userAnswer,rightAnswer,boardId,userName,createTime,bak,bak1,classType)
+		values (#{id},#{questionId},#{userAnswer},#{rightAnswer},#{boardId},#{userName},#{createTime},#{bak},#{bak1},#{classType})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TpPracticeResult" >
+		update tp_practice_result
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="questionId != null" >
+				questionId = #{questionId},
+			</if>
+			<if test="userAnswer != null" >
+				userAnswer = #{userAnswer},
+			</if>
+			<if test="rightAnswer != null" >
+				rightAnswer = #{rightAnswer},
+			</if>
+			<if test="boardId != null" >
+				boardId = #{boardId},
+			</if>
+			<if test="userName != null" >
+				userName = #{userName},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="classType != null" >
+				classType = #{classType}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TpPracticeResult" >
+		update tp_practice_result
+		set 
+		id = #{id},
+		questionId = #{questionId},
+		userAnswer = #{userAnswer},
+		rightAnswer = #{rightAnswer},
+		boardId = #{boardId},
+		userName = #{userName},
+		createTime = #{createTime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		classType = #{classType}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="questionId != null" >
+				and questionId = #{questionId}
+			</if>
+			<if test="userAnswer != null" >
+				and userAnswer = #{userAnswer}
+			</if>
+			<if test="rightAnswer != null" >
+				and rightAnswer = #{rightAnswer}
+			</if>
+			<if test="boardId != null" >
+				and boardId = #{boardId}
+			</if>
+			<if test="userName != null" >
+				and userName = #{userName}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="classType != null" >
+				and classType = #{classType}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TpPracticeResult" resultType="TpPracticeResult">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_result
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TpPracticeResult" resultType="TpPracticeResult">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_result
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<select id="findPageClassRecord" parameterType="java.util.Map" resultType="java.util.Map">
+<!-- 		SELECT  -->
+<!-- 			l.id AS lId, -->
+<!-- 			l.classId AS classId, -->
+<!-- 			c.className AS className, -->
+<!-- 			l.schoolId AS schoolId, -->
+<!-- 			l.gradeId AS gradeName, -->
+<!-- 			l.subjectId AS subjectName, -->
+<!-- 			l.userId AS userId, -->
+<!-- 			l.z_date AS theDate, -->
+<!-- 			l.sectionofday AS sectionofday, -->
+<!-- 			tp.id AS pId, -->
+<!-- 			tp.title AS exmaTitle -->
+<!-- 			from lo_schedule l  -->
+<!-- 			JOIN tp_practice_schedule tps on tps.sid = l.id -->
+<!-- 			JOIN tp_practice tp on tp.id = tps.pid -->
+<!-- 			LEFT JOIN sys_classroom c ON c.id = l.classId  -->
+<!-- 			where 1=1 -->
+<!-- 			<if test="userId != null" > -->
+<!-- 				and l.userId =  #{userId} -->
+<!-- 			</if> -->
+<!-- 			<if test="searchClass != null"> -->
+<!-- 				and c.className like concat('%',#{searchClass},'%') -->
+<!-- 			</if> -->
+<!-- 			 <![CDATA[AND l.z_date <= CURDATE()]]> -->
+
+			SELECT
+				'Z' AS classType,
+				l.id AS lId,
+				l.classId AS classId,
+				c.className AS className,
+				l.schoolId AS schoolId,
+				l.gradeId AS gradeName,
+				l.subjectId AS subjectName,
+				l.john_num as johnNum,
+				l.userId AS userId,
+				NULL AS fUserId,
+				l.z_date AS theDate,
+				l.sectionofday AS sectionofday,
+				tp.id AS pId,
+				tp.title AS exmaTitle
+			FROM
+				lo_schedule l
+			JOIN tp_practice_schedule tps ON tps.sid = l.id
+			JOIN tp_practice tp ON tp.id = tps.pid
+			LEFT JOIN sys_classroom c ON c.id = l.classId
+			WHERE
+				1 = 1
+			<if test="userId != null" >
+				and l.userId =  #{userId}
+			</if>
+			<if test="searchClass != null">
+				and c.className like concat('%',#{searchClass},'%')
+			</if>
+			 <![CDATA[AND l.z_date <= CURDATE()]]>
+			UNION ALL
+				SELECT
+					'F' AS classType,
+					l.id AS lId,
+					f.classId AS classId,
+					c.className AS className,
+					l.schoolId AS schoolId,
+					l.gradeId AS gradeName,
+					l.subjectId AS subjectName,
+					l.john_num as johnNum,
+					l.userId AS userId,
+					f.userId AS fUserId,
+					l.z_date AS theDate,
+					l.sectionofday AS sectionofday,
+					tp.id AS pId,
+					tp.title AS exmaTitle
+				FROM
+					lo_schedule l
+				JOIN lo_fschedule f ON f.zId = l.id
+				JOIN tp_practice_schedule tps ON tps.sid = l.id
+				JOIN tp_practice tp ON tp.id = tps.pid
+				LEFT JOIN sys_classroom c ON c.id = f.classId
+				WHERE
+					1 = 1
+				<if test="userId != null and classType == 'Z'.toString()" >
+				and l.userId =  #{userId}
+				</if>
+				<if test="userId != null and classType == 'F'.toString()" >
+				and f.userId =  #{userId}
+				</if>
+				<if test="searchClass != null">
+				and c.className like concat('%',#{searchClass},'%')
+				</if>
+				 <![CDATA[AND l.z_date <= CURDATE()]]>
+
+	</select>
+	<select id="findPageClassRecordPad" parameterType="java.util.Map" resultType="java.util.Map">
+	
+	   
+	    <if test="classType != null and classType == 'Z'.toString()" >
+	    SELECT
+				'Z' AS classType,
+				l.id AS lId,
+				l.classId AS classId,
+				c.className AS className,
+				l.schoolId AS schoolId,
+				l.gradeId AS gradeName,
+				l.subjectId AS subjectName,
+				l.john_num as johnNum,
+				l.userId AS userId,
+				NULL AS fUserId,
+				l.z_date AS theDate,
+				l.sectionofday AS sectionofday,
+				tp.id AS pId,
+				tp.title AS exmaTitle
+			FROM
+				lo_schedule l
+			JOIN tp_practice_schedule tps ON tps.sid = l.id
+			JOIN tp_practice tp ON tp.id = tps.pid
+			LEFT JOIN sys_classroom c ON c.id = l.classId
+			WHERE
+				1 = 1
+			    <if test="userId != null " >
+				and l.userId =  #{userId}
+			   </if>
+				<if test="searchClass != null">
+				and c.className like concat('%',#{searchClass},'%')
+				</if> 
+			 
+			 <![CDATA[AND l.z_date <= CURDATE()]]>
+	    </if>
+	 
+	     <if test="classType != null and classType == 'F'.toString()" >
+	    	SELECT
+					'F' AS classType,
+					l.id AS lId,
+					f.classId AS classId,
+					c.className AS className,
+					l.schoolId AS schoolId,
+					l.gradeId AS gradeName,
+					l.subjectId AS subjectName,
+					l.john_num as johnNum,
+					l.userId AS userId,
+					f.userId AS fUserId,
+					l.z_date AS theDate,
+					l.sectionofday AS sectionofday,
+					tp.id AS pId,
+					tp.title AS exmaTitle
+				FROM
+					lo_schedule l
+				JOIN lo_fschedule f ON f.zId = l.id
+				JOIN tp_practice_schedule tps ON tps.sid = l.id
+				JOIN tp_practice tp ON tp.id = tps.pid
+				LEFT JOIN sys_classroom c ON c.id = f.classId
+				WHERE
+					1 = 1
+				<if test="userId != null " >
+				and f.userId =  #{userId}
+				</if>
+				<if test="zId != null  " >
+				and f.zId =  #{zId}
+				</if>
+				<if test="searchClass != null">
+				and c.className like concat('%',#{searchClass},'%')
+				</if>
+				 <![CDATA[AND l.z_date <= CURDATE()]]>
+	      </if>
+ 
+
+	</select>
+
+
+
+
+	<select id="findDetailedRecord" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT
+				tpq.id,
+				tpq.question,
+				tpq.`options`,
+				tpq.type,
+				l.id AS lId,
+				l.classId AS classId,
+				l.schoolId AS schoolId,
+				l.gradeId AS gradeName,
+				l.subjectId AS subjectName,
+				l.userId AS userId,
+				l.z_date AS theDate,
+				l.sectionofday AS sectionofday
+			FROM tp_practice_question tpq
+			LEFT JOIN tp_practice_schedule tps ON tps.pid = tpq.pid
+			LEFT JOIN lo_schedule l ON l.id = tps.sid
+			where 1=1
+			<if test="searchQuestion != null" >
+				and tpq.question like concat('%',#{searchQuestion},'%')  
+			</if>
+			<if test="searchType != null" >
+				and tpq.type =  #{searchType}
+			</if>
+			<if test="searchType == null" >
+				and (tpq.type = 'A'OR tpq.type = 'B'OR tpq.type = 'C') 
+			</if>
+			 <if test="lId != null" >
+				and l.id =  #{lId}
+			</if>
+	</select>
+	
+	<select id="findAnswerStatistics" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT
+				COUNT(tt.userAnswer) AS ansNum,
+				tt.userAnswer,
+				t.rights,
+				t.`options`
+			FROM
+				tp_practice_question t
+			LEFT JOIN tp_practice_result tt ON tt.questionId = t.id
+			where 1=1
+			<if test="questionId != null" >
+				and t.id =  #{questionId}
+			</if>
+			<if test="lId != null" >
+				and tt.bak1 =  #{lId}
+			</if>
+			<if test="classId != null" >
+				and tt.bak =  #{classId}
+			</if>
+			GROUP BY
+				tt.userAnswer
+	</select>
+	
+		<select id="findSutdentRecord" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT
+			COUNT(t.boardId) as anrNum,
+			t.boardId,
+			t.userName,
+			t.bak1 as scheduleId,
+			t.bak as classId
+		FROM
+			tp_practice_result t
+			where 1=1
+			<if test="lId != null" >
+				and t.bak1 =  #{lId}
+			</if>
+			<if test="classId != null" >
+				and t.bak =  #{classId}
+			</if>
+			<if test="searchUserName != null" >
+				and t.userName like concat('%',#{searchUserName},'%')
+			</if>
+			GROUP BY
+			t.boardId
+	</select>
+	
+	<select id="findSutdentAnswerInfo" parameterType="java.util.Map" resultType="java.util.Map">
+			SELECT * FROM (
+			 SELECT
+				t.id,
+				t.userAnswer,
+				t.boardId,
+				t.userName,
+				t.rightAnswer,
+				t.questionId,
+				tt.rights,
+				tt.question,
+				tt.type
+			FROM
+				tp_practice_result t
+			LEFT JOIN tp_practice_question tt ON tt.id = t.questionId
+			WHERE
+			1=1
+			<if test="lId != null" >
+				and t.bak1 =  #{lId}
+			</if>
+			<if test="scheduleId != null" >
+				and t.bak1 =  #{scheduleId}
+			</if>
+			<if test="classId != null" >
+				and t.bak =  #{classId}
+			</if>
+			
+			<if test="boardId != null" >
+				and t.boardId =  #{boardId}
+			</if>
+			<if test="searchType == 0" >
+			and	( tt.type="A" or  tt.type="B" or tt.type="C" )
+			</if>
+			<if test="searchType == 1" >
+				and  tt.type="D"  
+				
+				ORDER BY
+				t.createTime DESC
+			</if>
+				) a
+			GROUP BY a.questionId
+	</select>
+
+	
+</mapper>

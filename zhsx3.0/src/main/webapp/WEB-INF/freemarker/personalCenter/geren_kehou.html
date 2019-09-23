@@ -3,11 +3,10 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
-	
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 	</head>
 
 	<body>
@@ -16,7 +15,7 @@
 			<div class="zhong_right2 duke" style="padding: 0;height: 517px;">
 				<p class="dukebiao">课后督课</p>
 				<div class="dafen">
-				<form id="form" action="">
+				<form id="form">
 					<p class="ldl">
 						<span>打分：</span>
 						<input type="hidden" name="id" value="${id!''}">
@@ -26,7 +25,7 @@
 					</form>
 					<p style="line-height: 40px;padding-left: 50px;color: gray;">最多可输入200字</p>
 					<button class="layui-btn layui-btn-primary qu" style="float: right;margin-right: 40px;">取消</button>
-					<button class="layui-btn layui-btn-normal ti" style="background-color: #4596E5;float: right;margin-right: 40px;">提交</button>
+					<button class="layui-btn ti btnColor" style="float: right;margin-right: 40px;">提交</button>
 				</div>
 				<div class="pay clear">
 					<p>一、课后督课注意事项：【在听课评课的过程中，能灵活的运用看、听、想、问四种观察方法对本节课能够系统、专业、准确的给出评价。】</p>

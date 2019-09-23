@@ -1,7 +1,7 @@
 var layer;
 layui.use([ 'layer','form'], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	
 	//获得教师
 	form.on('select(schoolId)', function(data){

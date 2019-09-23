@@ -106,7 +106,7 @@ public class MailUtil {
 		String text = "<div style=\"margin-left:2em;\">尊敬的" + userCode + "用户：</div>";
 		text += "<div style=\"margin-left:4em;\">您好！ </div>";
 		text += "<div style=\"margin-left:4em;\">您于" + now.get(Calendar.YEAR) + "年" + (now.get(Calendar.MONTH) + 1)
-				+ "月" + now.get(Calendar.DAY_OF_MONTH) + "日在教育综合视讯管理平台通过邮箱验证重置密码，验证码信息如下：</div>";
+				+ "月" + now.get(Calendar.DAY_OF_MONTH) + "日在淇县教育综合视讯管理平台通过邮箱验证重置密码，验证码信息如下：</div>";
 		text += "<div style=\"margin:16px 0 32px 8em;\"><a href=\"javascript:;\" style=\"text-decoration:none;\">"
 				+ textCode + "</a></div>";
 		text += "<div style=\"margin-left:2em;color:#FF5722;font-size:20px;\">温馨提示：</div>";

@@ -110,12 +110,11 @@ public class AdminOffLineController extends BaseController {
 		int pages = pageInfo.getPages(); // 总页数
 		long total = pageInfo.getTotal();
 		List<OffLineVideoResources> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
+
 		model.addAttribute("pageNum", p);
 		model.addAttribute("search", videoResources.getSearch());
 		model.addAttribute("sortord", videoResources.getSortord());
@@ -171,8 +170,9 @@ public class AdminOffLineController extends BaseController {
 			videoResources.setBak2(bak2);
 
 			offLineVideoResourcesService.insert(videoResources);
-			String webpath = "http://" + request.getServerName() + ":" + request.getServerPort() + "/"
+			String webpath = "http://" + request.getLocalAddr() + ":" + request.getLocalPort() + "/"
 					+ request.getRequestURI().split("/")[1] + "/adminOffLine/updateVideoRes";
+			System.out.println(webpath);
 			String jsonString = "{\"id\":\"" + videoResources.getId() + "\",\"webpath\":\"" + webpath + "\"}";
 			WriterUtils.toJson(response, jsonString);
 		} catch (Exception e) {
@@ -354,13 +354,11 @@ public class AdminOffLineController extends BaseController {
 		int pages = pageInfo.getPages(); // 总页数
 		long total = pageInfo.getTotal();
 		List<OffLineVideoResources> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
+
 		return "/admin/offLine/reviewVideoResData";
 	}
 

@@ -202,7 +202,7 @@
 		(SELECT schoolName FROM `sys_school` s 	WHERE s.id = (SELECT schoolId from `user` u  WHERE u.id=t.fromId )) as schoolName,
 		(SELECT value FROM `sys_dict` d where d.id=t.bak1) as subject,
 		(SELECT value FROM `sys_dict` d where d.id = (SELECT pid FROM `sys_dict` i where i.id=t.bak1)) as grade
-		from web_question t  
+		from web_question t
 		<include refid="Dynamic_Conditions"/>
 	</select>
 
@@ -216,12 +216,11 @@
 		from web_question t 
 		where t.ifRespone=0 and t.ifShow=1
 		<if test="gradeId != null">
-				and bak1 in (SELECT id FROM `sys_dict` WHERE pid = #{gradeId})
+			and bak1 in (SELECT id FROM `sys_dict` WHERE pid = #{gradeId})
 		</if>
 		<if test="subjectId != null">
-				and bak1 = #{subjectId}
+			and bak1 = #{subjectId}
 		</if>
-	
 	</select>
 	
 	<select id="getBest" parameterType="WebQuestion" resultType="WebQuestion">
@@ -243,6 +242,5 @@
 		from web_question t  
 		<include refid="Dynamic_Conditions"/>
 		order by sendTime DESC
-	
 	</select>
 </mapper>

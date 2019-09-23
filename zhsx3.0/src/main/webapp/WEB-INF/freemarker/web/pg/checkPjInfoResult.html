@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_kezhong.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_dianping.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_chakan.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/db_bofangye.css" />
 		<style type="text/css">
@@ -18,7 +18,7 @@
 	</head>
 	<body>
 		<ul class="tanceng" id="tan">
-			<li style="border-left: 5px solid #4596E5;background-color: #f5f8fd;">
+			<li class="leftBrimColor">
 				<ul>
 					<li>序号</li>
 					<li>分项名称</li>
@@ -32,55 +32,14 @@
 				<ul>
 					<li>${l_index+1}、</li>
 					<li>${l.title!''}</li>
-					<li>${(l.weight/weightSum)*100}%</li>
-					<li>
-						<#switch l.total>  
-						  <#case 0.5>  
-						         D-
-						    	<#break>    
-						  <#case 1.0>  
-						         D
-						     	<#break>
-						  <#case 1.5>  
-						         D+
-						         <#break>
-						  <#case 2.0>  
-						         C-
-						         <#break>
-						  <#case 2.5>  
-						         C
-						         <#break>
-						  <#case 3.0>  
-						         C+
-						         <#break>
-						  <#case 3.5>  
-						         B-
-						         <#break>
-						  <#case 4.0>  
-						         B
-						         <#break>
-						  <#case 4.5>  
-						         B+
-						         <#break>
-						  <#case 5.0>  
-						         A-
-						         <#break>
-						  <#case 5.5>  
-						         A
-						         <#break>
-						  <#case 6.0>  
-						         A+
-						         <#break>
-						  <#default>  
-						         0  
-						</#switch>
-					</li>
+					<li>${l.weight!''}</li>
+					<li>${l.total!''}</li>
 					<li title="${l.content!''}">${l.content!''}</li>
 				</ul>
 			</li>
 			</#list></#if>
 		<ul class="tanceng">
-			<li style="border-left: 5px solid #4596E5;background-color: #f5f8fd;">
+			<li class="leftBrimColor">
 				<ul>
 					<li>总评评语</li>
 				</ul>

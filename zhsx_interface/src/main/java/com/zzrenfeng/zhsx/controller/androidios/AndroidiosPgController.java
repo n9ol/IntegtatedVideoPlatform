@@ -57,23 +57,38 @@ public class AndroidiosPgController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/getpjInfo")
 	public AndroidiosModel getpjInfo(PgPjinfo pgPjinfo, String pgId) {
-		// 获得评估记录信息(总评)
-		String userId = getUserId();
-		String onOff = pgPjinfo.getOnOff();
-		String type = pgPjinfo.getType();
-		WebPj webPj = webPjService.getWebPj(userId, pgId, onOff);
+		// Map<String, Object> hm = new HashMap<>();
 
-		// 获得评估项
-		String webPjId = webPj.getId();
-		List<WebPjinfo> listWebPjinfo = webPjinfoService.listWebPjinfo(userId, pgId, onOff, type, webPjId);
+		// WebPj webpj = new WebPj();
+		// webpj.setUserId(getUserId());
+		// webpj.setPgId(pgId);
+		// webpj.setOnOff(pgPjinfo.getOnOff());
+		// List<WebPj> webpjs = webPjService.findSelective(webpj);
+		// if (webpjs == null || webpjs.size() == 0) {
+		// webPjService.insterPgMessage(getUserId(), pgId, pgPjinfo.getOnOff(),
+		// pgPjinfo.getType());
+		// webpj = webPjService.findSelective(webpj).get(0);
+		// } else {
+		// webpj = webpjs.get(0);
+		// }
+		//
+		// // 获得课中评估项
+		// WebPjinfo webPjInfo = new WebPjinfo();
+		// webPjInfo.setUserId(getUserId());
+		// webPjInfo.setPgId(pgId);
+		// webPjInfo.setOnOff(pgPjinfo.getOnOff());
+		// webPjInfo.setBak1("I");
+		// List<WebPjinfo> webPjInfoList =
+		// webPjinfoService.findSelective(webPjInfo);
 
-		Map<String, Object> hm = new HashMap<>();
-		hm.put("webPj", webPj);
-		hm.put("webPjInfoList", listWebPjinfo);
-		hm.put("onOff", onOff);
+		// 获得总评
+		// hm.put("webpj", webpj);
+		// hm.put("webPjInfoList", webPjInfoList);
+
+		Map<String, Object> hm = webPjService.getPjInfo(getUserId(), pgId, pgPjinfo.getOnOff(), pgPjinfo.getType());
+		hm.put("onOff", pgPjinfo.getOnOff());
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(hm);
 		return androidiosModel;
 	}
@@ -90,17 +105,17 @@ public class AndroidiosPgController extends BaseController {
 	@ResponseBody
 	@RequestMapping("/getpjdetail")
 	public AndroidiosModel getpjdetail(WebPjdetail webPjdetail, String webPjInfoId) {
-		WebPjinfo webPjInfo = webPjinfoService.findByKey(webPjInfoId);
-		webPjdetail.setUserId(getUserId());
-		webPjdetail.setBak2(webPjInfo.getBak2());
-		List<WebPjdetail> webPjdetailList = webPjdetailService.listWebPjdetail(webPjdetail);
-
 		Map<String, Object> hm = new HashMap<>();
 		hm.put("webPjInfoId", webPjInfoId);
+
+		WebPjinfo webPjInfo = webPjinfoService.findByKey(webPjInfoId);
 		hm.put("webPjInfo", webPjInfo);
+
+		webPjdetail.setUserId(getUserId());
+		List<WebPjdetail> webPjdetailList = webPjdetailService.findSelective(webPjdetail);
 		hm.put("webPjdetailList", webPjdetailList);
+
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(hm);
 		return androidiosModel;
 	}
@@ -127,7 +142,6 @@ public class AndroidiosPgController extends BaseController {
 			e.printStackTrace();
 		}
 		androidiosModel.setData(hm);
-		androidiosModel.setIsNeedLogin(1);
 		return androidiosModel;
 	}
 
@@ -160,7 +174,6 @@ public class AndroidiosPgController extends BaseController {
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
 		androidiosModel.setData(hm);
-		androidiosModel.setIsNeedLogin(1);
 		return androidiosModel;
 	}
 
@@ -193,7 +206,6 @@ public class AndroidiosPgController extends BaseController {
 			e.printStackTrace();
 		}
 		androidiosModel.setData(hm);
-		androidiosModel.setIsNeedLogin(1);
 		return androidiosModel;
 	}
 
@@ -213,7 +225,6 @@ public class AndroidiosPgController extends BaseController {
 		List<LoPgCour> lopgcourList = loPgCourService.findSelective(lopgcour);
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(lopgcourList);
 		return androidiosModel;
 	}
@@ -241,7 +252,6 @@ public class AndroidiosPgController extends BaseController {
 		}
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(hm);
 		return androidiosModel;
 	}
@@ -276,7 +286,6 @@ public class AndroidiosPgController extends BaseController {
 		}
 
 		androidiosModel.setData(hm);
-		androidiosModel.setIsNeedLogin(1);
 		return androidiosModel;
 	}
 
@@ -320,7 +329,6 @@ public class AndroidiosPgController extends BaseController {
 		hm.put("onOff", onOff);
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(hm);
 		return androidiosModel;
 	}
@@ -347,7 +355,6 @@ public class AndroidiosPgController extends BaseController {
 		hm.put("allResult", webpj.getAllResult());
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(hm);
 		return androidiosModel;
 	}

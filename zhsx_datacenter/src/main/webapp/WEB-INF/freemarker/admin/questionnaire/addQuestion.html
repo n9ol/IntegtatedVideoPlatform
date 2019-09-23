@@ -14,7 +14,6 @@
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/bootstrap/css/bootstrap.css" media="all">
         <link rel="stylesheet" type="text/css" href="${ctx}/common/global.css" media="all">
         <link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
-		
     </head>
 <body>
 <section class="layui-larry-box">
@@ -45,7 +44,7 @@
   
                         <div class="layui-form-item">
                             <div class="layui-input-block text-center">
-                                <button class="layui-btn" lay-submit="" lay-filter="add">立即提交</button>
+                                <button class="layui-btn" lay-filter="add">立即提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
@@ -61,7 +60,7 @@
 		
 		
 		
-         var form = layui.form;
+         var form = layui.form();
          var laydate = layui.laydate;
          
          

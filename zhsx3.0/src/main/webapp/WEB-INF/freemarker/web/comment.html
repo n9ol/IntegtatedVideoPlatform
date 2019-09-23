@@ -5,7 +5,7 @@
 	<div class="tishi">
 		<span class="tishi_zi">请填写您的评论。<strong><span style="font-style: italic;"></span></strong></span>
 	</div>
-	<button class="layui-btn layui-btn-normal tijiao2" style="float: right;margin-right:10px;margin-top:-17px;" id="submitComment">提交</button>
+	<button class="layui-btn tijiao2 btnColor" style="float: right;margin-right:10px;margin-top:-17px;" id="submitComment">提交</button>
 	<!--留言区-->
 	<div class="liuyanqus">
 		<ul class="liuyanqu_liuyans news">
@@ -30,16 +30,22 @@
 			</#list></#if>
 		</ul>
 		<div id="pager">
-			<div class="pagers" style="margin-bottom: 15px;" id="page">
-			</div>
+			<div class="pagers" style="margin-bottom: 15px;" id="pagerss"></div>
 		</div>
 	</div>
 </div>
 <input type="hidden" id="contextType" value="${contextType!''}">
 <script src="${ctx}/js/comment.js" type="text/javascript" charset="utf-8"></script>
-<#include "/commons/comPage.html" encoding="utf-8"/>
 <script type="text/javascript">
-	function turnPage(p) {
-		getCommentData(p);
-	}
+	layui.use([ 'laypage' ], function() {
+		laypage = layui.laypage;
+		laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : "#4596E5",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					getCommentData(e.curr);
+				}
+			}
+		});
+	});
 </script>

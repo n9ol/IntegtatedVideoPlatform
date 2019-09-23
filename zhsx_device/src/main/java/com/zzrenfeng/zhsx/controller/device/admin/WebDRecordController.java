@@ -23,7 +23,7 @@ import com.zzrenfeng.zhsx.service.WebDeviceRecordService;
  * 设备运行记录表
  * 
  * @author David
- * @version 2018-01-11
+ * @version 2018-01-11 
  * @see com.zzrenfeng.zhsx.controller.WebDeviceRecord
  */
 @Controller
@@ -32,7 +32,7 @@ public class WebDRecordController extends BaseController {
 
 	@Resource
 	private WebDeviceRecordService webDeviceRecordService;
-
+	
 	@RequestMapping("/listDeviceRecordBycontion")
 	public String listDeviceRecordBycontion(HttpServletRequest request, Model model, Integer p) {
 		if (p == null)
@@ -42,35 +42,30 @@ public class WebDRecordController extends BaseController {
 		String startTime = request.getParameter("startTime");
 		String endTime = request.getParameter("endTime");
 		String deviceCode = request.getParameter("deviceCode");
-
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
+		
 		try {
 			if (startTime != null && StringUtils.isNotEmpty(startTime)) {
 				Date startTimeD = sdf.parse(startTime);
-				webDRecord.setDr_start_time(startTimeD);
+				webDRecord.setDrStartTime(startTimeD);
 			}
 			if (endTime != null && StringUtils.isNotEmpty(endTime)) {
 				Date endTimeD = sdf.parse(endTime);
-				webDRecord.setDr_end_time(endTimeD);
+				webDRecord.setDrEndTime(endTimeD);
 			}
 		} catch (ParseException e) {
 			// TODO
 			e.printStackTrace();
 		}
-
+		
 		if ((deviceCode != null) && (!StringUtils.isEmpty(deviceCode))) {
-			webDRecord.setDevice_code(deviceCode);
+			webDRecord.setDeviceCode(deviceCode);
 		}
 		/* 查询数据 */
 		Page<WebDeviceRecord> pageInfo = webDeviceRecordService.findPageSelective(webDRecord, p, 10);
 		int pages = pageInfo.getPages(); // 总页数
 		List<WebDeviceRecord> ldr = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("ldr", ldr);
@@ -79,10 +74,10 @@ public class WebDRecordController extends BaseController {
 		model.addAttribute("startTimeAgu", startTime);
 		model.addAttribute("endTimeAgu", endTime);
 		model.addAttribute("deviceCodeAgu", deviceCode);
-
+		
 		return "/admin/device/devicerecord_list";
 	}
-
+	
 	@RequestMapping(value = "/findDRecordById")
 	public String findDRecordById(HttpServletRequest request, HttpServletResponse response, Model model) {
 		String dr_id = request.getParameter("dr_id");
@@ -92,10 +87,10 @@ public class WebDRecordController extends BaseController {
 		return "/admin/device/devicerecord_view";
 	}
 
+	
 	/**
 	 * 删除设备记录信息
-	 * 
-	 * @param
+	 * @param 
 	 * @param request
 	 * @param response
 	 * @param model
@@ -104,23 +99,23 @@ public class WebDRecordController extends BaseController {
 	@RequestMapping(value = "/deviceDeleteDRecord")
 	public String deviceDeleteDRecord(String ids, HttpServletRequest request, HttpServletResponse response,
 			Model model) {
-
+		
 		webDeviceRecordService.deleteBatchByKeys(ids);
-
+		
 		return "redirect:/webdevicerecord/admin/listDeviceRecordBycontion";
 	}
-
+	
 	/**
 	 * 清空所有设备记录
-	 * 
-	 * @param
+	 * @param 
 	 * @param request
 	 * @param response
 	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = "/deleteAllDRecord")
-	public String deleteAllDRecord(String ids, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String deleteAllDRecord(String ids, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
 		webDeviceRecordService.deleteAllDRecord();
 		return "redirect:/webdevicerecord/admin/listDeviceRecordBycontion";
 	}

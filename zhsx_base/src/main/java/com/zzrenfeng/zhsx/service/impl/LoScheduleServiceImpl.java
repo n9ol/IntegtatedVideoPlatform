@@ -1,14 +1,11 @@
 package com.zzrenfeng.zhsx.service.impl;
 
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
@@ -24,7 +21,6 @@ import com.zzrenfeng.zhsx.model.LoSchedule;
 import com.zzrenfeng.zhsx.model.LoTermTime;
 import com.zzrenfeng.zhsx.model.SysHistory;
 import com.zzrenfeng.zhsx.model.User;
-import com.zzrenfeng.zhsx.model.eclassbrand.course.CourseSchedule;
 import com.zzrenfeng.zhsx.service.LoScheduleService;
 import com.zzrenfeng.zhsx.service.SysHistoryService;
 import com.zzrenfeng.zhsx.service.UserService;
@@ -147,6 +143,7 @@ public class LoScheduleServiceImpl extends BaseServiceImpl<BaseMapper<LoSchedule
 				ls.setType(loSchedule.getType());
 				ls.setBak(loSchedule.getBak());
 				ls.setBak1(termTimeId);
+				ls.setBak2(LoSchedule.PG_BAK2_G);
 				loSchedules.add(ls);
 			}
 			loScheduleMapper.insertScheduleBatch(loSchedules);
@@ -173,6 +170,7 @@ public class LoScheduleServiceImpl extends BaseServiceImpl<BaseMapper<LoSchedule
 				ls.setType(loSchedule.getType());
 				ls.setBak(loSchedule.getBak());
 				ls.setBak1(termTimeId);
+				ls.setBak2(loSchedule.getBak2());
 				loScheduleMapper.insert(ls);
 				if (loFschedules != null && loFschedules.size() > 0) {
 					for (LoFschedule loFschedule : loFschedules) {
@@ -196,6 +194,7 @@ public class LoScheduleServiceImpl extends BaseServiceImpl<BaseMapper<LoSchedule
 		loSchedule.setType(schedule.getType());
 		loSchedule.setGradeId(schedule.getGradeId());
 		loSchedule.setSubjectId(schedule.getSubjectId());
+		// loSchedule.setZ_date(new Date());
 		Page<LoSchedule> pageInfo = findPage(loSchedule, 1, 8);
 		return pageInfo.getResult();
 	}
@@ -263,44 +262,15 @@ public class LoScheduleServiceImpl extends BaseServiceImpl<BaseMapper<LoSchedule
 	}
 
 	@Override
-	public List<LoSchedule> listLoschedule(HttpServletRequest request, List<CourseSchedule> listCourseSchedule)
-			throws ParseException {
-		String path = "http://" + request.getServerName() + ":" + request.getServerPort() + "/"
-				+ request.getRequestURI().split("/")[1];
-		List<LoSchedule> listLoSchedule = new ArrayList<>();
-		LoSchedule loSchedule = null;
-		Date date = new Date();
-		Date dateDate = DateUtil.getDateDate(date, "yyyy-MM-dd");
-		for (CourseSchedule courseSchedule : listCourseSchedule) {
-			loSchedule = new LoSchedule();
-			loSchedule.setId(courseSchedule.getId());
-			loSchedule.setClassId(courseSchedule.getClassroomId());
-			loSchedule.setSchoolId(courseSchedule.getSchoolId());
-			loSchedule.setDayofweek(courseSchedule.getDayOfWeek());
-			loSchedule.setSectionofday(Integer.valueOf(courseSchedule.getBigSectionOfDay()));
-			loSchedule.setGradeId(courseSchedule.getSpecialtyName());
-			loSchedule.setSubjectId(courseSchedule.getSubjectName());
-			loSchedule.setUserId(courseSchedule.getTeacherId());
-			loSchedule.setUserName(courseSchedule.getTeacherName());
-			loSchedule.setSchoolName(courseSchedule.getClassroomName());
-			String coverpath = null;
-			if (courseSchedule.getType().equals("G")) {
-				coverpath = path + "/images/zhuandi267.png";
-			} else {
-				coverpath = path + "/images/pinggu267.png";
-			}
-			loSchedule.setCoverpath(coverpath);
-			loSchedule.setJohn_num(0);
-			loSchedule.setZ_date(dateDate);
-			loSchedule.setType(courseSchedule.getType());
-			String startTime = DateUtil.getStringDate(courseSchedule.getStartTime(), "HH:mm:ss");
-			loSchedule.setStartDate(startTime);
-			String endTime = DateUtil.getStringDate(courseSchedule.getEndTime(), "HH:mm:ss");
-			loSchedule.setEndDate(endTime);
-			loSchedule.setIsGoClass(courseSchedule.getIsGoClass());
-			listLoSchedule.add(loSchedule);
-		}
-		return listLoSchedule;
+	public List<LoSchedule> findSelectiveNow(LoSchedule t) {
+		// TODO Auto-generated method stub
+		return loScheduleMapper.findSelectiveNow(t);
+	}
+
+	@Override
+	public List<LoSchedule> getLoScheduleBySC(LoSchedule loSchedule) {
+		
+		return loScheduleMapper.getLoScheduleBySC(loSchedule);
 	}
 
 }

@@ -8,7 +8,7 @@ function setIframeH() {
 var layer;
 layui.use([ 'layer', 'form'], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 });
 
 

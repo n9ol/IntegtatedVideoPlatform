@@ -5,7 +5,7 @@ var layer;
 layui.use([ 'layedit', 'form', 'layer' ], function() {
 	layedit = layui.layedit;
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	
 	//建立编辑器
 	index = layedit.build('demo', {

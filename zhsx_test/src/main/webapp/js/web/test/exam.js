@@ -1,7 +1,6 @@
 $(function() {
 	$("#testTop").attr("class", "has-sub active");
 	$("#testTopZ").attr("class", "active2");
-
 	testpaper();
 });
 
@@ -14,7 +13,6 @@ $(".collection").click(function() {
 // 年级查询
 function selectGrade(gradeId, gradeName) {
 	$("input[name='gradeName']").val(gradeName);
-	agradeSubject(gradeId);
 	testpaper();
 }
 
@@ -48,19 +46,6 @@ $(".quxiao").click(function() {
 	$("input[name='area']").val(null);
 	testpaper();
 });
-
-
-// 获得科目
-function agradeSubject(id) {
-	$("#hhh").empty();
-	$("#hhh").append("<li class='shai_kuang' onclick=selectSubjects('',this)>全部</li>");
-	$.getJSON(ctx + "/adminBaseData/getSubjects", {gradeId : id}, function(json) {
-		for (var int = 0; int < json.length; int++) {
-			var arrayJson = json[int];
-			$("#hhh").append("<li onclick=selectSubjects('" + arrayJson.id + "','"+ arrayJson.value + "',this)>" + arrayJson.value+ "</li>");
-		}
-	});
-}
 
 
 function testpaper() {

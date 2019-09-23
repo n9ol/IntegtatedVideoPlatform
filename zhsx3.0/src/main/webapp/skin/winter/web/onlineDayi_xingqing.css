@@ -1,0 +1,169 @@
+.box{
+	width: 1200px;
+	margin: 0 auto;
+}
+.answer {
+	width: 830px;
+	background-color: white;
+	float: left;
+	padding: 20px 0;
+}
+
+.topic {
+	border-bottom: 1px solid gainsboro;
+	line-height: 30px;
+	font-size: 16px;
+	padding-left: 10px;
+	margin: 0 10px;
+}
+
+.detail>p {
+	line-height: 40px;
+	padding-left: 10px;
+	font-size: 18px;
+	color: #4596E5;
+	border-bottom: 1px solid gainsboro;
+	margin-top: 20px;
+}
+.huifu li{
+	border-bottom: 1px solid gainsboro;
+	padding: 10px;
+}
+.huifu li img{
+	height: 50px;
+	width: 50px;
+	border-radius: 50%;
+	text-align: center;
+	margin-top: 10px;
+}
+.huifu_ren,.huifu_img{
+	float: left;
+}
+.huifu_ren{
+	margin-left: 20px;
+	width: 682px;
+}
+.huifu_riqi{
+	clear: both;
+	text-align: right;
+}
+.hfnm{
+	color: orangered;
+	line-height: 40px;
+}
+.huifu_riqi span{
+	font-size: 0.9em;
+	margin: 0 2px;
+	/*color: gray;*/
+}
+#pagerss{
+	text-align: center;
+	padding-top: 15px;
+}
+/*回答环节*/
+.layui-btn{
+	margin: 20px 0 0 0px;
+	background-color: #1ca5d2;
+}
+.answer2{
+	margin-top: 20px;
+	padding: 0 10px;
+}
+
+.huida{
+	font-size: 18px;
+	line-height: 35px;
+	padding-left: 10px;
+}
+
+.zuijia{
+	position: absolute;
+	right: -40px;
+	top: 10;
+	width: 150px;
+	height: 25px;
+	background-color: #1ca5d2;
+	color: white;
+	line-height: 25px;
+	text-align: center;
+	transform: rotate(30deg)
+}
+
+/*精选题集*/
+.di_right {
+	float: right;
+	width: 340px;
+	border: 1px solid gainsboro;
+	background-color: white;
+	padding: 10px 0;
+}
+.tiji li {
+	padding-left: 10px;
+	border-bottom: 1px dashed #f0f0f0;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 2px;
+	cursor: pointer;
+}
+
+.jingxun {
+	height: 40px;
+	line-height: 40px;
+	font-size: 18px;
+	padding-left: 10px;
+}
+
+.tiji li:hover {
+	background-color: ghostwhite;
+}
+
+.tiji li span {
+	float: left;
+	display: inline-block;
+	margin: 0 3px;
+	height: 100%;
+	line-height: 40px;
+	font-size: 15px;
+}
+
+.paiming {
+	float: left;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-color: #1ca5d2;
+	color: white;
+	line-height: 20px;
+	text-align: center;
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
+	
+.timu1 {
+	display: inline-block;
+	width: 180px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	height: 20px;
+}
+/*提问环节*/
+.tiwenhuanjie{
+	height: 80px;
+	text-align: center;
+	
+}
+.tiwenhuanjie img{
+	border-radius: 5px;
+	max-width: 340px;
+	max-height: 80px;
+}
+.tiwenhuanjie img:hover{
+	border: 1px solid gainsboro;
+}
+
+
+
+
+

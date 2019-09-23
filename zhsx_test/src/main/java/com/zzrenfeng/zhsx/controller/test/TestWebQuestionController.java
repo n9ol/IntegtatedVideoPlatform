@@ -99,15 +99,11 @@ public class TestWebQuestionController extends BaseController {
 		Page<TestWebQuestion> pageInfo = testWebQuestionService.findPageSelective(twq, p, 10);
 		int pages = pageInfo.getPages();
 		List<TestWebQuestion> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("memberId", twq.getMemberId());
 		model.addAttribute("pageNum", p);
 		model.addAttribute("lists", lists);
 		model.addAttribute("pages", pages);
+
 		return "/testManager/geren_tikuData";
 	}
 
@@ -168,11 +164,6 @@ public class TestWebQuestionController extends BaseController {
 		Page<TestWebQuestion> pageInfo = testWebQuestionService.findPageSelective(twq, p, 8);
 		int pages = pageInfo.getPages();
 		List<TestWebQuestion> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("memberId", twq.getMemberId());
 		model.addAttribute("pageNum", p);
 		model.addAttribute("lists", lists);
@@ -369,11 +360,6 @@ public class TestWebQuestionController extends BaseController {
 		Page<TestWebQuestion> pageInfo = testWebQuestionService.findTestQuestion(twq, p, 1);
 		int pages = pageInfo.getPages();
 		List<TestWebQuestion> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
 		model.addAttribute("pageNum", p);
 		model.addAttribute("pages", pages);

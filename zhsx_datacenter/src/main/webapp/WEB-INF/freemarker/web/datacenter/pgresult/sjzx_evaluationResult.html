@@ -2,17 +2,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>教育综合视讯管理平台</title> 
+<title>淇县教育综合视讯管理平台</title> 
 <#include "/commons/comWeb.html" encoding="utf-8"/>
 <link rel="stylesheet" href="${ctx}/css/web/sjzx_evaluationResult.css">
 </head>
 <body>
 	<div class="con">
+	
 		<!--筛选区域-->
 		<div>
 			<ul class="filter1">
 				<li class="filter2 borderBottom clear">
-					<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+					<span class="category1">年&nbsp;&nbsp;&nbsp;&nbsp;级 ></span>
 					<ul class="filter3 clear">
 						<li class="filterActive" onclick="selectGrade()">全部</li>
 						<#if grades?? && (grades?size>0)><#list grades as g>
@@ -40,14 +41,19 @@
 			</ul>
 		</div>
 		<div class="zonghe">
+						
 			<div class="sousuo">
-				<input style="border: 1px solid gainsboro;padding-left:2px;" type="search" placeholder="老师/教室" id="seatchval" value="${search!''}"/>
-				<img src="/zhsx/img/sousuo.jpg"  onclick="search();"/>
+				<input style="border: 1px solid gainsboro;padding-left: 5px;" type="search" placeholder="教师/学校" id="seatchval" value="${search!''}"/>
+				<img src="${ctx}/skin/${skinName}/img/sousuo.jpg"  onclick="search();"/>
 			</div>
+			
+			
 		</div>
 		<div class="ziyuan_zhong">
 		
 		</div>
+		
+		
 	</div>
 
 

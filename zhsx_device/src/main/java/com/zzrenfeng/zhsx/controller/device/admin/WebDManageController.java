@@ -57,7 +57,7 @@ public class WebDManageController extends BaseController {
 	private String platformLevel;
 	@Resource
 	private String platformLevelId;
-
+	
 	@RequestMapping("/listDMBycontion")
 	public String listDeviceManageBycontion(HttpServletRequest request, Model model, Integer p) {
 		// 查询所有设备时首先执行
@@ -73,55 +73,63 @@ public class WebDManageController extends BaseController {
 		/* 首页功能***开始 ****/
 		String schoolId = request.getParameter("schoolId");
 		String deviceCode = request.getParameter("deviceCode");
-
+		
 		if ((schoolId != null) && (!StringUtils.isEmpty(schoolId))) {
 			model.addAttribute("schoolIdAgu", schoolId);
-			dm.setSchool_id(schoolId);
+			dm.setSchoolId(schoolId);
 		} /*
 			 * else{//因为schoolid=0 在数据库中不存在 model.addAttribute("schoolIdAgu",0);
 			 * }
 			 */
 		if ((deviceCode != null) && (!StringUtils.isEmpty(deviceCode))) {
 			model.addAttribute("deviceCodeAgu", deviceCode);
-			dm.setDevice_code(deviceCode);
+			dm.setDeviceCode(deviceCode);
 		}
 		/* 首页功能***结束 ****/
-
-		model.addAttribute("platformLevel", platformLevel);// 平台级别
+		
+		model.addAttribute("platformLevel", platformLevel);//平台级别
 		/*
-		 * 地区信息备注： 1.国家级别 （1）初次查询显示所有的省、市、县。
-		 * （2）当用户在前台页面筛选好条件，并点击“搜索”后；就再查询所有省份，并在前台选择用户搜索时选择的省份信息；
-		 * 根据用户选择的省份来查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
-		 * 根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息； 2.省级 （1）
-		 * 初次查询显示指定的省下的市和该省下的所有县； （2） 当用户筛选好条件后，并点击“搜索”后；
-		 * 查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
-		 * 根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息； 3.市级 （1） 初次查询显示指定的市下的所有县；
-		 * （2） 查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息； 4.县级 （都不显示） （1）
-		 */
-		if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {// 当是国家级别时
-
+		 * 地区信息备注：
+		 * 1.国家级别
+		 * 	（1）初次查询显示所有的省、市、县。
+		 *  （2）当用户在前台页面筛选好条件，并点击“搜索”后；就再查询所有省份，并在前台选择用户搜索时选择的省份信息；
+		 *  	根据用户选择的省份来查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
+		 *  	根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息；
+		 * 2.省级
+		 * 	（1） 初次查询显示指定的省下的市和该省下的所有县；
+		 *  （2） 当用户筛选好条件后，并点击“搜索”后；
+		 *  	查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
+		 *  	根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息；
+		 * 3.市级
+		 *  （1） 初次查询显示指定的市下的所有县；
+		 *  （2） 查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息；
+		 * 4.县级 （都不显示）
+		 * 	（1）
+		 * */
+		if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {//当是国家级别时
+			
 			String province = request.getParameter("province");
 			if ((province != null) && (!StringUtils.isEmpty(province))) {
 				model.addAttribute("provinceAgu", province);
-				dm.setDevice_province(province);
+				dm.setDeviceProvince(province);
 				sysDicttemc.setPid(province);
 			}
-
+			
 			String city = request.getParameter("city");
 			if ((city != null) && (!StringUtils.isEmpty(city))) {
 				model.addAttribute("cityAgu", city);
-				dm.setDevice_city(city);
+				dm.setDeviceCity(city);
 				sysDicttema.setPid(city);
 			}
-
+			
 			String area = request.getParameter("area");
 			if ((area != null) && (!StringUtils.isEmpty(area))) {
 				model.addAttribute("areaAgu", area);
-				dm.setDevice_area(area);
+				dm.setDeviceArea(area);
 
 				sysSchool.setCountyId(area);
 			}
-
+			
 			/* 查询所有 省 、地区、 县 */
 			sysDicttemp.setKeyname(SysDict.KEYNAME_PROVINCE);
 			List<SysDict> provinceList = sysDictService.findSelective(sysDicttemp);
@@ -134,104 +142,108 @@ public class WebDManageController extends BaseController {
 			sysDicttema.setKeyname(SysDict.KEYNAME_AREA);
 			List<SysDict> areaList = sysDictService.findSelective(sysDicttema);
 			model.addAttribute("areaList", areaList);
-		} else if (platformLevel.equals("P")) {// platformLevelId 是省分的id
-			dm.setDevice_province(platformLevelId); // 查询班班通设备时使用
-			sysSchool.setProvinceId(platformLevelId);// 查询省下面所有的学校
-
+		} else if (platformLevel.equals("P")) {//platformLevelId 是省分的id
+			dm.setDeviceProvince(platformLevelId);	//查询班班通设备时使用
+			sysSchool.setProvinceId(platformLevelId);//查询省下面所有的学校
+			
 			String city = request.getParameter("city");
 			if ((city != null) && (!StringUtils.isEmpty(city))) {
 				model.addAttribute("cityAgu", city);
-				dm.setDevice_city(city);
+				dm.setDeviceCity(city);
 				sysDicttema.setPid(city);
 			}
-
+			
 			String area = request.getParameter("area");
 			if ((area != null) && (!StringUtils.isEmpty(area))) {
 				model.addAttribute("areaAgu", area);
-				dm.setDevice_area(area);
+				dm.setDeviceArea(area);
 				sysSchool.setCountyId(area);
 			}
-
-			// 该省省份下面所有的市
+			
+			//该省省份下面所有的市
 			sysDicttemc.setPid(platformLevelId);
 			sysDicttemc.setKeyname(SysDict.KEYNAME_CITY);
 			List<SysDict> cityList = sysDictService.findSelective(sysDicttemc);
 			model.addAttribute("cityList", cityList);
-
-			// 查询省份下面的所有县
-			sysDicttema.setId(platformLevelId);// 此时仅仅是为了传递数据方便
+			
+			//查询省份下面的所有县
+			sysDicttema.setId(platformLevelId);//此时仅仅是为了传递数据方便
 			sysDicttema.setKeyname(SysDict.KEYNAME_AREA);
 			List<SysDict> areaList = sysDictService.findAreaByProvince(sysDicttema);
 			model.addAttribute("areaList", areaList);
-
+			
 		} else if (platformLevel.equals("C")) {
-			dm.setDevice_city(platformLevelId); // 查询班班通设备时使用
-			sysSchool.setCityId(platformLevelId);// 查询市下面所有的学校
-
+			dm.setDeviceCity(platformLevelId);	//查询班班通设备时使用
+			sysSchool.setCityId(platformLevelId);//查询市下面所有的学校
+			
 			String area = request.getParameter("area");
 			if ((area != null) && (!StringUtils.isEmpty(area))) {
 				model.addAttribute("areaAgu", area);
-				dm.setDevice_area(area);
+				dm.setDeviceArea(area);
 
 				sysSchool.setCountyId(area);
 			}
-
+			
 			sysDicttema.setPid(platformLevelId);
 			sysDicttema.setKeyname(SysDict.KEYNAME_AREA);
 			List<SysDict> areaList = sysDictService.findSelective(sysDicttema);
 			model.addAttribute("areaList", areaList);
-		} else if (platformLevel.equals("A")) {// 暂时不做处理
-			dm.setDevice_area(platformLevelId); // 查询班班通设备时使用
-			sysSchool.setCountyId(platformLevelId);// 查询区下面所有的学校
-
+		} else if (platformLevel.equals("A")) {//暂时不做处理
+			dm.setDeviceArea(platformLevelId);	//查询班班通设备时使用
+			sysSchool.setCountyId(platformLevelId);//查询区下面所有的学校
+			
 			model.addAttribute("platformLevelId", platformLevelId);
 		}
 
 		/* 查询学校信息 */
 		List<SysSchool> schoolList = sysSchoolService.findSelective(sysSchool);
 		model.addAttribute("schoolList", schoolList);
-
+		
+		//查询所有的设备类型
+		SysDict version = new SysDict();
+		version.setKeyname(SysDict.KEYNAME_DEVICE_TYPE);
+		Page<SysDict> pageInfoVersion = sysDictService.findPageSelective(version, p, 12);
+		List<SysDict> versionList = pageInfoVersion.getResult();
+		model.addAttribute("versionList", versionList);
+		
 		/*
 		 * ShiroUser user= getShiroUser(); model.addAttribute("user", user);
 		 */
-
+		//dm.setIsvalid(WebDeviceManage.DEVICE_ISVALID_YES);// 后台需要查看所有的信息 
 		Page<WebDeviceManage> pageInfo = webDeviceManageService.findPageSelective(dm, p, 10);
 		int pages = pageInfo.getPages(); // 总页数
 		List<WebDeviceManage> dmList = pageInfo.getResult();
 		if (dmList != null && dmList.size() > 0) {
 			for (int i = 0; i < dmList.size(); i++) {
-				SysDict sysDicttempP = sysDictService.findByKey(dmList.get(i).getDevice_province());
+				SysDict sysDicttempP = sysDictService.findByKey(dmList.get(i).getDeviceProvince());
 				String pValue = "";
 				if (sysDicttempP != null) {
 					pValue = sysDicttempP.getValue();
 				}
-
-				SysDict sysDicttempC = sysDictService.findByKey(dmList.get(i).getDevice_city());
+				
+				SysDict sysDicttempC = sysDictService.findByKey(dmList.get(i).getDeviceCity());
 				String cValue = "";
 				if (sysDicttempC != null) {
 					cValue = sysDicttempC.getValue();
 				}
-
-				SysDict sysDicttempA = sysDictService.findByKey(dmList.get(i).getDevice_area());
+				
+				SysDict sysDicttempA = sysDictService.findByKey(dmList.get(i).getDeviceArea());
 				String aValue = "";
 				if (sysDicttempA != null) {
 					aValue = sysDicttempA.getValue();
 				}
 
 				String strTemp = pValue + cValue + aValue;
-				dmList.get(i).setDevice_province(strTemp);
+				dmList.get(i).setDeviceProvince(strTemp);
+				
 			}
 
 		}
 
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("dmList", dmList);
+
 		return "/admin/device/device_list";
 	}
 
@@ -264,11 +276,11 @@ public class WebDManageController extends BaseController {
 			List<SysDict> provinceList = sysDictService.findSelective(sysDicttemp);
 
 			sysDicttemp.setKeyname(SysDict.KEYNAME_CITY);
-			sysDicttemp.setPid(webDeviceManage.getDevice_province());
+			sysDicttemp.setPid(webDeviceManage.getDeviceProvince());
 			List<SysDict> cityList = sysDictService.findSelective(sysDicttemp);
 
 			sysDicttemp.setKeyname(SysDict.KEYNAME_AREA);
-			sysDicttemp.setPid(webDeviceManage.getDevice_city());
+			sysDicttemp.setPid(webDeviceManage.getDeviceCity());
 			List<SysDict> areaList = sysDictService.findSelective(sysDicttemp);
 
 			model.addAttribute("provinceList", provinceList);
@@ -276,9 +288,9 @@ public class WebDManageController extends BaseController {
 			model.addAttribute("areaList", areaList);
 
 			SysSchool sysSchool = new SysSchool();// 根据地区来查询
-			sysSchool.setProvinceId(webDeviceManage.getDevice_province());
-			sysSchool.setCityId(webDeviceManage.getDevice_city());
-			sysSchool.setCountyId(webDeviceManage.getDevice_area());
+			sysSchool.setProvinceId(webDeviceManage.getDeviceProvince());
+			sysSchool.setCityId(webDeviceManage.getDeviceCity());
+			sysSchool.setCountyId(webDeviceManage.getDeviceArea());
 			List<SysSchool> schoolList = sysSchoolService.findSelective(sysSchool);
 			model.addAttribute("schoolList", schoolList);
 
@@ -301,15 +313,15 @@ public class WebDManageController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/deviceupdateDM")
-	public Map<String, Object> deviceupdateDM(WebDeviceManage dm, HttpServletRequest request,
-			HttpServletResponse response, Model model) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
+	public Map<String,Object> deviceupdateDM(WebDeviceManage dm, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		Map<String,Object> resultMap = new HashMap<String,Object>();
 		// String state = request.getParameter("state");
-
+		
 		int state = webDeviceManageService.updateByKeySelective(dm);
-		if (state != 0) {// 成功
+		if(state!=0){//成功
 			resultMap.put("errorCode", 0);
-		} else {// 失败
+		}else{//失败
 			resultMap.put("errorCode", 1);
 		}
 		return resultMap;
@@ -336,10 +348,10 @@ public class WebDManageController extends BaseController {
 					if ((timeTemp / 1000) > 180) {// 已经断开3min
 						// 更新设备的状态为离线 deviceCode
 						WebDeviceManage webDeviceManage = new WebDeviceManage();
-						webDeviceManage.setDevice_code(deviceCode);
+						webDeviceManage.setDeviceCode(deviceCode);
 						List<WebDeviceManage> dmList = webDeviceManageService.findSelective(webDeviceManage);
 						webDeviceManage = dmList.get(0);
-						webDeviceManage.setDevice_state(WebDeviceManage.DEVICE_UNLINE_STATE);
+						webDeviceManage.setDeviceState(WebDeviceManage.DEVICE_UNLINE_STATE);
 						webDeviceManageService.updateByKey(webDeviceManage);
 					}
 				} catch (ParseException e) {
@@ -350,10 +362,10 @@ public class WebDManageController extends BaseController {
 		}
 
 	}
-
+	
 	/**
-	 * 删除设备信息 同时删除WebClassDevice中对应的数据
-	 * 
+	 * 删除设备信息
+	 * 同时删除WebClassDevice中对应的数据 
 	 * @param dm
 	 * @param request
 	 * @param response
@@ -361,10 +373,11 @@ public class WebDManageController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/deviceDeleteDM")
-	public String deviceDeleteDM(String ids, HttpServletRequest request, HttpServletResponse response, Model model) {
-
+	public String deviceDeleteDM(String ids, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		
 		webDeviceManageService.deleteBatchByKeys(ids);
-
+		
 		return "redirect:/webdevicemanage/admin/listDMBycontion";
 	}
 }

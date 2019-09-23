@@ -1,14 +1,14 @@
 package com.zzrenfeng.zhsx.service.impl;
 
 import java.io.InputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
@@ -32,7 +32,7 @@ import com.zzrenfeng.zhsx.util.RemoteConnectUtil;
  * @see com.zzrenfeng.zhsx.service.impl.OffLineVideoResources
  */
 
-@Service("offLineVideoResourcesService")
+@Service
 public class OffLineVideoResourcesServiceImpl
 		extends BaseServiceImpl<BaseMapper<OffLineVideoResources>, OffLineVideoResources>
 		implements OffLineVideoResourcesService {
@@ -108,26 +108,39 @@ public class OffLineVideoResourcesServiceImpl
 	}
 
 	@Override
-	public void append(OffLineVideoResources offLineVideoResources) {
+	public void append(HttpServletRequest request, OffLineVideoResources offLineVideoResources)
+			throws InterruptedException {
 		if (offLineVideoResources.getType() == null || offLineVideoResources.getType().equals("")) {
 			offLineVideoResources.setType("B");
 		}
 		offLineVideoResources.setUploadName("N");
-		offLineVideoResources.setTranscodingState("O");
-		offLineVideoResources.setProgress(100);
+		offLineVideoResources.setTranscodingState("U");
+		offLineVideoResources.setProgress(0);
 		offLineVideoResources.setReleaseState("Y");
 		offLineVideoResources.setIsShow("Y");
 		offLineVideoResources.setPageView(0);
 		offLineVideoResources.setTeacherId(offLineVideoResources.getUserId());
 		offLineVideoResources.setCreateTime(new Date());
-		String videoPath = offLineVideoResources.getVideoPath() + ".flv";
-		String picPath = offLineVideoResources.getVideoPath() + ".jpg";
 
-		offLineVideoResources.setVideoPath(videoPath);
+		String quondamVideoPath = "/" + offLineVideoResources.getVideoPath(); // 原视频路径(转码前视频路径)
+		String picPath = quondamVideoPath.substring(0, quondamVideoPath.lastIndexOf(".")) + ".jpg"; // 封面截图保存路径
+		String newVideoSave = getRandomDirectory() + "/" + UUID.randomUUID().toString().replace("-", "") + ".flv"; // 视频转码后保存路径
+
+		offLineVideoResources.setVideoPath(newVideoSave);
 		offLineVideoResources.setPicPath(picPath);
 		insert(offLineVideoResources);
-		// 截图
-		String _url = fileWebPath + "/VideoScreenshotServlet?path=videoRes&filePath=" + videoPath;
+
+		// 转码
+		String webpath = "http://" + request.getLocalAddr() + ":" + request.getLocalPort() + "/"
+				+ request.getRequestURI().split("/")[1] + "/adminOffLine/updateVideoRes";
+		String _transcodingUrl = fileWebPath + "/VideoFormatConvertingServlet?path=videoRes&id="
+				+ offLineVideoResources.getId() + "&filePath=" + quondamVideoPath + "&webpath=" + webpath
+				+ "&newVideoSave=" + newVideoSave;
+		RemoteConnectUtil.getRemoteConnect(_transcodingUrl);
+
+		// 截图 - 转码开始后等待5秒再开始截图
+		Thread.sleep(5000);
+		String _url = fileWebPath + "/VideoScreenshotServlet?path=videoRes&filePath=" + newVideoSave;
 		RemoteConnectUtil.getRemoteConnect(_url);
 	}
 
@@ -141,47 +154,17 @@ public class OffLineVideoResourcesServiceImpl
 		return offLineVideoResourcesMapper.appendOffLineVideoResources(offLineVideoResources);
 	}
 
-	@Override
-	public OffLineVideoResources getOffLineVideoResourcesByIds(List<String> ids) {
-		List<OffLineVideoResources> listOffLineVideoResources = offLineVideoResourcesMapper
-				.listOffLineVideoResourcesByIds(ids);
-		if (listOffLineVideoResources != null && listOffLineVideoResources.size() > 0) {
-			return listOffLineVideoResources.get(0);
-		}
-		return null;
+	/**
+	 * 创建文件保存目录
+	 * 
+	 * @return
+	 */
+	private String getRandomDirectory() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+		String a = sdf.format(new Date());
+		SimpleDateFormat sdf1 = new SimpleDateFormat("dd");
+		String b = sdf1.format(new Date());
+		String randomDirectory = "/" + a + "/" + b;
+		return randomDirectory;
 	}
-
-	@Override
-	public List<String> listIds(String id) throws ParseException {
-		List<String> ids = new ArrayList<>();
-		ids.add(id);
-
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-
-		String ipAndClassCode = id.substring(0, id.length() - 14);
-		String dateTime = id.substring(id.length() - 14, id.length());
-		String temp1 = dateTime;
-		for (int i = 0; i < 5; i++) {
-			Date date = df.parse(temp1);
-			date.setTime(date.getTime() + 1000);
-			temp1 = df.format(date);
-			ids.add(ipAndClassCode + temp1);
-		}
-
-		String temp2 = dateTime;
-		for (int i = 0; i < 5; i++) {
-			Date date = df.parse(temp2);
-			date.setTime(date.getTime() - 1000);
-			temp2 = df.format(date);
-			ids.add(ipAndClassCode + temp2);
-		}
-
-		return ids;
-	}
-
-	@Override
-	public int reUpdateByKeySelective(OffLineVideoResources offLineVideoResources) {
-		return offLineVideoResourcesMapper.updateByPrimaryKey(offLineVideoResources);
-	}
-
 }

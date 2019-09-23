@@ -5,7 +5,7 @@ layui.use([ 'layedit', 'form', 'upload', 'jquery', 'layer' ], function() {
 	layedit = layui.layedit;
 	var layer = layui.layer;
 
-	var form = layui.form;
+	var form = layui.form();
 	index = layedit.build('demo', {
 		height: 300,
 		tool: [

@@ -3,11 +3,11 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<!-- <#global ctx=rc.contextPath/> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 	</head>
 
 	<body>
@@ -20,7 +20,7 @@
 				
 			</div>
 			<div class="guanjian">
-				<img alt="" src="${ctx}/img/sousuo.jpg" onclick="searchSchool();" style="float:right;"> 
+				<img alt="" src="${ctx}/skin/${skinName}/img/sousuo.jpg" onclick="searchSchool();" style="float:right;"> 
 				<input type="search" name="searchval" id="searchval" value="${search!''}" style="width:172px;height:27px;float:right;" placeholder="标题/学员名称" />
 			</div>
 			<table class="layui-table table">
@@ -50,7 +50,7 @@
 
 				</tbody>
 			</table>
-			<div id="page" style="text-align: center;"></div>
+			<div id="kaoping2" style="text-align: center;"></div>
 		</div>
 
 		<div>
@@ -65,13 +65,39 @@
 	<script type="text/javascript">var ctx="${ctx}"; </script>
 	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			$("#form").submit();
+		var skinColor = "#4596E5";
+		var skinName = "${skinName!''}";
+		switch (skinName) {
+			case "springtime":
+				skinColor = "#1cc8d2";
+				break;
+			case "summer":
+				skinColor = "#ee336e";
+				break;
+			case "autumn":
+				skinColor = "#ff9900";
+				break;
+			case "winter":
+				skinColor = "#1ca5d2";
+				break;
+			default:
+				skinColor = "#4596E5";
+				break;
 		}
-	</script>
+		layui.use('laypage' , function() {
+			laypage = layui.laypage;
+			laypage({cont : "kaoping2",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : skinColor,groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						$("#form").submit();
+					}
+				}
+			});
+			setIframeH();
+		});
+	</script>	
 	<script type="text/javascript">
 		$(function(){
 			setIframeH();
@@ -84,8 +110,8 @@
 		} 
 		
 	 	layui.use(['form','element'], function() {
-			var form = layui.form,
-			element = layui.element;
+			var form = layui.form(),
+			element = layui.element();
 			//监听提交
 			form.on('submit(formDemo)', function(data) {
 				layer.msg(JSON.stringify(data.field));

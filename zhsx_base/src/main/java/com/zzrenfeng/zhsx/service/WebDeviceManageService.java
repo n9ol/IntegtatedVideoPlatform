@@ -97,6 +97,12 @@ public interface WebDeviceManageService extends BaseService<WebDeviceManage> {
 	 * @return
 	 */
 	Integer findDeviceStateByClassId(String classId);
+	/**
+	 * 根据班级id查询设备信息
+	 * @param classId
+	 * @return
+	 */
+	List<Map<String, Object>> getDeviceByClassId(String classId);
 
 
 

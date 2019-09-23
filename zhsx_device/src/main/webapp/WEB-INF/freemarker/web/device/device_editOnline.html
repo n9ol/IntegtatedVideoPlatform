@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -24,8 +24,8 @@
 		<div class="mianbaoxue">
 			<span class="layui-breadcrumb">
   					<a href="../index.html">首页</a>
-  					<a><cite>班班通</cite></a>
   					<a><cite>设备管理</cite></a>
+  					<a><cite>设备信息</cite></a>
   					<a><cite>编辑设备信息</cite></a>
 				</span>
 		</div>
@@ -173,7 +173,7 @@
 		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
 		<script type="text/javascript">
 			layui.use(['jquery', 'form'], function() {
-				var form = layui.form;
+				var form = layui.form();
 				
 		       //借用地区插件
 		       form.on('select(device_province)', function(data){

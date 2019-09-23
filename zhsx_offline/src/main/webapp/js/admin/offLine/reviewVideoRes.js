@@ -5,7 +5,7 @@ $(function(){
 var layer;
 layui.use([ 'layer','form' ], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	
 	//选择视频类型事件
 	form.on('select(type)', function(data){

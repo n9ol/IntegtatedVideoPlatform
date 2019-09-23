@@ -1,106 +1,58 @@
 <!-- <#global ctx=rc.contextPath /> -->
-<style type="text/css">
-.viewPgRule {
-	float: right;
-	height: 34px;
-	padding: 0 10px;
-	background-color: #4596e5;
-	color: #fff;
-	cursor: pointer;
-	line-height: 34px;
-	margin: 16px 16px;
-}
-
-.viewPgRule:hover {
-	background-color: rgb(18,113,205);
-}
-</style>
 <form id="myformPjInfo">
-	<input type="hidden" name="webPjInfoId" value="${webpj.id!''}" />
-	<input type="hidden" name="ispj" value="0">
-	<div class="xiangqing clear">
+<input type="hidden" name="webPjInfoId" value="${webpj.id!''}"/>
+<input type="hidden" name="ispj" value="0">
+<div class="xiangqing clear">
+	<div class="huizong">
+		<img src="${ctx}/img/zhong_ping.png" />
+		<div class="hui_wen">评估</div>
+	</div>
+	<div class="biaotou">
+		<span></span><span>评估项/权重</span><span>得分</span><span>评估细则</span>
+	</div>
+	<ul class="xize">
+		<#if webPjInfoList?? && (webPjInfoList?size>0)><#list webPjInfoList as l>
+		<li>
+		    <#if l_index == 0>  
+		        <span><img src="${ctx}/skin/${skinName}/img/ren.jpg" /></span>
+		    <#elseif l_index == 1>  
+		        <span><img src="${ctx}/skin/${skinName}/img/shu.jpg" /></span>
+		    <#elseif l_index == 2>  
+		        <span><img src="${ctx}/skin/${skinName}/img/mao.jpg" /></span>
+		    <#elseif l_index == 3>  
+		        <span><img src="${ctx}/skin/${skinName}/img/biao.jpg" /></span>
+		    <#elseif l_index == 4>  
+		        <span><img src="${ctx}/skin/${skinName}/img/bi.jpg" /></span>
+		    <#elseif l_index == 5>
+		    	<span><img src="${ctx}/skin/${skinName}/img/zhi.jpg" /></span>
+		    <#else>  
+		        <span><img src="${ctx}/skin/${skinName}/img/ren.jpg" /></span> 
+		    </#if>  
+			<span>${l.title!''}（${l.weight!''}）</span> 
+			<span><div id="fenshu">${l.total!''}</div></span> 
+			<span>
+			<a  href="javascript:;" class="layui-btn layui-btn-primary layui-btn-small bbb" onclick="fillComments('${l.pgPjInfoId}','${l.id}');">
+				<i class="layui-icon">&#xe642;</i>填写评语
+			</a>
+			</span>
+	   </li>
+	   	<input type="hidden" name="totals[${l_index}]" value="${l.total!''}"/>
+	   	<input type="hidden" name="weights[${l_index}]" value="${l.weight!''}"/>
+	   </#list></#if>
+	</ul>
+</div>
+<div class="xiangqing">
+	<div class="pingyutianxie clear">
 		<div class="huizong">
-			<img src="${ctx}/img/zhong_ping.png" />
-			<div class="hui_wen">评估</div>
-			<div class="viewPgRule" onclick="viewPgRule('${webpj.id!''}');">评估规则</div>
+			<img src="${ctx}/img/ketangpingyu.png" />
+			<div class="hui_wen">课堂评语</div>
 		</div>
-		<div class="biaotou">
-			<span></span>
-			<span>评估项/权重</span>
-			<span>得分</span>
-			<span>评估细则</span>
-		</div>
-		<ul class="xize">
-			<#if webPjInfoList?? && (webPjInfoList?size>0)><#list webPjInfoList as l>
-			<li>
-				<#if l_index == 0>
-				<span>
-					<img src="${ctx}/img/ren.jpg" />
-				</span>
-				<#elseif l_index == 1>
-				<span>
-					<img src="${ctx}/img/shu.jpg" />
-				</span>
-				<#elseif l_index == 2>
-				<span>
-					<img src="${ctx}/img/mao.jpg" />
-				</span>
-				<#elseif l_index == 3>
-				<span>
-					<img src="${ctx}/img/biao.jpg" />
-				</span>
-				<#elseif l_index == 4>
-				<span>
-					<img src="${ctx}/img/bi.jpg" />
-				</span>
-				<#elseif l_index == 5>
-				<span>
-					<img src="${ctx}/img/zhi.jpg" />
-				</span>
-				<#else>
-				<span>
-					<img src="${ctx}/img/ren.jpg" />
-				</span>
-				</#if>
-				<span>${l.title!''}（${(l.weight/weightSum)*100}%）</span>
-				<span>
-					<#assign backgroundColor = "">
-					<#if l.total == 0> <#assign backgroundColor = "background-color: red;"> </#if>
-					<div id="fenshu" style="${backgroundColor}">
-						<#switch l.total> <#case 0.5> D- <#break> <#case 1.0> D <#break> <#case 1.5> D+ <#break>
-						<#case 2.0> C- <#break> <#case 2.5> C <#break> <#case 3.0> C+ <#break> <#case 3.5> B- <#break> <#case 4.0> B
-						<#break> <#case 4.5> B+ <#break> <#case 5.0> A- <#break> <#case 5.5> A <#break> <#case 6.0> A+ <#break> <#default>
-						0 </#switch>
-					</div>
-				</span>
-				<span>
-					<a href="javascript:;" class="layui-btn layui-btn-primary layui-btn-small bbb"
-						onclick="fillComments('${l.pgPjInfoId}','${l.id}');">
-						<i class="layui-icon">&#xe642;</i>
-						填写评语
-					</a>
-				</span>
-			</li>
-			<input type="hidden" name="totals[${l_index}]" value="${l.total!''}" />
-			<input type="hidden" name="weights[${l_index}]" value="${l.weight!''}" />
-			</#list></#if>
-		</ul>
+		<textarea name="content" rows="" cols="" placeholder="请留下你的评语">${webpj.allResult!''}</textarea>
+		<input type="button" class="layui-btn  fabiaoping" onclick="insterwebpj('Y')" value="提交">
 	</div>
-	<div class="xiangqing">
-		<div class="pingyutianxie clear">
-			<div class="huizong">
-				<img src="${ctx}/img/ketangpingyu.png" />
-				<div class="hui_wen">课堂评语</div>
-			</div>
-			<textarea name="content" rows="" cols="" placeholder="请留下你的评语">${webpj.allResult!''}</textarea>
-			<input type="button" class="layui-btn layui-btn-normal fabiaoping" onclick="insterwebpj('Y')" value="提交">
-		</div>
-	</div>
+</div>
 </form>
 <script type="text/javascript">
-function viewPgRule(webpjId){
-	LayerOpen('评估规则说明', '860px', '700px', ctx + "/pgInfo/viewPgRule?webPjId="+webpjId);
-}
 
 //填写评语点击事件
 function fillComments(pgPjInfoId,id){

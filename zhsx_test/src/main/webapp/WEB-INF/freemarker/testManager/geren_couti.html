@@ -2,9 +2,9 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 		<style type="text/css">
 		.guanjian {
 			line-height: 23px;
@@ -22,8 +22,8 @@
 		<div class="kao_right">
 						<div class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 我的错题库
 							<div class="guanjian"> 
-								<img  onclick="searchSchool();" alt="搜索" src="${ctx}/img/sousuo.jpg">
-								<input type="search" name="search1" id="search1" value="${search!''}" style="width: 172px;height:27px;font-size:13px;float:right;"  placeholder="问题题目/专业/科目"/>
+								<img  onclick="searchSchool();" alt="搜索" src="${ctx}/skin/${skinName}/img/sousuo.jpg">
+								<input type="search" name="search1" id="search1" value="${search!''}" style="width: 172px;height:27px;font-size:13px;float:right;"  placeholder="问题题目/年级/科目"/>
 							</div>
 						</div>
 						
@@ -94,7 +94,7 @@
 						</#if>
 							
 						</ul>
-						<div id="page" style="text-align: center;"></div>
+						<div id="kaoping" style="text-align: center;"></div>
 					</div>
 				<form id="form" action="${ctx}/testwebstutestquestionanswer/findMyErrors" method="post" >
 					<input type="hidden" name="p" value="${pageNum!''}">
@@ -105,13 +105,22 @@
 	</body>
 	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
-		}
+		layui.use('laypage' , function() {  //skin : "molv"
+			laypage = layui.laypage;
+			laypage({cont : "kaoping",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : "#4596E5",groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						refreshPage();
+					}
+				}
+			});
+			setIframeH();
+		});
 	</script>
+	
+	
 	<script type="text/javascript">
 		$(function(){
 			setIframeH();
@@ -125,7 +134,7 @@
 	
 	
 		layui.use('form' , function() {
-			var form = layui.form;
+			var form = layui.form();
 		});	
 		
 		//搜索框键盘enter事件

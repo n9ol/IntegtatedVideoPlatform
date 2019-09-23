@@ -11,7 +11,7 @@ import com.zzrenfeng.zhsx.model.SysUserRole;
  * @copyright {@link zzrenfeng.com}
  * @author zzrenfeng.com
  * @version 2017-12-16 10:51:33
- * @see com.zzrenfeng.zhsx.service.ESysUserRole
+ * @see com.zzrenfeng.zhsx.service.SysUserRole
  */
 public interface SysUserRoleService extends BaseService<SysUserRole> {
 

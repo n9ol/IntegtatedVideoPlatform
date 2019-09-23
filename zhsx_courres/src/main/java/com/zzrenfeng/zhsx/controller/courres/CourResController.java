@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,6 +43,8 @@ public class CourResController extends BaseController {
 	private SysDictService sysDictService;
 	@Resource
 	private String fileWebPath;
+	@Resource
+	private Environment env;
 
 	/**
 	 * 进入课件资源页面
@@ -107,12 +110,11 @@ public class CourResController extends BaseController {
 		int pages = pageInfo.getPages(); // 总页数
 		long total = pageInfo.getTotal();
 		List<CourResource> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
+
 		return "/web/courRes/ziyuanData";
 	}
 
@@ -136,12 +138,8 @@ public class CourResController extends BaseController {
 		courRes1.setSubjectsName(courRes.getSubjectsName());
 		Page<CourResource> pageInfo = courResourceService.findPageSelective(courRes1, 1, 10);
 		List<CourResource> courResList = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("courResList", courResList);
+
 		return "/web/courRes/watchCour";
 	}
 
@@ -156,7 +154,16 @@ public class CourResController extends BaseController {
 	public void receivePdfStream(@PathVariable("courResId") String courResId, HttpServletRequest request,
 			HttpServletResponse response) {
 		CourResource courRes = courResourceService.findByKey(courResId);
-		String path = fileWebPath + "/courRes" + courRes.getPdfPath();
+		if (courRes == null) {
+			return;
+		}
+		String internalFileWebPath = null;
+		try {
+			internalFileWebPath = env.getProperty("internal.file.web");
+		} catch (Exception e1) {
+			internalFileWebPath = fileWebPath;
+		}
+		String path = internalFileWebPath + "/courRes" + courRes.getPdfPath();
 		try {
 			InputStream fileInputStream = getYCFile(path);
 			response.setHeader("Content-Disposition", "attachment;fileName=test.pdf");

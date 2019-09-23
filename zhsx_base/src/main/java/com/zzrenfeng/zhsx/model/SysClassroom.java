@@ -73,25 +73,9 @@ public class SysClassroom {
 	 */
 	private java.lang.String bak1;
 	/**
-	 * 老师摄像头视频路径
+	 * 备用字段
 	 */
 	private java.lang.String bak2;
-
-	/**
-	 * 学生摄像头视频路径
-	 */
-	private String studentUrl;
-
-	/**
-	 * 教学楼id
-	 */
-	private String teachingBuildingId;
-
-	/**
-	 * 教学楼名称
-	 */
-	private String teachingBuildingName;
-
 	// columns END 数据库字段结束
 
 	// 关联字段
@@ -99,6 +83,7 @@ public class SysClassroom {
 	private java.lang.String search; // 学校名称
 	private java.lang.String authority; // 用户权限
 	private List<String> schoolIds; // 用户权限对应的学校id集合
+
 	// concstructor
 
 	public SysClassroom() {
@@ -116,28 +101,12 @@ public class SysClassroom {
 		this.id = value;
 	}
 
-	public String getTeachingBuildingId() {
-		return teachingBuildingId;
-	}
-
-	public void setTeachingBuildingId(String teachingBuildingId) {
-		this.teachingBuildingId = teachingBuildingId;
-	}
-
-	public String getTeachingBuildingName() {
-		return teachingBuildingName;
-	}
-
-	public void setTeachingBuildingName(String teachingBuildingName) {
-		this.teachingBuildingName = teachingBuildingName;
-	}
-
-	public String getStudentUrl() {
-		return studentUrl;
-	}
-
-	public void setStudentUrl(String studentUrl) {
-		this.studentUrl = studentUrl;
+	@Override
+	public String toString() {
+		return "SysClassroom [id=" + id + ", classCode=" + classCode + ", className=" + className + ", schoolId="
+				+ schoolId + ", serviceIp=" + serviceIp + ", webPort=" + webPort + ", roomId=" + roomId + ", uid=" + uid
+				+ ", clientIp=" + clientIp + ", bak=" + bak + ", bak1=" + bak1 + ", bak2=" + bak2 + ", schoolName="
+				+ schoolName + ", search=" + search + ", authority=" + authority + ", schoolIds=" + schoolIds + "]";
 	}
 
 	public java.lang.String getClientIp() {
@@ -313,16 +282,6 @@ public class SysClassroom {
 		super();
 		this.classCode = classCode;
 		this.serviceIp = serviceIp;
-	}
-
-	@Override
-	public String toString() {
-		return "SysClassroom [id=" + id + ", classCode=" + classCode + ", className=" + className + ", schoolId="
-				+ schoolId + ", serviceIp=" + serviceIp + ", webPort=" + webPort + ", roomId=" + roomId + ", uid=" + uid
-				+ ", clientIp=" + clientIp + ", bak=" + bak + ", bak1=" + bak1 + ", bak2=" + bak2 + ", studentUrl="
-				+ studentUrl + ", teachingBuildingId=" + teachingBuildingId + ", teachingBuildingName="
-				+ teachingBuildingName + ", schoolName=" + schoolName + ", search=" + search + ", authority="
-				+ authority + ", schoolIds=" + schoolIds + "]";
 	}
 
 }

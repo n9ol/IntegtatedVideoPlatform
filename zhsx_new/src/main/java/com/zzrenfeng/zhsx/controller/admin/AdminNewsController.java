@@ -51,11 +51,6 @@ public class AdminNewsController extends BaseController {
 		model.addAttribute("pages", pages);
 		model.addAttribute("pageNum", p);
 		List<WebNews> list = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("lists", list);
 		return "/admin/news/sysNew";
 	}

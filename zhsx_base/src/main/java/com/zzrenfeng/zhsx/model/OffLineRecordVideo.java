@@ -50,9 +50,7 @@ public class OffLineRecordVideo {
 	 */
 	private java.util.Date modifyDate;
 	
-	//20190306-zjc add;扩展字段
-	private String createDateStr1;  //记录创建日期左边界
-	private String createDateStr2;  //记录创建日期右边界
+	
 	
 
 	//get and set
@@ -136,22 +134,6 @@ public class OffLineRecordVideo {
 			.append("创建时间[").append(getCreateDate()).append("],")
 			.append("更新时间[").append(getModifyDate()).append("],")
 			.toString();
-	}
-
-	public String getCreateDateStr1() {
-		return createDateStr1;
-	}
-
-	public void setCreateDateStr1(String createDateStr1) {
-		this.createDateStr1 = createDateStr1;
-	}
-
-	public String getCreateDateStr2() {
-		return createDateStr2;
-	}
-
-	public void setCreateDateStr2(String createDateStr2) {
-		this.createDateStr2 = createDateStr2;
 	}
 	
 

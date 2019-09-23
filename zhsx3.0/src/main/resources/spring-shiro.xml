@@ -38,6 +38,9 @@
 				/webVideoResourcesPath/urlnew = anon
 				/webonlive/** = anon
 				
+				/login/testUrl = anon
+				
+				
 				/logout.action = logout
 				
 				/= anon
@@ -110,11 +113,11 @@
 				
 				/teacher/**= anon
 				
-				
-				
+				<!-- 手写板端查看答题情况 -->
+				/padPractice/examRecordPad = anon
 				
 				/GetAndWriteData/** = anon
-								
+				/touchPad/** = anon
 				
 				/pgSelfMotion/insteraqc = anon
 				/automaticRecording/** = anon
@@ -141,7 +144,13 @@
 				
 				<!-- 其他程序接口 -->
 				/whiteboard/getClassRoom = anon
-				/eClassBrand/getLoginTokenMap = anon
+				
+				<!-- 密文加密 -->
+				/getCiphertext = anon
+				<!-- 皮肤控制器  -->
+				/skin/** = anon
+				<!-- 学生行为分析 -->
+				/studentBehaviorAnalysis/** = anon
 				
 				/** = authc 
 			</value>
@@ -172,14 +181,14 @@
     	deleteInvalidSessions 删除失效的session
     -->	
     <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
-    	<property name="sessionIdUrlRewritingEnabled" value="false" />
+<!--     	<property name="sessionIdUrlRewritingEnabled" value="false" /> -->
         <property name="globalSessionTimeout" value="1800000"/>
         <property name="deleteInvalidSessions" value="true"/>
-        <property name="sessionIdCookie" ref="sessionIdCookie"/>
+        <property name="sessionIdCookie" ref="simpleCookie"/>
     </bean> 
 
-	<bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <constructor-arg name="name" value="WEBSID"/>
+	<bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg name="name" value="WEBSSID"/>
     </bean>
 	
 	

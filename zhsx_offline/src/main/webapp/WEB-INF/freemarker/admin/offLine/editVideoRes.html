@@ -78,10 +78,10 @@
 		                      <span id="teacherId_msg" class="msg1" style="color:red;">*</span>
 			                </div>
 							<div class="layui-form-item">
-		                      <label class="layui-form-label" id="jj">专业科目：</label>
+		                      <label class="layui-form-label" id="jj">年级科目：</label>
 		                      <div class="layui-input-inline" style="margin-left:20px;">
 		                          <select name="gradeName" lay-filter="gradeName" id="gradeName" lay-search>
-		                              <option value="">请选择专业</option>
+		                              <option value="">请选择年级</option>
 									  <#if gradeList?? && (gradeList?size>0)><#list gradeList as l>
 									  		<#assign sel = "">
 									  		<#if videoResources.gradeName?? && videoResources.gradeName == l.value> <#assign sel = "selected"> </#if>
@@ -90,7 +90,7 @@
 		                          </select>
 		                      </div>
 		                      <div class="layui-input-inline">
-		                          <select id="subjectName" name="subjectName" title="专业科目" lay-search>
+		                          <select id="subjectName" name="subjectName" title="年级科目" lay-search>
 		                              <option value="">请选择科目</option>
 		                              <#if subjectsList?? && (subjectsList?size>0)><#list subjectsList as l>
 									  		<#assign sel = "">
@@ -154,7 +154,7 @@
 							</div>
 							<div class="layui-form-item">
 								<div class="layui-input-block">
-									<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+									<input id="sumBtn" type="button" class="layui-btn btnColor" onclick="javascript:submitForm();" value="立即提交">
 									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 								</div>
 							</div>
@@ -167,4 +167,24 @@
 	<script type="text/javascript">var type = "${type!''}";</script>
 	<script type="text/javascript" src="${ctx}/js/check.js"></script>
 	<script type="text/javascript" src="${ctx}/js/admin/offLine/editVideoRes.js"></script>
+	<script type="text/javascript">
+		var skinName = "${skinName!''}";
+		switch (skinName) {
+			case "springtime":
+				$("#sumBtn").css("backgroundColor","#1cc8d2");
+				break;
+			case "summer":
+				$("#sumBtn").css("backgroundColor","#ee336e");
+				break;
+			case "autumn":
+				$("#sumBtn").css("backgroundColor","#ff9900");
+				break;
+			case "winter":
+				$("#sumBtn").css("backgroundColor","#1ca5d2");
+				break;
+			default:
+				$("#sumBtn").css("backgroundColor","#4596E5");
+				break;
+		}
+	</script>
 </html>

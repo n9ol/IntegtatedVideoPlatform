@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>综合视讯</title>
-			<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/onlineDayi_xingqing.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/onlineDayi_xingqing.css" />
 	</head>
 
 	<body>
@@ -17,7 +17,7 @@
 			<!--路径导航-->
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
-  					<a href="index.html">首页</a>
+  					<a href="${ctx}/index">首页</a>
   					<a href="${ctx}/zxdy/online_dayi">在线答疑</a>
   					<a><cite>在线解答</cite></a>
 				</span>
@@ -40,22 +40,20 @@
 							<form class="layui-form" id="form"  >
 							<input type="hidden" name="qid" value="${question.id}">
 							<textarea id="demo"  name="contentTag"></textarea>
-							<input type="button" id="bt" class="layui-btn"   value="确认提交">
+							<input type="button" id="bt" class="layui-btn btncolor" value="确认提交">
 							</form>
 						</div>
 						<div class="detail">
 							
 
 						</div>
-
 					</div>
-
 				</div>
 				<!--问题集排行榜-->
 				<!--问题集的排行-->
 				<div class="di_right">
 					<div class="tiwenhuanjie">
-						<a href="${ctx}/zxdy/tiwen"><img src="${ctx}/img/tiwen.png" /></a>
+						<a href="${ctx}/zxdy/tiwen"><img src="${ctx}/img/tuceng11.png" /></a>
 					</div>
 					<div class="jingxun">精选问题集</div>
 
@@ -86,7 +84,9 @@
 	<script src="${ctx}/js/web/onlineDayi_xiangqing.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 	$(function(){
-		$("#dayiTop").attr("class","has-sub active");
+		$("#testTop").attr("class","has-sub active");
+		$("#dayiTop").attr("class","active2");
+		
 		
 		$.ajax({
 			type: "post",
@@ -117,7 +117,7 @@
 	 	var layedit = layui.layedit;
 	     layer = layui.layer;
 	  	
-		var form = layui.form;
+		var form = layui.form();
 		var index = layedit.build('demo',{
 			tool: [
 					'strong' //加粗

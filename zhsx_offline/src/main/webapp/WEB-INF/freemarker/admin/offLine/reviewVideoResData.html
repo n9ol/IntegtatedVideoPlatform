@@ -7,7 +7,7 @@
 				<th>NO</th>
 				<th>标题</th>
 				<th>学校</th>
-				<th>专业</th>
+				<th>年级</th>
 				<th>科目</th>
 				<th>主讲教师</th>
 				<th>视频类型</th>
@@ -66,14 +66,20 @@
 	<a href="javascript:;" class="layui-btn layui-btn-small" onclick="batchDel();"><i class="layui-icon">&#xe640;</i>批量删除</a>
 	<div id="page" class="page"></div>
 </div>
-<#include "/commons/comPage.html" encoding="utf-8"/>
 <script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		ReviewVideoResData();
-	}
-</script>
-<script type="text/javascript">
+	layui.use(['laypage'], function() {
+		var laypage = layui.laypage;
+		laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : "molv",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					ReviewVideoResData();
+				}
+			}
+		});
+	});
+	
 	//全选
 	$("#selected-all-operation").click(function() {
 		if (this.checked) {

@@ -1,0 +1,179 @@
+.videosss {
+	height: 530px;
+	background: url(../../img/playstage.png) no-repeat;
+}
+
+.video_shipin {
+	width: 1200px;
+	margin: 0 auto;
+	height: 100%;
+/* 	background-color: #000; */
+	opacity:0.9;
+}
+
+.video_shipin_left {
+	float: left;
+/* 	width: 885px; */
+	height: 100%;
+	position:relative;
+}
+
+.shouke {
+	margin-top: 15px;
+	padding-left: 10px;
+/* 	border-bottom: 1px solid gainsboro; */
+	padding-bottom: 15px;
+}
+
+.shouke img {
+	border-radius: 50%;
+	float: left;
+	width: 97px;
+	height: 97px;
+}
+
+.shouke_right {
+	float: left;
+	margin-left: 30px;
+	margin-top: 15px;
+	width: 170px;
+}
+
+.kecheng {
+	margin: 15px;
+}
+
+.kecheng .swiper-slide {
+	height: 40px;
+	margin-bottom: 20px;
+}
+
+.swiper-slide img {
+	float: left;
+}
+
+.kecheng_right {
+	float: left;
+	margin-left: 20px;
+	width: 160px;
+	color:#fff;
+}
+.school12 {
+    display: inline-block;
+    width: 130px;
+    height: 35px;
+    float: left;
+    line-height:35px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.smallClassTime {
+	position: absolute;
+    left:30px;
+    top: 47px;
+    width: 68px;
+    height: 27px;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: right;
+    color: #fff;
+    font-size: 12px;
+    z-index: 6666;
+    padding-right:2px;
+}
+
+.video_shipin_right {
+	float: right;
+	width: 310px;
+	height: 100%;
+	background-color: #212427;
+}
+
+/*tap切换部分*/
+.jilu {
+	width: 1200px;
+	margin: 20px auto 0;
+	border: 1px solid gainsboro;
+	background-color: #fff;
+}
+
+.uuu li {
+	color: white;
+}
+
+.iii {
+	margin: 0;
+}
+
+.xiangqing {
+	background-color: #fff;
+	margin: 10px;
+	border: 1px solid gainsboro;
+}
+
+.xiangqing_top {
+	border-left: 5px solid #1cc8d2;
+	height: 50px;
+	line-height: 50px;
+	background-color: #f4f7fc;
+	padding-left: 18px;
+}
+
+.xiangqing_ul li:nth-child(2n+1) {
+	background-color: #fcfcfc;
+}
+
+.xiangqing_ul li {
+	height: 48px;
+	line-height: 48px;
+	display: flex;
+	justify-content: space-around;
+}
+
+.xiangqing_ul li span {
+	display: inline-block;
+	width: 150px;
+	text-align: center;
+}
+
+.pinggu {
+	height: 48px;
+	line-height: 48px;
+}
+
+.pinggu1, .pinggu2 {
+	float: left;
+	margin-left: 60px;
+	color: #4596E5;
+}
+
+.pinggu3 {
+	float: right;
+	margin-right: 78px;
+	margin-top: 13px;
+	padding: 0 8px;
+}
+
+#yuantu {
+	background-color: #F7F7F7;
+	border: 1px solid gainsboro;
+	margin: 10px;
+}
+
+/*头部播放时间段样式*/
+.qualityPlayTime {
+	float: right;
+	margin-right: 313px;
+	line-height: 30px;
+}
+
+.qualityPlayPng {
+	width: 20px;
+	height: 21px;
+	margin-right: 3px;
+	margin-top: -3px;
+}
+
+.layui-tab .zbBg{
+	background-color: #1cc8d2;
+}

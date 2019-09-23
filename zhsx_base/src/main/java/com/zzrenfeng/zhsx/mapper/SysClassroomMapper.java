@@ -53,12 +53,7 @@ public interface SysClassroomMapper extends BaseMapper<SysClassroom> {
 	 * @return
 	 */
 	int updateOnlineState(SysClassroom sysClassroom);
-
-	/**
-	 * 更新教室所在教学楼的名称
-	 * 
-	 * @param sysClassroom
-	 * @return
-	 */
-	int updateClassroomTeachingBuildingName(SysClassroom sysClassroom);
+	
+	
+	List<SysClassroom> findClassroomNameAndClassroomId(SysClassroom sysClassroom);
 }

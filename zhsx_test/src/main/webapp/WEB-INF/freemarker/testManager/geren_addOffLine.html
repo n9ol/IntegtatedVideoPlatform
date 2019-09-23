@@ -11,32 +11,32 @@
 	<meta name="format-detection" content="telephone=no">
 	<#include "/commons/comAdmin.html" encoding="utf-8"/>
 	<style type="text/css">
-	body{
-		background-color: #ffffff;
-	}
-	.layui-larry-box {
-		padding: 0;
-		margin-top: 50px;
-	}
-	#jj {
-		text-align:right;
-		width: 80px;
-		float:left;
-	}
-	.layui-input-block{
-		margin-right:240px;
-		margin-left: 100px;
-	}
-	.msg{
-		float:right;
-		margin-top:-25px;
-		width:220px;
-	}
-	.msg1{
-		float:right;
-		margin-top:13px;
-		width:220px;
-	}
+		body{
+			background-color: #ffffff;
+		}
+		.layui-larry-box {
+			padding: 0;
+			margin-top: 50px;
+		}
+		#jj {
+			text-align:right;
+			width: 80px;
+			float:left;
+		}
+		.layui-input-block{
+			margin-right:240px;
+			margin-left: 100px;
+		}
+		.msg{
+			float:right;
+			margin-top:-25px;
+			width:220px;
+		}
+		.msg1{
+			float:right;
+			margin-top:13px;
+			width:220px;
+		}
 	</style>
 	</head>
 <body>
@@ -55,15 +55,15 @@
 							<span id="title_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>
 						</div>
 						<div class="layui-form-item">
-							  <label class="layui-form-label" id="jj">考试专业：</label>
+							  <label class="layui-form-label" id="jj">考试年级：</label>
 							 <div class="layui-input-block">
-				                           <select name="gradeId" lay-filter="gradeId" id="gradeId" lay-search>
-				                              <option value="">请选择专业</option>
-											  <#if grades??&&(grades?size>0)><#list grades as g>
-											　　<option  name="${g.id}"  value="${g.id}">${g.value}</option>
-	       									  </#list></#if>
-				                          </select>
-				                           <span id="gradeId_msg" class="msg" style="color:red;">*</span>
+		                           <select name="gradeId" lay-filter="gradeId" id="gradeId" lay-search>
+		                              <option value="">请选择年级</option>
+									  <#if grades??&&(grades?size>0)><#list grades as g>
+									　　<option  name="${g.id}"  value="${g.id}">${g.value}</option>
+      									  </#list></#if>
+		                          </select>
+		                          <span id="gradeId_msg" class="msg" style="color:red;">*</span>
 				              </div>
 			             </div>
 			             
@@ -79,13 +79,12 @@
 			              <div class="layui-form-item">
 			              <label class="layui-form-label" id="jj">考试版本：</label>
 				              <div class="layui-input-block">
-				                          <select type="text" id="version" name="version" title="试卷版本">
-											<#if version?? && (version?size>0)><#list version as v>
-											<option value="${v.value!''}"  >${v.value!''}</option>
-											</#list></#if>	
-											
-										</select>
-				                           <span id="version_msg" class="msg" style="color:red;">*</span>
+			                         <select type="text" id="version" name="version" title="试卷版本">
+										<#if version?? && (version?size>0)><#list version as v>
+										<option value="${v.value!''}"  >${v.value!''}</option>
+										</#list></#if>	
+									</select>
+			                        <span id="version_msg" class="msg" style="color:red;">*</span>
 				              </div>
 			              </div>
 			               <div class="layui-form-item">
@@ -144,7 +143,7 @@
 						
 						<div class="layui-form-item">
 							<div class="layui-input-block">
-								<input type="button" class="layui-btn  layui-btn-normal" onclick="javascript:submitForm();" value="立即提交">
+								<input id="subBut" type="button" class="layui-btn  layui-btn-normal" onclick="javascript:submitForm();" value="立即提交">
 								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 							</div>
 						</div>
@@ -157,6 +156,7 @@
 <script type="text/javascript">
 	var ctx = "${ctx!''}";
 	var uid = "${principal.id!''}";
+	var skinName = "${skinName!''}";
 </script>
 <script type="text/javascript" src="${ctx}/js/check.js"></script>
 <script type="text/javascript" src="${ctx}/js/web/testOffLine.js"></script>

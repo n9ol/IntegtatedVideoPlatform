@@ -1,0 +1,118 @@
+.box{
+	width: 1200px;
+	margin: 0 auto;
+	/*background-color: #fff;*/
+	min-height: 500px;
+}
+.fabu{
+	width: 860px;
+	background-color: #fff;
+	border: 1px solid gainsboro;
+	float: left;
+	padding: 20px 0;
+	
+}
+.yao{
+	height: 45px;
+	line-height: 45px;
+	padding-left: 10px;
+	font-size: 18px;
+	border-bottom: 1px dashed gainsboro;
+	margin-bottom: 15px;
+}
+.tijiku{
+	width: 270px;
+	height: 300px;
+	border: 1px solid gainsboro;
+	float: right;
+	background-color: #fff;
+}
+
+.wentimiaoshu{
+	width: 98%;
+	margin: 0 auto;
+}
+.wentimiaoshu p{
+	height: 40px;
+	line-height: 40px;
+	padding-left: 16px;
+}
+.layui-btn{
+	margin: 20px 0 0 0px;
+	background-color: #1ca5d2;
+}
+
+
+/*精选题集*/
+.di_right {
+	float: right;
+	width: 320px;
+	border: 1px solid gainsboro;
+	background-color: white;
+	padding: 10px 0;
+}
+.tiji li {
+	padding-left: 10px;
+	border-bottom: 1px dashed #f0f0f0;
+	height: 40px;
+	line-height: 40px;
+	margin-bottom: 2px;
+	cursor: pointer;
+}
+
+.jingxun {
+	height: 40px;
+	line-height: 40px;
+	font-size: 18px;
+	padding-left: 10px;
+}
+
+.tiji li:hover {
+	background-color: ghostwhite;
+}
+
+.tiji li span {
+	float: left;
+	display: inline-block;
+	margin: 0 3px;
+	height: 100%;
+	line-height: 40px;
+	font-size: 15px;
+}
+
+.paiming {
+	float: left;
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	background-color: #1ca5d2;
+	color: white;
+	line-height: 20px;
+	text-align: center;
+	margin-top: 10px;
+	margin-right: 10px;
+}
+
+	
+.timu1 {
+	display: inline-block;
+	width: 180px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	height: 20px;
+}
+/*提问环节*/
+.tiwenhuanjie{
+	height: 80px;
+	text-align: center;
+	
+}
+.tiwenhuanjie img{
+	border-radius: 5px;
+	max-width: 340px;
+	max-height: 80px;
+}
+.tiwenhuanjie img:hover{
+	border: 1px solid gainsboro;
+}

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>仁峰后台管理系统</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<style type="text/css">
+.layui-elem-quote {
+	height: 70px;
+	overfllow:hidden;
+}
+.search-btn01 {
+	height: 38px;
+	width: 57px;
+}
+#searchval {
+	width: 180px;
+}
+</style>
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="layui-tab">
+			    <blockquote class="layui-elem-quote mylog-info-tit" style="height:80px;">
+
+                <form class="layui-form col-lg-9 search-box03" action="" method="post">
+                  <div class="layui-input-inline pull-left">
+                                    <input type="text" id="searchQuestion" name="searchQuestion" placeholder="题目" class="layui-input" value="${wq.searchQuestion!''}"/>
+                    </div>
+<!--                       <div class="layui-input-inline pull-left"> -->
+<!--                                         <input type="text" id="nickName" name="nickName" placeholder="出题人" class="layui-input" value="${wq.nickName!''}"/> -->
+<!--                     </div>   -->
+                     <div class="layui-input-inline pull-left">   
+           				<select id ="type" name="type" lay-verify="">
+           				<#assign typa=''><#assign typb=''><#assign typc=''><#assign typd=''>
+           				<#if (((wq.type)!'') == 'A')><#assign typa="selected='selected'"> </#if>
+           				<#if (((wq.type)!'') == 'B')><#assign typb="selected='selected'"> </#if>
+           				<#if (((wq.type)!'') == 'C')><#assign typc="selected='selected'"> </#if>
+           				<#if (((wq.type)!'') == 'D')><#assign typd="selected='selected'"> </#if>
+						  <option value="">请选择类型</option>
+						   <option value="A"  ${typa} >单选题</option>
+						  <option value="B"  ${typb} >多选题</option>
+						   <option value="C"  ${typc} >判断题</option>
+						   <option value="D"  ${typb} >主观题</option>
+						</select>            
+                     </div>
+                    
+					
+                    <button class="layui-btn search-btn01 pull-left" lay-submit lay-filter="search">搜索</button>
+                 <a class="layui-btn layui-btn-primary   pull-left" style="margin:0 30px 0 30px;" href="${ctx}/adminPractice/practiceLibrary2?p=${pageNum!'1'}&pid=${pid!''}">
+				    重置
+				    </a>
+                    
+                </form>
+<!-- 				<button class="layui-btn layui-btn-warm search-btn01 pull-left" onclick="add();">添加</button> -->
+				
+                <!-- 刷新功能 -->
+				<a class="layui-btn pull-right refresh_btn" style="margin:0 30px 0 30px;" href="${ctx}/adminPractice/practiceLibrary2?p=${pageNum!'1'}&pid=${pid!''}">
+				    <i class="iconfont icon-shuaxin"></i>
+				</a>
+            </blockquote>
+				<div class="larry-separate"></div>
+				<div
+					class="layui-tab-content larry-personal-body clearfix mylog-info-box" >
+					<div class="layui-tab-item layui-field-box layui-show" style="height:700px;overflow:auto">
+						<form id="myform">
+						<!-- 试卷id -->
+						 <input type="hidden" id="pid" name="pid" value="${pid!''}">
+							<table class="layui-table table-hover" lay-even="" lay-skin="nob">
+								<thead>
+									<tr>
+										<th><input type="checkbox" id="selected-all-operation"></th>
+										<th>No</th>
+										<th>题目</th>
+										<th>年级</th>
+										<th>科目</th>
+										<th>类型</th>
+										<th>出题人</th>
+										<th>出题时间</th>
+										<th style="width:155px;height:60px;">选项</th>
+										<th style="width:155px;height:60px;">正确选项</th>
+									</tr>
+								</thead>
+								<tbody>
+									<#if lists?? && (lists?size>0)> <#list lists as l>
+									<tr>
+										<td>
+											<input type="checkbox" name="lid" value="${l.id!''}">
+										
+										</td>
+										<td>${l_index+1}</td>
+										<td>${l.question!''}</td>
+										<td>${l.gradeName!''}</td>
+										<td>${l.subjectName!''}</td>
+										<#if l.type=='C'>
+										<td>判断题</td>
+										</#if>
+										<#if l.type=='A'>
+										<td>单选题</td>
+										</#if>
+										<#if l.type=='B'>
+										<td>多选题</td>
+										</#if>
+										<#if l.type=='D'>
+										<td>主观题</td>
+										</#if>
+										
+										<td>${l.createId!''}</td>
+										<td>${(l.createTime)?string('yyyy-MM-dd HH:mm')}</td>
+									 <td>
+										<a href="javascript:" class="sse"><#if l.bak?? && (l.bak?length>17)> ${l.bak?substring(0,17)}... <#else>  ${l.bak!''}</#if> <span style="display:none;">${l.option!''}</span> </a>
+										</td>
+										<td>${l.rights!'--'}</td>
+									</tr>
+									</#list> </#if>
+								</tbody>
+							</table>
+						</form>
+						<div class="larry-table-page clearfix">
+							<a href="javascript:;" class="layui-btn layui-btn-small"
+								onclick="batchSave();"><i class="iconfont icon-shanchu1"></i>保存</a>
+							<div id="page" class="page"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<form id="myform1" action="${ctx}/adminPractice/practiceLibrary2" method="post">
+				<input type="hidden" name="p" value="${pageNum!'1'}"> 
+				<input type="hidden" name="pid" value="${pid!''}"> 
+				<input type="hidden" name="search" value="${search!''}">
+			</form>
+		</div>
+	</section>
+	<script type="text/javascript" src="${ctx}/common/layui/lay/modules/laypage.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var tipsi;
+		  $(".sse").hover(function(){
+			  var aa=$(this).children('span').html();
+		     tipsi = layer.tips(aa,this, {time:0});//
+		   },function(){
+				layer.close(tipsi);
+		   });
+	 
+	});
+	
+	
+	layui.use(['laypage'], function() {
+		var laypage = layui.laypage;
+		laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : "molv",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					 var type = $("#type").val();
+		        	 var searchQuestion = $("#searchQuestion").val();
+		        	 var pid = $("#pid").val();
+				  window.location.href="${ctx}/adminPractice/practiceLibrary2?p="+e.curr+"&type="+type+"&searchQuestion="+searchQuestion+"&pid="+pid;
+				}
+			}
+		});
+	});
+	</script>
+	<script type="text/javascript">
+		var layer;
+		layui.use([ 'layer','form','laydate'], function() {
+			layer = layui.layer;
+			var form = layui.form();
+			   form.on('submit(search)', function(data){
+		        	 var type = $("#type").val();
+		        	 var searchQuestion = $("#searchQuestion").val();
+		        	 var pid = $("#pid").val();
+				  window.location.href="${ctx}/adminPractice/practiceLibrary2?p=${pageNum!'1'}&type="+type+"&searchQuestion="+searchQuestion+"&pid="+pid;
+			   	 // 	 refresh();//手动刷新
+			   	   	 return false; //禁止 页面自动刷新
+		      	});
+		});
+		function deleteById(id) {
+			layer.confirm('你确定要删除？',{shade: [0.2, '#FFFFFF']},function(){
+				$.ajax({
+					type : "POST",
+					url : "${ctx}/admintestquestion/delQuestion",
+					data : {id:id},
+					success : function(data) {
+							if (data == "操作成功")
+							//	$("#myform1").submit();
+								window.location.reload();
+					}
+				});
+			});
+		}
+		
+		function add() {
+			LayerOpen('添加', '900px', '500px', '${ctx}/adminPractice/addQuestion');
+		}
+		//选项管理
+		function option(qid){
+			window.location.href="${ctx}/adminPractice/findAllOption?qid="+qid;
+		}
+
+		//全选
+		$("#selected-all-operation").click(function() {
+			if (this.checked) {
+				$("input[name='lid']").prop("checked", true);
+			} else {
+				$("input[name='lid']").prop("checked", false);
+			}
+		});
+
+		//批量添加问题
+		function batchSave() {
+			var ids = $("input[name='lid']:checked").val();
+			if (typeof (ids) != "undefined") {
+				$.ajax({
+					type : "POST",
+					url : "${ctx}/adminPractice/saveBatchQuestion",
+					data : $("#myform").serialize(),
+					success : function(data) {
+						layer.msg(data,{time : 1200},function() {
+							if (data == "操作成功")
+// 								$("#myform1").submit();
+								window.location.reload();
+						});
+					}
+				});
+			} else {
+				layer.msg("请选择要操作的对象");
+			}
+		}
+
+		
+		function searchSchool() {
+			var search = $("input[name='search']").val();
+			$("input[name='search']").val(search);
+			$("#myform1").submit();
+		}
+	</script>
+</body>
+</html>

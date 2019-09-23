@@ -1,12 +1,17 @@
 $(function(){
-	$("#zbTop").attr("class","has-sub active");
-	$("#zbTopK").attr("class","active2");
+	if(type == "G"){
+		$("#dianboTop").attr("class","has-sub active");
+		$("#zbTopKG").attr("class","active2");
+	}else if(type == "A"){
+		$("#zbTop").attr("class","has-sub active");
+		$("#zbTopKA").attr("class","active2");
+	}
 });
 
 var layer;
 layui.use(['form', 'layer'], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	
 	form.on('select(province)', function(data){
 		$("#city").empty();
@@ -47,39 +52,21 @@ layui.use(['form', 'layer'], function() {
 	});
 	
 	form.on('select(school)', function(data){
-		listClassroom(data.value);
-	});
-	
-	form.on('select(classroom)', function(data){
-		var schoolId;
-		if(schoolLevel == 'Y'){
-			schoolId = configuredSchoolId;
-		}else{
-			schoolId = $("#school").find("option:selected").val();
-		}
-		getSchedule(schoolId, data.value);
-	});
-	
-	
-	function listClassroom(schoolId){
 		$("#classroom").empty();
 		$("#classroom").append("<option value=''>请选择教室</option>");
-		$.getJSON(ctx+"/getClassRoomBySchoolId", { schoolId: schoolId}, function(json){
+		$.getJSON(ctx+"/getClassRoomBySchoolId", { schoolId: data.value}, function(json){
  			for (var int = 0; int < json.length; int++) {
 				var arrayJson=json[int];
 				$("#classroom").append('<option value="'+arrayJson.id+'">'+arrayJson.className+'</option>');
  			}
  			form.render('select');
-		});
-	}
-	
-	
-	$(function(){
-		if(schoolLevel == 'Y'){
-			listClassroom(configuredSchoolId);
-		}
+		}); 
 	});
 	
+	form.on('select(classroom)', function(data){
+		var schoolId = $("#school").find("option:selected").val();
+		getSchedule(schoolId, data.value);
+	});
 	
 });
 
@@ -88,7 +75,7 @@ function getSchedule(schoolId,classId){
 	$.ajax({
 	   type: "POST",
 	   url: ctx+"/online/getSchedule",
-	   data: {schoolId:schoolId,classId:classId},
+	   data: {schoolId:schoolId,classId:classId,type:type},
 	   success: function(msg){
 		   $(".zhong_right").html(msg);
 	   }
@@ -120,7 +107,7 @@ function alertf(id,type,src){
 				aaa += '<span class="blue">辅讲教师：</span></br>';
 				aaa += '<p class="fuzi">';
 					aaa += '<span id="plan_course_teach_name">'+arrayJson.userName+'</span>';
-					aaa += '<span id="plan_course_teach_contact">'+arrayJson.className+'</span>';
+					aaa += '<span id="plan_course_teach_contact">'+arrayJson.schoolName+'</span>';
 				aaa += '</p>';
 				$(src).next("div.plan_course_info").find("div.plan_course_otherteach_mid").append(aaa);
  			}

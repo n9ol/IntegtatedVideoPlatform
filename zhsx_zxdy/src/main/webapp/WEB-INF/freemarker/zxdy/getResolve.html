@@ -17,11 +17,43 @@
 										</li>
 									</#list></#if>
 								</ul>
-								<div id="page" style="text-align: center;"></div>
-								<#include "/commons/comPage.html" encoding="utf-8"/>
-								<script type="text/javascript">
-									function turnPage(p) {
-										$("input[name='p']").val(p);
-										getResolve();
-									}
-								</script>
+								<div id="pager" style="text-align: center;">
+
+							</div>
+
+<script type="text/javascript">
+var skinColor = "#4596E5";
+var skinName = "${skinName!''}";
+switch (skinName) {
+case "springtime":
+	skinColor = "#1cc8d2";
+	break;
+case "summer":
+	skinColor = "#ee336e";
+	break;
+case "autumn":
+	skinColor = "#ff9900";
+	break;
+case "winter":
+	skinColor = "#1ca5d2";
+	break;
+default:
+	skinColor = "#4596E5";
+	break;
+}
+
+layui.use(['laypage'], function() {
+	var laypage = layui.laypage;
+	laypage({cont : "pager",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+		skip : false,skin : skinColor,groups : 10,
+		jump : function(e, first) {
+			if (!first) {
+				$("input[name='p']").val(e.curr);
+				getResolve();
+			}
+		}
+	});
+});
+</script>
+
+

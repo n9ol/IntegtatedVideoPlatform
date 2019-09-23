@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,6 +21,8 @@ import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
+import com.zzrenfeng.util.Utils;
 
 /**
  * 文件上传,不分块 _servlet
@@ -52,7 +55,8 @@ public class FileUploadNotBlockServlet extends HttpServlet {
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
 				if (item.isFormField()) {
-					System.out.println("是一个普通文本表单字段");
+					// System.out.println("是一个普通文本表单字段");
+
 				} else {
 					// 文件重命名
 					String originaFilename = item.getName();
@@ -92,11 +96,21 @@ public class FileUploadNotBlockServlet extends HttpServlet {
 					bis.close();
 					bos.close();
 
-					String json = "{\"path\":\"" + randomDirectory + "/" + newFilename + "\"}";
+					// String json = "{\"path\":\"" + randomDirectory + "/" +
+					// newFilename + "\"}";
+					// response.setCharacterEncoding("utf-8");
+					// response.setContentType("application/json;charset=utf-8");
+					// response.getWriter().write(json);
 
-					response.setCharacterEncoding("utf-8");
-					response.setContentType("application/json;charset=utf-8");
-					response.getWriter().write(json);
+					String serverRootPath = "http://" + request.getServerName() + ":" + request.getServerPort() + "/"
+							+ request.getRequestURI().split("/")[1];
+					HashMap<String, Object> hashMap = new HashMap<>();
+					hashMap.put("error", 0);
+					hashMap.put("path", randomDirectory + "/" + newFilename);
+					hashMap.put("url", serverRootPath + "/" + randomDirectory + "/" + newFilename);
+					String mapJSON = Utils.mapJSON(hashMap);
+					response.getWriter().write(mapJSON);
+
 				}
 			}
 		} catch (FileUploadException e) {

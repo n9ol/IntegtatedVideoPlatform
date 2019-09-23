@@ -6,8 +6,8 @@ $(function(){
 
 var layer;
 layui.use([ 'form', 'element', 'layer' ], function() {
-	var form = layui.form;
-	var element = layui.element;
+	var form = layui.form();
+	var element = layui.element();
 	layer = layui.layer;
 });
 

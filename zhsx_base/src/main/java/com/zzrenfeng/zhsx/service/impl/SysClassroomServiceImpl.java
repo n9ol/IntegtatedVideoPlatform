@@ -25,7 +25,7 @@ import com.zzrenfeng.zhsx.service.impl.base.BaseServiceImpl;
  * @see com.zzrenfeng.zhsx.service.impl.SysClassroom
  */
 
-@Service("sysClassroomService")
+@Service
 public class SysClassroomServiceImpl extends BaseServiceImpl<BaseMapper<SysClassroom>, SysClassroom>
 		implements SysClassroomService {
 
@@ -104,22 +104,8 @@ public class SysClassroomServiceImpl extends BaseServiceImpl<BaseMapper<SysClass
 	}
 
 	@Override
-	public int updateClassroomTeachingBuildingName(String teachingBuildingId, String teachingBuildingName) {
-		SysClassroom sysClassroom = new SysClassroom();
-		sysClassroom.setTeachingBuildingId(teachingBuildingId);
-		sysClassroom.setTeachingBuildingName(teachingBuildingName);
-		return sysClassroomMapper.updateClassroomTeachingBuildingName(sysClassroom);
-	}
-
-	@Override
-	public SysClassroom getSysClassroomByClassCode(String classCode) {
-		SysClassroom sysClassroom = new SysClassroom();
-		sysClassroom.setClassCode(classCode);
-		List<SysClassroom> listSysClassroom = findSelective(sysClassroom);
-		if (listSysClassroom != null && listSysClassroom.size() > 0) {
-			return listSysClassroom.get(0);
-		}
-		return null;
+	public List<SysClassroom> findClassNameAndClassIdBySchoolId(SysClassroom sysClassroom) {
+		return sysClassroomMapper.findClassroomNameAndClassroomId(sysClassroom);
 	}
 
 }

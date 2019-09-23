@@ -89,14 +89,6 @@ function chkForm() {
 		}
 	}
 	
-	var stature = document.getElementById("stature");
-	if(stature.value != null && stature.value != ""){
-		if(!(checkOk(stature,checkPositiveInteger(stature)))){
-			isok = false;
-		}
-	}
-	
-	
 	return isok;
 }
 

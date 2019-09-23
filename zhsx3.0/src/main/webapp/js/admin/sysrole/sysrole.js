@@ -26,9 +26,8 @@ function isAvailable(id, available) {
 	});
 }
 
-//roleType 和 menuType 是保持一致的
 function add() {
-	LayerOpen('添加', '600px', '400px', ctx + '/adminSysrole/addSysRole?roleType='+menuType);
+	LayerOpen('添加', '600px', '400px', ctx + '/adminSysrole/addSysRole');
 }
 
 function edit(id) {
@@ -58,6 +57,6 @@ function accredit(id) {
 		title : ['授权', 'z-index:auto;'],
 		shade : 0.2,
 		area : ['800px', '600px'],
-		content : [ctx + '/adminSysrole/accreditTree?id=' + id+'&menuType='+menuType]
+		content : [ctx + '/adminSysrole/accreditTree?id=' + id]
 	});
 }

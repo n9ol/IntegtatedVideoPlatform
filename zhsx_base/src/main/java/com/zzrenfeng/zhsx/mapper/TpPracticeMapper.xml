@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TpPracticeMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TpPractice" >
+		<result column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subjectName" property="subjectName" />
+		<result column="remarks" property="remarks" />
+		<result column="createId" property="createId" />
+		<result column="modiyId" property="modiyId" />
+		<result column="createTime" property="createTime" />
+		<result column="isShown" property="isShown" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,title,gradeName,subjectName,remarks,createId,modiyId,createTime,isShown
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from tp_practice
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TpPractice" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into tp_practice (id,title,gradeName,subjectName,remarks,createId,modiyId,createTime,isShown)
+		values (#{id},#{title},#{gradeName},#{subjectName},#{remarks},#{createId},#{modiyId},#{createTime},#{isShown})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TpPractice" >
+		update tp_practice
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="title != null" >
+				title = #{title},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectName != null" >
+				subjectName = #{subjectName},
+			</if>
+			<if test="remarks != null" >
+				remarks = #{remarks},
+			</if>
+			<if test="createId != null" >
+				createId = #{createId},
+			</if>
+			<if test="modiyId != null" >
+				modiyId = #{modiyId},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="isShown != null" >
+				isShown = #{isShown}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TpPractice" >
+		update tp_practice
+		set 
+		id = #{id},
+		title = #{title},
+		gradeName = #{gradeName},
+		subjectName = #{subjectName},
+		remarks = #{remarks},
+		createId = #{createId},
+		modiyId = #{modiyId},
+		createTime = #{createTime},
+		isShown = #{isShown}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="title != null" >
+				and title = #{title}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subjectName != null" >
+				and subjectName = #{subjectName}
+			</if>
+			<if test="remarks != null" >
+				and remarks = #{remarks}
+			</if>
+			<if test="createId != null" >
+				and createId = #{createId}
+			</if>
+			<if test="modiyId != null" >
+				and modiyId = #{modiyId}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="isShown != null" >
+				and isShown = #{isShown}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TpPractice" resultType="TpPractice">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TpPractice" resultType="TpPractice">
+		select
+		sd.`value` as gradeName,
+		u.nickName as createId,
+		t.id,t.title,t.subjectName,t.remarks,t.modiyId,t.createTime,t.isShown
+		from tp_practice t
+		left join sys_dict sd on sd.id=  t.gradeName and sd.keyname ='G'
+		left join `user` u on u.id = t.createId 
+		<include refid="Dynamic_Conditions"/>
+		
+		<if test="searchTitle != null" >
+				and t.title like concat('%',#{searchTitle},'%') 
+		</if>
+		
+	</select>
+
+
+
+</mapper>

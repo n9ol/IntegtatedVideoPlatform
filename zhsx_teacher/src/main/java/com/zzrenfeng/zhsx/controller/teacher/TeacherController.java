@@ -127,6 +127,12 @@ public class TeacherController extends BaseController {
 		if (p == null)
 			p = 1;
 		model.addAttribute("pageNum", p);
+		// u = new User();
+		// u.setUserType(User.userType_teachers);
+		// Page<User> pageInfo = userService.findPageSelective(u, p, 6);
+		// int pages = pageInfo.getPages(); //总页数
+		// long total = pageInfo.getTotal();
+		// List<User> lists = pageInfo.getResult();
 
 		Map<String, String> m = new HashMap<String, String>();
 		String area = u.getBak2();// 地区
@@ -153,13 +159,11 @@ public class TeacherController extends BaseController {
 		}
 		Page<Map<String, String>> pageInfo = teacherService.findTeacherList(m, p, 6);
 		int pages = pageInfo.getPages(); // 总页数
-		List<Map<String, String>> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
 		long total = pageInfo.getTotal();
+		List<Map<String, String>> lists = pageInfo.getResult();
 
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
 		model.addAttribute("gradeid", u.getSchoolName());// 年级
 		model.addAttribute("kmid", u.getAuthority());// 科目
@@ -675,9 +679,6 @@ public class TeacherController extends BaseController {
 
 		int pages = pageInfo.getPages(); // 总页数
 		List<OffLineVideoResources> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
 		for (OffLineVideoResources l : lists) {
 			Map<String, Object> m = new HashMap<String, Object>();
 			m.put("id", l.getId());
@@ -689,8 +690,7 @@ public class TeacherController extends BaseController {
 			m.put("subjectName", l.getSubjectName());// 科目
 			m.put("picPath", l.getPicPath());//
 			m.put("timeLength", l.getTimeLength());//
-			m.put("total", total);
-			m.put("pageSize", pageSize);
+
 			result.add(m);
 		}
 

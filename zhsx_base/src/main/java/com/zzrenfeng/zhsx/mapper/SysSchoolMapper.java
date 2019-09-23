@@ -52,6 +52,8 @@ public interface SysSchoolMapper extends BaseMapper<SysSchool>{
 	 * @return
 	 */
 	List<SysSchool> findSchoolClassNotNull(SysSchool sysSchool);
+
+	List<SysSchool> findSelectiveData(SysSchool sysSchool);
 	
 	
 	

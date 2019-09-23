@@ -51,49 +51,7 @@
 			<#assign ishaveTitle = "N">		
 			<#if webPjinfoList?? && (webPjinfoList?size>0)><#list webPjinfoList as p>  
 			      <#if p.title == t && p.userId == l.userId >
-		      	       <td>
-			      	       	<#switch p.total>  
-							  <#case 0.5>  
-							         D-
-							    	<#break>    
-							  <#case 1.0>  
-							         D
-							     	<#break>
-							  <#case 1.5>  
-							         D+
-							         <#break>
-							  <#case 2.0>  
-							         C-
-							         <#break>
-							  <#case 2.5>  
-							         C
-							         <#break>
-							  <#case 3.0>  
-							         C+
-							         <#break>
-							  <#case 3.5>  
-							         B-
-							         <#break>
-							  <#case 4.0>  
-							         B
-							         <#break>
-							  <#case 4.5>  
-							         B+
-							         <#break>
-							  <#case 5.0>  
-							         A-
-							         <#break>
-							  <#case 5.5>  
-							         A
-							         <#break>
-							  <#case 6.0>  
-							         A+
-							         <#break>
-							  <#default>  
-							         0  
-							</#switch>
-		      	       	
-		      	       	</td>
+		      	       <td>${p.total!'0'}</td>
 		      	       <#assign ishaveTitle = "Y">
 		      	       <#break>
 			      </#if>
@@ -103,52 +61,11 @@
 	  		<#if onOff?? && onOff == "ON">
 				 <td>${l.bak!'0'}</td>
 			</#if>
-			 <td>
-	 			<#switch l.score>  
-					  <#case 0.5>  
-					         D-
-					    	<#break>    
-					  <#case 1.0>  
-					         D
-					     	<#break>
-					  <#case 1.5>  
-					         D+
-					         <#break>
-					  <#case 2.0>  
-					         C-
-					         <#break>
-					  <#case 2.5>  
-					         C
-					         <#break>
-					  <#case 3.0>  
-					         C+
-					         <#break>
-					  <#case 3.5>  
-					         B-
-					         <#break>
-					  <#case 4.0>  
-					         B
-					         <#break>
-					  <#case 4.5>  
-					         B+
-					         <#break>
-					  <#case 5.0>  
-					         A-
-					         <#break>
-					  <#case 5.5>  
-					         A
-					         <#break>
-					  <#case 6.0>  
-					         A+
-					         <#break>
-					  <#default>  
-					         0  
-				</#switch>
-			 </td>
+			 <td>${l.score!'0'}</td>
 			 <td>
 				<#assign allResult = "">
 				<#if l.allResult??> <#assign allResult = l.allResult>  </#if>
-				<input type="button" class="aaa layui-btn layui-btn-mini" value="查看" onclick="checkPjInfoResult('${l.userId}','${l.pgId}','${l.onOff}','${allResult}')">
+				<input type="button" class="aaa layui-btn layui-btn-mini btncolor" value="查看" onclick="checkPjInfoResult('${l.userId}','${l.pgId}','${l.onOff}','${allResult}')">
 			</td>
 			 <td style="white-space:nowrap;">${l.addTime?string('yyyy-MM-dd')}</td>
 	    </tr>

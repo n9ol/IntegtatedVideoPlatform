@@ -2,8 +2,7 @@
 layui.use(['jquery','layer','element'],function(){
 	window.jQuery = window.$ = layui.jquery;
 	window.layer = layui.layer;
-    var element = layui.element;
-
+  var element = layui.element();
   
 // larry-side-menu向左折叠
 $('.larry-side-menu').click(function() {
@@ -41,59 +40,82 @@ $(function(){
           }
        });
     });
+   $('#lock').mouseover(function(){
+   	   layer.tips('请按Alt+L快速锁屏！', '#lock', {
+             tips: [1, '#FF5722'],
+             time: 4000
+       });
+   })
+   // 快捷键锁屏设置
+    $(document).keydown(function(e){
+         if(e.altKey && e.which == 76){
+         	 lockSystem();
+         }
+    });
+   function startTimer(){
+   	    var today=new Date();
+        var h=today.getHours();
+        var m=today.getMinutes();
+        var s=today.getSeconds();
+        m = m < 10 ? '0' + m : m;
+        s = s < 10 ? '0' + s : s;
+        $('#time').html(h+":"+m+":"+s);
+        t=setTimeout(function(){startTimer()},500);
+   }
+   // 锁屏状态检测
+   function checkLockStatus(locked){
+        // 锁屏
+        if(locked == 1){
+        	$('.lock-screen').show();
+            $('#locker').show();
+            $('#layui_layout').hide();
+            $('#lock_password').val('');
+        }else{
+        	$('.lock-screen').hide();
+            $('#locker').hide();
+            $('#layui_layout').show();
+        }
+    }
+
+   checkLockStatus('0');
+   // 锁定屏幕
+   function lockSystem(){
+   		
+   	   var url = '';
+   	   $.post(
+   	   	   url,
+   	   	   function(data){
+   	   	   if(data=='1'){
+   	   	   	  checkLockStatus(1);
+   	   	   }else{
+              layer.alert('锁屏失败，请稍后再试！');
+   	   	   }
+   	   });
+   	   startTimer();
+   }
+   //解锁屏幕
+   function unlockSystem(){
+        // 与后台交互代码已移除，根据需求定义或删除此功能
+        
+   	    checkLockStatus(0);
+    }
+   // 点击锁屏
+   $('#lock').click(function(){
+   	    lockSystem();
+   });
+   // 解锁进入系统
+   $('#unlock').click(function(){
+        unlockSystem();
+   });
+   // 监控lock_password 键盘事件
+   $('#lock_password').keypress(function(e){
+        var key = e.which;
+        if (key == 13) {
+            unlockSystem();
+        }
+    });
+    
 });
-
-//左侧菜单切换
-$(function() {
-	listSysPermissionsMenu("base");
-});
-
-$("#menu").find("li").click(function(){
-	$(this).addClass("layui-this").siblings().removeClass("layui-this");
-	var liId = $(this).attr("id");
-	switch (liId) {
-	case 'baseMenu':
-		listSysPermissionsMenu("base");
-		break;
-	case 'scheduleMenu':
-		listEclassBrandSysPermissionsMenu("schedule");
-		break;
-	case 'EClassBrandMenu':
-		listEclassBrandSysPermissionsMenu("EClassBrand");
-		break;
-	case 'zhsxMenu':
-		listSysPermissionsMenu("zhsx");
-		break;
-	default:
-		listSysPermissionsMenu("base");
-		break;
-	}
-});
-
-function listSysPermissionsMenu(menuType) {
-	$.ajax({
-		type : "POST",
-		url : ctx + "/listSysPermissionsMenu",
-		data : "menuType=" + menuType,
-		success : function(date) {
-			$("#listMenu").html(date);
-			element.init();
-		}
-	});
-}
-
-
-function listEclassBrandSysPermissionsMenu(menuType){
-	$.ajax({
-		type : "POST",
-		url : ctx + "/listEclassBrandSysPermissionsMenu",
-		data : "menuType=" + menuType,
-		success : function(date) {
-			$("#listMenu").html(date);
-			element.init();
-		}
-	});
-}
 
 
 });

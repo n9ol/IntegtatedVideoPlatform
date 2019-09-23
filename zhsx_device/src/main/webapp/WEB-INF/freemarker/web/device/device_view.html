@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -11,8 +11,7 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="format-detection" content="telephone=no">
-		
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/global.css" media="all">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
 	</head>
 
@@ -24,8 +23,8 @@
 		<div class="mianbaoxue">
 			<span class="layui-breadcrumb">
   					<a href="../index.html">首页</a>
-  					<a><cite>班班通</cite></a>
   					<a><cite>设备管理</cite></a>
+  					<a><cite>设备信息</cite></a>
   					<a><cite>查看设备信息</cite></a>
 				</span>
 		</div>
@@ -41,23 +40,23 @@
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">设备编号：</label>
 		                            <div class="layui-input-block">
-		                            	<input type="text" id="device_code" name="device_code"  class="layui-input" value="${(dm.device_code)!''}" disabled>
+		                            	<input type="text" id="deviceCode" name="deviceCode"  class="layui-input" value="${(dm.deviceCode)!''}" disabled>
 		                            </div>
 		                        </div>
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">设备型号：</label>
 		                            <div class="layui-input-block">
-		                                <input type="text" id="device_type" name="device_type" class="layui-input" value="${(dm.device_type)!''}" disabled>
+		                                <input type="text" id="deviceType" name="deviceType" class="layui-input" value="${(dm.deviceType)!''}" disabled>
 		                            </div>
 		                        </div>
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">省份：</label>
 		                            <div class="layui-input-block">
-		                               <select id="device_province" name="device_province" lay-filter="device_province" disabled>
+		                               <select id="deviceProvince" name="deviceProvince" lay-filter="deviceProvince" disabled>
 			                                <option value="">请选择省份</option>
 			                                <#if provinceList?exists && provinceList?size != 0 >
 			                                	<#list provinceList as province>
-			                                		 <#if (((province.id)!'') == ((dm.device_province)!''))>
+			                                		 <#if (((province.id)!'') == ((dm.deviceProvince)!''))>
 			                                		 	<option value="${(province.id)!''}" selected>${(province.value)!''}</option>
 			                                		 <#else>
 			                                		 	<option value="${(province.id)!''}" >${(province.value)!''}</option>
@@ -72,11 +71,11 @@
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">地市：</label>
 		                            <div class="layui-input-block">
-		                                <select id="device_city" name="device_city" lay-filter="device_city" disabled>
+		                                <select id="deviceCity" name="deviceCity" lay-filter="deviceCity" disabled>
 			                                <option value="">请选择市</option>
 											<#if cityList?exists && cityList?size != 0 >
 												<#list cityList as city>
-													 <#if (((city.id)!'') == ((dm.device_city)!''))>
+													 <#if (((city.id)!'') == ((dm.deviceCity)!''))>
 													  	<option value="${(city.id)!''}" selected>${(city.value)!''}</option>
 													 <#else>
 													 	 <option value="${(city.id)!''}">${(city.value)!''}</option>
@@ -89,11 +88,11 @@
 		                         <div class="layui-form-item">
 		                            <label class="layui-form-label">地区：</label>
 		                            <div class="layui-input-block">
-		                                <select id="device_area" name="device_area" lay-filter="device_area" disabled>
+		                                <select id="deviceArea" name="deviceArea" lay-filter="deviceArea" disabled>
 			                           	    <option value="">请选择县/区</option>
 			                           	    <#if areaList?exists && areaList?size != 0 >
 											   	<#list areaList as area>
-											   		 <#if (((area.id)!'') == ((dm.device_area)!''))>
+											   		 <#if (((area.id)!'') == ((dm.deviceArea)!''))>
 													  	<option value="${(area.id)!''}" selected>${(area.value)!''}</option>
 													 <#else>
 													 	 <option value="${(area.id)!''}">${(area.value)!''}</option>
@@ -106,11 +105,11 @@
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">学校：</label>
 		                            <div class="layui-input-block">
-		                                <select id="school_id" name="school_id" lay-filter="school_id" disabled>
+		                                <select id="schoolId" name="schoolId" lay-filter="schoolId" disabled>
 								            <option value="">请选择学校</option>
 									        <#if schoolList?exists && schoolList?size != 0 >
 			                                	<#list schoolList as school>
-			                                		 <#if (((school.id)!'') == ((dm.school_id)!''))>
+			                                		 <#if (((school.id)!'') == ((dm.schoolId)!''))>
 			                                		 	<option value="${(school.id)!''}" selected>${(school.schoolName)!''}</option>
 			                                		 <#else>
 			                                		 	 <option value="${(school.id)!''}" >${(school.schoolName)!''}</option>
@@ -125,12 +124,12 @@
 			                     <div class="layui-form-item">
 		                            <label class="layui-form-label">设备状态：</label>
 		                            <div class="layui-input-block">
-		                                <select id="device_state" name="device_state" lay-filter="device_state" disabled>
+		                                <select id="deviceState" name="deviceState" lay-filter="deviceState" disabled>
 		                           		 	<#assign sel1="">
-											<#if (((dm.device_state)!'') == '0')> <#assign sel1="selected"> </#if>
+											<#if (((dm.deviceState)!'') == '0')> <#assign sel1="selected"> </#if>
 		                           		 	<option id="state0" value="0" ${sel1}>在线</option>
 		                           		 	<#assign sel2="">
-											<#if (((dm.device_state)!'') == '1')> <#assign sel2="selected"> </#if>
+											<#if (((dm.deviceState)!'') == '1')> <#assign sel2="selected"> </#if>
 		                           		 	<option id="state1" value="1" ${sel2}>离线</option>
 								        </select>
 		                            </div>
@@ -138,19 +137,19 @@
 		                         <div class="layui-form-item">
 		                            <label class="layui-form-label">设备客户端版本号：</label>
 		                            <div class="layui-input-block">
-		                            	<input class="layui-input" id="device_client_version_num" name="device_client_version_num" value="${(dm.device_client_version_num)!''}" disabled>
+		                            	<input class="layui-input" id="deviceClientVersionNum" name="deviceClientVersionNum" value="${(dm.deviceClientVersionNum)!''}" disabled>
 		                            </div>
 		                        </div>
 		                        <div class="layui-form-item">
 		                            <label class="layui-form-label">设备ip:</label>
 		                            <div class="layui-input-block">
-		                            	<input class="layui-input" id="device_ip" name="device_ip" value="${(dm.device_ip)!''}" disabled>
+		                            	<input class="layui-input" id="deviceIp" name="deviceIp" value="${(dm.deviceIp)!''}" disabled>
 		                            </div>
 		                        </div>
 		                        <div class="layui-form-item layui-form-text">
 		                            <label class="layui-form-label">网卡的mac地址：</label>
 		                            <div class="layui-input-block">
-		                            	<input id="device_mac" name="device_mac" class="layui-input" value="${(dm.device_mac)!''}" disabled>
+		                            	<input id="deviceMac" name="deviceMac" class="layui-input" value="${(dm.deviceMac)!''}" disabled>
 		                            </div>
 		                        </div>
 		                    </div>
@@ -166,7 +165,7 @@
 		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
 		<script type="text/javascript">
 			layui.use(['jquery', 'form'], function() {
-				var form = layui.form;
+				var form = layui.form();
 				
 		       //借用地区插件
 		        

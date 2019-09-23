@@ -1,5 +1,5 @@
 var myChart_school = echarts.init(document.getElementById('tongji_info_school'));
-/*取得学校数据  */
+/*取得学校数据   根据实现的表格来获取数据  */
 var schoolData=[];
 $("#schoolcount tr").find('td:eq(0)').each(function(){
     schoolData.push($(this).text());

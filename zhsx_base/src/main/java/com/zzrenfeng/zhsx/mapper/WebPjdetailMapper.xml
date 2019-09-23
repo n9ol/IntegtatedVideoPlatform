@@ -38,11 +38,6 @@
 		insert into web_pjdetail (id,userId,pgId,pgPjInfoId,onOff,content,score,weight,bak,bak1,bak2)
 		values (#{id},#{userId},#{pgId},#{pgPjInfoId},#{onOff},#{content},#{score},#{weight},#{bak},#{bak1},#{bak2})
 	</insert>
-	
-	<insert id="insterPjdetail" parameterType="WebPjdetail">
-		 insert into web_pjdetail (id,userId,pgId,pgPjInfoId,onOff,content,weight,bak,bak2)
-		(SELECT (SELECT UUID()),#{userId},#{pgId},pjinfoId AS pgPjInfoId,#{onOff},content,weight,bak,#{bak2} FROM pg_pjdetail WHERE pjinfoId = #{pgPjInfoId});
-	</insert>
 
 
 	<update id="updateByPrimaryKeySelective" parameterType="WebPjdetail" >

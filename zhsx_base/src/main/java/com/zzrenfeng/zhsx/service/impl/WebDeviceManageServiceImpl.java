@@ -140,18 +140,25 @@ public class WebDeviceManageServiceImpl extends BaseServiceImpl<BaseMapper<WebDe
 	
 	public String inDeviceRecord(TreeMap<String, Object> param) {
 		WebDeviceRecord webDeviceRecord = new WebDeviceRecord();
-		webDeviceRecord.setDevice_code(param.get("deviceCode").toString());
-		try {
+		webDeviceRecord.setDeviceCode(param.get("deviceCode").toString());
+		webDeviceRecord.setDeviceMac(param.get("deviceMac").toString());
+		/*时间转换成Date之后，不用以下时间的格式
+		 * try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			webDeviceRecord.setDr_start_time(sdf.parse(param.get("drStartTime").toString()));
-			webDeviceRecord.setDr_end_time(sdf.parse(param.get("drEndTime").toString()));
-			webDeviceRecord.setDr_using_long((long)0);
+			webDeviceRecord.setDrStartTime(sdf.parse(param.get("drStartTime").toString()));
+			webDeviceRecord.setDrEndTime(sdf.parse(param.get("drEndTime").toString()));
+			webDeviceRecord.setDrUsingLong((long)0);
 		} catch (ParseException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
+		Date drStartTime = (Date)param.get("drStartTime");
+		Date drEndTime = (Date) param.get("drStartTime");
+		webDeviceRecord.setDrStartTime(drStartTime);
+		webDeviceRecord.setDrEndTime(drEndTime);
+		webDeviceRecord.setDrUsingLong((long)0);
 		webDeviceRecordMapper.insert(webDeviceRecord);
-		String dr_id = webDeviceRecord.getDr_id();
+		String dr_id = webDeviceRecord.getId();
 		return dr_id;
 	}
 
@@ -160,39 +167,55 @@ public class WebDeviceManageServiceImpl extends BaseServiceImpl<BaseMapper<WebDe
 		Map<String,Object> returnMap = new HashMap<String,Object>();
 		/*将设备信息数据写入到数据库*/
 		WebDeviceManage dm = new WebDeviceManage();
-		dm.setDevice_code(param.get("deviceCode").toString());
+		dm.setDeviceCode(param.get("deviceCode").toString());
 		String deviceArea= param.get("deviceArea").toString();
-		dm.setDevice_area(deviceArea);
+		dm.setDeviceArea(deviceArea);
 		String deviceCity= param.get("deviceCity").toString();
-		dm.setDevice_city(deviceCity);
-		dm.setDevice_client_version_num(param.get("deviceClientVersionNum").toString());
-		dm.setDevice_ip(param.get("deviceIp").toString());
-		dm.setDevice_mac(param.get("deviceMac").toString());
+		dm.setDeviceCity(deviceCity);
+		dm.setDeviceClientVersionNum(param.get("deviceClientVersionNum").toString());
+		dm.setDeviceIp(param.get("deviceIp").toString());
+		String deviceMac = param.get("deviceMac").toString();
+		dm.setDeviceMac(deviceMac);
 		String province= param.get("deviceProvince").toString();
-		dm.setDevice_province(province);
-		dm.setDevice_state(param.get("deviceState").toString());
-		dm.setDevice_type(param.get("deviceType").toString());
-		String schoolName = param.get("schoolName").toString();
-		dm.setSchool_name(schoolName);
-		dm.setDevice_isvalid("0");
+		dm.setDeviceProvince(province);
+		dm.setDeviceState(param.get("deviceState").toString());
+		dm.setDeviceType(param.get("deviceType").toString());
+//		String schoolName = param.get("schoolName").toString();
+//		dm.setSchool_name(schoolName);
+		dm.setIsvalid(WebDeviceManage.DEVICE_ISVALID_YES);
 		String schoolId = param.get("schoolId").toString();//*改动
-		dm.setSchool_id(schoolId);
-		dm.setCreate_time(new Date());
-		dm.setModify_time(new Date());
-		dm.setModify_id(param.get("modify_id").toString());
+		dm.setSchoolId(schoolId);
+		dm.setCreateTime(new Date());
+		dm.setModifyTime(new Date());
+		dm.setModifyId(param.get("modify_id").toString());
+		
+		/* 2018-08-10 David
+		 * 插入之前判读  改mac地址信息是否存在
+		 * （1）不存在，则插入
+		 * （2）存在，则更新之前的状态，即将isvalid设定为禁用
+		 * */
+		WebDeviceManage dmT = new WebDeviceManage();
+		dmT.setDeviceMac(deviceMac);
+		List<WebDeviceManage> dmList = webDeviceManageMapper.findSelective(dmT);
+		if ((dmList != null) && (dmList.size() > 0)) {// 说明已经存在
+			dmT = dmList.get(0);
+			dmT.setIsvalid(WebDeviceManage.DEVICE_ISVALID_NO);
+			webDeviceManageMapper.updateByPrimaryKeySelective(dmT);
+		}
+		
 		webDeviceManageMapper.insert(dm);
-		String deviceId = dm.getDevice_id();
+		String deviceId = dm.getId();
 		
 		String drId = inDeviceRecord(param);
 		
 		/*向班级设备中插入数据*/
 		WebClassDevice classDevice = new WebClassDevice();
-		String classname= param.get("classname").toString();
-		classDevice.setClassname(classname);
-		classDevice.setDevice_id(deviceId);//插入后的结果
-		classDevice.setDevice_code(param.get("deviceCode").toString());
+		//String classname= param.get("classname").toString();
+		//classDevice.setClassName(classname);
+		classDevice.setDeviceId(deviceId);//插入后的结果
+		//classDevice.setDeviceCode(param.get("deviceCode").toString());
 		String classid = param.get("classid").toString();
-		classDevice.setClassid(classid);//*改动
+		classDevice.setClassId(classid);//*改动
 		
 		webClassDeviceMapper.insert(classDevice);
 
@@ -220,48 +243,49 @@ public class WebDeviceManageServiceImpl extends BaseServiceImpl<BaseMapper<WebDe
 		/*将设备信息数据写入到数据库*/
 		WebDeviceManage dm = new WebDeviceManage();
 		String deviceCode=param.get("deviceCode").toString();
-		dm.setDevice_code(deviceCode);//不变
+		dm.setDeviceCode(deviceCode);//不变
 		String deviceArea= param.get("deviceArea").toString();//变
-		dm.setDevice_area(deviceArea);
+		dm.setDeviceArea(deviceArea);
 		String deviceCity= param.get("deviceCity").toString();//变
-		dm.setDevice_city(deviceCity);
-		dm.setDevice_client_version_num(param.get("deviceClientVersionNum").toString());
-		dm.setDevice_ip(param.get("deviceIp").toString());
-		dm.setDevice_mac(param.get("deviceMac").toString());
+		dm.setDeviceCity(deviceCity);
+		dm.setDeviceClientVersionNum(param.get("deviceClientVersionNum").toString());
+		dm.setDeviceIp(param.get("deviceIp").toString());
+		dm.setDeviceMac(param.get("deviceMac").toString());
 		String province= param.get("deviceProvince").toString();//变
-		dm.setDevice_province(province);
-		dm.setDevice_state(param.get("deviceState").toString());
-		dm.setDevice_type(param.get("deviceType").toString());
-		String schoolName = param.get("schoolName").toString();//变
-		dm.setSchool_name(schoolName);
-		dm.setDevice_isvalid("0");
+		dm.setDeviceProvince(province);
+		dm.setDeviceState(param.get("deviceState").toString());
+		dm.setDeviceType(param.get("deviceType").toString());
+		//String schoolName = param.get("schoolName").toString();//变
+		//dm.setSchoolName(schoolName);
+		dm.setIsvalid("0");
 		String schoolId = param.get("schoolId").toString();//变
-		dm.setSchool_id(schoolId);
+		dm.setSchoolId(schoolId);
 //		dm.setCreate_time(new Date());
 //		dm.setModify_time(new Date());
 		//获取设备id
 		WebDeviceManage tempDM = new WebDeviceManage();
-		tempDM.setDevice_code(deviceCode);
+		tempDM.setDeviceCode(deviceCode);
 		List<WebDeviceManage> tempWDMList = webDeviceManageMapper.findSelective(tempDM);
-		dm.setDevice_id(tempWDMList.get(0).getDevice_id());
+		dm.setId(tempWDMList.get(0).getId());
 		
 		//需要记录id
 		webDeviceManageMapper.updateByPrimaryKeySelective(dm);
-		String deviceId = dm.getDevice_id();
+		String deviceId = dm.getId();
 		
 		String drId = inDeviceRecord(param);
 		
 		/*向班级设备中插入数据*/
 		WebClassDevice classDevice = new WebClassDevice();
-		String classname= param.get("classname").toString();
-		classDevice.setClassname(classname);//变
-		classDevice.setDevice_id(deviceId);//插入后的结果
-		classDevice.setDevice_code(param.get("deviceCode").toString());//不变
+		//String classname= param.get("classname").toString();
+		//classDevice.setClassName(classname);//变
+		classDevice.setId(deviceId);//插入后的结果
+		//classDevice.setDeviceCode(param.get("deviceCode").toString());//不变
 		String classid = param.get("classid").toString();
-		classDevice.setClassid(classid);//变
+		classDevice.setClassId(classid);//变
 		//获取id
 		WebClassDevice tempCD = new WebClassDevice();
-		tempCD.setDevice_code(deviceCode);
+		//tempCD.setDeviceCode(deviceCode);  TODO
+		tempCD.setDeviceId(deviceId);//有设备编号修改成为设备id
 		List<WebClassDevice> tempCDList = webClassDeviceMapper.findSelective(tempCD);
 		classDevice.setId(tempCDList.get(0).getId());
 		//需要记录id
@@ -352,14 +376,14 @@ public class WebDeviceManageServiceImpl extends BaseServiceImpl<BaseMapper<WebDe
 		if(ids!=null){
 			String[] idsArr = ids.split(",");
 			for(int i=0;i<idsArr.length;i++){
-				WebDeviceManage webDeviceManage = webDeviceManageMapper.selectByPrimaryKey(idsArr[i]);
+				//WebDeviceManage webDeviceManage = webDeviceManageMapper.selectByPrimaryKey(idsArr[i]);
 				
 				WebClassDevice webClassDevice = new WebClassDevice(); 
-				webClassDevice.setDevice_id(idsArr[i]);
-				webClassDevice.setDevice_code(webDeviceManage.getDevice_code());
+				webClassDevice.setId(idsArr[i]);
+				//webClassDevice.setDeviceCode(webDeviceManage.getDeviceCode());
 				webClassDeviceMapper.deleteBySelective(webClassDevice);
-				
-				webDeviceManageMapper.deleteByPrimaryKey(idsArr[i]);
+				String id = idsArr[i];
+				webDeviceManageMapper.deleteByPrimaryKey(id);
 			}
 		}
 		
@@ -369,6 +393,12 @@ public class WebDeviceManageServiceImpl extends BaseServiceImpl<BaseMapper<WebDe
 	@Override
 	public Integer findDeviceStateByClassId(String classId) {
 		return webDeviceManageMapper.findDeviceStateByClassId(classId);
+	}
+
+	@Override
+	public List<Map<String, Object>> getDeviceByClassId(String classId) {
+		// TODO
+		return webDeviceManageMapper.getDeviceByClassId(classId);
 	}
 	
 }

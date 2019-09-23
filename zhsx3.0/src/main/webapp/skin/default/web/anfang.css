@@ -1,0 +1,160 @@
+.an_con{
+	width: 1200px;
+	margin: 0 auto;
+}
+.an_left{
+	width: 220px;
+	float: left;
+	position: relative;
+}
+.div{
+	height: 85px;
+	text-align: center;
+	background-color: #4596E5;
+	color: white;
+	font-size: 22px;
+	line-height: 85px;
+}
+.left_ul{
+	overflow: hidden;
+	position: relative;
+	/*height: 492px;*/
+}
+.left_li{
+	position: relative;
+	overflow: auto;	
+	max-height: 492px;
+	width: 100%;	
+	
+}
+.left_li li{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid gainsboro;
+	font-size: 16px;
+	background-color: #fff;
+	text-align: center;
+	color: grey;
+	cursor: pointer;
+}
+.xialabiao,.shanglabiao{
+	text-align: center;
+	line-height: 40px;
+	background-color: #4596E5;
+	cursor: pointer;
+}
+
+.xuanzhong{
+	border-left: 3px solid #4596E5;
+	background-color: blue;
+}
+.details{
+	position: absolute;
+	top: 135px;
+	right: -402px;
+	width: 400px;
+	
+}
+.details li{
+	min-height: 500px;
+	width: 390px;
+	background-color: white;
+/* 	display: none; */
+	position: absolute;
+	top: 0px;
+	left: 0;
+	border: 1px solid gainsboro;
+	padding:10px;
+	
+}
+
+.details li button{
+	background-color: #4596E5;
+	margin: 5px 3px;
+}
+
+
+
+
+
+
+
+
+
+
+/*右半部分*/
+.con_right{
+	float: right;
+	width: 950px;
+	height: 658px;
+	background-color: #fff;
+	/*display: none;*/
+}
+.con_right2{
+	float: right;
+	width: 950px;
+	height: 547px;
+	background-color: #fff;
+	display: none;
+}
+.con_right2 p{
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	background-color: #4596E5;
+	
+	color: white;
+}
+.bofangkuang2{
+	height:547px;
+}
+.daohang{
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #4596E5;
+	padding: 15px;
+}
+.daohang button{
+	background-color: #4596E5;
+}
+.daohang span {
+	display: inline-block;
+	background-color: #e9eff8;
+	border-radius: 3px;
+	height: 25px;
+	line-height: 25px;
+	padding: 0 5px;
+	cursor: pointer;
+	margin: 0 5px;
+	
+	
+}
+.chajian{
+	float: right;
+}
+
+.fenpingmu{
+	padding: 15px;
+}
+.fenpingmu li{
+	float: left;
+	width: 450px;
+	height: 270px;
+	background-color: #e9eff8;
+	margin: 5px;
+}
+.bofangkuang{
+	height: 240px;
+}
+.fenpingmu li p{
+	text-align: center;
+	height: 30px;
+	line-height: 30px;
+	background-color: #4596E5;
+	color: white;
+}
+li.schoolLi{
+	backgroundColor : #f4f7fc;
+	border-left : 3px solid #4596E5;
+	color : #000;
+}

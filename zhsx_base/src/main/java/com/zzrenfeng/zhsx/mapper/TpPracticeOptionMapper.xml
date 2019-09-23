@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TpPracticeOptionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TpPracticeOption" >
+		<result column="id" property="id" />
+		<result column="qid" property="qid" />
+		<result column="option" property="option" />
+		<result column="isRight" property="isRight" />
+		<result column="createId" property="createId" />
+		<result column="createTime" property="createTime" />
+		<result column="sort" property="sort" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,qid,`option`,isRight,createId,createTime,sort
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_option
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from tp_practice_option
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TpPracticeOption" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into tp_practice_option (id,qid,`option`,isRight,createId,createTime,sort)
+		values (#{id},#{qid},#{option},#{isRight},#{createId},#{createTime},#{sort})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TpPracticeOption" >
+		update tp_practice_option
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="qid != null" >
+				qid = #{qid},
+			</if>
+			<if test="option != null" >
+				`option` = #{option},
+			</if>
+			<if test="isRight != null" >
+				isRight = #{isRight},
+			</if>
+			<if test="createId != null" >
+				createId = #{createId},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="sort != null" >
+				sort = #{sort}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TpPracticeOption" >
+		update tp_practice_option
+		set 
+		id = #{id},
+		qid = #{qid},
+		`option` = #{option},
+		isRight = #{isRight},
+		createId = #{createId},
+		createTime = #{createTime},
+		sort = #{sort}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="qid != null" >
+				and qid = #{qid}
+			</if>
+			<if test="option != null" >
+				and `option` = #{option}
+			</if>
+			<if test="isRight != null" >
+				and isRight = #{isRight}
+			</if>
+			<if test="createId != null" >
+				and createId = #{createId}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="sort != null" >
+				and sort = #{sort}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TpPracticeOption" resultType="TpPracticeOption">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_option
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TpPracticeOption" resultType="TpPracticeOption">
+		select 
+		<include refid="Base_Column_List" />
+		from tp_practice_option
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

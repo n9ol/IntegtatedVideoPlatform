@@ -116,13 +116,19 @@
 									<tr>
 										<th><input type="checkbox" id="selected-all-operation"></th>
 										<th>报修单位</th>
+										<th>报修班级</th>
 										<th>报修人</th>
 										<th>报修电话</th>
-										<th>故障描述</th>
-										<th>报修时间</th>
-										<th>状态</th>
+										<th>报修类型</th>
+										
+										<th>授理人</th>
+										<th>授理人电话</th>
+										<th>授理人状态</th>
+										
 										<th>维修人</th>
 										<th>维修电话</th>
+										
+										<th>故障描述</th>
 										<th>操作</th>
 									</tr>
 								</thead>
@@ -130,33 +136,83 @@
 									<#if ldr?exists && ldr?size != 0 > 
 									<#list ldr as l>
 									<tr>
-										<td><input type="checkbox" name="del_id" value="${l.repair_id!''}"></td>
-										<td>${l.repair_unit_name!''}</td>
-										<td>${l.repair_person!''}</td>
-										<td>${l.repair_tel!''}</td>
-										<td>${l.repair_description!''}</td>
-										
-										<td>${(l.repair_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+										<td><input type="checkbox" name="del_id" value="${l.id!''}"></td>
 										<td>
-											  <#if (((l.repair_state)!'') == '0')>
-											  	<span class="fixed">已维修</span>
-											  <#elseif (((l.repair_state)!'') == '1')>
-											  	<span class="no-fixed">未维修</span>
-											  <#elseif (((l.repair_state)!'') == '2')>
-											  	<span class="fixing">维修中</span>
-											  <#else>
-											  	
-											  </#if>
+											<#if l.school??>
+												${l.school.schoolName!""}
+											<#else>
+											</#if>
 										</td>
-										<td>${l.maintenance_man!''}</td>
-										<td>${l.maintenance_tel!''}</td>
 										<td>
-											<a href="javascript:void(0);" onclick="checkOrUpdate('${(l.repair_id)!''}','1');" title="查看" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;查看</a>
-	                                		<a href="javascript:void(0);" onclick="checkOrUpdate('${(l.repair_id)!''}','2');" title="编辑" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;编辑</a>
-	                                
-											<!-- <a href="${ctx}/webdevicerepair/admin/findDRById?repair_id=${l.repair_id}&flag=1" title="查看" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;查看</a> 
-											<a href="${ctx}/webdevicerepair/admin/findDRById?repair_id=${l.repair_id}&flag=2" title="编辑" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;编辑</a> -->
-											<a href="javascript:;" onclick="batchDel(1,'${l.repair_id}');" title="删除" class="check_look"><i class="layui-icon">&#xe640;</i>&nbsp;删除</a>
+											<#if l.sysClass??>
+												${l.sysClass.className!""}
+											<#else>
+											</#if>
+										</td>
+										<td>
+											<#if l.user??>
+												${l.user.nickName!""}
+											<#else>
+											</#if>
+										</td>
+										<td>
+											<#if l.user??>
+												${l.user.phone!""}
+											<#else>
+											</#if>
+										</td>
+										<td>
+											<#if l.sysDict??>
+												${l.sysDict.value!""}
+											<#else>
+											
+											</#if>
+										</td>
+										<td>
+											<#if l.manager??>
+												${l.manager.nickName!""}
+											<#else>
+											</#if>
+										</td>
+										<td>
+											<#if l.manager??>
+												${l.manager.phone!""}
+											<#else>
+											</#if>
+										</td>
+										
+										<td>
+										  <#if (((l.manaOverdueState)!"") == '0')>
+										  	<span class="no-fixed">未授理 </span>
+										  <#elseif (((l.manaOverdueState)!"") == '1')>
+										  	<span class="fixed">已授理</span><!-- 已授理未逾期 -->
+										  <#elseif (((l.manaOverdueState)!"") == '2')>
+										  	<span class="fixed">已经授理但逾期</span>
+										  <#else>
+										  </#if>
+										</td>
+										<td>
+											<#if l.webDeviceTechnician??>
+												${l.webDeviceTechnician.name!""}
+											<#else>
+											</#if>
+										</td>
+										<td>
+											<#if l.webDeviceTechnician??>
+												${l.webDeviceTechnician.phone!""}
+											<#else>
+											</#if>
+										</td>
+										
+										
+										<td>${l.repairDescription!""}</td>
+										
+										<td>
+											<a href="javascript:void(0);" onclick="checkOrUpdate('${(l.id)!''}','1');" title="查看" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;查看</a>
+	                                		
+	                                		<a href="javascript:void(0);" onclick="checkOrUpdate('${(l.id)!''}','2');" title="授理" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;授理</a>
+											
+											<a href="javascript:;" onclick="batchDel(1,'${l.id}');" title="删除" class="check_look"><i class="layui-icon">&#xe640;</i>&nbsp;删除</a>
 										</td>
 									</tr>
 									</#list> </#if>
@@ -164,39 +220,19 @@
 								</tbody>
 							</table>
 							<!-- 分页 -->
-							<div id="page"></div>
+							<div id="pagerss"></div>
 					</div>
 
 				</div>
 			</div>
 	</section>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
-	<script type="text/javascript">
-		function turnPage(p) {
-			var province = $("#province").val();
-			var city = $("#city").val();
-			var area = $("#area").val();
-			var schoolId = $("#schoolId").val();
-			var startTime = $("#startTime").val();
-			var endTime = $("#endTime").val();
-			
-			if(platformLevel=='N'){
-          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+p+"&province="+province+"&city="+city+"&area="+area+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
-          	}else if(platformLevel=='P'){
-          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+p+"&city="+city+"&area="+area+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
-          	}else if(platformLevel=='C'){
-          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+p+"&area="+area+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
-          	}else if(platformLevel=='A'){
-          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+p+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
-          	}
-		}
-	</script>
-	
 	
 	<script type="text/javascript">
 		layui.use([ 'jquery', 'form', 'laydate','laypage'],function() {
 			var platformLevel = "${platformLevel}";
-			var form = layui.form;
+			
+			var form = layui.form();
+			laypage = layui.laypage;
 			
 			//借用地区插件
 			form.on('select(province)',function(data) {
@@ -354,8 +390,39 @@
 	          	}else if(platformLevel=='A'){
 	          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+e.curr+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
 	          	}
+	          	
 	        	return false; 
 	        });
+			
+			laypage({
+				cont : "pagerss",
+				pages : "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip : false,
+				skin : "molv",
+				groups : 5,
+				jump : function(e, first) {
+					if (!first) {
+						var province = $("#province").val();
+						var city = $("#city").val();
+						var area = $("#area").val();
+						var schoolId = $("#schoolId").val();
+						var startTime = $("#startTime").val();
+						var endTime = $("#endTime").val();
+						
+						if(platformLevel=='N'){
+			          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+e.curr+"&province="+province+"&city="+city+"&area="+area+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
+			          	}else if(platformLevel=='P'){
+			          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+e.curr+"&city="+city+"&area="+area+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
+			          	}else if(platformLevel=='C'){
+			          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+e.curr+"&area="+area+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
+			          	}else if(platformLevel=='A'){
+			          		location.href="${ctx}/webdevicerepair/admin/listDRByContion?p="+e.curr+"&schoolId="+schoolId+ "&startTime=" + startTime+ "&endTime=" + endTime;
+			          	}
+						
+					}
+				}
+			});
 		});
 		//全选
 		$("#selected-all-operation").click(function() {

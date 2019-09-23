@@ -3,7 +3,7 @@ var form;
 var $form;
 layui.use([ 'jquery', 'form' ], function() {
 	$ = layui.jquery;
-	form = layui.form;
+	form = layui.form();
 	$form = $('form');
 });
 

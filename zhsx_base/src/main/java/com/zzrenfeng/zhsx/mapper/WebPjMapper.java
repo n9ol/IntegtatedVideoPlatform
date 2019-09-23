@@ -22,7 +22,7 @@ public interface WebPjMapper extends BaseMapper<WebPj> {
 	/**
 	 * 批量添加评估信息
 	 */
-	int insterPgMessage(WebPj webPj);
+	void insterPgMessage(WebPj webPj);
 
 	/**
 	 * 获得评估总分平均分
@@ -120,20 +120,4 @@ public interface WebPjMapper extends BaseMapper<WebPj> {
 	 * @param pgId
 	 */
 	void deleteWebPg(WebPj webPj);
-
-	/**
-	 * 直播课程 - 在线评估,评估结果查询
-	 * 
-	 * @param webPj
-	 * @return
-	 */
-	Page<WebPj> listWebPjResult(WebPj webPj);
-
-	/**
-	 * 查询个人的评估记录
-	 * 
-	 * @param userId
-	 * @return
-	 */
-	Page<WebPj> listPersonalWebPjRecord(String userId);
 }

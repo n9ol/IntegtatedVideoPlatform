@@ -3,10 +3,10 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zb_kechengbiao.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/zb_kechengbiao.css" />
 	</head>
 
 	<body>
@@ -19,8 +19,15 @@
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
   					<a href="${ctx}/index">首页</a>
-  					<a href="${ctx}/online/zb_online">直播</a>
-  					<a><cite>课程表</cite></a>
+  					<#if type??>
+  						<#if type == "A"> 
+  							<a href="${ctx}/online/zb_online?type=A">教学评估</a>
+  						</#if>
+  						<#if type == "G"> 
+  							<a href="${ctx}/online/zb_online?type=G">专递课堂</a>
+  						</#if>
+  					</#if>
+					<a><cite>课程表</cite></a>
 				</span>
 			</div>
 			<!--课程表-->
@@ -57,29 +64,27 @@
 						<#if platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C'>
 							<#assign marginLeftC = "">
 		                    <#if platformLevel == 'C'><#assign marginLeftC = "margin-left:50px;"></#if>
-								<div class="layui-input-inline" style="${marginLeftC!''}">
-									<select name="quiz1" lay-filter="county" id="county" lay-search>
-		        						<option value="">请选择区（县）</option>
-		        						<#if platformLevel == 'C' && provinceList?? && (provinceList?size>0)><#list provinceList as l>
-		        							<option value="${l.id!''}">${l.value!''}</option>
-		        						</#list></#if>
-		      						</select>
-								</div>
-							</#if>
-						</#if>
-						
-						<#if schoolLevel?? && schoolLevel != 'Y'>
-							<div class="layui-input-inline">
-								<select name="quiz2" lay-filter="school" id="school" lay-search>
-	       			 				<option value="">请选择学校</option>
-	       			 				<#if sysSchools?? && (sysSchools?size>0)><#list sysSchools as l>
-	       			 					<option value="${l.id!''}">${l.schoolName!''}</option>
-	       			 				</#list></#if>
+							<div class="layui-input-inline" style="${marginLeftC!''}">
+								<select name="quiz1" lay-filter="county" id="county" lay-search>
+	        						<option value="">请选择区（县）</option>
+	        						<#if platformLevel == 'C' && provinceList?? && (provinceList?size>0)><#list provinceList as l>
+	        							<option value="${l.id!''}">${l.value!''}</option>
+	        						</#list></#if>
 	      						</select>
 							</div>
 						</#if>
 						
+						</#if>
 						
+						
+						<div class="layui-input-inline">
+							<select name="quiz2" lay-filter="school" id="school" lay-search>
+       			 				<option value="">请选择学校</option>
+       			 				<#if sysSchools?? && (sysSchools?size>0)><#list sysSchools as l>
+       			 					<option value="${l.id!''}">${l.schoolName!''}</option>
+       			 				</#list></#if>
+      						</select>
+						</div>
 						<div class="layui-input-inline">
 							<select name="quiz3" lay-filter="classroom" id="classroom" lay-search>
         						<option value="">请选择主讲教室</option>
@@ -91,6 +96,8 @@
       						</select>
 						</div>
 					</div>
+					
+					
 				</form>
 			</div>
 			<div class="zhong_right">
@@ -221,8 +228,7 @@
 	</body>
 	<#include "/commons/comWebjs.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		var configuredSchoolId = "${schoolId!''}";
-		var schoolLevel = "${schoolLevel!''}";
+		var type = "${type!''}";
 	</script>
 	<script type="text/javascript" src="${ctx}/js/web/online/zb_kechengbiao.js"></script>
 </html>

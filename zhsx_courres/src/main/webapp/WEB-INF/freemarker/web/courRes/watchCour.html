@@ -3,10 +3,10 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_dianping.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/FilePlay.css"/>
 	</head>
 	<body>
@@ -44,7 +44,7 @@
 			</div>
 			<div class="iframePlay">
 				<div id="1111">
-					<iframe src="${ctx}/generic/web/viewer.html?file=${ctx}/courRes/receivePdfStream/${courRes.id!''}" width="964" height="830" style="border: none;"></iframe>
+					<iframe id="filePlay" src="${ctx}/generic/web/viewer.html?file=${ctx}/courRes/receivePdfStream/${courRes.id!''}" width="964" height="830" style="border: none;"></iframe>
 				</div>
 				<!--列表区-->
 				<div class="bang">
@@ -86,6 +86,7 @@
 	<script type="text/javascript">
 		var receive = {};
 		receive.id = "${courRes.id!''}";
+		var skinName = "${skinName!''}";
 	</script>
 	<script type="text/javascript" src="${ctx}/js/web/courRes/watchCour.js"></script>
 </html>

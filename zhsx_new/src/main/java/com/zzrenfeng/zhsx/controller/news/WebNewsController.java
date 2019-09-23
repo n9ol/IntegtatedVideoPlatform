@@ -38,11 +38,6 @@ public class WebNewsController extends BaseController {
 		model.addAttribute("pages", pages);
 		model.addAttribute("pageNum", p);
 		List<WebNews> list = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("lists", list);
 		return "/news/allnews";
 	}
@@ -53,7 +48,6 @@ public class WebNewsController extends BaseController {
 		List<WebNews> list = webNewsService.getTop(n);
 		model.addAttribute("lists", list);
 		return "/news/xwph";
-
 	}
 
 	@RequestMapping("/findOne")

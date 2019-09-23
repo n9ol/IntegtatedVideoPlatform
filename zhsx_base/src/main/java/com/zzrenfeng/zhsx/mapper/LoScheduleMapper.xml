@@ -178,8 +178,11 @@
 			<if test="bak1 != null" >
 				and bak1 = #{bak1}
 			</if>
-			<if test="bak2 != null" >
-				and bak2 = #{bak2}
+			<if test="bak2 != null and bak2 == 'N'.toString()">
+				and s.bak2 = #{bak2}
+			</if>
+			<if test="bak2 != null and bak2 != 'N'.toString()">
+				and s.bak2 != 'N'
 			</if>
 			<if test="startDate != null and endDate != null">
 				and  z_date &gt;= #{startDate}  and  z_date &lt;= #{endDate}
@@ -239,6 +242,33 @@
 		END) as isGoClass
 		from lo_schedule s
 		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<!-- 根据条件查询当前正在上课的课程表type == 'Z'	;根据分教室信息查询主教室当前正在上课的课程表 type == 'F' -->
+	<select id="findSelectiveNow" parameterType="LoSchedule" resultType="LoSchedule">
+		select 
+		t.*
+		from lo_schedule t
+		LEFT JOIN lo_classTime c on c.id = t.bak 
+		 <if test="type != null and type == 'F'.toString()" >
+			LEFT JOIN lo_fschedule f ON f.zId = t.id 
+		 </if>
+		where 1=1
+		    <if test="classId != null and type != null and type == 'F'.toString()" >
+			    and	f.classId = #{classId}
+			</if>
+			<if test="schoolId != null and type != null and type == 'F'.toString()" >
+				and f.schoolId = #{schoolId}
+			</if>
+		
+		    <if test="classId != null and type == null">
+				and	t.classId = #{classId}
+			</if>
+			<if test="schoolId != null and type == null" >
+				and t.schoolId = #{schoolId}
+			</if>
+		AND c.starttime &lt; now() AND c.endtime &gt; now()
+		 and t.z_date = curdate()
 	</select>
 	
 	<select id="listLoscheduleIncludeLoFschedule" parameterType="LoSchedule" resultType="LoSchedule">
@@ -353,6 +383,12 @@
 			<if test="z_date != null" >
 				and z_date = #{z_date}
 			</if>
+			<if test="bak2 != null and bak2 == 'N'.toString()">
+				and s.bak2 = #{bak2}
+			</if>
+			<if test="bak2 != null and bak2 != 'N'.toString()">
+				and s.bak2 != 'N'
+			</if>
 			<if test="search!=null">
 				and (
 					schoolId in (SELECT id FROM sys_school sc WHERE sc.schoolName like '%${search}%' )  or 
@@ -452,6 +488,18 @@
 <!-- 		AND ((S.Z_DATE = CURDATE() AND (SELECT C.ENDTIME FROM LO_CLASSTIME C WHERE S.BAK = C.ID) &GT;= CURTIME()) OR  (S.Z_DATE &GT; CURDATE())) -->
 <!-- 	</SELECT> -->
 	
-		
+	<select id="getLoScheduleBySC" parameterType="LoSchedule" resultType="LoSchedule">
+		SELECT 
+			s.id
+		FROM lo_schedule s ,lo_classTime ct WHERE s.bak = ct.id 
+			AND
+				s.schoolId = #{schoolId}
+			AND
+				s.classId = #{classId}
+			AND 
+				s.z_date = CURDATE() 
+			AND 
+				CURTIME() BETWEEN ct.starttime AND ct.endtime
+	</select>	
 
 </mapper>

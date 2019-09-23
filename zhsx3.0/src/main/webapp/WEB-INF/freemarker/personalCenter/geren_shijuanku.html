@@ -3,11 +3,11 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<!-- 		<#global ctx=rc.contextPath/> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 	</head>
 
 	<body>
@@ -35,7 +35,7 @@
 				<thead>
 					<tr>
 						<th>NO</th>
-						<th>专业</th>
+						<th>年级11</th>
 						<th>科目</th>
 						<th>考试标题</th>
 						<th>题数</th>
@@ -62,34 +62,43 @@
 			<input type="hidden" name="search" value="${search!''}">
 			<input type="hidden" name="memberId" value="${memberId!''}">
 		</form>
-			<div id="page" style="text-align: center;"></div>
+			<div id="kaoping2" style="text-align: center;"></div>
 		</div>
 	</body>	
 	<script type="text/javascript">var memberId = ${principal.id!''}</script>
 	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
+<!-- 	<script  type="text/javascript"  src="${ctx}/common/echarts.min.js"></script> -->
+<!-- 	<script src="${ctx}/js/web/mstd_geren.js" type="text/javascript" charset="utf-8"></script> -->
 	<script type="text/javascript">
+	layui.use('laypage' , function() {
+		laypage = layui.laypage;
+		laypage({cont : "kaoping2",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : "molv",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					
+					refreshPage();
+				}
+			}
+		});
 		setIframeH();
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
-		}
+	});
 	</script>
 	<script type="text/javascript">
-		function setIframeH() {
-			var body = $(document.body);
-			var iframe = $(parent.document.getElementById('parentIframe'));
-			iframe.height(body.height());
-		} 
+	function setIframeH() {
+		var body = $(document.body);
+		var iframe = $(parent.document.getElementById('parentIframe'));
+		iframe.height(body.height());
+	} 
 		
 		
 	
 		var layer;
 		layui.use(['layer', 'form', 'element'], function() {
 			 layer = layui.layer,
-				form = layui.form,
-				element = layui.element;
+				form = layui.form(),
+				element = layui.element();
 	
 		});
 	

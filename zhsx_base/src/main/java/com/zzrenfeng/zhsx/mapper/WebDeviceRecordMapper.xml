@@ -3,93 +3,103 @@
 <mapper namespace="com.zzrenfeng.zhsx.mapper.WebDeviceRecordMapper" >
  
 	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebDeviceRecord" >
-		<result column="dr_id" property="dr_id" />
-		<result column="device_code" property="device_code" />
-		<result column="dr_start_time" property="dr_start_time" />
-		<result column="dr_end_time" property="dr_end_time" />
-		<result column="dr_using_long" property="dr_using_long" />
+		<result column="id" property="id" />
+		<result column="device_code" property="deviceCode" />
+		<result column="device_mac" property="deviceMac" />
+		<result column="dr_start_time" property="drStartTime" />
+		<result column="dr_end_time" property="drEndTime" />
+		<result column="dr_using_long" property="drUsingLong" />
 	</resultMap>
 
 	<sql id="Base_Column_List">
-		dr_id,device_code,dr_start_time,dr_end_time,dr_using_long
+		id,device_code AS deviceCode,device_mac AS deviceMac,dr_start_time AS drStartTime,dr_end_time AS drEndTime,dr_using_long AS drUsingLong
 	</sql>
 
 	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
 		select 
 		<include refid="Base_Column_List" />
 		from web_device_record
-		where dr_id = #{dr_id}
+		where id = #{id}
 	</select>
 
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
 		delete from web_device_record
-		where dr_id = #{dr_id}
+		where id = #{id}
 	</delete>
+	
 	<!-- 清空所有记录 -->
 	<delete id="deleteAllDRecord">
 		delete from web_device_record
 	</delete>
 
+	<!-- 增加了mac地址，修改地址 -->
 	<insert id="insert" parameterType="WebDeviceRecord" >
-		<selectKey keyProperty="dr_id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
-		insert into web_device_record (dr_id,device_code,dr_start_time,dr_end_time,dr_using_long)
-		values (#{dr_id},#{device_code},#{dr_start_time},#{dr_end_time},#{dr_using_long})
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_device_record (id,device_code,device_mac,dr_start_time,dr_end_time,dr_using_long)
+		values (#{id},#{deviceCode},#{deviceMac},#{drStartTime},#{drEndTime},#{drUsingLong})
 	</insert>
 
 
 	<update id="updateByPrimaryKeySelective" parameterType="WebDeviceRecord" >
 		update web_device_record
 		<set >
-			<!-- <if test="dr_id != null" >
-				dr_id = #{dr_id},
+			<!-- <if test="id != null" >
+				id = #{id},
 			</if> -->
-			<if test="device_code != null" >
-				device_code = #{device_code},
+			<if test="deviceCode != null" >
+				device_code = #{deviceCode},
 			</if>
-			<if test="dr_start_time != null" >
-				dr_start_time = #{dr_start_time},
+			<if test="deviceMac != null" >
+				device_mac = #{deviceMac},
 			</if>
-			<if test="dr_end_time != null" >
-				dr_end_time = #{dr_end_time},
+			<if test="drStartTime != null" >
+				dr_start_time = #{drStartTime},
 			</if>
-			<if test="dr_using_long != null" >
-				dr_using_long = #{dr_using_long}
+			<if test="drEndTime != null" >
+				dr_end_time = #{drEndTime},
+			</if>
+			<if test="drUsingLong != null" >
+				dr_using_long = #{drUsingLong}
 			</if>
 		</set>
-		where dr_id = #{dr_id}
+		where id = #{id}
 	</update>
 	
 
 	<update id="updateByPrimaryKey" parameterType="WebDeviceRecord" >
 		update web_device_record
 		set 
-		<!-- dr_id = #{dr_id}, -->
-		device_code = #{device_code},
-		dr_start_time = #{dr_start_time},
-		dr_end_time = #{dr_end_time},
-		dr_using_long = #{dr_using_long}
-		where dr_id = #{dr_id}
+		<!-- id = #{id}, -->
+		device_code = #{deviceCode},
+		device_mac = #{deviceMac},
+		dr_start_time = #{drStartTime},
+		dr_end_time = #{drEndTime},
+		dr_using_long = #{drUsingLong}
+		where id = #{id}
 	</update>
 	
 	<sql id="Dynamic_Conditions">
 		<where>
 			1=1
-			<if test="dr_id != null" >
-				and dr_id = #{dr_id}
+			<if test="id != null" >
+				and id = #{id}
 			</if>
-			<if test="device_code != null" >
-				and device_code = #{device_code}
+			<if test="deviceCode != null" >
+				and device_code = #{deviceCode}
 			</if>
-			<if test="dr_start_time != null" >
-				<!-- and dr_start_time = #{dr_start_time} -->
-				and <![CDATA[  dr_start_time >= #{dr_start_time} ]]>
+			<if test="deviceMac != null" >
+				and device_mac = #{deviceMac}
 			</if>
-			<if test="dr_end_time != null" >
-				<!-- and dr_end_time = #{dr_end_time} -->
-				and <![CDATA[  dr_end_time <= #{dr_end_time} ]]>
+			<if test="drStartTime != null" >
+				and <![CDATA[  dr_start_time >= #{drStartTime} ]]>
+				<!-- and dr_start_time = #{drStartTime} -->
 			</if>
-			<if test="dr_using_long != null" >
-				and dr_using_long = #{dr_using_long}
+			<if test="drEndTime != null" >
+				and <![CDATA[  dr_end_time <= #{drEndTime} ]]>
+				<!-- and dr_end_time = #{drEndTime} -->
+			</if>
+			<if test="drUsingLong != null" >
+				and dr_using_long = #{drUsingLong}
 			</if>
 		</where>
 	</sql>
@@ -120,6 +130,8 @@
 		ORDER BY wdr.dr_end_time DESC
 		LIMIT 1
 	</select>
+
+
 
 
 </mapper>

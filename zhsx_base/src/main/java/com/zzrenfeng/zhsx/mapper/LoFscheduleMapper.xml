@@ -16,39 +16,26 @@
 	<sql id="Base_Column_List">
 		id,zId,classId,schoolId,userId,bak,bak1,bak2
 	</sql>
-	
-	
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_fschedule
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_fschedule
+		where id = #{id}
+	</delete>
+
+
 	<insert id="insert" parameterType="LoFschedule" >
 		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
 		insert into lo_fschedule (id,zId,classId,schoolId,userId,bak,bak1,bak2)
 		values (#{id},#{zId},#{classId},#{schoolId},#{userId},#{bak},#{bak1},#{bak2})
 	</insert>
-	
-	<insert id="insertBatch" parameterType="java.util.List">
-		insert into lo_fschedule (id,zId,classId,schoolId,userId,bak,bak1,bak2)
-		values
-		<foreach collection="list" item="f"  separator=",">
-			 ((select uuid()),#{f.zId},#{f.classId},#{f.schoolId},#{f.userId},#{f.bak},#{f.bak1},#{f.bak2})
-		</foreach>
-	</insert>
-	
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
-		delete from lo_fschedule
-		where id = #{id}
-	</delete>
-	
-	<delete id="deleteByzId" parameterType="java.lang.String" >
-		delete from lo_fschedule
-		where zId = #{zId}
-	</delete>
-	
-	<delete id="deletebatch" parameterType="java.util.List">
-		delete from lo_fschedule where zId in 
-		<foreach collection="list" item="zId"  separator="," open="(" close=")">
-			#{zId}
-		</foreach>
-	</delete>
-	
+
 
 	<update id="updateByPrimaryKeySelective" parameterType="LoFschedule" >
 		update lo_fschedule
@@ -126,13 +113,6 @@
 		</where>
 	</sql>
 	
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-		select 
-		<include refid="Base_Column_List" />
-		from lo_fschedule
-		where id = #{id}
-	</select>
-	
 	
 	<select id="findSelective" parameterType="LoFschedule" resultType="LoFschedule">
 		select 
@@ -153,5 +133,26 @@
 	</select>
 
 	
-
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into lo_fschedule (id,zId,classId,schoolId,userId,bak,bak1,bak2)
+		values
+		<foreach collection="list" item="f"  separator=",">
+			 ((select uuid()),#{f.zId},#{f.classId},#{f.schoolId},#{f.userId},#{f.bak},#{f.bak1},#{f.bak2})
+		</foreach>
+	</insert>
+	
+	
+	<delete id="deleteByzId" parameterType="java.lang.String" >
+		delete from lo_fschedule
+		where zId = #{zId}
+	</delete>
+	
+	<delete id="deletebatch" parameterType="java.util.List">
+		delete from lo_fschedule where zId in 
+		<foreach collection="list" item="zId"  separator="," open="(" close=")">
+			#{zId}
+		</foreach>
+	</delete>
+	
+	
 </mapper>

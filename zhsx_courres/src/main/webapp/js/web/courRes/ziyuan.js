@@ -1,5 +1,6 @@
 $(function(){
 	$("#ziyuanTop").attr("class","has-sub active");
+	$("#ziyuanTopC").attr("class","active2");
 	getziyuanData();
 });
 
@@ -128,5 +129,3 @@ $(".quxiao").click(function(){
 	$("input[name='area']").val(null);
 	getziyuanData();
 });
-
-

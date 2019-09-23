@@ -3,10 +3,10 @@
 
 <head>
 <meta charset="UTF-8">
-<title>教育综合视讯管理平台</title>
+<title>淇县教育综合视讯管理平台</title>
 <#include "/commons/comWeb.html" encoding="utf-8"/>
 <!--各页面单独引入的CSS文件-->
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/sjzx_sjzx.css" />
 </head>
 
 <body>
@@ -21,10 +21,10 @@
 		</div>
 		<div class="tap">
 			<div class="tap_nei">
-				<img src="${ctx}/img/a0.png" />
-				<img src="${ctx}/img/b1.png" />
-				<img src="${ctx}/img/b2.png" />
-				<img src="${ctx}/img/b3.png" />
+				<img src="${ctx}/skin/${skinName}/img/a0.png" />
+				<img src="${ctx}/skin/${skinName}/img/b1.png" />
+				<img src="${ctx}/skin/${skinName}/img/b2.png" />
+				<img src="${ctx}/skin/${skinName}/img/b3.png" />
 			</div>
 			<div class="tap_zi">
 				<p class="tap_zi_color">评估结果</p>
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		<div class="mixing">
-			<iframe src="${ctx}/pgResult/sjzx_evaluationResult" style="overflow-y: hidden; border: none;width:100%;" id="parentIframesjzx"></iframe>
+			<iframe src="${ctx}/pgResult/sjzx_evaluationResult" style="overflow-y: hidden; border: none;width:100%;" id="parentIframesjzx" scrolling="no"></iframe>
 		</div>
 	</div>
 	<!--内容end-->
@@ -43,5 +43,8 @@
 	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
 </body>
 <#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var skinName = "${skinName!''}";
+</script>
 <script src="${ctx}/js/web/datacenter/dataCenterDetail.js" type="text/javascript" charset="utf-8"></script>
 </html>

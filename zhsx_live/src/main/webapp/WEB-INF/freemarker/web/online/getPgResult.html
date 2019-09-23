@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <title>综合视讯</title> <#include "/commons/comWeb.html" encoding="utf-8"/>
 <!--各页面单独引入的CSS文件-->
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/play.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/play.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
 <style type="text/css">
 .swiper-container {
@@ -30,7 +30,7 @@
 		<div class="jilu">
 			<div class="jilu_top">
 				<div class="layui-tab layui-tab-card iii">
-					<ul class="layui-tab-title uuu" style="background-color: #4596E5;">
+					<ul class="layui-tab-title uuu zbBg">
 					<#if principal?? && principal.userType != 'S'>
 						<li>课前备课</li>
 						<li class="layui-this kkk">课中评课</li>

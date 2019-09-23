@@ -82,13 +82,11 @@ public class AdminCourResController extends BaseController {
 		courResource.setUploadPersonId(getUserId());
 		Page<CourResource> pageInfo = courResourceService.findPageSelective(courResource, p, 14);
 		int pages = pageInfo.getPages(); // 总页数
-		List<CourResource> lists = pageInfo.getResult();
 		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
+		List<CourResource> lists = pageInfo.getResult();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
 
 		return "/admin/courRes/courResData";
@@ -336,13 +334,11 @@ public class AdminCourResController extends BaseController {
 
 		Page<CourResource> pageInfo = courResourceService.findPageSelective(courResource, p, 12);
 		int pages = pageInfo.getPages(); // 总页数
-		List<CourResource> lists = pageInfo.getResult();
 		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
+		List<CourResource> lists = pageInfo.getResult();
 
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
+		model.addAttribute("total", total);
 		model.addAttribute("lists", lists);
 
 		return "/admin/courRes/checkCourRes";

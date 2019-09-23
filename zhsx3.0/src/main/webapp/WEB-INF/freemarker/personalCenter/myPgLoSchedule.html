@@ -2,9 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>教育综合视讯管理平台</title>
+<title>淇县教育综合视讯管理平台</title>
 <#include "/commons/comWeb.html" encoding="utf-8"/>
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 </head>
 <body>
 	<form id="myform">
@@ -29,7 +29,7 @@
 						<span style="color: orange;">${l.subjectId!''}</span>
 					</span>
 					<span>
-						专业：
+						年级：
 						<span style="color: orange;">${l.gradeId!''}</span>
 					</span>
 					<span>
@@ -63,14 +63,21 @@
 			</li>
 		</#if>
 	</ul>
-	<div id="page"></div>
+	<div id="pagerss"></div>
 </body>
 <#include "/commons/comWebjs.html" encoding="utf-8"/>
 <script type="text/javascript" src="${ctx}/js/personalCenter/myPgLoSchedule.js"></script>
-<#include "/commons/comPage.html" encoding="utf-8"/>
 <script type="text/javascript">
-	function turnPage(p) {
-		location.href="${ctx}/personalCenter/myPgLoSchedule?p="+p;
-	}
+	layui.use([ 'laypage' ], function() {
+		laypage = layui.laypage;
+		laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+			skip : false,skin : "molv",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					location.href="${ctx}/personalCenter/myPgLoSchedule?p="+e.curr;
+				}
+			}
+		});
+	});
 </script>
 </html>

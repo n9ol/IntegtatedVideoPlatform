@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/imagehover.min.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zb_zhiliangpinggu.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/zyzn_1.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/zb_zhiliangpinggu.css" />
 	</head>
 	<body>
 		<!--头部start-->
@@ -18,14 +18,23 @@
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
   					<a href="${ctx}/index">首页</a>
-  					<a href="${ctx}/offLine/dianbo">点播</a>
   					<#if type??>
-  					<a><cite>
-  						<#if type == "P">离线评估</#if>
-  						<#if type == "B">课堂回放</#if>
-  						<#if type == "S">精品微课</#if>
-  						<#if type == "H">优质课程</#if>
-  					</cite></a>
+  						<#if type == "P">
+  							<a><cite> 教学评估 </cite></a>
+  							<a><cite> 离线评估 </cite></a>
+  						</#if>
+  						<#if type == "B">
+  							<a><cite> 资源中心 </cite></a>
+  							<a><cite> 课堂回放 </cite></a>
+  						</#if>
+  						<#if type == "S">
+  							<a><cite> 资源中心 </cite></a>
+  							<a><cite> 精品微课 </cite></a>
+  						</#if>
+  						<#if type == "H">
+  							<a><cite> 资源中心 </cite></a>
+  							<a><cite> 优质课程 </cite></a>
+  						</#if>
   					</#if>
 				</span>
 			</div>
@@ -33,7 +42,7 @@
 			<div>
 				<ul class="filter1">
 					<li class="filter2 borderBottom clear">
-						<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+						<span class="category1">年&nbsp;&nbsp;&nbsp;&nbsp;级 ></span>
 						<ul class="filter3 clear">
 							<li class="filterActive" onclick="choosegrade();">全部</li>
 							<#if gradeList?? && (gradeList?size>0)><#list gradeList as l>
@@ -65,17 +74,22 @@
 				<div class="con_left">
 					<div class="con_left_div clear">
 						<div class="zonghe">
+							<div class="choosess clear">
+								<div  class="area-danxuan" data-value="" value="">选择地区</div>
+								<span class="quxiao">x</span>
+							</div>
 						</div>
 						<div class="sousuo">
-							<input style="border: 1px solid gainsboro;padding-left:2px;" type="search" id="searchval" placeholder="标题/学校/教师"/>
-							<img src="${ctx}/img/sousuo.jpg" onclick="sousuo();"/>
+							<input style="border: 1px solid gainsboro;" type="search" id="searchval" placeholder="标题/学校/教师"/>
+							<img src="${ctx}/skin/${skinName}/img/sousuo.jpg" onclick="sousuo();"/>
 						</div>
 					</div>
 					<ul class="con_left_ul clear news"> </ul>
-					<div id="page">
-						<div class="pagers" id="page"></div>
+					<div id="pagerss">
+						<div class="pagers" id="pagers"></div>
 					</div>
 				</div>
+				
 				<div class="con_right">
 					<p class="re">
 						热门推荐
@@ -106,6 +120,7 @@
 						</#list></#if>
 					</ul>
 				</div>
+				
 			</div>
 		</div>
 

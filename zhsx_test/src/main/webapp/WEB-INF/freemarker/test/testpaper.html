@@ -8,7 +8,7 @@
 							<div class="biaoti ellipsisDiv">${l.testTitle!''}</div>
 							<div class="leibie ellipsisDiv">
 								出卷人：<span>${l.userName!''}(${l.schoolName!''})</span>&nbsp;&nbsp;
-								专业：<span>${l.gradeName!''}</span>&nbsp;&nbsp;
+								年级：<span>${l.gradeName!''}</span>&nbsp;&nbsp;
 								科目：<span>${l.subiectName!''}</span>&nbsp;&nbsp;
 								版本：<span>${l.version!''}</span>
 							</div>
@@ -43,12 +43,47 @@
 					</#list></#if>	
 				</ul>
 <!-- 分页 -->
-				<div id="page">
+				<div id="pagerss">
 				</div>
-<#include "/commons/comPage.html" encoding="utf-8"/>
-<script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		testpaper();
-	}
-</script>
+				
+		<script type="text/javascript">
+			var skinColor = "#4596E5";
+			var skinName = "${skinName!''}";
+			switch (skinName) {
+				case "springtime":
+					skinColor = "#1cc8d2";
+					break;
+				case "summer":
+					skinColor = "#ee336e";
+					break;
+				case "autumn":
+					skinColor = "#ff9900";
+					break;
+				case "winter":
+					skinColor = "#1ca5d2";
+					break;
+				default:
+					skinColor = "#4596E5";
+					break;
+			}
+		
+		
+		layui.use('laypage' , function() {
+			laypage = layui.laypage;
+			 laypage({
+						cont: "pagerss",
+						pages: "${pages!'1'}",
+						curr : "${pageNum!'1'}",
+						skip: false,
+						skin: skinColor,
+						groups: 10,
+						jump: function(e, first) {
+							if (!first) {
+								$("input[name='p']").val(e.curr);
+								testpaper();
+							}
+							
+						}
+					}); 
+			}); 
+		 </script>

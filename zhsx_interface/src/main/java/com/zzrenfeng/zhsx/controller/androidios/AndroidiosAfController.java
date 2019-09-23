@@ -49,7 +49,6 @@ public class AndroidiosAfController extends BaseController {
 		List<AfManager> lists = afManagerService.findAfSchoolArea(af);
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(lists);
 		return androidiosModel;
 	}
@@ -73,7 +72,6 @@ public class AndroidiosAfController extends BaseController {
 		List<AfManager> lists = pageInfo.getResult();
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(lists);
 		androidiosModel.setCurrPage(p);
 		androidiosModel.setTotalPage(totalPage);

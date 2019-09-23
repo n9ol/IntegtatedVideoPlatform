@@ -1,55 +1,93 @@
 <!-- <#global ctx=rc.contextPath/> -->
-<#if lists?? && (lists?size>0)>
+
 <ul class="lists news">
- 	<#list lists as l>
+ <#if lists?? && (lists?size>0)><#list lists as l>
 	<li class="xuBorder">
 		<div class="touxiang">
-			<#if l.courScheduleType?? && l.courScheduleType=='G'>
+			<#if l.type?? && l.type=='G'>
 			  <img src="${ctx}/images/zhuandi112.png" /> 
-			  <span class="zdbHot bg5">专递课堂</span>
+			  <span class="zdbHot bg5">互动评估</span>
 			<#else> 
 			   <img src="${ctx}/images/pinggu112.png" /> 
-			   <span class="zdbHot" style="background-color: orange;">在线评估</span> 
+			   <span class="zdbHot" style="background-color: orange;">质量评估</span> 
 			 </#if>
 		</div>
 		<div class="zhengwen">
-			<div class="biaoti ellipsisDiv">${l.courScheduleTeacherName!''}(${l.courScheduleClassroomName!''})</div>
+			<div class="biaoti ellipsisDiv">${l.userName!''}(${l.schoolName!''})</div>
 			<div class="clear">
-				<#if l.courScheduleSpecialtyName??>
 				<div class="leibie">
-					<div class="fl">专业：</div>
-					<span class="orangeSpan fl ellipsisSpan">${l.courScheduleSpecialtyName!''}</span>
+					<div class="fl">年级：</div>
+					<span class="orangeSpan fl ellipsisSpan">${l.gradeId!''}</span>
 				</div>
-				</#if>
 				<div class="leibie">
 					<span class="fl"> 科目：</span>
-					<span class="orangeSpan fl ellipsisSpan">${l.courScheduleSubjectName!''}</span>
+					<span class="orangeSpan fl ellipsisSpan">${l.subjectId!''}</span>
+				</div>
+				<div class="leibie">
+					<span class="fl"> 评估模式：</span>
+					<span class="orangeSpan fl ellipsisSpan">
+						<#if l.bak2?? && l.bak2=='S'>
+							私有评估
+						<#else>
+							公开评估
+						</#if>
+					</span>
 				</div>
 				<div class="xijie leibie">
-						<span>直播时间：${l.addTime?string('yyyy-MM-dd')} &nbsp;&nbsp; ${l.courScheduleStartTime?string('HH:mm:ss')}-${l.courScheduleEndTime?string('HH:mm:ss')}</span>
+						<span>直播时间：${l.z_date?string('yyyy-MM-dd')}</span>
 				</div>
 			</div>
+
 		</div>
 		<div class="lianjie">
-			<div class="layui-btn layui-btn-primary download" onclick="lookPgResult('${l.pgId}','${l.addTime?string('yyyy-MM-dd')}');">
+
+			<div class="layui-btn layui-btn-primary download" onclick="lookPgResult('${l.id}');">
 				<i class="layui-icon"><img src="${ctx}/img/eye2.png"></i>
 				<a href="javascript:;">查看</a>
 			</div>
+
 		</div>
 	</li>
 	</#list>
+	<#else>
+		<li>暂无数据</li>
+	</#if>
 </ul>
+
+
 <!--底部分页部分-->
-<div id="page"></div>
-<#else>
-	<ul class="lists news">
-		<li style="text-align: center;width: 100%;">暂无数据</li>
-	</ul>
-</#if>
-<#include "/commons/comPage.html" encoding="utf-8"/>
+<div id="pagerss"></div>
 <script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		getPgResultData();
-	}
+var skinColor = "#4596E5";
+var skinName = "${skinName!''}";
+switch (skinName) {
+	case "springtime":
+		skinColor = "#1cc8d2";
+		break;
+	case "summer":
+		skinColor = "#ee336e";
+		break;
+	case "autumn":
+		skinColor = "#ff9900";
+		break;
+	case "winter":
+		skinColor = "#1ca5d2";
+		break;
+	default:
+		skinColor = "#4596E5";
+		break;
+}
+
+layui.use([ 'laypage' ], function() {
+	laypage = layui.laypage;
+	laypage({cont : "pagerss",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+		skip : false,skin : skinColor,groups : 10,
+		jump : function(e, first) {
+			if (!first) {
+				$("input[name='p']").val(e.curr);
+				getPgResultData();
+			}
+		}
+	});
+});
 </script>

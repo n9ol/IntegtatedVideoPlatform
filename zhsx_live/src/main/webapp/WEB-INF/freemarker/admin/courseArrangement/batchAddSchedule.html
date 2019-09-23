@@ -52,6 +52,9 @@
 .inMany .layui-form-item .layui-input-inline {
 	width: 170px;
 }
+.onlinePg{
+	display: none;
+}
 </style>
 </head>
 
@@ -66,10 +69,10 @@
 					<input type="hidden" name="bak">
 					<div class="row">
 						<div class="layui-form-item">
-							<label class="layui-form-label" id="jj">专业科目：</label>
+							<label class="layui-form-label" id="jj">年级科目：</label>
 							<div class="layui-input-inline" style="margin-left: 20px;">
 								<select name="gradeId" id="gradeId" lay-filter="grade">
-									<option value="">请选择专业</option>
+									<option value="">请选择年级</option>
 									<#if sysDicts?? && (sysDicts?size>0)><#list sysDicts as g>
 									<option value="${g.value}" id="${g.id!''}">${g.value!''}</option>
 									</#list></#if>
@@ -145,6 +148,13 @@
 <!-- 								<input type="radio" name="type" value="Z" title="直播课堂" checked lay-filter="vtype"> -->
 								<input type="radio" name="type" value="A" title="在线评估" lay-filter="vtype" checked>
 								<input type="radio" name="type" value="G" title="专递课堂" lay-filter="vtype">
+							</div>
+						</div>
+						<div class="layui-form-item onlinePg">
+							<label class="layui-form-label" id="jj">是否评估：</label>
+							<div class="layui-input-block">
+								<input id="radioG" type="radio" name="bak2" value="G" title="公开" checked lay-filter="pgType">
+								<input id="radioN" type="radio" name="bak2" value="N" title="禁止" lay-filter="pgType">
 							</div>
 						</div>
 						<div class="inMany" style="display: none;">

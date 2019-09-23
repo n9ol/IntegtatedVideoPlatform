@@ -43,9 +43,7 @@ public class AdminLoPgGroupController extends BaseController {
 		List<LoPgGroup> lists = pageInfo.getResult();
 		int pages = pageInfo.getPages();
 		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
 
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);

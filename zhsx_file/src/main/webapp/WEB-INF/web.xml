@@ -46,6 +46,30 @@
 		<description></description>
 		<servlet-class>com.zzrenfeng.fileDownload.VideoFileDownloadServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>PdfConvertImageServlet</servlet-name>
+		<display-name>PdfConvertImageServlet</display-name>
+		<description></description>
+		<servlet-class>com.zzrenfeng.pdfconvertimage.PdfConvertImageServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>VideoFormatConvertingServlet</servlet-name>
+		<display-name>VideoFormatConvertingServlet</display-name>
+		<description></description>
+		<servlet-class>com.zzrenfeng.videoTranscode.VideoFormatConvertingServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>OfficeConvertPdfProgressServlet</servlet-name>
+		<display-name>OfficeConvertPdfProgressServlet</display-name>
+		<description></description>
+		<servlet-class>com.zzrenfeng.officeConertPdf.OfficeConvertPdfProgressServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>PdfConvertImageProgressServlet</servlet-name>
+		<display-name>PdfConvertImageProgressServlet</display-name>
+		<description></description>
+		<servlet-class>com.zzrenfeng.pdfconvertimage.PdfConvertImageProgressServlet</servlet-class>
+	</servlet>
 	
 	<servlet-mapping>
 		<servlet-name>FileUploadServlet</servlet-name>
@@ -74,5 +98,21 @@
 	<servlet-mapping>
 		<servlet-name>VideoFileDownloadServlet</servlet-name>
 		<url-pattern>/VideoFileDownloadServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PdfConvertImageServlet</servlet-name>
+		<url-pattern>/PdfConvertImageServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>VideoFormatConvertingServlet</servlet-name>
+		<url-pattern>/VideoFormatConvertingServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>OfficeConvertPdfProgressServlet</servlet-name>
+		<url-pattern>/OfficeConvertPdfProgressServlet</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PdfConvertImageProgressServlet</servlet-name>
+		<url-pattern>/PdfConvertImageProgressServlet</url-pattern>
 	</servlet-mapping>
 </web-app>

@@ -1,20 +1,22 @@
 $(function(){
-	$("#dianboTop").attr("class","has-sub active");
 	switch (type) {
 	case 'P':
+		$("#zbTop").attr("class","has-sub active");
 		$("#dianboTopp").attr("class","active2");
 		break;
 	case 'B':
+		$("#ziyuanTop").attr("class","has-sub active");
 		$("#dianboTopB").attr("class","active2");
 		break;
 	case 'S':
+		$("#ziyuanTop").attr("class","has-sub active");
 		$("#dianboTopS").attr("class","active2");
 		break;
 	case 'H':
+		$("#ziyuanTop").attr("class","has-sub active");
 		$("#dianboTopH").attr("class","active2");
 		break;
 	}
-	
 	getdianboData();
 });
 

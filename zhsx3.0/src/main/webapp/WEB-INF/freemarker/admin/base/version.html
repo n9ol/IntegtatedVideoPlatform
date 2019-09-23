@@ -84,13 +84,19 @@
 		</div>
 	</section>
 	<script type="text/javascript" src="${ctx}/js/admin/base/version.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			location.href = "${ctx}/adminBaseData/version?p="+p;
-		}
-	</script>
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",
+				skip : false,skin : "molv",groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						location.href = "${ctx}/adminBaseData/version?p="+e.curr;
+					}
+				}
+			});
+		});
 	</script>
 </body>
 </html>

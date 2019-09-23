@@ -16,7 +16,6 @@ import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,12 +28,8 @@ import com.zzrenfeng.zhsx.model.User;
 import com.zzrenfeng.zhsx.service.SysLogService;
 import com.zzrenfeng.zhsx.service.UserService;
 import com.zzrenfeng.zhsx.shiro.UserNamePasswordUserTypeToken;
-import com.zzrenfeng.zhsx.util.BaseHttpService;
 import com.zzrenfeng.zhsx.util.MessageUtils;
-import com.zzrenfeng.zhsx.util.RemoteConnectUtil;
-import com.zzrenfeng.zhsx.util.Utils;
 import com.zzrenfeng.zhsx.util.ValidationUtils;
-import com.zzrenfeng.zhsx.util.WriterUtils;
 
 /**
  * 登录
@@ -50,8 +45,6 @@ public class LoginController extends BaseController {
 	private SysLogService sysLogService;
 	@Resource
 	private UserService userService;
-	@Resource
-	private Environment environment;
 
 	/**
 	 * 进入前台登录页
@@ -128,9 +121,9 @@ public class LoginController extends BaseController {
 		}
 		String password = request.getParameter("password");
 		Md5Hash md5 = new Md5Hash(password, username, 2);
-		String passwordMd5 = md5.toString();
+		password = md5.toString();
 		Subject subject = SecurityUtils.getSubject();
-		UserNamePasswordUserTypeToken token = new UserNamePasswordUserTypeToken(username, passwordMd5);
+		UserNamePasswordUserTypeToken token = new UserNamePasswordUserTypeToken(username, password);
 		try {
 			subject.login(token);
 		} catch (Exception e) {
@@ -162,6 +155,7 @@ public class LoginController extends BaseController {
 			throw new ExceptionMessage("该账户已被禁用");
 		}
 		String url = "/index.action";
+
 		Session session = subject.getSession(false);
 		if (session != null) {
 			SavedRequest savedRequest = WebUtils.getSavedRequest(request);
@@ -172,28 +166,7 @@ public class LoginController extends BaseController {
 			}
 		}
 
-		recordToRedis(request, username, password);
 		return "redirect:" + url;
-	}
-
-	/**
-	 * 记录登录信息到_redis
-	 * 
-	 * @param username
-	 * @param password
-	 */
-	private void recordToRedis(HttpServletRequest request, String username, String password) {
-		String isEClassBrand = environment.getProperty("is.EClassBrand");
-		if ("Y".equals(isEClassBrand)) {
-			String url = environment.getProperty("EClassBrand.path")
-					+ environment.getProperty("storeAccountPassword.path");
-			String ipAdrress = Utils.getIpAdrress(request);
-			Map<String, Object> paramMap = new HashMap<>();
-			paramMap.put("username", username);
-			paramMap.put("password", password);
-			paramMap.put("ipAdrress", ipAdrress);
-			BaseHttpService.getResponseResult(paramMap, url);
-		}
 	}
 
 	/**
@@ -204,20 +177,6 @@ public class LoginController extends BaseController {
 	@RequestMapping("/err/401")
 	public String err401() {
 		return "/err/err401";
-	}
-
-	/**
-	 * 安全退出
-	 * 
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping("/backHomepage")
-	public void backHomepage(HttpServletRequest request, HttpServletResponse response) {
-		WriterUtils.toText(response, "安全退出");
-		String ipAdrress = Utils.getIpAdrress(request);
-		String url = environment.getProperty("EClassBrand.path") + "/logoutEClassBrand?ipAdrress=" + ipAdrress;
-		RemoteConnectUtil.getRemoteConnect(url);
 	}
 
 }

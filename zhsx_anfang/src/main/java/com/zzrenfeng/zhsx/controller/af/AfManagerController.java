@@ -80,16 +80,11 @@ public class AfManagerController extends BaseController {
 		school.setIsaf("Y");
 		Page<SysSchool> pageInfo = sysSchoolService.findPageSelective(school, p, 12);
 		List<SysSchool> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
 		int pages = pageInfo.getPages(); // 总页数
 		Map<String, Object> hm = new HashMap<>();
 		hm.put("pageNum", p);
 		hm.put("pages", pages);
 		hm.put("lists", lists);
-		hm.put("total", total);
-		hm.put("pageSize", pageSize);
 		return hm;
 	}
 
@@ -112,11 +107,6 @@ public class AfManagerController extends BaseController {
 		int pages = pageInfo.getPages();
 		List<AfManager> lists = pageInfo.getResult();
 		Map<String, Object> hm = new HashMap<String, Object>();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		hm.put("total", total);
-		hm.put("pageSize", pageSize);
 		hm.put("schoolid", af.getSchoolid());
 		hm.put("lists", lists);
 		hm.put("pageNum", p);

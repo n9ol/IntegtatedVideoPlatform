@@ -20,25 +20,25 @@
 
 	<body>
 		<div class="diqu">
-			<span class="map"><span class="logos">◇</span>专业科目</span> <span> — </span> <span>专业科目信息列表</span>
+			<span class="map"><span class="logos">◇</span>年级科目</span> <span> — </span> <span>年级科目信息列表</span>
 		</div>
 		<div class="des">
-			<span>请根据专业选择专业下面的科目信息，点击科目对科目信息进行管理。</span> <span class="fenge2">|</span><span class="guanli"> <a href="${ctx}/adminBaseData/gradeSubjects">刷新</a>  </span><span class="fenge2">|</span>
+			<span>请根据年级选择年级下面的科目信息，点击科目对科目信息进行管理。</span> <span class="fenge2">|</span><span class="guanli"> <a href="${ctx}/adminBaseData/gradeSubjects">刷新</a>  </span><span class="fenge2">|</span>
 		</div>
 
 		<div class="sheng">
 			<div class="nav">
-				<span class="sheng_nav"><span class="logo">◇</span>专业导航</span> <span class="tishi" id="ptext">(点击专业名称显示科目名称)</span>
+				<span class="sheng_nav"><span class="logo">◇</span>年级导航</span> <span class="tishi" id="ptext">(点击年级名称显示科目名称)</span>
 				<div id="mp" style="display: none;">
 					<span class="fenge">|</span>
 					<span class="guanli" onclick="quitManageP();"> 退出管理  </span>
 					<span class="fenge">|</span>
-					<span class="guanli" onclick="addGrade();"> 添加专业</span>
+					<span class="guanli" onclick="addGrade();"> 添加年级</span>
 					<span class="fenge">|</span>
 				</div>
 				<div id="imp">
 					<span class="fenge">|</span>
-					<span class="guanli" onclick="manageP();">专业管理  </span>
+					<span class="guanli" onclick="manageP();">年级管理  </span>
 					<span class="fenge">|</span>
 				</div>
 			</div>
@@ -100,13 +100,13 @@
 		
 	}
 	
-	//进入专业管理
+	//进入年级管理
 	function manageP(){
 		$("#state").val("G");
 		location.href="${ctx}/adminBaseData/gradeSubjects?state=1";
 	}
 	
-	//退出专业管理
+	//退出年级管理
 	function quitManageP(){
 		$("#state").val("S");
 		location.href="${ctx}/adminBaseData/gradeSubjects";
@@ -115,7 +115,7 @@
 	$(function(){
  		var st=${state};
  		if(st === 1){
-			$("#ptext").text("(点击专业名称可以对专业信息进行修改、删除操作)");
+			$("#ptext").text("(点击年级名称可以对年级信息进行修改、删除操作)");
 			$("#mp").css("display","inline");
 			$("#imp").css("display","none");
  		}else{
@@ -125,9 +125,9 @@
  		}
 	});
 	
-	//添加专业
+	//添加年级
 	function addGrade(){
-		LayerOpen('添加专业', '450px', '250px', '${ctx}/adminBaseData/addGradeSubject?keyName=G');
+		LayerOpen('添加年级', '450px', '250px', '${ctx}/adminBaseData/addGradeSubject?keyName=G');
 	}
 	
 	//添加科目
@@ -136,7 +136,7 @@
 		LayerOpen('添加科目', '450px', '250px', '${ctx}/adminBaseData/addGradeSubject?keyName=S&pid='+pid);
 	}
 	
-	//编辑专业科目
+	//编辑年级科目
 	function egradeSubject(id,keyName){
  		layer.confirm('您是修改还是删除？', {
 			  shade: 0, 

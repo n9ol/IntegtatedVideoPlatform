@@ -1,0 +1,157 @@
+.news_right {
+	width: 300px;
+	height: 100%;
+	padding: 0 15px;
+	background: #ffffff;
+}
+.xinwen_moban{
+	width: 1200px;
+	margin: 0 auto;
+}
+#main_T h2{
+	height: 80px;
+	line-height: 80px;
+	font-size: 2.1em;
+	text-align: center;
+}
+#main_news_Right {
+	-webkit-border-radius: 5px;
+	background-color: #fff;
+	float: left;
+	width: 800px;
+}
+
+.main_wrap_new #main_news_Right #main_TEXT div {
+	margin-top: 29px;
+	width: 100%;
+	height: 100%;
+}
+
+.main_wrap_new #main_news_Right #main_TEXT p {
+	width: 98%;
+	height: 100%;
+	font-size: 15px;
+/* 	color: #898989; */
+	line-height: 25px;
+	margin-bottom: 10px;
+	text-indent: 2em !important;
+	text-align: left;
+}
+
+.main_wrap_new #main_news_Right #main_TEXT img {
+	width: auto;
+	height: auto;
+	max-width: 666px;
+	display: inline-block;
+	border: none;
+}
+
+#main_T {
+	font-size: 14px;
+	color: #444444;
+	line-height: 30px;
+	margin-top: 30px;
+	border-bottom: 1px solid #EAE7E7;
+}
+
+.main_p {
+	text-align: center;
+}
+
+.main_p span {
+	color: #898989;
+	display: inline-block;
+	padding: 10px;
+}
+
+#main_TEXT {
+	margin-top: 20px;
+	padding-bottom: 20px;
+}
+#main_TEXT p img{
+	width: 492px;
+	height: 373px;
+}
+#main_news_Right {
+	width: 770px;
+	background: #ffffff;
+	margin-bottom: 20px;
+	position: relative;
+	padding: 0 20px 0 20px;
+}
+/*右部分*/
+.FL {
+	float: right;
+	display: block;
+	width: 330px;
+}
+
+.list {
+	margin-bottom: 16px;
+}
+.list_t {
+	width: 322px;
+	font-size: 14px;
+	color: #898989;
+	line-height: 26px;
+	display: inline-block;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.list .list_t span {
+	display: inline-block;
+	padding: 0 10px 0 5px;
+	width: 25px;
+}
+
+.list .list_t:hover {
+	color: #eb2100;
+}
+
+.title{
+	height: 60px;
+	line-height: 60px;
+	font-size: 24px;
+}
+
+
+/*排行榜样式*/
+.tiji li {
+    padding-left: 10px;
+    border-top: 1px dashed #f0f0f0;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+
+.paiming {
+    float: left;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #1ca5d2;
+    color: white;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.tiji li span {
+    float: left;
+    display: inline-block;
+    margin: 0 3px;
+    height: 100%;
+    line-height: 40px;
+    font-size: 15px;
+}
+.timu1 {
+    width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

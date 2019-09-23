@@ -10,3 +10,13 @@ function confirm(courId){
 	   }
 	});
 }
+
+/**
+ * 跳转到上传课件页面
+ */
+function gotoupload(){
+	var iframe = $(parent.parent.document.getElementById('parentIframe'));
+	iframe.attr("src",ctx + "/adminCourRes/courRes");
+	parent.layer.closeAll();
+	parent.parent.layer.closeAll();
+}

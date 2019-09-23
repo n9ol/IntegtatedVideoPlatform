@@ -44,7 +44,7 @@
 					<ul class="pull-right">
 						<li>
 							<div class="layui-input-inline pull-left">
-								<input id="searchval" name="searchval" type="search" class="layui-input" placeholder="教学楼/教室名称/教室编号" value="${search!''}" />
+								<input id="searchval" name="searchval" type="search" class="layui-input" placeholder="学校名称/教室名称/教室编号" value="${search!''}" />
 							</div> 
 							<a class="layui-btn search-btn01 pull-left" onclick="searchClassRoom();" href="javascript:;"><i class="layui-icon">&#xe615;</i></a>
 						</li>
@@ -60,10 +60,7 @@
 									<tr>
 										<th><input type="checkbox" id="selected-all-operation"></th>
 										<th>NO</th>
-										<#if schoollevel?? && schoollevel != "Y">
-											<th>所在学校</th>
-										</#if>
-										<th>教学楼</th>
+										<th>所在学校</th>
 										<th>教室名称</th>
 										<th>教室编号</th>
 										<th>直播服务器IP:Port</th>
@@ -71,8 +68,6 @@
 										<th>web端口</th>
 										<th>教学编号</th>
 										<th>用户编号</th>
-										<th>老师视频路径</th>
-										<th>学生视频路径</th>
 										<th style="white-space:nowrap;">状态</th>
 										<th>操作</th>
 									</tr>
@@ -82,10 +77,7 @@
 									<tr>
 										<td><input type="checkbox" name="del_id" value="${l.id!''}"></td>
 										<td>${l_index+1}</td>
-										<#if schoollevel?? && schoollevel != "Y">
-											<td>${l.schoolName!''}</td>
-										</#if>
-										<td>${l.teachingBuildingName!''}</td>
+										<td>${l.schoolName!''}</td>
 										<td>${l.className!''}</td>
 										<td>${l.classCode!''}</td>
 										<td>${l.serviceIp!''}</td>
@@ -93,8 +85,6 @@
 										<td>${l.webPort!''}</td>
 										<td>${l.roomId!''}</td>
 										<td>${l.uid!''}</td>
-										<td>${l.bak2!''}</td>
-										<td>${l.studentUrl!''}</td>
 										<th>
 											<#if l.bak = 'Y'><span style="color: #5FB878;" >正常</span></#if>
 											<#if l.bak = 'N'><span style="color: #F7B824;" >作废</span></#if>
@@ -126,12 +116,18 @@
 		</div>
 	</section>
 	<script type="text/javascript" src="${ctx}/js/admin/base/classRoom.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			$("#myform1").submit();
-		}
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : "molv",groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						$("#myform1").submit();
+					}
+				}
+			});
+		});
 	</script>
 </body>
 </html>

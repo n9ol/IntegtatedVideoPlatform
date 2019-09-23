@@ -1,8 +1,9 @@
 $(function(){
 	$("#zbTop").attr("class","has-sub active");
-//	if(duke==='D'){
-//		getPjInfoDuke();
-//	}
+	if(duke==='D'){
+		getPjInfoDuke();
+	}
+	
 	viewResults();
 });
 
@@ -18,7 +19,7 @@ function setiframeheight(){
 var layer;
 layui.use(['layer', 'element'], function() {
 	 layer = layui.layer;
-	 var element = layui.element;
+	 var element = layui.element();
 });
 
 
@@ -54,7 +55,7 @@ function viewResults(){
 	$.ajax({
 	   type: "POST",
 	   url: ctx + "/pgInfo/viewResults",
-	   data: {type:'I',pgId:receive.id,onOff:'ON',addTime:addTime},
+	   data: {type:'I',pgId:receive.id,onOff:'ON'},
 	   success: function(msg){
 	     $(".tap22").html(msg);
 	     getzidongpg();

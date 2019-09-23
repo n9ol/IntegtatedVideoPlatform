@@ -1,5 +1,17 @@
 $(function(){
-	$("#dianboTop").attr("class","has-sub active");
+	if(videoType == "P"){
+		$("#zbTop").attr("class","has-sub active");
+		$("#dianboTopp").attr("class","active2");
+	}else {
+		$("#ziyuanTop").attr("class","has-sub active");
+		if(videoType == "B"){
+			$("#dianboTopB").attr("class","active2");
+		}else if(videoType == "S"){
+			$("#dianboTopS").attr("class","active2");
+		}else if(videoType == "H"){
+			$("#dianboTopH").attr("class","active2");
+		}
+	}
 	
 	if(videoType === 'P' && userType != 'S'){
 		getpgPagetData();
@@ -14,29 +26,31 @@ $(function(){
 
 //视频下方 信息框切换
 $(".ddd li").click(function(){
-	$(".ddd li").css({"color":"#fff","backgroundColor":"#4596e5"});
-	$(this).css({"color":"#000","backgroundColor":"#fff"});
-	if ($(this).index() === 0) {
-		$(".tap11").css("display","block");
-		$(".tap22").css("display","none");
-		$(".tap33").css("display","none");
-	}
-	if ($(this).index() === 1) {
-		$(".tap11").css("display","none");
-		$(".tap22").css("display","block");
-		$(".tap33").css("display","none");
-		insterwebpj();
-	}
-	if ($(this).index() === 2) {
-		$(".tap11").css("display","none");
-		$(".tap22").css("display","none");
-		$(".tap33").css("display","block");
+	if(videoType == "P"){
+		$(".ddd li").attr("class","kkk");
+		$(this).attr("class","pitchOn");
+		if ($(this).index() === 0) {
+			$(".tap11").css("display","block");
+			$(".tap22").css("display","none");
+			$(".tap33").css("display","none");
+		}
+		if ($(this).index() === 1) {
+			$(".tap11").css("display","none");
+			$(".tap22").css("display","block");
+			$(".tap33").css("display","none");
+			insterwebpj();
+		}
+		if ($(this).index() === 2) {
+			$(".tap11").css("display","none");
+			$(".tap22").css("display","none");
+			$(".tap33").css("display","block");
+		}
 	}
 });
 
 var layer;
 layui.use(['layer', 'element'], function() {
-	var element = layui.element;
+	var element = layui.element();
 	layer = layui.layer;
 
 });

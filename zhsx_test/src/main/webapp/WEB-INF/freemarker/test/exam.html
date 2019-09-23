@@ -3,14 +3,14 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<!--公共样式表-->
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/exam.css" />
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/pageGroup.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/ziyuan.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/ziyuan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/zyzn_1.css" />
 	</head>
 
 	<body>
@@ -23,6 +23,7 @@
 			<div class="mianbaoxue">
 				<span class="layui-breadcrumb">
   					<a href="${ctx}/index">首页</a>
+  					<a><cite>考试交流</cite></a>
   					<a><cite>在线考试</cite></a>
 				</span>
 			</div>
@@ -30,11 +31,11 @@
 			<div class="examzhong clear">
 				<ul class="filter1">
 					<li class="filter2 borderBottom clear">
-						<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+						<span class="category1">年&nbsp;&nbsp;&nbsp;&nbsp;级 ></span>
 						<ul class="filter3 clear" id="grade">
 							<li class="filterActive" onclick="selectGrade('','')">全部</li>
-										<#if grades?? && (grades?size>0)><#list grades as g>
-											<li onclick="selectGrade('${g.id}','${g.value}')">${g.value}</li>
+							<#if grades?? && (grades?size>0)><#list grades as g>
+								<li onclick="selectGrade('${g.id}','${g.value}')">${g.value}</li>
 							</#list></#if>
 						</ul>
 						<span class="category2">
@@ -80,9 +81,13 @@
 				<div class="zongheAndtestpaper">
 					<div class="con_left_div clear">
 							<div class="zonghe">
+								<div class="choosess clear">
+									<div  class="area-danxuan" data-value="" value="">选择地区</div>
+									<span class="quxiao">x</span>
+								</div>
 								<div class="sousuo">
-									<input id="searchval" style="border: 1px solid gainsboro;padding-left: 2px;"type="search" placeholder="标题/出卷人" /> 
-									<img src="${ctx}/img/sousuo.jpg" onclick="search();" />
+									<input id="searchval" style="border: 1px solid gainsboro;"type="search" placeholder="标题/出卷人" /> 
+									<img src="${ctx}/skin/${skinName}/img/sousuo.jpg" onclick="search();" />
 								</div>
 							</div>
 					</div>
@@ -105,13 +110,10 @@
 			<input type="hidden" name="testId">
 			<input type="hidden" name="times">
 		</form>
-		
-				
 		<!--内容end-->
 
 		<!--底部 start -->
 			<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
-		<!--底部 end-->
 	</body>
 	<!--公共js-->
 	<#include "/commons/comWebjs.html" encoding="utf-8"/>

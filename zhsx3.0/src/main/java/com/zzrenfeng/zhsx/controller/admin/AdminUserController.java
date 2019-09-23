@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -29,24 +28,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.Page;
 import com.zzrenfeng.zhsx.base.ExceptionMessage;
-import com.zzrenfeng.zhsx.constant.Constant;
 import com.zzrenfeng.zhsx.controller.base.BaseController;
 import com.zzrenfeng.zhsx.model.SysDict;
 import com.zzrenfeng.zhsx.model.SysRole;
 import com.zzrenfeng.zhsx.model.SysSchool;
 import com.zzrenfeng.zhsx.model.SysUserRole;
 import com.zzrenfeng.zhsx.model.User;
-import com.zzrenfeng.zhsx.model.eclassbrand.sys.ESysRole;
-import com.zzrenfeng.zhsx.model.eclassbrand.sys.ESysUser;
 import com.zzrenfeng.zhsx.service.SysDictService;
 import com.zzrenfeng.zhsx.service.SysRoleService;
 import com.zzrenfeng.zhsx.service.SysSchoolService;
 import com.zzrenfeng.zhsx.service.SysUserRoleService;
 import com.zzrenfeng.zhsx.service.UserService;
-import com.zzrenfeng.zhsx.service.eclassbrand.sys.ESysRoleService;
-import com.zzrenfeng.zhsx.service.eclassbrand.sys.ESysUserRoleService;
-import com.zzrenfeng.zhsx.service.eclassbrand.sys.ESysUserService;
-import com.zzrenfeng.zhsx.service.usersynchronization.UserSynchronizationService;
 import com.zzrenfeng.zhsx.shiro.UserNamePasswordUserTypeToken;
 import com.zzrenfeng.zhsx.util.ExcelUtil;
 import com.zzrenfeng.zhsx.util.MessageUtils;
@@ -79,19 +71,6 @@ public class AdminUserController extends BaseController {
 	private String platformLevelId;
 	@Resource
 	private Environment env;
-	@Resource
-	private ESysRoleService eSysRoleService;
-	@Resource
-	private ESysUserService eSysUserService;
-	@Resource
-	private ESysUserRoleService eSysUserRoleService;
-	@Resource
-	private UserSynchronizationService userSynchronizationService;
-
-	/**
-	 * 用户密码md5加密次数
-	 */
-	private final int MD5_ENCRYPT_NUMBER = 2;
 
 	/**
 	 * 进入用户列表
@@ -121,22 +100,10 @@ public class AdminUserController extends BaseController {
 		Page<User> pageInfo = userService.findPageSelective(user, p, 9);
 		int pages = pageInfo.getPages();
 		List<User> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("pages", pages);// 总页数
 		model.addAttribute("lists", lists);
 		model.addAttribute("search", user.getSearch());
-
-		/**
-		 * 是否为校级平台
-		 */
-		String schoolLevel = env.getProperty("school.level");
-		model.addAttribute("schoolLevel", schoolLevel);
-
 		return "/admin/user/usersList";
 	}
 
@@ -153,50 +120,15 @@ public class AdminUserController extends BaseController {
 		String bak1 = getUserBak1();
 		String bak2 = getUserBak2();
 
-		SysDict sysDict = new SysDict();
-		SysSchool school = new SysSchool();
-		if (!bak1.equals(User.bak1_no) && !bak1.equals(User.bak1_operator)) {
-			school.setAuthority(bak1);
-			List<String> ids = userService.getUserSchoolIds(bak1, bak2, getUserSchoolId());
-			if (ids != null && ids.size() > 0) {
-				school.setIds(ids);
-			}
-			sysDict.setId(sysDictService.findByKey(sysDictService.findByKey(bak2).getPid()).getPid());
-		}
-
-		// 获取平台对应地区
-		if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {
-			sysDict.setKeyname("P");
-		} else if (platformLevel.equals("P")) {
-			sysDict.setKeyname("C");
-			sysDict.setPid(platformLevelId);
-
-		} else if (platformLevel.equals("C")) {
-			sysDict.setKeyname("A");
-			sysDict.setPid(platformLevelId);
-		} else if (platformLevel.equals("A")) {
-			sysDict.setKeyname("T");
-			sysDict.setPid(platformLevelId);
-			model.addAttribute("platformLevelId", platformLevelId);
-		}
-		if (!platformLevel.equals("T")) {
-			List<SysDict> sysDicts = sysDictService.findSelective(sysDict);
-			model.addAttribute("sysDicts", sysDicts);
-		}
-		model.addAttribute("platformLevel", platformLevel);
-
 		// 获得学校
-		List<SysSchool> schools = sysSchoolService.findSelective(school);
+		List<SysSchool> schools = sysSchoolService.listSysSchoolHavePermission(bak1, bak2, getUserSchoolId());
+		// 获取平台对应地区
+		List<SysDict> listAreaInfo = sysDictService.listAreaInfo(bak1, bak2);
+
+		model.addAttribute("platformLevel", platformLevel);
+		model.addAttribute("platformLevelId", platformLevelId);
+		model.addAttribute("sysDicts", listAreaInfo);
 		model.addAttribute("schools", schools);
-
-		/**
-		 * 是否为校级平台
-		 */
-		String schoolLevel = env.getProperty("school.level");
-		model.addAttribute("schoolLevel", schoolLevel);
-		String schoolId = env.getProperty("school.id");
-		model.addAttribute("schoolId", schoolId);
-
 		return "/admin/user/addUser";
 	}
 
@@ -255,41 +187,19 @@ public class AdminUserController extends BaseController {
 	 */
 	@RequestMapping("/insertUser")
 	public void insertUser(HttpServletResponse response, @Validated User user) {
-		Date date = new Date();
-		String password = user.getPassword();
 		user.setBak("Y");
 		user.setBak1("NA");
+		Date date = new Date();
 		user.setCreateTime(date);
 		user.setModiyTime(date);
 		user.setEXP(50);
-		user.setPassword(new Md5Hash(password, user.getUserCode(), 2).toString());
+		user.setPassword(new Md5Hash(user.getPassword(), user.getUserCode(), 2).toString());
 		try {
 			userService.insert(user);
 			WriterUtils.toHtml(response, MessageUtils.SUCCESS);
 		} catch (Exception e) {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 			e.printStackTrace();
-		}
-		insertEUser(user, password);
-	}
-
-	/**
-	 * 同步添加电子班牌用户
-	 * 
-	 * @param user
-	 */
-	private void insertEUser(User user, String password) {
-		String iSEClassBrand = env.getProperty("is.EClassBrand");
-		if ("Y".equals(iSEClassBrand)) {
-			String salt = UUID.randomUUID().toString();
-			String passwordMd5 = new Md5Hash(password, user.getUserCode() + salt, MD5_ENCRYPT_NUMBER).toString();
-			ESysUser t = new ESysUser();
-			t.setUserCode(user.getUserCode());
-			t.setNickname(user.getNickName());
-			t.setPassword(passwordMd5);
-			t.setSalt(salt);
-			t.setState(Constant.USER_STATE_NORMAL);
-			eSysUserService.insert(t);
 		}
 	}
 
@@ -301,29 +211,12 @@ public class AdminUserController extends BaseController {
 	 */
 	@RequestMapping("/delUser")
 	public void delUser(HttpServletResponse response, String id) {
-		deleteEUser(id);
 		try {
 			userService.deleteByKey(id);
 			WriterUtils.toHtml(response, MessageUtils.SUCCESS);
 		} catch (Exception e) {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * 同步删除电子班牌用户
-	 * 
-	 * @param id
-	 */
-	private void deleteEUser(String id) {
-		String iSEClassBrand = env.getProperty("is.EClassBrand");
-		if ("Y".equals(iSEClassBrand)) {
-			User user = userService.findByKey(id);
-			ESysUser eSysUser = eSysUserService.findByUserCode(user.getUserCode());
-			if (eSysUser != null) {
-				eSysUserService.deleteByKey(eSysUser.getId());
-			}
 		}
 	}
 
@@ -342,26 +235,6 @@ public class AdminUserController extends BaseController {
 		} catch (Exception e) {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 			e.printStackTrace();
-		}
-		changeEUserState(id, bak);
-	}
-
-	/**
-	 * 改变用户状态
-	 * 
-	 * @param id
-	 * @param bak
-	 */
-	private void changeEUserState(String id, String bak) {
-		String iSEClassBrand = env.getProperty("is.EClassBrand");
-		if ("Y".equals(iSEClassBrand)) {
-			User user = userService.findByKey(id);
-			ESysUser eSysUser = eSysUserService.findByUserCode(user.getUserCode());
-			int state = 1;
-			if ("N".equals(bak)) {
-				state = 2;
-			}
-			eSysUserService.changeUserState(eSysUser.getId(), state);
 		}
 	}
 
@@ -401,26 +274,8 @@ public class AdminUserController extends BaseController {
 		sysUserRole.setUserId(id);
 		List<SysUserRole> sysUserRoles = sysUserRoleService.findSelective(sysUserRole);
 		model.addAttribute("sysUserRoles", sysUserRoles);
-		model.addAttribute("platformLevel", platformLevel);
 
-		/**
-		 * 是否为校级平台
-		 */
-		String schoolLevel = env.getProperty("school.level");
-		model.addAttribute("schoolLevel", schoolLevel);
-		String schoolId = env.getProperty("school.id");
-		model.addAttribute("schoolId", schoolId);
-		String iSEClassBrand = env.getProperty("is.EClassBrand");
-		model.addAttribute("iSEClassBrand", iSEClassBrand);
-		if ("Y".equals(iSEClassBrand)) {
-			String userId = "";
-			ESysUser eSysUser = eSysUserService.findByUserCode(user.getUserCode());
-			if (eSysUser != null) {
-				userId = eSysUser.getId();
-			}
-			List<ESysRole> listESysRole = eSysRoleService.findAllAvailable(userId);
-			model.addAttribute("listESysRole", listESysRole);
-		}
+		model.addAttribute("platformLevel", platformLevel);
 		return "/admin/user/authorizeUser";
 	}
 
@@ -429,18 +284,12 @@ public class AdminUserController extends BaseController {
 	 * 
 	 * @param response
 	 * @param user
-	 * @param isadmin
-	 * @param role_id
-	 *            综合视讯权限角色
-	 * @param roleIds
-	 *            电子班牌权限角色
 	 */
 	@RequestMapping("/updateUserIsadmin")
-	public void updateUserIsadmin(HttpServletResponse response, User user, boolean isadmin, String[] role_id,
-			String[] roleIds) {
+	public void updateUserIsadmin(HttpServletResponse response, User user, boolean isadmin, String[] role_id) {
 		if (isadmin) {
 			if (user.getBak1() == null || user.getBak1().equals("") || role_id == null || role_id.length == 0) {
-				WriterUtils.toHtml(response, "综合视讯管理权都不能为空!");
+				WriterUtils.toHtml(response, "区域权限,特殊权限都不能为空!");
 				return;
 			}
 		}
@@ -450,22 +299,6 @@ public class AdminUserController extends BaseController {
 		} catch (Exception e) {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 			e.printStackTrace();
-		}
-		updateEUserAuthority(user, roleIds);
-	}
-
-	/**
-	 * 同步更新用户电子班牌的管理权限
-	 * 
-	 * @param user
-	 * @param roleIds
-	 */
-	private void updateEUserAuthority(User user, String[] roleIds) {
-		String iSEClassBrand = env.getProperty("is.EClassBrand");
-		if ("Y".equals(iSEClassBrand)) {
-			User user2 = userService.findByKey(user.getId());
-			ESysUser eSysUser = eSysUserService.findByUserCode(user2.getUserCode());
-			eSysUserRoleService.batchInsertUserRole(eSysUser.getId(), roleIds);
 		}
 	}
 
@@ -641,14 +474,16 @@ public class AdminUserController extends BaseController {
 				userList.add(user1);
 			}
 			try {
-				if (userList != null && userList.size() > 0) {
-					userService.insertBatch(userList);
+				if (userList == null || userList.size() <= 0) {
+					WriterUtils.toHtml(response, MessageUtils.FAilURE + ",可能原因所有行的数据都不符合要求！");
+					return;
 				}
-				String errorMessageString = errorMessage.toString();
-				if (errorMessageString == null || "".equals(errorMessageString)) {
+
+				userService.insertBatch(userList);
+				if (errorMessage.toString() == null || errorMessage.toString().equals("")) {
 					WriterUtils.toHtml(response, MessageUtils.SUCCESS);
 				} else {
-					WriterUtils.toHtml(response, errorMessageString);
+					WriterUtils.toHtml(response, errorMessage.toString());
 				}
 			} catch (Exception e) {
 				WriterUtils.toHtml(response, MessageUtils.FAilURE);
@@ -671,46 +506,29 @@ public class AdminUserController extends BaseController {
 	 */
 	@RequestMapping("/initializePassword")
 	public void initializePassword(HttpServletResponse response, @RequestParam String id, String userCode) {
-		// User user = new User();
-		// user.setId(id);
-		String password = "";
+		User user = new User();
+		user.setId(id);
+		String password;
 		try {
 			password = env.getProperty("initialize.password").trim();
-			if (password == null || "".equals(password)) {
+			if (password.equals(null) || password.equals("")) {
 				password = "111111";
 			}
 		} catch (Exception e1) {
 			password = "111111";
 			e1.printStackTrace();
 		}
-		// STRING PASSWORDMD5 = NEW MD5HASH(PASSWORD, USERCODE, 2).TOSTRING();
-		// USER.SETPASSWORD(PASSWORDMD5);
-		try {
-			// userService.updateByKeySelective(user);
 
-			userSynchronizationService.updatePasswordSynchronization(userCode, password);
+		String passwordMd5 = new Md5Hash(password, userCode, 2).toString();
+		user.setPassword(passwordMd5);
+		try {
+			userService.updateByKeySelective(user);
 			WriterUtils.toHtml(response, MessageUtils.SUCCESS + ",初始密码为:" + password);
 		} catch (Exception e) {
 			WriterUtils.toHtml(response, MessageUtils.FAilURE);
 			e.printStackTrace();
 		}
-		// initializeEUserPassword(id, password);
 	}
-
-	// /**
-	// * 同步初始化电子班牌用户密码
-	// *
-	// * @param id
-	// * @param password
-	// */
-	// private void initializeEUserPassword(String id, String password) {
-	// String iSEClassBrand = env.getProperty("is.EClassBrand");
-	// if ("Y".equals(iSEClassBrand)) {
-	// User user2 = userService.findByKey(id);
-	// eSysUserService.initializeUserPasswordByUserCode(user2.getUserCode(),
-	// password);
-	// }
-	// }
 
 	/**
 	 * 客户端登录临时接口

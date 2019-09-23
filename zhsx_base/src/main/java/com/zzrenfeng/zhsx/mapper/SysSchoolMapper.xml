@@ -171,6 +171,16 @@
 		from sys_school
 		<include refid="Dynamic_Conditions"/>
 	</select>
+	<!-- 20181203添加 -->
+	<select id="findSelectiveData" parameterType="SysSchool" resultType="SysSchool">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.provinceId) as provinceName,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.cityId) as cityName,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.countyId) as countyName
+		from sys_school s
+		<include refid="Dynamic_Conditions"/>
+	</select>
 
 
 	<select id="findPageSelective" parameterType="SysSchool" resultType="SysSchool">

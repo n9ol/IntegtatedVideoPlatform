@@ -1,0 +1,788 @@
+/*头部公共样式*/
+.box {
+	width: 97.5%;
+	margin: 0 auto;
+	height: 100%;
+	background-color: #FFFFFF;
+	overflow: hidden;
+	margin-top: 10px;
+}
+
+.box_nav {
+	padding: 10px 15px;
+}
+
+.box_nav_bian, .box_nav_sou, .box_nav_pai {
+	float: right;
+	cursor: pointer;
+}
+
+.box_nav_pai {
+	width: 80px;
+}
+
+.sDwvAgb {
+	border: 1px solid #4E97FF;
+	width: 140px;
+	background-color: white;
+	position: relative;
+	z-index: 99999999999999;
+	border-radius: 3px;
+	display: none;
+	left: -30px;
+}
+
+.aaaa {
+	display: inline-block;
+	width: 140px;
+	text-align: center;
+	cursor: pointer;
+	color: #3B8CFF;
+	background-color: #fff;
+	height: 40px;
+	line-height: 40px;
+}
+
+.aaaa:hover {
+	background-color: #F1F2F4;
+}
+
+.btn {
+	float: left;
+	cursor: pointer;
+	height: 30px;
+	line-height: 30px;
+	border-radius: 3px;
+}
+
+.b_button {
+	width: 70px;
+	text-align: center;
+}
+
+.btn_a {
+	display: inline-block;
+	width: 70px;
+	text-align: center;
+	color: #4E97FF;
+}
+
+.shangchuan {
+	position: relative;
+}
+
+.box_nav_xbs {
+	border: 2px solid #1cc8d2;
+	display: flex;
+	justify-content: space-around;
+	margin-left: 100px;
+}
+
+.border_left {
+	border-left: 2px solid #1cc8d2;
+}
+
+.box_nav_sou {
+	width: 300px;
+	height: 40px;
+	background-color: #f1f2f4;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	line-height: 40px;
+	text-align: center;
+}
+.box_nav_xbs a{
+	margin-bottom : 0px;
+}
+
+.bnp {
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	margin: 0 10px;
+}
+
+.con_span {
+	color: gray;
+	padding: 0 15px;
+}
+
+.con_span span {
+	font-size: 12px;
+}
+
+.con_input {
+	display: none;
+}
+
+.ul_all {
+	line-height: 35px;
+}
+
+.ul_all_span {
+	padding-top: 20px;
+	border-bottom: 1px solid gainsboro;
+	height: 20px;
+	padding: 10px 20px;
+}
+
+.box_nav_bian {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+}
+
+.box_nav_bian img {
+	width: 90%;
+}
+
+.QAfdwP {
+	border-top-color: #fff;
+	height: 42px;
+	line-height: 42px;
+	color: #888;
+	overflow: hidden;
+	border-bottom: 1px solid #f2f6fd;
+	border-bottom: 1px solid #f2f6fd;
+}
+
+.QAfdwP li {
+	float: left;
+	color: gray;
+	position: relative;
+}
+
+.span_input {
+	float: left;
+	margin-left: 6px;
+	margin-right: 6px;
+	width: 30px;
+	height: 42px;
+	line-height: 42px;
+	text-align: center;
+}
+/*全选样式*/
+.span_input_all {
+	float: left;
+	margin-left: 6px;
+	margin-right: 6px;
+	width: 30px;
+	height: 42px;
+	line-height: 42px;
+	text-align: center;
+}
+
+.span_input_all img {
+	width: 20px;
+	height: 20px;
+}
+
+.text1 {
+	color: gray;
+	display: inline-block;
+	height: 42px;
+	line-height: 42px;
+}
+
+.cEefyz1 {
+	width: 20%;
+	float: left;
+	height: 42px;
+	position: relative;
+	line-height: 42px;
+}
+
+.border_color {
+	border-bottom: 1px solid #daebfe;
+	background-color: #f6faff;
+}
+
+.emhb27mw1 {
+	position: relative;
+	height: 42px;
+	overflow: hidden;
+	float: left;
+	line-height: 42px;
+}
+
+.emhb27mw1 img {
+	height: 60%;
+	margin-top: -3px;
+}
+
+.emhb27mw {
+	position: relative;
+	margin: 9px auto 0;
+	width: 84px;
+	height: 84px;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	/*display: none;*/
+}
+
+.emhb27mw img {
+	margin-top: 15px;
+}
+
+.file-name1 {
+	float: left;
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 83px;
+	margin-left: 10px;
+}
+
+.file-names {
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	margin: 6px 5px 5px;
+}
+
+.showBianji {
+	float: right;
+	/*margin-right: 30px;*/
+	width: 50%;
+	height: 100%;
+	display: flex;
+	justify-content: space-around;
+}
+
+/*块状排版*/
+.mouseover {
+	background-color: #f1f5fa;
+	border-radius: 5px;
+}
+
+/*块状排版中的对号样式*/
+.EOGexf1 {
+	display: inline-block;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	height: 21px;
+	width: 21px;
+	cursor: pointer;
+	/*display: none;*/
+}
+
+.EOGexf1 img {
+	width: 100%;
+}
+
+/*需要切换的样式名称*/
+
+/*一排排模式*/
+.zongTiao1 {
+	border-bottom: 1px solid #f2f6fd;
+	border-top: 1px solid transparent;
+	height: 42px;
+}
+
+.zongTiao {
+	float: left;
+	width: 115px;
+	height: 127px;
+	margin-left: 6px;
+	margin-top: 4px;
+	border: 1px solid #fff;
+	text-align: center;
+	position: relative;
+	z-index: 122121231;
+}
+
+.pcicon {
+	border: 1px solid #90c3fd;
+}
+
+/*弹出层样式*/
+.dialog.dialog-web-uploader, .dialog.flash-uploader {
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	border: 1px solid #e2e2e2;
+	box-shadow: 0 0 10px #ccc;
+	margin-bottom: -2px;
+	background-color: #fff;
+}
+
+.dialog {
+	position: fixed;
+	box-shadow: none;
+	overflow: hidden;
+	border: 0;
+}
+
+.dialog-blue {
+	border-radius: 1px 1px 0 0;
+	border: 1px solid #CED0D7;
+}
+
+.dialog.dialog-web-uploader .dialog-header, .dialog.flash-uploader .dialog-header
+	{
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	background-color: #fff;
+}
+
+.dialog-blue .dialog-min-header, .dialog-blue .dialog-header {
+	border-bottom: 1px solid #f7faff;
+}
+
+.dialog .dialog-min-header, .dialog .dialog-header {
+	height: 44px;
+	line-height: 44px;
+	font-weight: 200;
+}
+
+.dialog-web-uploader.dialog .dialog-min-header h3, .dialog-web-uploader.dialog .dialog-header h3
+	{
+	height: 44px;
+	line-height: 44px;
+}
+
+.dialog .dialog-min-header h3, .dialog .dialog-header h3 {
+	position: relative;
+	display: block;
+	height: 42px;
+	line-height: 42px;
+	text-indent: 1em;
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.dialog .dialog-header-title {
+	display: block;
+	margin-right: 50px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dialog .dialog-header-title .select-text {
+	font-style: normal;
+	cursor: text;
+}
+
+.dialog .dialog-control {
+	top: 13px;
+	right: 12px;
+}
+
+.sicon {
+	font-size: 18px;
+}
+
+.dialog .dialog-control {
+	position: absolute;
+	height: 20px;
+}
+
+.dialog .dialog-control .icon {
+	font-size: 12px;
+	text-align: center;
+	line-height: 20px;
+	color: #5f7094;
+	margin: 0 2px;
+}
+
+.dialog .dialog-control span {
+	cursor: pointer;
+	float: right;
+}
+
+.dialog-blue .dialog-close {
+	background-position: -80px 0;
+}
+
+.dialog .dialog-icon {
+	height: 20px;
+	width: 20px;
+}
+
+.dialog-min {
+	text-align: center;
+	line-height: 20px;
+}
+
+.icon {
+	font-family: yunfont !important;
+	speak: none;
+	font-style: normal;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+}
+
+.dialog .dialog-control .icon span {
+	font-size: 14px;
+}
+
+.dialog-web-uploader .dialog-control span {
+	color: #607194;
+	line-height: 16px;
+	text-align: center;
+	margin: 0 4px;
+}
+
+.dialog .dialog-control span {
+	cursor: pointer;
+	float: right;
+}
+
+.dialog.dialog-web-uploader .dialog-header, .dialog.flash-uploader .dialog-header
+	{
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+	background-color: #fff;
+}
+
+.dialog-blue .dialog-min-header, .dialog-blue .dialog-header {
+	border-bottom: 1px solid #f7faff;
+}
+
+.dialog .dialog-min-header, .dialog .dialog-header {
+	height: 44px;
+	line-height: 44px;
+	font-weight: 200;
+}
+
+.dialog-blue .dialog-min-header, .dialog-blue .dialog-header {
+	color: #7D818A;
+	/*background: #E7ECF2;*/
+}
+
+.dialog-header {
+	position: relative;
+	user-select: none;
+}
+
+.dialog .dialog-header-title {
+	display: block;
+	margin-right: 50px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dialog .dialog-header-title .select-text {
+	font-style: normal;
+	cursor: text;
+}
+
+.dialog .dialog-header-title em {
+	font-weight: 200;
+}
+
+.dialog .dialog-control {
+	top: 13px;
+	right: 12px;
+}
+
+.dialog .dialog-control {
+	position: absolute;
+	height: 20px;
+}
+
+.dialog .dialog-control .icon {
+	font-size: 12px;
+	text-align: center;
+	line-height: 20px;
+	color: #5f7094;
+	margin: 0 2px;
+}
+
+.dialog-blue .dialog-close {
+	background-position: -80px 0;
+}
+
+.dialog .dialog-icon {
+	height: 20px;
+	width: 20px;
+}
+
+.dialog .dialog-control .icon span {
+	font-size: 25px;
+}
+
+.dialog .dialog-control span {
+	cursor: pointer;
+	float: right;
+}
+
+.dialog-web-uploader .dialog-control span {
+	color: #607194;
+	line-height: 16px;
+	text-align: center;
+	margin: 0 4px;
+}
+
+.dialog .dialog-body {
+	background: #fff;
+}
+
+.dialog-web-uploader .uploader-list-wrapper {
+	position: relative;
+	margin-top: -1px;
+}
+
+.dialog-web-uploader .uploader-list-header {
+	overflow: hidden;
+	height: 35px;
+	border-bottom: 1px solid #f2f6fd;
+	line-height: 35px;
+	color: #424e67;
+}
+
+.dialog-web-uploader .uploader-list-header .file-name {
+	float: left;
+	width: 45%;
+	text-indent: 14px;
+}
+
+.dialog-web-uploader .uploader-list-header div {
+	height: 35px;
+}
+
+.dialog-web-uploader .file-name {
+	position: relative;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dialog-web-uploader .file-size {
+	float: left;
+	width: 13%;
+	text-indent: 10px;
+}
+
+.dialog-web-uploader .file-path {
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 13%;
+}
+
+.dialog-web-uploader .file-status {
+	position: relative;
+	float: left;
+	width: 19%;
+}
+
+.dialog-web-uploader .file-operate {
+	float: left;
+	width: 10%;
+}
+
+.dialog-web-uploader .uploader-list {
+	position: relative;
+	overflow: hidden;
+	overflow-y: auto;
+	height: 349px;
+	margin-top: -1px;
+}
+
+.dialog-web-uploader .container {
+	position: relative;
+	overflow: hidden;
+}
+
+.dialog-web-uploader .uploader-list .container {
+	color: #424e67;
+}
+
+.dialog-web-uploader .file-list {
+	position: relative;
+	height: 49px;
+	border-bottom: 1px solid #f2f6fd;
+	line-height: 49px;
+}
+
+.dialog-web-uploader .file-list .process {
+	background: #e2eeff;
+}
+
+.dialog-web-uploader .file-list .process {
+	position: absolute;
+	z-index: 0;
+	height: 100%;
+	background: #e2eeff;
+}
+
+.dialog-web-uploader .file-list .info {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+.dialog-web-uploader .file-name {
+	position: relative;
+	float: left;
+	overflow: hidden;
+	width: 45%;
+	height: 49px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dialog-web-uploader .file-icon {
+	position: absolute;
+	top: -5px;
+	left: 13px;
+	width: 24px;
+	height: 24px;
+}
+
+.fileicon-sys-s-web {
+	width: 24px;
+	height: 24px;
+	background-repeat: no-repeat;
+}
+
+.fileicon-sys-s-web img {
+	width: 100%;
+}
+
+.dialog-web-uploader .file-name .name-text {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.name-text {
+	text-indent: 45px;
+}
+
+.dialog-web-uploader .file-size {
+	float: left;
+	width: 13%;
+	height: 49px;
+	text-indent: 10px;
+}
+
+.dialog-web-uploader .file-path {
+	float: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 13%;
+	height: 49px;
+}
+
+.dialog-web-uploader .file-path a {
+	color: #5d9cff;
+}
+
+.dialog-web-uploader .file-list .file-status {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.dialog-web-uploader .file-status {
+	position: relative;
+	float: left;
+	width: 19%;
+	height: 49px;
+}
+
+.dialog-web-uploader .file-operate {
+	height: 16px;
+	/*padding: 17px 0;*/
+}
+
+.dialog-web-uploader .file-operate {
+	float: left;
+	width: 20%;
+}
+
+.dialog-web-uploader .file-operate em {
+	display: none;
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-right: 10px;
+	cursor: pointer;
+}
+
+.error-link {
+	float: right;
+	margin-right: 16px;
+}
+
+.file-name1 a {
+	display: block;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.videoName {
+	width: 18%;
+}
+
+.bgBorder {
+	display: inline-block;
+	height: 18px;
+	width: 100%;
+	border-radius: 9px;
+	margin-top: 11px;
+	background-color: #777777;
+}
+
+.bgBg {
+	background-color: #5fb878;
+	width: 0%;
+	border-radius: 9px;
+	height: 100%;
+}
+
+.progerss {
+	width: 45px;
+	text-align: center;
+	line-height: 20px;
+	color: #fff;
+	position: relative;
+	z-index: 5403789;
+	left: 9px;
+	top: -30px;
+	font-size: 12px;
+}
+
+/*上传弹出框样式*/
+.h5-uploader {
+	width: 633px;
+	top: auto;
+	bottom: 0px;
+	left: auto;
+	right: 0px;
+	display: none;
+	visibility: visible;
+	z-index: 9999999;
+}
+
+#searchval {
+	width: 210px;
+	outline: none;
+	border: none;
+	background-color: #f1f2f4;
+}
+
+#search {
+	color: gray;
+	line-height: 40px;
+	float: right;
+	margin-right: 20px;
+	margin-top: 3px;
+}
+.btnColor{
+	color:#1cc8d2;
+}

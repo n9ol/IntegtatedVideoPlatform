@@ -1,98 +1,74 @@
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/head.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/head.css" />
 <div class="topFarther">
 	<div class="top clear">
 		<!--logo-->
 		<div class="top_logo">
-			<a href="javascript:;">
-				<img src="${ctx}/img/logo.png" />
-			</a>
+			<a href="javascript:;"><img src="${ctx}/skin/${skinName}/img/logo.png" /></a>
 		</div>
 		<!--横向导航区域-->
 		<div id='cssmenu'>
 			<ul class="navUl">
-				<li id="shouyeTop" class="has-sub">
-					<a href="${ctx}/index">首页</a>
-				</li>
+				<li id="shouyeTop" class="has-sub"><a href="${ctx}/index">首页</a></li>
 				<li class='has-sub' id="zbTop">
-					<a href="${ctx}/online/zb_online">直播</a>
+					<a	href="${ctx}/online/zb_online?type=A">教学评估</a>
 					<ul>
-						<!-- 					<li id="zbTopZ" ><a href="${ctx}/online/zb_online?type=Z">直播课堂</a></li> -->
-						<li id="zbTopA">
-							<a href="${ctx}/online/zb_online?type=A">在线评估</a>
-						</li>
-<!-- 						<li id="zbTopG"> -->
-<!-- 							<a href="${ctx}/online/zb_online?type=G">专递课堂</a> -->
-<!-- 						</li> -->
-						<li id="zbTopK">
-							<a href="${ctx}/online/zb_kechengbiao">课程表</a>
-						</li>
+						<li id="zbTopA"><a href="${ctx}/online/zb_online?type=A">在线评估</a></li>
+						<li id="dianboTopp"><a href="${ctx}/offLine/dianbo?type=P">离线评估</a></li>
+						<li id="zbTopKA"><a href="${ctx}/online/zb_kechengbiao?type=A">课程表</a></li>
 					</ul>
 				</li>
 				<li class='has-sub' id="dianboTop">
-					<a href="${ctx}/offLine/dianbo">点播</a>
+					<a href="${ctx}/online/zb_online?type=G">专递课堂</a>
 					<ul>
-						<li id="dianboTopp">
-							<a href="${ctx}/offLine/dianbo?type=P">离线评估</a>
-						</li>
-						<li id="dianboTopB">
-							<a href="${ctx}/offLine/dianbo?type=B">课堂回放</a>
-						</li>
-						<li id="dianboTopS">
-							<a href="${ctx}/offLine/dianbo?type=S">精品微课</a>
-						</li>
-						<li id="dianboTopH">
-							<a href="${ctx}/offLine/dianbo?type=H">优质课程</a>
-						</li>
+						<li id="zbTopG"><a href="${ctx}/online/zb_online?type=G">同步课堂</a></li>
+						<li id="zbTopKG"><a href="${ctx}/online/zb_kechengbiao?type=G">课程表</a></li>
 					</ul>
 				</li>
 				<li id="ziyuanTop" class="has-sub">
-					<a href="${ctx}/courRes/ziyuan">课件资源</a>
+					<a href="${ctx}/offLine/dianbo?type=B">资源中心</a>
+					<ul>
+						<li id="dianboTopB"><a href="${ctx}/offLine/dianbo?type=B">课堂回放</a></li>
+						<li id="dianboTopS"><a href="${ctx}/offLine/dianbo?type=S">精品微课</a></li>
+						<li id="dianboTopH"><a href="${ctx}/offLine/dianbo?type=H">优质课程</a></li>
+						<li id="ziyuanTopC"><a href="${ctx}/courRes/ziyuan">课件资源</a></li>
+					</ul>
 				</li>
 				<li id="teacherTop" class="has-sub">
-					<a href="${ctx}/teacher/teacherList">名师团队</a>
+					<a href="${ctx}/teacher/teacherList">名师风采</a>
 				</li>
-				<li id="datacenterTop" class="has-sub">
-					<a href="${ctx}/datacenter/index">数据中心</a>
-				</li>
-				<li id="dayiTop" class="has-sub">
-					<a href="${ctx}/zxdy/online_dayi">在线答疑</a>
-				</li>
-				<li id="dayiTop" class="has-sub">
-					<a href="http://192.168.1.204:8001/ZZNUEvalGraduation/manage/login">板书实训</a>
-				</li>
-				<li id="datacenterTop" class="has-sub">
-					<a href="javascript:;">其他</a>
+				<li id="testTop" class="has-sub">
+					<a href="${ctx}/test/test">考试交流</a>
 					<ul>
-						<#if principal?? && principal.userType != "S">
+						<li id="testTopZ"><a href="${ctx}/test/test">在线考试</a></li>
+						<li id="testTopL"><a href="${ctx}/testOffLine/list">离线考试</a></li>
+						<li id="dayiTop" ><a href="${ctx}/zxdy/online_dayi">在线答疑</a></li>
+					</ul>
+				</li>
+				<li id="datacenterTop" class="has-sub">
+					<a href="${ctx}/datacenter/dataCenterDetail">大数据中心</a>  
+<!-- 					onclick="gotoDataCentre();" -->
+				</li>
+				<#if principal?? && principal.userType != "S">
 						<li id="bbtTop" class="has-sub">
 							<a href="${ctx}/webdevicemanage/index">设备管理</a>
 							<ul>
 								<li class='has-sub'>
-									<a href="${ctx}/webdevicemanage/listDMBycontion">设备信息</a>
+									<a	href="${ctx}/webdevicemanage/listDMBycontion">设备信息</a>
 									<ul>
-										<li>
-											<a href="${ctx}/webdevicemanage/listDMBycontion">设备列表</a>
-										</li>
-										<li>
-											<a href="${ctx}/webdevicemanage/listDMBycontionOnline">在线设备</a>
-										</li>
-										<li>
-											<a href="${ctx}/webdevicemanage/schoolUsingCount">学校使用统计</a>
-										</li>
-										<li>
-											<a href="${ctx}/webdevicemanage/classUsingCount">班级使用统计</a>
-										</li>
+										<li><a href="${ctx}/webdevicemanage/listDMBycontion">设备列表</a></li>
+										<li><a href="${ctx}/webdevicemanage/listDMBycontionOnline">在线设备</a></li>
+										<li><a href="${ctx}/webdevicemanage/schoolUsingCount">学校使用统计</a></li>
+										<li><a href="${ctx}/webdevicemanage/classUsingCount">班级使用统计</a></li>
 									</ul>
 								</li>
 								<li class='has-sub'>
 									<a href="${ctx}/webdevicerepair/listDRByContion">设备维护</a>
 									<ul>
-										<li>
-											<a href="${ctx}/webdevicerepair/listDRByContion">报修设备列表</a>
-										</li>
-										<li>
-											<a href="${ctx}/webdevicerepair/reachDR">线上报修</a>
-										</li>
+										<li><a href="${ctx}/webdevicerepair/listDRByContion">报修设备列表</a></li>
+										<!-- 只有校级管理员  -->
+										<#if principal.bak1 == "SA">
+											<li><a href="${ctx}/webdevicerepair/reachDR">线上报修</a></li>
+										</#if>
 									</ul>
 								</li>
 							</ul>
@@ -100,22 +76,9 @@
 						<li id="afTop" class="has-sub">
 							<a href="${ctx}/af/findAfSchool">校园安防</a>
 						</li>
-						</#if>
-						<li id="testTop" class="has-sub">
-							<a href="${ctx}/test/test">考试中心</a>
-							<ul>
-								<li id="testTopZ">
-									<a href="${ctx}/test/test">在线考试</a>
-								</li>
-								<li id="testTopL">
-									<a href="${ctx}/testOffLine/list">离线考试</a>
-								</li>
-							</ul>
-						</li>
-						<li id="xinwenTop" class="has-sub">
-							<a href="${ctx}/new/xinwen">新闻中心</a>
-						</li>
-					</ul>
+				</#if>
+				<li id="xinwenTop" class="has-sub">
+					<a href="${ctx}/new/xinwen">新闻中心</a>
 				</li>
 			</ul>
 		</div>
@@ -123,70 +86,55 @@
 		<div class="right">
 			<div class="logIn clear">
 				<div class="clear touxiangFar">
-					<#if principal??>
-					<img class="fl touxiang1" src="${ctx}/img/user.png" />
-					<#else>
-					<span class="LH2 fl">
-						<a href="${ctx}/login/denglu">
-							<img class="fl touxiang1" src="${ctx}/img/user.png" />
-							登录
-						</a>
-					</span>
+					<#if principal??> 
+						<img class="fl touxiang1"	src="${ctx}/img/user.png" /> 
+					<#else> 
+						<span class="LH2 fl">
+							<a href="${ctx}/login/denglu"> 
+								<img class="fl touxiang1"	src="${ctx}/img/user.png" /> 登录
+							</a>
+						</span> 
 					</#if>
 				</div>
 				<#if principal??>
-				<div class="LIcon" style="display: none;">
-					<div class="LIconTop clear">
-						<div class="LIconTopImg fl">
-							<img src="${fileWebPath}/userheadPortrait${principal.filePath!''}" onerror="this.src='${ctx}/img/user80.jpg'" />
+					<div class="LIcon" style="display: none;">
+						<div class="LIconTop clear">
+							<div class="LIconTopImg fl">
+								<img
+									src="${fileWebPath}/userheadPortrait${principal.filePath!''}"
+									onerror="this.src='${ctx}/img/user80.jpg'" />
+							</div>
+							<div class="LIconTopDiv fl">
+								<div class="LIconTopDiv1">${principal.nickName!''}</div>
+								<div class="LIconTopDiv2">${principal.memos!''}</div>
+							</div>
 						</div>
-						<div class="LIconTopDiv fl">
-							<div class="LIconTopDiv1">${principal.nickName!''}</div>
-							<div class="LIconTopDiv2">${principal.memos!''}</div>
+						<div class="LIconBot">
+							<a href="${ctx}/logout.action">安全退出</a>
 						</div>
 					</div>
-					<div class="LIconMiddle">
-						<ul class="clear">
-							<li class="fl">
-								<img src="${ctx}/img/ren2.png" />
-								<span>
-									<a href="${ctx}/personalCenter/mstd_geren" target="_blank">个人中心</a>
-								</span>
-							</li>
-							<li class="fl">
-								<img src="${ctx}/img/cang2.png" />
-								<span>
-									<a href="${ctx}/personalCenter/mstd_geren?rapidTAG=W">观看记录</a>
-								</span>
-							</li>
-							<li class="fl">
-								<img src="${ctx}/img/xin2.png" />
-								<span>
-									<a href="${ctx}/personalCenter/mstd_geren?rapidTAG=E">编辑头像</a>
-								</span>
-							</li>
-							<li class="fl">
-								<img src="${ctx}/img/suo2.png" />
-								<span>
-									<a href="${ctx}/personalCenter/mstd_geren?rapidTAG=P">修改密码</a>
-								</span>
-							</li>
-						</ul>
-					</div>
-					<div class="LIconBot">
-						<a href="javascript:;" onclick="safeWithdrawing();">安全退出</a>
-					</div>
-				</div>
 				</#if>
 			</div>
-			<#assign marginLeft="margin-left: 30px;"> <#if principal??> <#assign marginLeft=""> </#if>
-			<div class="app" style="${marginLeft!''}">
+			<#if principal??>
+				<div class="fourBtn">
+					<a href="${ctx}/personalCenter/mstd_geren" target="_blank">个人中心</a>
+				</div>
+			</#if>
+			<#if principal?? && principal.bak1 != 'NA'>
+				<div class="management">
+					<div>
+						<img class="fl" src="${ctx}/img/shezhi.png" /> <span class="LH fl">
+							<a href="${ctx}/adminIndex">后台管理</a>
+						</span>
+					</div>
+				</div>
+		   </#if>
+			<div class="app">
 				<div>
-					<span class="LH fl">
+					<span class="LH fl"> 
 						<img class="fl ewmLogo" src="${ctx}/img/phone.png" />
 					</span>
 				</div>
-
 				<div class="erweima">
 					<div id="iosAPK">
 						<div id="iosqrcode"></div>
@@ -200,23 +148,12 @@
 					</div>
 				</div>
 			</div>
-			<#if principal?? && principal.bak1 != 'NA'>
-			<div class="management">
-				<div>
-					<img class="fl" src="${ctx}/img/shezhi.png" />
-					<span class="LH fl">
-						<a href="${ctx}/adminIndex" target="_blank">管理入口</a>
-					</span>
-				</div>
-			</div>
-			</#if>
 		</div>
 	</div>
 </div>
 <script type="text/javascript" src="${ctx}/common/jquery-1.11.2.min.js"></script>
 <script type="text/javascript" src="${ctx}/common/qrcode/jqueryqr.js"></script>
 <script type="text/javascript">
-	var ctx = "${ctx}";
 	var text = '${androidAPKWebPath}';
 	$("#qrcode").qrcode({
 		render : "canvas",
@@ -246,10 +183,4 @@
 		mPosY : .5,
 		image : $("#iosLogo")[0]
 	});
-	
-	//安全退出
-	function safeWithdrawing() {
-		location.href = ctx + "/logout.action";
-		$.get(ctx+ "/login/backHomepage");
-	}
 </script>

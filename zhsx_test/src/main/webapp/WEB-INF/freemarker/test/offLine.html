@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<!--各页面单独引入的CSS文件-->
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kehou.css" />
@@ -91,7 +91,7 @@
 	
 		layui.use(['layer', 'element'], function() {
 			var layer = layui.layer,
-				element = layui.element;
+				element = layui.element();
 		});
 		
 		var myChart2 = echarts.init(document.getElementById("main2"));
@@ -196,7 +196,7 @@
 		var option3 = {
 			color: colors,
 			title: {
-				text: '各专业平均分',
+				text: '各年级平均分',
 				x: 'center'
 			},
 			tooltip: {
@@ -352,7 +352,7 @@
 		var option4 = {
 			color: color2,
 			title: {
-				text: "每个月份本专业各班综合平均成绩对比图",
+				text: "每个月份本年级各班综合平均成绩对比图",
 				x:'center'
 			},
 			tooltip: {

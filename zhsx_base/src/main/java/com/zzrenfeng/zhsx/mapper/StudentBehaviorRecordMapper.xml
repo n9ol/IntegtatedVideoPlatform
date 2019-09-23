@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.StudentBehaviorRecordMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.StudentBehaviorRecord" >
+		<result column="id" property="id" />
+		<result column="school_id" property="schoolId" />
+		<result column="class_id" property="classId" />
+		<result column="schedule_id" property="scheduleId" />
+		<result column="create_date" property="createDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,school_id,class_id,schedule_id,create_date
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from student_behavior_record
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from student_behavior_record
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="StudentBehaviorRecord" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into student_behavior_record (id,school_id,class_id,schedule_id,create_date)
+		values (#{id},#{schoolId},#{classId},#{scheduleId},#{createDate})
+	</insert>
+	<insert id="inStudentBehaviorRecord" parameterType="StudentBehaviorRecord" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into student_behavior_record (id,school_id,class_id,schedule_id,create_date)
+		values (#{id},#{schoolId},#{classId},#{scheduleId},#{createDate})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="StudentBehaviorRecord" >
+		update student_behavior_record
+		<set >
+			<if test="school_id != null" >
+				school_id = #{schoolId},
+			</if>
+			<if test="class_id != null" >
+				class_id = #{classId},
+			</if>
+			<if test="schedule_id != null" >
+				schedule_id = #{scheduleId},
+			</if>
+			<if test="create_date != null" >
+				create_date = #{createDate}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="StudentBehaviorRecord" >
+		update student_behavior_record
+		set 
+		school_id = #{schoolId},
+		class_id = #{classId},
+		schedule_id = #{scheduleId},
+		create_date = #{createDate}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="school_id != null" >
+				and school_id = #{schoolId}
+			</if>
+			<if test="class_id != null" >
+				and class_id = #{classId}
+			</if>
+			<if test="schedule_id != null" >
+				and schedule_id = #{scheduleId}
+			</if>
+			<if test="create_date != null" >
+				and create_date = #{createDate}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="StudentBehaviorRecord" resultType="StudentBehaviorRecord">
+		select 
+		<include refid="Base_Column_List" />
+		from student_behavior_record
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="StudentBehaviorRecord" resultType="StudentBehaviorRecord">
+		select 
+		<include refid="Base_Column_List" />
+		from student_behavior_record
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

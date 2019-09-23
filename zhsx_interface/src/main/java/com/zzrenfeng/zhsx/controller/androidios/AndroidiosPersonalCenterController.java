@@ -95,7 +95,6 @@ public class AndroidiosPersonalCenterController extends BaseController {
 		}
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(map);
 		return androidiosModel;
 	}
@@ -123,7 +122,6 @@ public class AndroidiosPersonalCenterController extends BaseController {
 		List<OffLineVideoResources> lists = pageInfo.getResult();
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(lists);
 		androidiosModel.setCurrPage(p);
 		androidiosModel.setTotalPage(totalPage);
@@ -146,7 +144,6 @@ public class AndroidiosPersonalCenterController extends BaseController {
 		List<Map<String, String>> lists = pageInfo.getResult();
 
 		AndroidiosModel androidiosModel = new AndroidiosModel();
-		androidiosModel.setIsNeedLogin(1);
 		androidiosModel.setData(lists);
 		androidiosModel.setCurrPage(p);
 		androidiosModel.setTotalPage(totalPage);

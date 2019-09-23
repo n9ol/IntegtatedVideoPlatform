@@ -31,12 +31,12 @@
 		<div class="larry-personal">
 			<div class="layui-tab">
 				<blockquote class="layui-elem-quote mylog-info-tit">
-					<#if principal?? && principal.bak1!='SA' && schoolLevel != "Y">
-					<ul class="layui-tab-title" style="display: inline-block;">
-						<li class="layui-btn layui-this" onclick="addSchool();">添加学校</li>
-						<li class="layui-btn " onclick="batchAdd()">批量添加</li>
-						<li class="layui-btn " onclick="download();">下载批量添加模板</li>
-					</ul>
+					<#if principal?? && principal.bak1!='SA'>
+						<ul class="layui-tab-title" style="display: inline-block;">
+							<li class="layui-btn layui-this" onclick="addSchool();">添加学校</li>
+							<li class="layui-btn " onclick="batchAdd()">批量添加</li>
+							<li class="layui-btn " onclick="download();">下载批量添加模板</li>
+						</ul>
 					</#if>
 					<ul class="pull-right">
 						<li>
@@ -45,7 +45,6 @@
 							</a>
 						</li>
 					</ul>
-					<#if schoolLevel?? && schoolLevel != "Y">
 					<ul class="pull-right">
 						<li>
 							<div class="layui-input-inline pull-left">
@@ -56,7 +55,6 @@
 							</a>
 						</li>
 					</ul>
-					</#if>
 				</blockquote>
 				<div class="larry-separate"></div>
 				<div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
@@ -109,19 +107,16 @@
 												<i class="layui-icon">&#xe642;</i>
 												&nbsp;编辑
 											</a>
-											<#if schoolLevel?? && schoolLevel != "Y">
 											<a style="white-space: nowrap;" href="javascript:;" class="check_look" onclick="del('${l.id}');">
 												<i class="layui-icon">&#xe640;</i>
 												&nbsp;删除
 											</a>
-											</#if>
 										</td>
 									</tr>
 									</#list> </#if>
 								</tbody>
 							</table>
 						</form>
-						<#if schoolLevel?? && schoolLevel != "Y">
 						<div class="larry-table-page clearfix">
 							<a href="javascript:;" class="layui-btn layui-btn-small" onclick="batchDel();">
 								<i class="iconfont icon-shanchu1"></i>
@@ -129,7 +124,6 @@
 							</a>
 							<div id="page" class="page"></div>
 						</div>
-						</#if>
 					</div>
 				</div>
 			</div>
@@ -142,12 +136,24 @@
 		</div>
 	</section>
 	<script type="text/javascript" src="${ctx}/js/admin/base/sysSchool.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			$("#myform1").submit();
-		}
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({
+				cont : "page",
+				pages : "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip : false,
+				skin : "molv",
+				groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						$("#myform1").submit();
+					}
+				}
+			});
+		});
 	</script>
 </body>
 </html>

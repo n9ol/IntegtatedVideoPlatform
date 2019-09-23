@@ -50,16 +50,35 @@ public interface SysDictService extends BaseService<SysDict> {
 	List<SysDict> findAreaByProvince(SysDict sysDicttema);
 
 	/**
-	 * 获取专业(年级)
+	 * 修改皮肤
 	 * 
-	 * @return
+	 * @param skinName
 	 */
-	List<SysDict> listSpecialty();
+	void changeSkin(String skinName);
 
 	/**
-	 * 获取所有科目(去重)
+	 * 获取当前皮肤名称
 	 * 
 	 * @return
 	 */
-	List<SysDict> listSubject();
+	String getSkinName();
+
+	/**
+	 * 
+	 * 
+	 * @param bak1
+	 *            用户管理等级
+	 * @return
+	 */
+	/**
+	 * 根据用户管理等级，和平台等级 获取对应的 地区信息
+	 * 
+	 * @param bak1
+	 *            用户管理等级
+	 * @param bak2
+	 *            用户管理等级对应区域Id
+	 * @return
+	 */
+	List<SysDict> listAreaInfo(String bak1, String bak2);
+
 }

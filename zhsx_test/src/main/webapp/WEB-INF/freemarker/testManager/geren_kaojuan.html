@@ -3,11 +3,11 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<!-- 		<#global ctx=rc.contextPath/> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 		<style type="text/css">
 			.guanjian img{
     			margin-top: 12px;
@@ -20,15 +20,15 @@
 		<!--<div class="kao_right">-->
 		<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 我的考卷管理</p>
 		<div class="guanjian">
-			<img  onclick="searchSchool();" alt="搜索" src="${ctx}/img/sousuo.jpg"> 
-			<input type="search" name="search1" id="search1" value="${search!''}" style="width: 172px;height:27px;float:right;margin-top:12px;" placeholder="标题/专业/科目"/>
+			<img  onclick="searchSchool();" alt="搜索" src="${ctx}/skin/${skinName}/img/sousuo.jpg"> 
+			<input type="search" name="search1" id="search1" value="${search!''}" style="width: 172px;height:27px;float:right;margin-top:12px;" placeholder="标题/年级/科目"/>
 		</div>
 		<table class="layui-table table">
 
 			<thead>
 				<tr>
 					<th>NO</th>
-					<th>专业</th>
+					<th>年级</th>
 					<th>科目</th>
 					<th>试卷标题</th>
 					<th>得分</th>
@@ -57,23 +57,38 @@
 			</#list></#if>	
 			</tbody>
 		</table>
-		<div id="page" style="text-align: center;height: 40px;"></div>
+		<div id="kaoping2" style="text-align: center;height: 40px;"></div>
+
 		<form id="form" action="${ctx}/testwebstutest/findStuTest" method="post">
 			<input type="hidden" name="p" value="${pageNum!''}">
 			<input type="hidden" name="search" value="${search!''}">
 			<input type="hidden" name="studentId" value="${memberId!''}">
 		</form>
+		
 	</body>
 	<script type="text/javascript">var ctx ="${ctx}";</script>
 	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
-		}
-	</script>
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;	
+			laypage({
+				cont: "kaoping2",
+				pages: "${pages!'1'}",
+				curr : "${pageNum!'1'}",
+				skip: false,
+				skin: "#4596e5",
+				groups: 10,
+				jump: function(e, first) {
+					if(!first){
+						$("input[name='p']").val(e.curr);
+						refreshPage();
+					}
+				}
+			});
+			setIframeH();
+		});
+</script>
 	<script type="text/javascript">
 		$(function(){
 			setIframeH();
@@ -88,7 +103,7 @@
 		
 		var layer;
 		layui.use(['form','layer'], function() {
-			var form = layui.form;
+			var form = layui.form();
 			layer = layui.layer;
 			
 			//监听提交

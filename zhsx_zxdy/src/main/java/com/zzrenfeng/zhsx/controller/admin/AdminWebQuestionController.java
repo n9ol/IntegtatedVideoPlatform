@@ -50,11 +50,6 @@ public class AdminWebQuestionController extends BaseController {
 		Page<WebQuestion> pageInfo = WebQuestionService.findPageSelective(w, p, 10);
 		int pages = pageInfo.getPages();
 		List<WebQuestion> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("pages", pages);// 总页数
 		model.addAttribute("lists", lists);

@@ -1,5 +1,27 @@
 $(function(){
 	setIframeH();
+	
+	switch (skinName) {
+		case "default":
+			$("#subBut").css("backgroundColor","#4596E5");
+			break;
+		case "springtime":
+			$("#subBut").css("backgroundColor","#1cc8d2");
+			break;
+		case "summer":
+			$("#subBut").css("backgroundColor","#ee336e");
+			break;
+		case "autumn":
+			$("#subBut").css("backgroundColor","#ff9900");
+			break;
+		case "winter":
+			$("#subBut").css("backgroundColor","#1ca5d2");
+			break;
+		default:
+			$("#subBut").css("backgroundColor","#4596E5");
+			break;
+	}
+	
 });
 var memberId = uid;
 function setIframeH() {
@@ -12,7 +34,7 @@ var layer;
 
 layui.use([ 'layer','form'], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	form.on('select(gradeId)', function(data){
 		$("#subjectId").empty();
 		$("#subjectId").append('<option value="">请选择科目</option>');

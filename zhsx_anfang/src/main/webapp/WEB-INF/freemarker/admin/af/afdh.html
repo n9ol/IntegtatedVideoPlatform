@@ -76,12 +76,24 @@
 				<input type="hidden" name="contextType" value="${contextType!''}">
 		</form>
 	</section>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
-		}
+	layui.use(['laypage'], function() {
+		var laypage = layui.laypage;
+		laypage({
+			cont : "page",
+			pages : "${pages!1}",
+			curr : "${pageNum!1}",
+			skip : false,
+			skin : "molv",
+			groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					refreshPage();
+				}
+			}
+		});
+	});
 	</script>
 	<script type="text/javascript">
 	var layer;

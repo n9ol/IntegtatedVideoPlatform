@@ -1,54 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>教育综合视讯管理平台</title>
-<#include "/commons/comWeb.html" encoding="utf-8"/>
-<!--各页面单独引入的CSS文件-->
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
-<link rel="stylesheet" type="text/css" href="${ctx}/css/web/db_bofangye.css" />
-<style type="text/css">
-.swiper-container {
-	height: 370px;
-}
-</style>
-</head>
-<body>
-	<form id="myformPjDetail">
-		<input type="hidden" name="webPjInfoId" value="${webPjInfoId!''}">
-		<div id="tianxie">
-			<div class="pingguneirong">
-				<div class="neirong_top clear">
-					<span class="no1">评估内容</span>
-					<span class="no2">评分</span>
+	<head>
+		<meta charset="UTF-8">
+		<title>淇县教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_kezhong.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_dianping.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_chakan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/db_bofangye.css" />
+		<style type="text/css">
+			.swiper-container {
+				height: 370px;
+			}
+		</style>
+	</head>
+	<body>
+		<form id="myformPjDetail">
+			<input type="hidden" name="webPjInfoId" value="${webPjInfoId!''}">
+			<div id="tianxie">
+				<div class="pingguneirong">
+					<div class="neirong_top clear">
+						<span class="no1">评估内容</span>
+						<span class="no3">权重</span>
+						<span class="no2">评分（百分制）</span>
+					</div>
+					<ul>
+						<#if webPjdetailList?? && (webPjdetailList?size>0)><#list webPjdetailList as l>
+						<li>
+							<span class="no1">${l_index+1}.${l.content!''}</span>
+							<span class="no3">${l.weight!''}</span>
+							<input type="hidden" name="weights[${l_index}]" value="${l.weight!''}">
+							<span class="no2">
+								<input name="totals[${l_index}]" type="text" maxlength="3" value="${l.score!''}" onblur="updataPjDetailScore('${l.id}',this)"/>
+							</span>
+						</li>
+						</#list></#if>
+					</ul>
+					<div class="neirong_top clear">
+						<span class="no1">填写此评分项评语</span>
+					</div>
+					<textarea name="content" rows="5" cols="90" class="kezhongTex">${webPjInfo.content!''}</textarea>
+					<input type="button" onclick="updataWebPjInfo();"  class="kezhongBtn" value="提交">
 				</div>
-				<ul>
-					<#if webPjdetailList?? && (webPjdetailList?size>0)><#list webPjdetailList as l>
-					<li class="webPjDatailul">
-						<span class="no1">${l_index+1}.${l.content!''}</span>
-						<span class="no2 pjDetaiRate">
-							<input class="totals${l_index}" name="totals[${l_index}]" type="hidden" value="${l.score!'0'}" id="${l.id!''}" />
-							<i id="totals${l_index}"></i>
-						</span>
-					</li>
-					</#list></#if>
-				</ul>
-				<div class="neirong_top clear">
-					<span class="no1">填写此评分项评语</span>
-				</div>
-				<textarea name="content" rows="5" cols="90" class="kezhongTex">${webPjInfo.content!''}</textarea>
-				<input type="button" onclick="updataWebPjInfo();" class="kezhongBtn" value="提交">
 			</div>
-		</div>
-	</form>
-</body>
-<#include "/commons/comWebjs.html" encoding="utf-8"/>
-<script type="text/javascript">
-var listSize = ${webPjdetailList?size};
-</script>
-<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
-<script type="text/javascript" src="${ctx}/js/web/pjDetail.js"></script>
+		</form>
+	</body>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+	<script type="text/javascript" src="${ctx}/js/web/pjDetail.js"></script>
 </html>

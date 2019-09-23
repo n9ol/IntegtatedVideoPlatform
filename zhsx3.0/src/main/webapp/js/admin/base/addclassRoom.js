@@ -1,14 +1,7 @@
 var layer;
 layui.use([ 'layer', 'form' ], function() {
 	layer = layui.layer;
-	var form = layui.form;
-	
-	form.on('select(teachingBuildingId)', function(data){
-		 var teachingBuildingName = $(data.elem).find("option:selected").text();
-		 $("#teachingBuildingName").val(teachingBuildingName);
-	});    
-	
-	
+	var form = layui.form();
 });
 
 // 验证教室编号是否存在

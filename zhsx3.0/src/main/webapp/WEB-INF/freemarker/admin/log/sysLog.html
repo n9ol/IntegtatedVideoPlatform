@@ -98,12 +98,18 @@
 		</div>
 	</section>
 	<script type="text/javascript" src="${ctx}/js/admin/log/sysLog.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			$("#myform1").submit();
-		}
+		layui.use([ 'laypage' ], function() {
+			laypage = layui.laypage;
+			laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : "molv",groups : 10,
+				jump : function(e, first) {
+					if (!first) {
+						$("input[name='p']").val(e.curr);
+						$("#myform1").submit();
+					}
+				}
+			});
+		});
 	</script>
 </body>
 </html>

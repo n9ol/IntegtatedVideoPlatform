@@ -5,8 +5,7 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
-
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/sjzx_sjzx.css" />
 	</head>
 
 	<body>
@@ -51,19 +50,14 @@
 		 	</#list>
 		 </#if>
 		
-	
-<!-- 				<label class="layui-form-label">Q：有什么建议？</label> -->
-<!-- 				<div class="layui-input-block" > -->
-<!-- 					<textarea id ="opinion" name="opinion" placeholder="请输入内容" class="layui-textarea"></textarea> -->
-<!-- 				</div> -->
 
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn" lay-submit lay-filter="formDemo" style="background-color: #4596E5;">立即提交</button>
+						<button class="layui-btn btncolor" lay-submit lay-filter="formDemo">立即提交</button>
 						<button type="reset" class="layui-btn layui-btn-primary"  lay-filter="reset" >重置</button>
 					</div>
 					<div style="text-align: right;padding-top: 20px;">
-						<a class="layui-btn layui-btn-normal" href="javascript:downFile()">下载调查问卷（Word格式） </a>
+						<a class="layui-btn btncolor" href="javascript:downFile()">下载调查问卷（Word格式） </a>
 					</div>
 				</div>
 			</form>
@@ -74,22 +68,23 @@
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
 	<script type="text/javascript">
 	var qId ='${id!''}'; //问卷Id
-		$(function() {
-			setIframeH22();
-
-			function setIframeH22() {
-				var body = $(document.body);
-				var iframe = $(parent.document.getElementById('parentIframeSurvey'));
-				iframe.height(body.height() +20);
-			}
-		})
+	$(function() {
+		setIframeH22();
+		function setIframeH22() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeSurvey'));
+			var iframe1 = $(parent.parent.document.getElementById('parentIframesjzx'));
+			iframe.height(body.height()+200);
+			iframe1.height(body.height()+200);
+		}
+	});
 
 	function downFile(){
 			location.href = "${ctx}/datacenter/downloadWord?id=1&type=wenjuan";
 	}
 	 
 		layui.use(['form', 'laydate'], function() {
-			var form = layui.form,
+			var form = layui.form(),
 				laydate = layui.laydate;
 			//监听提交
 	         form.on('submit(formDemo)', function(data){
@@ -123,21 +118,21 @@
 
 	      	});
 			
-			laydate({
-				elem: '#id', //需显示日期的元素选择器
-				event: 'click', //触发事件
-				format: 'YYYY-MM-DD hh:mm:ss', //日期格式
-				istime: false, //是否开启时间选择
-				isclear: true, //是否显示清空
-				istoday: true, //是否显示今天
-				issure: true,
-				festival: true,
-				min: '1900-01-01 00:00:00', //最小日期
-				max: '2099-12-31 23:59:59', //最大日期
-				start: '2014-6-15 23:00:00', //开始日期
-				fixed: false, //是否固定在可视区域
-				zIndex: 99999999 //css z-index
-			});
+// 			laydate({
+// 				elem: '#id', //需显示日期的元素选择器
+// 				event: 'click', //触发事件
+// 				format: 'YYYY-MM-DD hh:mm:ss', //日期格式
+// 				istime: false, //是否开启时间选择
+// 				isclear: true, //是否显示清空
+// 				istoday: true, //是否显示今天
+// 				issure: true,
+// 				festival: true,
+// 				min: '1900-01-01 00:00:00', //最小日期
+// 				max: '2099-12-31 23:59:59', //最大日期
+// 				start: '2014-6-15 23:00:00', //开始日期
+// 				fixed: false, //是否固定在可视区域
+// 				zIndex: 99999999 //css z-index
+// 			});
 		})
 	</script>
 

@@ -68,17 +68,17 @@
 		<ul class="showBianji">
 			<li>
 				<a href="javascript:void(0);" title="下载" onclick="downloadRes('${l.id}','${l.title!''}');">
-					<i class="layui-icon" style="color: #4E97FF;">&#xe601;</i>
+					<i class="layui-icon btnColor">&#xe601;</i>
 				</a>
 			</li>
 			<li>
 				<a href="javascript:void(0);" title="编辑" onclick="edit('${l.id}');">
-					<i class="layui-icon" style="color: #4E97FF;">&#xe642;</i>
+					<i class="layui-icon btnColor">&#xe642;</i>
 				</a>
 			</li>
 			<li>
 				<a href="javascript:void(0);"  title="删除" onclick="del('${l.id}');">
-					<i class="layui-icon" style="color: #4E97FF;">&#xe640;</i>
+					<i class="layui-icon btnColor">&#xe640;</i>
 				</a>
 			</li>
 		</ul>
@@ -92,14 +92,39 @@
 	<input type="hidden" name="sortord" value="${sortord!''}">
 </form>
 <script type="text/javascript" src="${ctx}/js/admin/res/resData.js"></script>
-<#include "/commons/comPage.html" encoding="utf-8"/>
 <script type="text/javascript">
-	function turnPage(p) {
-		$("input[name='p']").val(p);
-		getVideoResData();
+	var skinColor = "#4596E5";
+	var skinName = "${skinName!''}";
+	switch (skinName) {
+		case "springtime":
+			skinColor = "#1cc8d2";
+			break;
+		case "summer":
+			skinColor = "#ee336e";
+			break;
+		case "autumn":
+			skinColor = "#ff9900";
+			break;
+		case "winter":
+			skinColor = "#1ca5d2";
+			break;
+		default:
+			skinColor = "#4596E5";
+			break;
 	}
-</script>
-<script type="text/javascript">
+
+	layui.use([ 'laypage' ], function() {
+		laypage = layui.laypage;
+		laypage({cont : "page",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin :skinColor,groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					getVideoResData();
+				}
+			}
+		});
+	});
+	
 	$(function(){
 		var total = "${total!'0'}";
 		$("#total").text(total);

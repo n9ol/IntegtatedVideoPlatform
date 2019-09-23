@@ -1,7 +1,7 @@
 var layer;
 layui.use([ 'layer','form'], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 	
 	//角色选择监听
 	 form.on('radio(lType)', function(data){

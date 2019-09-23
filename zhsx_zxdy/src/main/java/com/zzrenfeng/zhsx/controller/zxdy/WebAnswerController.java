@@ -122,11 +122,6 @@ public class WebAnswerController extends BaseController {
 		Page<WebAnswer> pageInfo = webAnswerService.getResolve(w, p, 10);
 		int pages = pageInfo.getPages();// 总页数
 		List<WebAnswer> list = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", list);
 		model.addAttribute("search", w.getSearch());
@@ -159,11 +154,6 @@ public class WebAnswerController extends BaseController {
 		Page<WebQuestion> pageInfo = webQuestionService.getNotAnswer(w, p, 10);
 		int pages = pageInfo.getPages();// 总页数
 		List<WebQuestion> list = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", list);
 		model.addAttribute("search", w.getSearch());
@@ -194,11 +184,6 @@ public class WebAnswerController extends BaseController {
 		Page<WebAnswer> pageInfo = webAnswerService.getByQid(w, p, 5);
 		int pages = pageInfo.getPages();
 		List<WebAnswer> list = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		WebQuestion q = webQuestionService.findByKey(w.getQid());
 		// 如果登录用户和问题id相等
 		ShiroUser sh = getShiroUser();
@@ -388,13 +373,7 @@ public class WebAnswerController extends BaseController {
 		Page<WebQuestion> pageInfo = webQuestionService.findNewQue(que, p, 4);
 		int pages = pageInfo.getPages();
 		List<WebQuestion> lists = pageInfo.getResult();
-		int pageSize = pageInfo.getPageSize();
-		long total = pageInfo.getTotal();
-
-		model.addAttribute("pageSize", pageSize);
-		model.addAttribute("total", total);
 		if (lists != null) {
-
 			for (int i = 0; i < lists.size(); i++) {
 				Date time = lists.get(i).getSendTime();
 				DateUtil d = new DateUtil();

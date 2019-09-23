@@ -2,7 +2,7 @@ var layer;
 
 layui.use([ 'layer', 'form', 'upload' ], function() {
 	layer = layui.layer;
-	var form = layui.form;
+	var form = layui.form();
 
 	// 获得科目
 	form.on('select(grade)', function(data) {
@@ -27,13 +27,15 @@ layui.use([ 'layer', 'form', 'upload' ], function() {
 		var type = data.value;
 		if (type == "G") {
 			$(".inMany").css("display", "block");
-			$(".onlinePg").css("display", "none");
+			$(".onlineTypeG").css("display", "inline-block");
 		} else if (type == "A") {
 			$(".inMany").css("display", "none");
 			$(".onlinePg").css("display", "block");
+			$(".onlineTypeG").css("display", "none");
 		}else{
 			$(".inMany").css("display", "none");
 			$(".onlinePg").css("display", "none");
+			$(".onlineTypeG").css("display", "none");
 		}
 	});
 	

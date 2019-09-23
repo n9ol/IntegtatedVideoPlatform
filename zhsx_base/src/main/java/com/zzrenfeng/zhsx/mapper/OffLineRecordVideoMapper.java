@@ -1,7 +1,5 @@
 package com.zzrenfeng.zhsx.mapper;
 
-import java.util.List;
-
 import com.zzrenfeng.zhsx.base.BaseMapper;
 import com.zzrenfeng.zhsx.model.OffLineRecordVideo;
 
@@ -16,15 +14,8 @@ import com.zzrenfeng.zhsx.model.OffLineRecordVideo;
 public interface OffLineRecordVideoMapper extends BaseMapper<OffLineRecordVideo>{
 
 
-	/**
-	 * 根据教室ID和创建日期边界获取该教室自动录制的离线视频记录
-	 * @ OffLineRecordVideo 查询参数主要包括：
-	 * 							classroomId 教室ID
-	 * 							createDateStr1 记录创建日期左边界
-	 * 							createDateStr2 记录创建日期右边界
-	 * @return
-	 */
-	List<OffLineRecordVideo> getListByCidStime(OffLineRecordVideo offLineRecordVideo);
+
+
 
 
 }

@@ -48,11 +48,6 @@ public class WebCommentsController extends BaseController {
 		Page<WebComments> pageInfo = webCommentsService.findPageSelective(webComments, p, 6);
 		int pages = pageInfo.getPages();// 总页数
 		List<WebComments> lists = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("lists", lists);
 		model.addAttribute("contextType", webComments.getContextType());

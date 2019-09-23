@@ -3,11 +3,11 @@
 
 	<head>
 		<meta charset="UTF-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<!-- <#global ctx=rc.contextPath/> -->
 		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/web/mstd_geren.css" />
 	</head>
 
 	<body>
@@ -18,13 +18,12 @@
 					<li class="layui-this">我的试卷</li>
 				</ul>
 				<div class="tianjia" ><a href="#" style="color: white;">添加新试卷</a></div>
-
 			</div>
 			<div class="guanjian clear">
 				<span>筛选：</span>
 				<span>
 						<select name="gradeName" id="gradeName" onchange="getSubject();">
-       							<option value="">选择专业</option>
+       							<option value="">选择年级</option>
        						<#if grades??&&(grades?size>0)><#list grades as g>
        							<option  name="${g.id}"  value="${g.value}">${g.value}</option>
        						</#list></#if>
@@ -37,17 +36,17 @@
 				</span>
 				<span>
 					<select name="status" class="status" id="status">
-        						<option  value="">选择状态</option>
-        						<option  value="Y">已发布</option>
-        						<option  value="N">已过期</option>
-        						<option  value="C">草稿</option>
+   						<option  value="">选择状态</option>
+   						<option  value="Y">已发布</option>
+   						<option  value="N">已过期</option>
+   						<option  value="C">草稿</option>
       				</select>
 				</span>
 				
 				<span>
 					<input   name="addTime1" placeholder="添加日期"  id="addTime1" value="${addTim!''}" onclick="layui.laydate({elem: this, festival: true})"style="width: 100px;height: 24px;margin-left:1px;border:1px solid rgb(170,170,170);text-indent: 1em;" >
 				</span>
-				<img  onclick="searchSchool();" style="margin-top:12px;" alt="搜索" src="${ctx}/img/sousuo.jpg">
+				<img  onclick="searchSchool();" style="margin-top:12px;" alt="搜索" src="${ctx}/skin/${skinName}/img/sousuo.jpg">
 				<span style="float:right;">
 					<input type="text" placeholder="标题/发布人" name="search1" id="search1" value="${search!''}" style="width: 100px;height: 23px;" />
 				</span>
@@ -57,7 +56,7 @@
 				<thead>
 					<tr>
 						<th>NO</th>
-						<th>专业</th>
+						<th>年级</th>
 						<th>科目</th>
 						<th>考试标题</th>
 						<th>总分</th>
@@ -73,7 +72,7 @@
 						<td>${l_index+1}</td>
 						<td>${l.gradeName!''}</td>
 						<td>${l.subiectName!''}</td>
-						<td><a href="javascript:;" onclick="findOne('${l.id!''}')" style="color:blue;">${l.testTitle!''}</a></td>
+						<td><a class="fontColor" href="javascript:;" onclick="findOne('${l.id!''}')" >${l.testTitle!''}</a></td>
 						<td>${l.totalScore!''}</td>
 						<td>${(l.addTime)?string('yyyy-MM-dd')}</td>
 						<td>${((l.lockTime)?string('yyyy-MM-dd'))!''}</td>
@@ -102,20 +101,27 @@
 			<input type="hidden" name="status" value="${status!''}">
 			<input type="hidden" name="addTim" value="${addTim!''}">
 		</form>
-			<div id="page" style="text-align: center;"></div>
+			<div id="kaoping2" style="text-align: center;"></div>
 		</div>
 	</body>	
 	<script type="text/javascript">var memberId = ${principal.id!''}</script>
 	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
-	<#include "/commons/comPage.html" encoding="utf-8"/>
 	<script type="text/javascript">
-		function turnPage(p) {
-			$("input[name='p']").val(p);
-			refreshPage();
-		}
+	layui.use('laypage' , function() {
+		laypage = layui.laypage;
+		laypage({cont : "kaoping2",pages : "${pages!'1'}",curr : "${pageNum!'1'}",skip : false,skin : "#4596e5",groups : 10,
+			jump : function(e, first) {
+				if (!first) {
+					$("input[name='p']").val(e.curr);
+					
+					refreshPage();
+				}
+			}
+		});
+		setIframeH();
+	});
 	</script>
-	
 	<script type="text/javascript">
 	function setIframeH() {
 		var body = $(document.body);
@@ -128,8 +134,8 @@
 		var layer;
 		layui.use(['layer', 'form', 'element','laydate'], function() {
 			 layer = layui.layer,
-				form = layui.form,
-				element = layui.element;
+				form = layui.form(),
+				element = layui.element();
 			 var laydate = layui.laydate;
 		});
 	//获得学科

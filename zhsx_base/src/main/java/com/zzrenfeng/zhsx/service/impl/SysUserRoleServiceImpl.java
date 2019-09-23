@@ -20,7 +20,7 @@ import com.zzrenfeng.zhsx.service.impl.base.BaseServiceImpl;
  * @copyright {@link zzrenfeng.com}
  * @author zzrenfeng.com
  * @version 2017-12-16 10:51:33
- * @see com.zzrenfeng.zhsx.service.impl.ESysUserRole
+ * @see com.zzrenfeng.zhsx.service.impl.SysUserRole
  */
 
 @Service

@@ -21,12 +21,16 @@ import com.zzrenfeng.zhsx.model.ShiroUser;
 import com.zzrenfeng.zhsx.model.SysDict;
 import com.zzrenfeng.zhsx.model.SysSchool;
 import com.zzrenfeng.zhsx.model.WebDeviceRepair;
+import com.zzrenfeng.zhsx.model.WebDeviceTechnician;
 import com.zzrenfeng.zhsx.service.SysDictService;
 import com.zzrenfeng.zhsx.service.SysSchoolService;
 import com.zzrenfeng.zhsx.service.WebDeviceRepairService;
+import com.zzrenfeng.zhsx.service.WebDeviceTechnicianService;
 
 /**
- * 设备保修记录表
+ * 设备报修记录表
+ * 
+ * 能登录上并进行此操作的都有此权限功能
  * 
  * @copyright {@link zzrenfeng.com}
  * @author David
@@ -40,6 +44,8 @@ public class WebDRepairController extends BaseController {
 	@Resource
 	private WebDeviceRepairService webDeviceRepairService;
 	@Resource
+	private WebDeviceTechnicianService webDeviceTechnicianService;
+	@Resource
 	private SysDictService sysDictService;
 	@Resource
 	private SysSchoolService sysSchoolService;
@@ -47,7 +53,6 @@ public class WebDRepairController extends BaseController {
 	private String platformLevel;
 	@Resource
 	private String platformLevelId;
-
 	/**
 	 * 有问题 准备做成动态数据加载
 	 * 
@@ -65,9 +70,9 @@ public class WebDRepairController extends BaseController {
 		SysDict sysDicttemp = new SysDict();
 		SysDict sysDicttemc = new SysDict();
 		SysDict sysDicttema = new SysDict();
-
+		
 		SysSchool sysSchool = new SysSchool();
-
+		
 		String schoolId = request.getParameter("schoolId");
 		String startTime = request.getParameter("startTime");
 		String endTime = request.getParameter("endTime");
@@ -83,35 +88,43 @@ public class WebDRepairController extends BaseController {
 			model.addAttribute("endTimeAgu", endTime);
 			paramMap.put("endTime", endTime);
 		}
-
-		model.addAttribute("platformLevel", platformLevel);// 平台级别
+		
+		model.addAttribute("platformLevel", platformLevel);//平台级别
 
 		/*
-		 * 地区信息备注： 1.国家级别 （1）初次查询显示所有的省、市、县。
-		 * （2）当用户在前台页面筛选好条件，并点击“搜索”后；就再查询所有省份，并在前台选择用户搜索时选择的省份信息；
-		 * 根据用户选择的省份来查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
-		 * 根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息； 2.省级 （1）
-		 * 初次查询显示指定的省下的市和该省下的所有县； （2） 当用户筛选好条件后，并点击“搜索”后；
-		 * 查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
-		 * 根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息； 3.市级 （1） 初次查询显示指定的市下的所有县；
-		 * （2） 查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息； 4.县级 （都不显示） （1）
-		 */
-		if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {// 当是国家级别时
-
+		 * 地区信息备注：
+		 * 1.国家级别
+		 * 	（1）初次查询显示所有的省、市、县。
+		 *  （2）当用户在前台页面筛选好条件，并点击“搜索”后；就再查询所有省份，并在前台选择用户搜索时选择的省份信息；
+		 *  	根据用户选择的省份来查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
+		 *  	根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息；
+		 * 2.省级
+		 * 	（1） 初次查询显示指定的省下的市和该省下的所有县；
+		 *  （2） 当用户筛选好条件后，并点击“搜索”后；
+		 *  	查询该省份下的所有市，并在前台选择上用户搜索时选择的市信息；
+		 *  	根据用户选择的市份来查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息；
+		 * 3.市级
+		 *  （1） 初次查询显示指定的市下的所有县；
+		 *  （2） 查询该市份下的所有县，并在前台选择上用户搜索时选择的县信息；
+		 * 4.县级 （都不显示）
+		 * 	（1）
+		 * */
+		if (platformLevel == null || platformLevel.equals("") || platformLevel.equals("N")) {//当是国家级别时
+			
 			String province = request.getParameter("province");
 			if ((province != null) && (!StringUtils.isEmpty(province))) {
 				model.addAttribute("provinceAgu", province);
 				paramMap.put("province", province);
 				sysDicttemc.setPid(province);
 			}
-
+			
 			String city = request.getParameter("city");
 			if ((city != null) && (!StringUtils.isEmpty(city))) {
 				model.addAttribute("cityAgu", city);
 				paramMap.put("city", city);
 				sysDicttema.setPid(city);
 			}
-
+			
 			String area = request.getParameter("area");
 			if ((area != null) && (!StringUtils.isEmpty(area))) {
 				model.addAttribute("areaAgu", area);
@@ -119,7 +132,7 @@ public class WebDRepairController extends BaseController {
 
 				sysSchool.setCountyId(area);
 			}
-
+			
 			/* 查询所有 省 、地区、 县 */
 			sysDicttemp.setKeyname(SysDict.KEYNAME_PROVINCE);
 			List<SysDict> provinceList = sysDictService.findSelective(sysDicttemp);
@@ -132,39 +145,39 @@ public class WebDRepairController extends BaseController {
 			sysDicttema.setKeyname(SysDict.KEYNAME_AREA);
 			List<SysDict> areaList = sysDictService.findSelective(sysDicttema);
 			model.addAttribute("areaList", areaList);
-		} else if (platformLevel.equals("P")) {// platformLevelId 是省分的id
+		} else if (platformLevel.equals("P")) {//platformLevelId 是省分的id
 			paramMap.put("province", platformLevelId);
-			sysSchool.setProvinceId(platformLevelId);// 查询省下面所有的学校
-
+			sysSchool.setProvinceId(platformLevelId);//查询省下面所有的学校
+			
 			String city = request.getParameter("city");
 			if ((city != null) && (!StringUtils.isEmpty(city))) {
 				model.addAttribute("cityAgu", city);
 				paramMap.put("city", city);
 				sysDicttema.setPid(city);
 			}
-
+			
 			String area = request.getParameter("area");
 			if ((area != null) && (!StringUtils.isEmpty(area))) {
 				model.addAttribute("areaAgu", area);
 				paramMap.put("area", area);
 				sysSchool.setCountyId(area);
 			}
-			// 该省省份下面所有的市
+			//该省省份下面所有的市
 			sysDicttemc.setPid(platformLevelId);
 			sysDicttemc.setKeyname(SysDict.KEYNAME_CITY);
 			List<SysDict> cityList = sysDictService.findSelective(sysDicttemc);
 			model.addAttribute("cityList", cityList);
-
-			// 查询省份下面的所有县
-			sysDicttema.setId(platformLevelId);// 此时仅仅是为了传递数据方便
+			
+			//查询省份下面的所有县
+			sysDicttema.setId(platformLevelId);//此时仅仅是为了传递数据方便
 			sysDicttema.setKeyname(SysDict.KEYNAME_AREA);
 			List<SysDict> areaList = sysDictService.findAreaByProvince(sysDicttema);
 			model.addAttribute("areaList", areaList);
-
+			
 		} else if (platformLevel.equals("C")) {
 			paramMap.put("city", platformLevelId);
-			sysSchool.setCityId(platformLevelId);// 查询市下面所有的学校
-
+			sysSchool.setCityId(platformLevelId);//查询市下面所有的学校
+			
 			String area = request.getParameter("area");
 			if ((area != null) && (!StringUtils.isEmpty(area))) {
 				model.addAttribute("areaAgu", area);
@@ -172,34 +185,31 @@ public class WebDRepairController extends BaseController {
 
 				sysSchool.setCountyId(area);
 			}
-
+			
 			sysDicttema.setPid(platformLevelId);
 			sysDicttema.setKeyname(SysDict.KEYNAME_AREA);
 			List<SysDict> areaList = sysDictService.findSelective(sysDicttema);
 			model.addAttribute("areaList", areaList);
-		} else if (platformLevel.equals("A")) {// 暂时不做处理
+		} else if (platformLevel.equals("A")) {//暂时不做处理
 			paramMap.put("area", platformLevelId);
-			sysSchool.setCountyId(platformLevelId);// 查询区下面所有的学校
-
+			sysSchool.setCountyId(platformLevelId);//查询区下面所有的学校
+			
 			model.addAttribute("platformLevelId", platformLevelId);
 		}
-
+		
 		List<SysSchool> schoolList = sysSchoolService.findSelective(sysSchool);
 		model.addAttribute("schoolList", schoolList);
-
+		
+		
 		paramMap.put("repair_isvalid", WebDeviceRepair.DEVICE_ISVALID_STATE);
 		/* 查询数据 */
 		Page<WebDeviceRepair> pageInfo = webDeviceRepairService.findPageByMapSelective(paramMap, p, 10);
 		int pages = pageInfo.getPages(); // 总页数
 		List<WebDeviceRepair> ldr = pageInfo.getResult();
-		long total = pageInfo.getTotal();
-		int pageSize = pageInfo.getPageSize();
-
-		model.addAttribute("total", total);
-		model.addAttribute("pageSize", pageSize);
 		model.addAttribute("pages", pages);
 		model.addAttribute("pageNum", p);// 当前页
 		model.addAttribute("ldr", ldr);
+
 		return "/admin/device/em_fixed_info";
 	}
 
@@ -227,31 +237,45 @@ public class WebDRepairController extends BaseController {
 	@RequestMapping(value = "/insertDR")
 	public String insertDR(HttpServletRequest request, HttpServletResponse response, WebDeviceRepair dr) {
 		ShiroUser user = getShiroUser();
-		dr.setCreate_id(user.getId());
-		dr.setModify_id(user.getId());
-		dr.setCreate_time(new Date());
-		dr.setModify_time(new Date());
-		dr.setRepair_time(new Date());
+		dr.setCreateId(user.getId());
+		dr.setModifyId(user.getId());
+		dr.setCreateTime(new Date());
+		dr.setModifyTime(new Date());
+		dr.setRepairTime(new Date());
 
 		String schoolId = user.getSchoolId();
-		dr.setRepair_unit(schoolId);
+		//dr.setSchoolId(schoolId);
 
-		SysSchool sysSchool = sysSchoolService.findByKey(schoolId);
-		dr.setRepair_unit_name(sysSchool.getSchoolName());
+//		SysSchool sysSchool = sysSchoolService.findByKey(schoolId);
+//		dr.setRepair_unit_name(sysSchool.getSchoolName());
 
-		dr.setRepair_isvalid(WebDeviceRepair.DEVICE_ISVALID_STATE);
+		dr.setIsvalid(WebDeviceRepair.DEVICE_ISVALID_STATE);
 		webDeviceRepairService.dataInsert(dr);
 		return "redirect:/webdevicerepair/admin/listDRByContion";
 	}
 
 	@RequestMapping(value = "/findDRById")
 	public String findDRById(HttpServletRequest request, HttpServletResponse response, Model model) {
-		String repair_id = request.getParameter("repair_id");
-		WebDeviceRepair dr = webDeviceRepairService.findByKey(repair_id);
+		String id = request.getParameter("repair_id");
+		
+		WebDeviceRepair dr = webDeviceRepairService.findByKey(id);
 		model.addAttribute("dr", dr);
-
-		String pca = getDicts();
-		model.addAttribute("pca", pca);
+		
+		WebDeviceTechnician wdt = new WebDeviceTechnician();
+		List<WebDeviceTechnician> wdtList = webDeviceTechnicianService.findSelective(wdt);
+		model.addAttribute("wdtList", wdtList);
+		
+		
+		/*
+		 * String pca = getDicts();
+		   model.addAttribute("pca", pca);
+		
+		*/
+		
+		
+		
+		
+		
 
 		String flag = request.getParameter("flag");
 		if ("1".equalsIgnoreCase(flag)) {
@@ -271,22 +295,23 @@ public class WebDRepairController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/updateDR")
-	public Map<String, Object> updateDR(HttpServletRequest request, HttpServletResponse response, WebDeviceRepair dr) {
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-
+	public Map<String,Object> updateDR(HttpServletRequest request, HttpServletResponse response, WebDeviceRepair dr) {
+		Map<String,Object> resultMap = new HashMap<String,Object>();
+		
+		dr.setManagerTime(new Date());
+		//提交的日期如果大于2天  暂时不做
+		dr.setManaOverdueState(WebDeviceRepair.MANA_OVERDUE_STATE_OK);
 		int state = webDeviceRepairService.dataUpdateByKeySelective(dr);
-		;
-		if (state != 0) {// 成功
+		if(state!=0){//成功
 			resultMap.put("errorCode", 0);
-		} else {// 失败
+		}else{//失败
 			resultMap.put("errorCode", 1);
 		}
 		return resultMap;
 	}
-
+	
 	/**
 	 * 删除设备信息
-	 * 
 	 * @param dm
 	 * @param request
 	 * @param response
@@ -294,74 +319,74 @@ public class WebDRepairController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = "/deviceDeleteDRepair")
-	public String deviceDeleteDM(String ids, HttpServletRequest request, HttpServletResponse response, Model model) {
-
+	public String deviceDeleteDM(String ids, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		
 		webDeviceRepairService.deleteBatchByKeys(ids);
-
+		
 		return "redirect:/webdevicerepair/admin/listDRByContion";
 	}
-
+	
 	/**
 	 * 获取地区信息
-	 * 
 	 * @return
 	 */
-	public String getDicts() {
+	public String getDicts(){
 		SysDict dicts = sysDictService.findByKey(platformLevelId);
 		// 根据学校获取省市县的信息
 		ShiroUser user = getShiroUser();
 		String schoolId = user.getSchoolId();
 		SysSchool sysSchool = sysSchoolService.findByKey(schoolId);
 		String pca = "";
-		if (sysSchool != null) {
+		if(sysSchool != null){
 			String province = sysSchool.getProvinceName();
 			String city = sysSchool.getCityName();
 			String country = sysSchool.getCountyName();
 			pca = province + city + country;
-		} else {
-			// bak2 是县级信息
-			String bak2 = user.getBak2();
-			if (bak2 != null) {
-				// 从配置文件中读去数据
+		}else{
+			//bak2  是县级信息
+			String bak2= user.getBak2();
+			if(bak2 != null){
+				//从配置文件中读去数据
 				SysDict areaDict = sysDictService.findByKey(bak2);
-				if (areaDict != null) {
-
-					if (SysDict.KEYNAME_PROVINCE.equalsIgnoreCase(platformLevel)) {
+				if(areaDict!=null){
+					
+					if(SysDict.KEYNAME_PROVINCE.equalsIgnoreCase(platformLevel)){
 						SysDict cityDict = sysDictService.findByKey(areaDict.getPid());
-
-						if (cityDict != null) {
+						
+						if(cityDict != null ){
 							SysDict provinceDict = sysDictService.findByKey(cityDict.getPid());
-							if (provinceDict != null) {
-								pca = provinceDict.getValue() + cityDict.getValue() + areaDict.getValue();
-							} else {
+							if(provinceDict != null){
+								pca = provinceDict.getValue()+cityDict.getValue()+areaDict.getValue();
+							}else{
 								pca = dicts.getValue();
 							}
-						} else {
+						}else{
 							pca = dicts.getValue();
 						}
-
-					} else if (SysDict.KEYNAME_CITY.equalsIgnoreCase(platformLevel)) {
-						// 市区信息
+						
+					}else if(SysDict.KEYNAME_CITY.equalsIgnoreCase(platformLevel)){
+						//市区信息
 						SysDict cityDict = sysDictService.findByKey(areaDict.getPid());
-						if (cityDict != null) {
-							pca = cityDict.getValue() + areaDict.getValue();
-						} else {
+						if(cityDict != null){
+							pca = cityDict.getValue()+areaDict.getValue();
+						}else{
 							pca = dicts.getValue();
 						}
-					} else if (SysDict.KEYNAME_AREA.equalsIgnoreCase(platformLevel)) {
+					}else if(SysDict.KEYNAME_AREA.equalsIgnoreCase(platformLevel)){
 						pca = areaDict.getValue();
 					}
-
-				} else {
+					
+				}else{
 					pca = dicts.getValue();
 				}
-			} else {
+			}else{
 				pca = dicts.getValue();
-
+				
 			}
 		}
-
+		
 		return pca;
 	}
-
+	
 }

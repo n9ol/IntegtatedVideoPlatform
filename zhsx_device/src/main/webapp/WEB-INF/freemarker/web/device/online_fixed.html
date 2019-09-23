@@ -3,7 +3,7 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>教育综合视讯管理平台</title>
+		<title>淇县教育综合视讯管理平台</title>
 		<#include "/commons/comWeb.html" encoding="utf-8"/>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -12,8 +12,56 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="format-detection" content="telephone=no">
 		
-		<link rel="stylesheet" type="text/css" href="${ctx}/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="${ctx}/skin/${skinName}/global.css" media="all">
 		<link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
+		<style type="text/css">
+			.shebei {
+				width: 950px;
+				margin: 0 auto;
+			}
+			.layui-form-item{
+				position:relative;
+			}
+			.layui-form .layui-form-item label.layui-form-label {
+				width: 120px;
+				font-family: "Microsoft YaHei";
+			}
+			
+			.layui-input-block {
+				margin-left: 160px;
+				text-align: right;
+			}
+			
+			#shebeiTable {
+				/*display:none;*/
+				width: 930px;
+			}
+			
+			.row {
+				float: left;
+				width: 50%;
+			}
+			
+			header.larry-personal-tit span {
+				display: block;
+				text-align: center;
+				font-size: 30px;
+				line-height: 97px;
+				font-weight: bold;
+				color:#000;
+			}
+			
+			/* 重新设定高 */
+			header.larry-personal-tit{
+				height: 100px;
+			}
+			.redStar{
+			    position: absolute;
+			    right: -15px;
+			    top: 13px;
+			    color: red;
+			    }
+		</style>
 	</head>
 
 	<body>
@@ -23,7 +71,7 @@
 		<div class="mianbaoxue">
 			<span class="layui-breadcrumb">
   					<a href="../index.html">首页</a>
-  					<a><cite>班班通</cite></a>
+  					<a><cite>设备管理</cite></a>
   					<a><cite>设备维护</cite></a>
   					<a><cite>设备报修</cite></a>
 				</span>
@@ -38,119 +86,98 @@
 					</header>
 					<div class="layui-tab-content larry-personal-body clearfix">
 						<form id="form1" class="layui-form" action="" method="post">
-							<div class="row">
-								<div class="col-md-6 pull-left">
-									<div class="layui-form-item">
-										<label class="layui-form-label">联系人：</label>
-										<div class="layui-input-block">
-											<input type="hidden" id="repair_id" name="repair_id" value="${(dr.repair_id)!''}" >
-			                                <!-- 报修设备单位 -->
-			                                <input type="hidden" id="repair_unit" name="repair_unit" value="${(dr.repair_unit)!''}" >
-			                                <!-- 报修设备单位名字 -->
-			                                <input type="hidden" id="repair_unit_name" name="repair_unit_name" value="${(dr.repair_unit_name)!''}" >
-			                                
-											<input type="text" id="repair_person" name="repair_person" class="layui-input" value="${(dr.repair_person)!''}">
+								<div class="row">
+									<div class="col-md-6 pull-left">
+										<input type="hidden" id="id" name="id" value="${(dr.id)!''}" >
+										<!-- 报修设备单位  默认从单位中取出 -->								
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修单位：</label>
+											<div class="layui-input-block">
+												<input type="hidden" id="school.id" name="school.id" value="${principal.schoolId!''}" class="layui-input" readonly>
+												<input type="text" id="schoolName" name="school.schoolName" value="${school.schoolName!''}" class="layui-input" lay-verify="required" readonly>
+											</div>
+											<span class="redStar">*</span>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">联系电话：</label>
-										<div class="layui-input-block">
-											<input type="tel" id="repair_tel" name="repair_tel" class="layui-input" value="${(dr.repair_tel)!''}">
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修班级：</label>
+											<div class="layui-input-block">
+												<select id="sysClassId" name="sysClass.id" lay-filter="sysClassId" lay-verify="required" ><!-- onchange="getDeviceByClassId()" -->
+				                            		<option value="" >请选择班级</option>             			
+				                            		<#if sysClassroomList?exists && sysClassroomList?size != 0 > 
+					                            		<#list sysClassroomList as sysClassroom>
+					             							  <option value="${sysClassroom.id}" >${sysClassroom.className}</option>             			
+					                            		</#list>
+				                            		</#if>
+				                                </select>
+											</div>
+											<span class="redStar">*</span>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">报修型号：</label>
-										<div class="layui-input-block">
-											<input type="text" id="device_type" name="device_type" class="layui-input" value="${(dr.device_type)!''}">
+										
+										<!-- 根据选择的报修班级选择设备mac     先选择班级然后根据班级选择对应的mac地址           ????????????????     -->
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修设备类型：</label>
+											<div class="layui-input-block">
+												<select id="sysDictId" name="sysDict.id" lay-filter="sysDictId" lay-verify="required">
+													
+													<option value="" >请选择设备类型</option>
+													<#if typeList?exists && typeList?size != 0 > 
+														<#list typeList as tl>
+															<option value="${tl.id}" >${tl.value}</option>                  
+														</#list>
+													</#if>
+													 
+												</select>
+											</div>
+											<span class="redStar">*</span>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">所在城市：</label>
-										<div class="layui-input-block">
-											<input type="text" name="pca" class="layui-input" value="${(pca)!''}" readonly>
+										<!-- 申报的报修人就是该登录人员 -->
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修人员：</label>
+											<div class="layui-input-block">
+												<input type="hidden" id="user.id" name="user.id" value="${principal.id!''}" class="layui-input" lay-verify="required" readonly>
+												<input type="text" id="nickName" name="user.nickName" value="${principal.nickName!''}" class="layui-input" readonly>
+											</div>
+											<span class="redStar">*</span>
 										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">上门地址：</label>
-										<div class="layui-input-block">
-											<input type="text" id="repair_addr" name="repair_addr" class="layui-input" value="${(dr.repair_addr)!''}">
-										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">购机时间：</label>
-										<div class="layui-input-block">
-											<input class="layui-input" name="repair_buy_time" placeholder="购机时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" value="${(dr.repair_buy_time?string('yyyy-MM-dd HH:mm:ss'))!}">
-										</div>
-									</div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">服务时间：</label>
-										<div class="layui-input-block">
-											<input class="layui-input" name="repair_service_time" placeholder="服务时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" value="${(dr.repair_service_time?string('yyyy-MM-dd HH:mm:ss'))!}">
-										</div>
+										
 									</div>
 								</div>
-								<div class="col-md-6 pull-left">
-									<div class="layui-form-item layui-form-text">
-										<label class="layui-form-label">故障描述：</label>
-										<div class="layui-input-block">
-											<textarea id="repair_description" name="repair_description" class="layui-textarea">${(dr.repair_description)!''}</textarea>
+								
+								<div class="row">
+									<div class="col-md-6 pull-left">
+										<!-- 申报的报修人手机号从登录人员用户表中获取  -->
+										<div class="layui-form-item">
+											<label class="layui-form-label">报修人手机：</label>
+											<div class="layui-input-block">
+												<input type="text" id="phone" name="user.phone" value="${principal.phone!''}" class="layui-input" lay-verify="required">
+											</div>
+											<span class="redStar">*</span>
 										</div>
-									</div>
-									<div class="layui-form-item layui-form-text">
-		                            	<label class="layui-form-label">维修状态：</label>
-			                            <div class="layui-input-block">
-			                                <select id="repair_state" name="repair_state" lay-filter="area">
-			                                	<#assign sel1="">
-			                                	<#if (((dr.repair_state)!'') == '1')> <#assign sel1="selected"> </#if>
-			                            		<option id="state1" value="1" ${sel1}>未维修</option>
-			                            		<#assign sel2="">
-			                                	<#if (((dr.repair_state)!'') == '2')> <#assign sel2="selected"> </#if>
-			                                	<option id="state2" value="2" ${sel2}>维修中</option>
-			                                	<#assign sel0="">
-			                                	<#if (((dr.repair_state)!'') == '0')> <#assign sel0="selected"> </#if>
-			                            		<option id="state0" value="0" ${sel0}>已维修</option>
-			                                </select>
-			                            </div>
-			                        </div>
-			                        <div class="layui-form-item layui-form-text">
-			                            <label class="layui-form-label">维修人：</label>
-			                            <div class="layui-input-block">
-			                                 <input type="text" id="maintenance_man" name="maintenance_man" class="layui-input" value="${(dr.maintenance_man)!''}">
-			                            </div>
-			                        </div>
-			                        <div class="layui-form-item layui-form-text">
-			                            <label class="layui-form-label">维修人电话：</label>
-			                            <div class="layui-input-block">
-			                                 <input type="text" id="maintenance_tel" name="maintenance_tel" class="layui-input" value="${(dr.maintenance_tel)!''}">
-			                            </div>
-			                        </div>
-									<div class="layui-form-item">
-										<label class="layui-form-label">维修历史：</label>
-										<div class="layui-input-block">
-											<textarea id="repair_record_description" name="repair_record_description" class="layui-textarea">${(dr.repair_record_description)!''}</textarea>
+										<div class="layui-form-item layui-form-text">
+											<label class="layui-form-label">故障描述：</label>
+											<div class="layui-input-block">
+												<textarea id="repairDescription" name="repairDescription" class="layui-textarea" lay-verify="required">${(dr.repairDescription)!''}</textarea>
+											</div>
+											<span class="redStar">*</span>
 										</div>
-									</div>
-									<div class="layui-form-item layui-form-text">
-										<label class="layui-form-label">您的建议：</label>
-										<div class="layui-input-block">
-											<textarea id="maintenance_suggestion" name="maintenance_suggestion" class="layui-textarea">${(dr.maintenance_suggestion)!''}</textarea>
-										</div>
-									</div>
 
-									<div class="layui-form-item">
-										<div class="layui-input-block text-center">
-											<button onclick="insertOrUpdate()" class="layui-btn">立即提交</button>
-											<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-										</div>
 									</div>
+								</div>
+
+							</form>
+							<div class="layui-form-item">
+								<div class="layui-input-block text-center">
+						        	<button class="layui-btn" onclick="insertOrUpdate()">立即提交</button>
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 								</div>
 							</div>
-						</form>
-
 					</div>
+					
 				</div>
 			</div>
 		</section>
+
+		
 		<!--底部 start -->
 		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
 		<!--底部 end-->
@@ -158,21 +185,100 @@
 		
 		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
 		<script type="text/javascript">
-			layui.use(['form', 'upload','laydate'], function() {
-				var form = layui.form;
-				var laydate = layui.laydate;
+			var form;
+			var layer;
+		
+			layui.use(['jquery','form', 'upload'], function() {
+				form = layui.form();
+				layer = layui.layer;
 				
-				layui.upload({
-					url: '', //上传接口 
-					success: function(res) {
-						//上传成功后的回调 
-						console.log(res)
-					}
-				});
+				/* form.on('select(sysClassId)', function(data){//
+					var classId = $("#sysClassId").val(); //获取选中记录的value值  
+				    if(typeof(classId)=='undefined' || classId==null || classId.length <= 0 ){//用不到
+				    	//layer.alert('请选择班级信息', {icon: 1});
+				    	layer.open({
+			    		  title: '温馨提示'
+			    		  ,content: '请选择班级'
+			    		});  
+				    }else{
+				    	
+						//清理相关内容
+						$("#webDeviceManageId").empty();
+						$("#webDeviceManageId").append('<option value="">请选择设备类型</option>');
+						
+						$.ajax({
+							url:"${ctx}/webdevicerepair/getDeviceByClassId?classId="+classId,
+							type:'post',
+							success:function(datas){
+								console.log(datas);
+								
+								var deviceHtml = '<option value=""></option>';
+				            	for(var i = 0; i < datas.length; i++) {
+				            		if(typeof(datas[i])!='undefined' && datas[i]!=null ){
+				            			deviceHtml += '<option value="' + datas[i].id + '">' +
+						                datas[i].typeValue + '</option>';
+				            		}
+					            }
+					            
+					            $("#webDeviceManageId").html(deviceHtml).parent().show();
+					            form.render();
+							}    
+					   }); 
+				    }
+					
+		       	 	
+		   		}); 
+				return false;  */
 			});
 			
 			function insertOrUpdate(){
-				var repair_id= $("#repair_id").val();
+				//获取用户的角色，查看是否是
+			 	var role = "${principal.bak1!''}";
+			 	if( role != "SA"){
+			 		layer.msg('您无权限提交，请找校级管理员进行提交！');
+			 		return false;
+			 	}
+				/* 验证各个内容是否为空,不为空才能提交 */
+				var schoolName = $("#schoolName").val(); 
+				
+				if((schoolName == null) || (typeof(schoolName) == "undefined") || (schoolName=="")){
+					layer.msg('报修单位不能为空！');
+					return false;
+				}
+				var sysClassId = $("#sysClassId").val(); 
+				if((sysClassId == null) || (typeof(sysClassId) == "undefined") || (sysClassId=="")){
+					layer.msg('报修班级不能为空！');
+					return false;
+				}
+				var sysDictId = $("#sysDictId").val(); 
+				if((sysDictId == null) || (typeof(sysDictId) == "undefined") || (sysDictId=="")){
+					layer.msg('报修设备类型不能为空！');
+					return false;
+				}
+				
+				var nickName = $("#nickName").val(); 
+				if((nickName == null) || (typeof(nickName) == "undefined") || (nickName=="")){
+					layer.msg('报修人员不能为空！');
+					return false;
+				}
+				
+				var phone = $("#phone").val(); 
+				if((phone == null) || (typeof(phone) == "undefined") || (phone=="")){
+					layer.msg('手机号不能为空！');
+					return false;
+				}
+				var repairDescription = $("#repairDescription").val(); 
+				if((repairDescription == null) || (typeof(repairDescription) == "undefined") || (repairDescription=="")){
+					layer.msg('描述不能为空！');
+					return false;
+				}else{
+					if(repairDescription.length>256){
+						layer.msg('描述长度不能超过256个字符！');
+						return false;
+					}
+				}
+				
+				var repair_id= $("#id").val();
 				if((repair_id != null) && (typeof(repair_id) != "undefined") && (repair_id!="")){
 					$("#form1").attr("action","${ctx}/webdevicerepair/updateDR");
 				}else{
@@ -180,6 +286,9 @@
 				}
 				$("#form1").submit();
 			}
+			
+			
+			
 		</script>
 	</body>
 
