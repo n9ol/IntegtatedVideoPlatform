@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<!-- <#global ctx=rc.contextPath/> -->
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/geren_five.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+
+	<body>
+
+		<div class="mainbody">
+			<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 添加新试卷</p>
+<!-- 			<div class="title"> -->
+<!-- 				<div class="fl arr"> -->
+<!-- 				</div> -->
+<!-- 				<div class="fl text yahei">添加考题选项</div> -->
+<!-- 				<div class="clear"> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+			<div class="dotline2">
+			</div>
+			
+				<div class="navbar">
+					<div class="barlist">
+						<div class="fl currbar" style="padding-left:25px;padding-right:25px;">
+							<div class="ntext yahei">1.添加基本信息</div>
+						</div>
+						<div class="fl currsplit sanjiao" ></div>
+						<div class="fl currbar" style="padding-left:25px;padding-right:25px; color: #fff;">
+							<div class="ntext yahei">2.添加选项</div>
+						</div>
+						<div class="fl  currsplit sanjiao"></div>
+						<div class="fl nextbar" style="padding-left:25px;padding-right:25px;">
+							<div class="ntext yahei">3.完成发布</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="hsplit">
+			</div>
+			<div class="inforow">
+				<div class="fl text font20 yahei"> 第三步、设置试卷问题：</div>
+				<div class="clear">
+				</div>
+			</div>
+			<div style="height:30px;">
+			</div>
+			<div class="" style="color:red;size:15px;">
+			考卷题目：${testTitle!''}
+			</div>
+			<div class="dotline2"></div>
+					<div class="inforow">
+						<div class="fl">
+							<button class="addQuestion" >添加考卷试题</button>
+						</div>
+						<div class="fl font16 yahei" style="padding-top:5px; color:#666;"></div>
+						<div class="clear"></div>
+					</div>
+					<div class="dotline2"></div>
+					
+				<#if lists??&&(lists?size>0)>
+				<table class="layui-table table">
+					<thead>
+						<tr>
+							<th>NO</th>
+							<th>专业</th>
+							<th>科目</th>
+							<th>考试标题</th>
+							<th>考分</th>
+							<th>题序</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<#if lists??&&(lists?size>0)><#list lists as l>
+					<tbody>
+						<tr>
+							<td>${l_index+1}</td>
+							<td>${l.gradeName!''}</td>
+							<td>${l.subjectName!''}</td>
+							<td><a href="">${l.questionTitle!''}</a></td>
+							<td><input id="${l.questionId}" name="scores" value="${l.scores!''}" size="3" onblur="javascript:scores('${l.id}','${l.questionId}');"></td>
+							<td><input id="${l.questionId}${l.sortCode!''}" name="sortCode" value="${l.sortCode!''}" size="3" onblur="javascript:sortCode('${l.id}','${l.sortCode!''}','${l.questionId}');"></td>
+							<td><a href="javascript:del('${l.id}');">删除</a></td>
+						</tr>
+					</tbody>
+					</#list></#if>
+				</table>
+					<#else>
+				<div style="padding-top: 20px; padding-bottom: 30px;">
+						提示：暂时还没有任何考题！
+				</div>
+			</#if>
+				<div id="prage" style="text-align: center;"></div>
+				<div style="height:20px;"></div>
+				<div class="font12">目前已添加&nbsp;<b id="size">${size!''}</b>&nbsp;道考题，预设总分为&nbsp;${totalScore!''}&nbsp;分，已设置分数为&nbsp;
+					<font class="fontred">${num!''}</font>&nbsp;分
+					<div class="fr back yahei">
+						
+				</div>
+				<div class="dotline"></div>
+				<div style="height:10px;"></div>
+				<div>
+					<button 	class="layui-btn"" onclick="xiayibu('Y')">发布</button>
+					<button 	class="layui-btn" onclick="xiayibu('N')">存为草稿</button>
+					<button 	class="layui-btn" onclick="findOne('${testId!''}')">查看</button>
+				</div>
+				</div>
+			</div>
+		<form id="form" action="${ctx}/test/addTi" method="post">
+			<input type="hidden" name="p" value="${pageNum}">
+			<input type="hidden" name="testId" value="${testId!''}">
+			<input type="hidden" name="testTitle" value="${testTitle!''}">
+			<input type="hidden" name="totalScore" value="${totalScore!''}">
+		</form>
+			
+	</body>
+	<!-- end -->
+	<script type="text/javascript">var memberId="${principal.id!''}";</script>
+	<script type="text/javascript">var testId="${testId!''}";</script>
+	<script type="text/javascript">var testTitle="${testTitle!''}";</script>
+	<script type="text/javascript">var totalScore="${totalScore!''}";</script>
+	<script type="text/javascript">var size="${size!''}"; var num = ${num!''}</script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+	<script type="text/javascript" src="${ctx}/js/refresh.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+			setIframeH();	
+		}
+	</script>
+	<script type="text/javascript">
+	setIframeH();
+	function setIframeH() {
+		var body = $(document.body);
+		var iframe = $(parent.document.getElementById('parentIframe'));
+		iframe.height(body.height());
+	}
+	
+	
+		var layer;
+		layui.use(['layer', 'form', 'element'], function() {
+			 layer = layui.layer,
+				form = layui.form,
+				element = layui.element;
+
+		});
+		
+		
+		$(".addQuestion").click(function() {
+			LayerOpen('查看详情', '900px', '800px','${ctx}/testwebquestion/findQuestionByMemberId?memberId='+memberId+'&testId='+testId+'&testTitle='+testTitle+'&totalScore='+totalScore);
+		});
+		
+		window.onload=function(){
+	        var oIpt = document.getElementsByTagName('input')
+	        for(var i=0;i<oIpt.length;i++)
+	        oIpt[i].onclick=function(){
+	            this.value = ""
+	        }
+	    }
+		
+		 function scores(id,qid){
+			var scores = $("#"+qid).val();
+			var array=$("[name='scores']");//单引号 的name替换为相应的name
+			var result = 0;
+			var val;
+			for(var i=0;i<array.length;i++){
+				val=$(array[i]).val();
+				if(val==""){
+					val=0;
+				}
+				result += parseInt(val);
+			 
+			//对value进行操作就OK了
+			}
+			
+			if(totalScore<result){
+				layer.msg('设置题分已超过总分，请重新分配');
+			}else{
+				
+				$.ajax({
+					type:"post",
+					url:"${ctx}/test/editScores",
+					data:{id:id,scores:scores},
+					success: function(data){
+						location.reload();
+						
+					}
+					
+				});
+			}
+		}
+		
+		function sortCode(id,code,qid){
+			var sortCode = $("#"+qid+code).val();
+			$.ajax({
+				type:"post",
+				url:"${ctx}/test/editScores",
+				data:{id:id,sortCode:sortCode},
+				success: function(data){
+					location.reload();
+				}
+				
+			});
+		} 
+		 function del(id){
+			layer.confirm('你确定要删除？',{shade: [0.2, '#FFFFFF']},function(){
+				$.ajax({
+					type:"post",
+					url:"${ctx}/test/delTestQue",
+					data:{id:id},
+					success: function(data){
+						
+						parent.$(".zhong_right iframe").attr("src", "${ctx}/test/addTi?testId="+testId+"&testTitle="+testTitle+"&totalScore="+totalScore);
+						setIframeH();
+						function setIframeH() {
+							var body = $(document.body);
+							var iframe = $(parent.document.getElementById('parentIframe'));
+							iframe.height(body.height());
+						}
+						
+					}
+					
+				});
+			});
+		}  
+	function refreshPage(){
+		$("#form").submit();
+	}
+	
+	function xiayibu(ispub){
+		var size = $("#size").html();
+		$.ajax({
+			type:"post",
+			url:"${ctx}/test/xiayibu",
+			data:{"id":testId,"questions":size,"ispub":ispub},
+			success: function(data){
+				
+				parent.$(".zhong_right iframe").attr("src", "${ctx}/test/xiayibu?id="+testId+"&questions="+size);
+				setIframeH();
+				function setIframeH() {
+					var body = $(document.body);
+					var iframe = $(parent.document.getElementById('parentIframe'));
+					iframe.height(body.height());
+				}
+				
+			}
+			
+		});
+	}	
+	function findOne(id){
+		 parent.$(".zhong_right iframe").attr("src", "${ctx}/test/findOne?testId="+id);
+			setIframeH();
+			function setIframeH() {
+				var body = $(document.body);
+				var iframe = $(parent.document.getElementById('parentIframe'));
+				iframe.height(body.height());
+			}
+	 }
+
+	
+	</script>
+
+</html>

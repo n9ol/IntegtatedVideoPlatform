@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysSchoolMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysSchool" >
+		<result column="id" property="id" />
+		<result column="schoolName" property="schoolName" />
+		<result column="provinceId" property="provinceId" />
+		<result column="cityId" property="cityId" />
+		<result column="countyId" property="countyId" />
+		<result column="address" property="address" />
+		<result column="isaf" property="isaf" />
+		<result column="createTime" property="createTime" />
+		<result column="modiyTime" property="modiyTime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,schoolName,provinceId,cityId,countyId,address,isaf,createTime,modiyTime,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.provinceId) as provinceName,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.cityId) as cityName,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.countyId) as countyName
+		from sys_school s
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_school
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="SysSchool" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_school (id,schoolName,provinceId,cityId,countyId,address,isaf,createTime,modiyTime,bak,bak1,bak2)
+		values (#{id},#{schoolName},#{provinceId},#{cityId},#{countyId},#{address},#{isaf},#{createTime},#{modiyTime},#{bak},#{bak1},#{bak2})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysSchool" >
+		update sys_school
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="schoolName != null" >
+				schoolName = #{schoolName},
+			</if>
+			<if test="provinceId != null" >
+				provinceId = #{provinceId},
+			</if>
+			<if test="cityId != null" >
+				cityId = #{cityId},
+			</if>
+			<if test="countyId != null" >
+				countyId = #{countyId},
+			</if>
+			<if test="address != null" >
+				address = #{address},
+			</if>
+			<if test="isaf != null" >
+				isaf = #{isaf},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="modiyTime != null" >
+				modiyTime = #{modiyTime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysSchool" >
+		update sys_school
+		set 
+		id = #{id},
+		schoolName = #{schoolName},
+		provinceId = #{provinceId},
+		cityId = #{cityId},
+		countyId = #{countyId},
+		address = #{address},
+		isaf = #{isaf},
+		createTime = #{createTime},
+		modiyTime = #{modiyTime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="schoolName != null" >
+				and schoolName = #{schoolName}
+			</if>
+			<if test="provinceId != null" >
+				and provinceId = #{provinceId}
+			</if>
+			<if test="cityId != null" >
+				and cityId = #{cityId}
+			</if>
+			<if test="countyId != null" >
+				and countyId = #{countyId}
+			</if>
+			<if test="address != null" >
+				and address = #{address}
+			</if>
+			<if test="isaf != null" >
+				and isaf = #{isaf}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="modiyTime != null" >
+				and modiyTime = #{modiyTime}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="search!=null">
+				and (schoolName like '%${search}%' or address like '%${search}%'
+					or provinceId in (select id from sys_dict where keyname='P' and value like '%${search}%')
+					or cityId in (select id from sys_dict where keyname='C' and value like '%${search}%')
+					or countyId in (select id from sys_dict where keyname='A' and value like '%${search}%')
+				)
+			</if>
+			<if test="authority != null">
+				<if test="ids != null">
+					and id in<foreach collection="ids" open="(" close=")" item="id" separator=",">#{id}</foreach>
+				</if>
+				<if test="ids == null">
+					and id in (null)
+				</if>
+			</if>	
+		</where>
+		ORDER BY createTime DESC
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysSchool" resultType="SysSchool">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_school
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="SysSchool" resultType="SysSchool">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.provinceId) as provinceName,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.cityId) as cityName,
+		(SELECT `value` FROM sys_dict d WHERE d.id=s.countyId) as countyName
+		from sys_school s
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<delete id="delBatchSchool" parameterType="java.util.List">
+		delete from sys_school where id IN 
+		<foreach collection="list" open="(" close=")" item="id" separator=",">#{id}</foreach>
+	</delete>
+	
+	
+
+	<insert id="insertBatch" parameterType="java.util.List" >
+		insert into sys_school (id,schoolName,provinceId,cityId,countyId,address,isaf,createTime,modiyTime,bak,bak1,bak2)
+		values
+		<foreach collection="list" item="schools"  separator=",">
+			((select uuid()),#{schools.schoolName},#{schools.provinceId},#{schools.cityId},#{schools.countyId},#{schools.address},#{schools.isaf},#{schools.createTime},#{schools.modiyTime},#{schools.bak},#{schools.bak1},#{schools.bak2})
+		</foreach>
+	</insert>
+	
+	
+	<select id="findIdAndSchoolNameSelective" parameterType="SysSchool" resultType="SysSchool">
+		select id,schoolName from sys_school
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	
+	
+	<insert id="insertBatchFromOld" parameterType="java.util.List" >
+		insert into sys_school (id,schoolName,provinceId,cityId,countyId,address,isaf,createTime,modiyTime,bak,bak1,bak2)
+		values
+		<foreach collection="list" item="schools"  separator=",">
+			(#{schools.id},#{schools.schoolName},#{schools.provinceId},#{schools.cityId},#{schools.countyId},#{schools.address},#{schools.isaf},#{schools.createTime},#{schools.modiyTime},#{schools.bak},#{schools.bak1},#{schools.bak2})
+		</foreach>
+	</insert>
+	
+	
+	
+	<select id="findSchoolClassNotNull" parameterType="SysSchool" resultType="SysSchool">
+		SELECT s.* FROM sys_school s,sys_classroom c WHERE c.schoolId = s.id 
+		 <if test="search!=null">
+			and (s.schoolName like '%${search}%' or s.address like '%${search}%'
+				or s.provinceId in (select id from sys_dict where keyname='P' and value like '%${search}%')
+				or s.cityId in (select id from sys_dict where keyname='C' and value like '%${search}%')
+				or s.countyId in (select id from sys_dict where keyname='A' and value like '%${search}%')
+			)
+		</if>
+		<if test="authority != null">
+			<if test="ids != null">
+				and s.id in<foreach collection="ids" open="(" close=")" item="id" separator=",">#{id}</foreach>
+			</if>
+			<if test="ids == null">
+				and s.id in (null)
+			</if>
+		</if>
+		GROUP BY s.id
+	</select>
+	
+	
+	
+	
+	
+	
+	
+</mapper>

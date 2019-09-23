@@ -1,0 +1,45 @@
+<!-- 		<#global ctx=rc.contextPath/> -->
+<div class="xiangqing">
+	<p class="ziyuan">评价资源</p>
+	<div id="bianji"></div>
+	<div class="tishi">
+		<span class="tishi_zi">请填写您的评论。<strong><span style="font-style: italic;"></span></strong></span>
+	</div>
+	<button class="layui-btn layui-btn-normal tijiao2" style="float: right;margin-right:10px;margin-top:-17px;" id="submitComment">提交</button>
+	<!--留言区-->
+	<div class="liuyanqus">
+		<ul class="liuyanqu_liuyans news">
+			<#if lists?? && (lists?size>0)><#list lists as l>
+			<li>
+				<div class="liuyan_touxiang">
+					<span id="dengji">
+					<img src="${fileWebPath}/userheadPortrait/${l.userPic!''}" onerror="this.src='${ctx}/img/user80.jpg'"/>
+				</span>
+				</div>
+				<div class="liuyan_con">
+					<div class="liuyan_name">
+						<span id="yonghu">${l.userName!''}</span>${l.contextMo!''}
+					</div>
+					<div class="liuyan_time">
+						<span id="times">${l.createTime?string('yyyy-MM-dd HH:mm:ss')}</span>
+						<span id="pinglun"><span onclick="chaPing(this,'${l.id}');">差评</span>(<span>${l.thumbsDown!''}</span>)</span>
+						<span id="shoucnag"><span onclick="haoPing(this,'${l.id}');">好评</span>(<span>${l.thumbsUp!''}</span>)</span>
+					</div>
+				</div>
+			</li>
+			</#list></#if>
+		</ul>
+		<div id="pager">
+			<div class="pagers" style="margin-bottom: 15px;" id="page">
+			</div>
+		</div>
+	</div>
+</div>
+<input type="hidden" id="contextType" value="${contextType!''}">
+<script src="${ctx}/js/comment.js" type="text/javascript" charset="utf-8"></script>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		getCommentData(p);
+	}
+</script>

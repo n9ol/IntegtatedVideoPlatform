@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>排行榜</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_teacher.css" />
+	</head>
+
+	<body>
+		<!--排行榜-->
+
+
+			<div class="neirong">
+				
+				
+				<div class="nr1">
+					<p class="tittle">本节课 - 不同活跃度方式对教师课中评估得分的影响 / 教师</p>
+					<div id="main8">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">不同等级教师的课中评估得分 / 学校</p>
+					<div id="main11">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">不同等级教师的课前备课平均评估得分 / 学校</p>
+					<div id="main14">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">同一学校不同教师课中评估得分对比 / 周</p>
+					<div id="main7">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">本周课程教师综合得分结果对比</p>
+					<div id="main9">
+
+					</div>
+				</div>
+				
+
+				
+			</div>
+	</body>
+	<script type="text/javascript">
+		var ctx="${ctx}";
+	 	var principal = "${principal!''}"; 
+	 	
+	 	var rankingAverageScoreOfKq_1 = ${rankingAverageScoreOfKq_1}; 
+	 	var rankingAverageScoreOfKq_2 = ${rankingAverageScoreOfKq_2}; 
+	 	var rankingAverageScoreOfKq_3 = ${rankingAverageScoreOfKq_3}; 
+	 	var rankingAverageScoreOfKq_4 = ${rankingAverageScoreOfKq_4}; 
+	 	var rankingAverageScoreOfKq_5 = ${rankingAverageScoreOfKq_5}; 
+	 	var rankingAverageScoreOfKq_6 = ${rankingAverageScoreOfKq_6}; 
+	 	
+	 	var rankingAverageScoreOfKz_1 = ${rankingAverageScoreOfKz_1}; 
+	 	var rankingAverageScoreOfKz_2 = ${rankingAverageScoreOfKz_2}; 
+	 	var rankingAverageScoreOfKz_3 = ${rankingAverageScoreOfKz_3}; 
+	 	var rankingAverageScoreOfKz_4 = ${rankingAverageScoreOfKz_4}; 
+	 	var rankingAverageScoreOfKz_5 = ${rankingAverageScoreOfKz_5}; 
+	 	var rankingAverageScoreOfKz_6 = ${rankingAverageScoreOfKz_6}; 
+	 	
+	 	var series = ${series}; 
+	 	var legend = ${legend}; 
+	 	
+	 	var series_d = ${series_d}; 
+	 	var yAxis = ${yAxis}; 
+	 	
+	 	var twsData = ${twsData}; 
+	 	var xAxis = ${xAxis}; 
+	 	
+	</script>
+	 <script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	 <script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	 <script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	 <script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/template.js"></script>
+	<!--单独的js-->
+<!-- 	<script src="js/河南省.js" type="text/javascript" charset="utf-8"></script> -->
+	<script src="${ctx}/js/web/teacher_ranking.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		setIframeH2();
+		function setIframeH2() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframesjzx'));
+			iframe.height(body.height()+50);
+		}
+	</script>
+</html>

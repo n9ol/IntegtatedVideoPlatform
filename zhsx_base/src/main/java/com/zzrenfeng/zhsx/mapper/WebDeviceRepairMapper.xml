@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebDeviceRepairMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebDeviceRepair" >
+		<result column="repair_id" property="repair_id" />
+		<result column="repair_unit" property="repair_unit" />
+		<result column="repair_unit_name" property="repair_unit_name" />
+		<result column="repair_person" property="repair_person" />
+		<result column="repair_tel" property="repair_tel" />
+		<result column="repair_time" property="repair_time" />
+		<result column="repair_state" property="repair_state" />
+		<result column="repair_description" property="repair_description" />
+		<result column="device_id" property="device_id" />
+		<result column="device_type" property="device_type" />
+		<result column="repair_addr" property="repair_addr" />
+		<result column="repair_buy_time" property="repair_buy_time" />
+		<result column="repair_service_time" property="repair_service_time" />
+		<result column="repair_record_description" property="repair_record_description" />
+		<result column="maintenance_man" property="maintenance_man" />
+		<result column="maintenance_tel" property="maintenance_tel" />
+		<result column="maintenance_suggestion" property="maintenance_suggestion" />
+		<result column="maintenance_time" property="maintenance_time" />
+		<result column="evaluation_grade" property="evaluation_grade" />
+		<result column="repair_isvalid" property="repair_isvalid" />
+		<result column="create_time" property="create_time" />
+		<result column="modify_time" property="modify_time" />
+		<result column="create_id" property="create_id" />
+		<result column="modify_id" property="modify_id" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		repair_id,repair_unit,repair_unit_name,repair_person,repair_tel,repair_time,repair_state,repair_description,device_id,device_type,repair_addr,repair_buy_time,repair_service_time,repair_record_description,maintenance_man,maintenance_tel,maintenance_suggestion,maintenance_time,evaluation_grade,repair_isvalid,create_time,modify_time,create_id,modify_id
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_repair
+		where repair_id = #{repair_id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_device_repair
+		where repair_id = #{repair_id}
+	</delete>
+
+
+	<insert id="dataInsert" parameterType="WebDeviceRepair" >
+		<selectKey keyProperty="repair_id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_device_repair (repair_id,repair_unit,repair_unit_name,repair_person,repair_tel,repair_time,repair_state,repair_description,device_id,device_type,repair_addr,repair_buy_time,repair_service_time,repair_record_description,maintenance_man,maintenance_tel,maintenance_suggestion,maintenance_time,evaluation_grade,repair_isvalid,create_time,modify_time,create_id,modify_id)
+		values (#{repair_id},#{repair_unit},#{repair_unit_name},#{repair_person},#{repair_tel},#{repair_time},#{repair_state},#{repair_description},#{device_id},#{device_type},#{repair_addr},#{repair_buy_time},#{repair_service_time},#{repair_record_description},#{maintenance_man},#{maintenance_tel},#{maintenance_suggestion},#{maintenance_time},#{evaluation_grade},#{repair_isvalid},#{create_time},#{modify_time},#{create_id},#{modify_id})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebDeviceRepair" >
+		update web_device_repair
+		<set >
+			<!-- <if test="repair_id != null" >
+				repair_id = #{repair_id},
+			</if> -->
+			<if test="repair_unit != null" >
+				repair_unit = #{repair_unit},
+			</if>
+			<if test="repair_unit_name != null" >
+				repair_unit_name = #{repair_unit_name},
+			</if>
+			<if test="repair_person != null" >
+				repair_person = #{repair_person},
+			</if>
+			<if test="repair_tel != null" >
+				repair_tel = #{repair_tel},
+			</if>
+			<if test="repair_time != null" >
+				repair_time = #{repair_time},
+			</if>
+			<if test="repair_state != null" >
+				repair_state = #{repair_state},
+			</if>
+			<if test="repair_description != null" >
+				repair_description = #{repair_description},
+			</if>
+			<if test="device_id != null" >
+				device_id = #{device_id},
+			</if>
+			<if test="device_type != null" >
+				device_type = #{device_type},
+			</if>
+			<if test="repair_addr != null" >
+				repair_addr = #{repair_addr},
+			</if>
+			<if test="repair_buy_time != null" >
+				repair_buy_time = #{repair_buy_time},
+			</if>
+			<if test="repair_service_time != null" >
+				repair_service_time = #{repair_service_time},
+			</if>
+			<if test="repair_record_description != null" >
+				repair_record_description = #{repair_record_description},
+			</if>
+			<if test="maintenance_man != null" >
+				maintenance_man = #{maintenance_man},
+			</if>
+			<if test="maintenance_tel != null" >
+				maintenance_tel = #{maintenance_tel},
+			</if>
+			<if test="maintenance_suggestion != null" >
+				maintenance_suggestion = #{maintenance_suggestion},
+			</if>
+			<if test="maintenance_time != null" >
+				maintenance_time = #{maintenance_time},
+			</if>
+			<if test="evaluation_grade != null" >
+				evaluation_grade = #{evaluation_grade},
+			</if>
+			<if test="repair_isvalid != null" >
+				repair_isvalid = #{repair_isvalid},
+			</if>
+			<if test="create_time != null" >
+				create_time = #{create_time},
+			</if>
+			<if test="modify_time != null" >
+				modify_time = #{modify_time},
+			</if>
+			<if test="create_id != null" >
+				create_id = #{create_id},
+			</if>
+			<if test="modify_id != null" >
+				modify_id = #{modify_id}
+			</if>
+		</set>
+		where repair_id = #{repair_id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebDeviceRepair" >
+		update web_device_repair
+		set 
+		<!-- repair_id = #{repair_id}, -->
+		repair_unit = #{repair_unit},
+		repair_unit_name = #{repair_unit_name},
+		repair_person = #{repair_person},
+		repair_tel = #{repair_tel},
+		repair_time = #{repair_time},
+		repair_state = #{repair_state},
+		repair_description = #{repair_description},
+		device_id = #{device_id},
+		device_type = #{device_type},
+		repair_addr = #{repair_addr},
+		repair_buy_time = #{repair_buy_time},
+		repair_service_time = #{repair_service_time},
+		repair_record_description = #{repair_record_description},
+		maintenance_man = #{maintenance_man},
+		maintenance_tel = #{maintenance_tel},
+		maintenance_suggestion = #{maintenance_suggestion},
+		maintenance_time = #{maintenance_time},
+		evaluation_grade = #{evaluation_grade},
+		repair_isvalid = #{repair_isvalid},
+		create_time = #{create_time},
+		modify_time = #{modify_time},
+		create_id = #{create_id},
+		modify_id = #{modify_id}
+		where repair_id = #{repair_id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="repair_id != null" >
+				and repair_id = #{repair_id}
+			</if>
+			<if test="repair_unit != null" >
+				and repair_unit = #{repair_unit}
+			</if>
+			<if test="repair_unit_name != null" >
+				and repair_unit_name = #{repair_unit_name}
+			</if>
+			<if test="repair_person != null" >
+				and repair_person = #{repair_person}
+			</if>
+			<if test="repair_tel != null" >
+				and repair_tel = #{repair_tel}
+			</if>
+			<if test="repair_time != null" >
+				and repair_time = #{repair_time}
+			</if>
+			<if test="repair_state != null" >
+				and repair_state = #{repair_state}
+			</if>
+			<if test="repair_description != null" >
+				and repair_description = #{repair_description}
+			</if>
+			<if test="device_id != null" >
+				and device_id = #{device_id}
+			</if>
+			<if test="device_type != null" >
+				and device_type = #{device_type}
+			</if>
+			<if test="repair_addr != null" >
+				and repair_addr = #{repair_addr}
+			</if>
+			<if test="repair_buy_time != null" >
+				and repair_buy_time = #{repair_buy_time}
+			</if>
+			<if test="repair_service_time != null" >
+				and repair_service_time = #{repair_service_time}
+			</if>
+			<if test="repair_record_description != null" >
+				and repair_record_description = #{repair_record_description}
+			</if>
+			<if test="maintenance_man != null" >
+				and maintenance_man = #{maintenance_man}
+			</if>
+			<if test="maintenance_tel != null" >
+				and maintenance_tel = #{maintenance_tel}
+			</if>
+			<if test="maintenance_suggestion != null" >
+				and maintenance_suggestion = #{maintenance_suggestion}
+			</if>
+			<if test="maintenance_time != null" >
+				and maintenance_time = #{maintenance_time}
+			</if>
+			<if test="evaluation_grade != null" >
+				and evaluation_grade = #{evaluation_grade}
+			</if>
+			<if test="repair_isvalid != null" >
+				and repair_isvalid = #{repair_isvalid}
+			</if>
+			<if test="create_time != null" >
+				and create_time = #{create_time}
+			</if>
+			<if test="modify_time != null" >
+				and modify_time = #{modify_time}
+			</if>
+			<if test="create_id != null" >
+				and create_id = #{create_id}
+			</if>
+			<if test="modify_id != null" >
+				and modify_id = #{modify_id}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebDeviceRepair" resultType="WebDeviceRepair">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_repair
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebDeviceRepair" resultType="WebDeviceRepair">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_repair
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	<!-- 多功能查询 -->
+	<select id="selectDRByContions" parameterType="java.util.Map" resultType="WebDeviceRepair">
+	    select 
+	    <include refid="Base_Column_List" />
+	    FROM
+			sys_school s INNER JOIN web_device_repair dre ON s.id=dre.repair_unit
+		<where>
+			1=1 
+			<if test="repair_isvalid != null" >
+				and dre.repair_isvalid = #{repair_isvalid}
+			</if>
+			<if test="province != null" >
+				and s.provinceId = #{province}
+			</if>
+			<if test="city != null" >
+				and s.cityId = #{city}
+			</if>
+			<if test="area != null" >
+				and s.countyId = #{area}
+			</if>
+			<if test="schoolId != null" >
+				and s.id = #{schoolId}
+			</if>
+			<if test="startTime != null" >
+				and <![CDATA[  dre.repair_time > #{startTime} ]]>
+			</if>
+			<if test="endTime != null" >
+				and <![CDATA[  dre.repair_time < #{endTime} ]]>
+			</if>
+		</where>
+		
+		
+	</select>
+	
+
+</mapper>

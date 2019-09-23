@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!--公共样式表-->
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/exam.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/pageGroup.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/ziyuan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a><cite>在线考试</cite></a>
+				</span>
+			</div>
+
+			<div class="examzhong clear">
+				<ul class="filter1">
+					<li class="filter2 borderBottom clear">
+						<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+						<ul class="filter3 clear" id="grade">
+							<li class="filterActive" onclick="selectGrade('','')">全部</li>
+										<#if grades?? && (grades?size>0)><#list grades as g>
+											<li onclick="selectGrade('${g.id}','${g.value}')">${g.value}</li>
+							</#list></#if>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					</li>
+					<li class="filter2 clear">
+						<span class="category1">科&nbsp;&nbsp;&nbsp;&nbsp;目 ></span>
+						<ul class="filter3 clear" id="hhh">
+							<li class="filterActive"  onclick="selectSubjects('',this)">全部</li>
+										<#if subjects?? && (subjects?size>0)><#list subjects as s>
+											<li onclick="selectSubjects('${s.value}',this)">${s.value}</li>
+										</#list></#if>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					</li>
+					<li class="filter2 clear isShow">
+						<span class="category1">版 &nbsp;&nbsp;&nbsp;&nbsp;本 ></span>
+						<ul class="filter3 clear" id="version">
+							<li class="filterActive" onclick="selectVersion()">全部</li>
+							<#if versions?? && (versions?size>0)><#list versions as v>
+									<li onclick="selectVersion('${v.value}')" >${v.value!''}</li>
+								</#list></#if>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					</li>
+				</ul>
+				<div class="fitmore">
+					<div class="morediv">
+						<div class="text">
+							<a href="#" class="isShowBtu">显示更多选项</a>
+						</div>
+					</div>
+				</div>
+				
+				<div class="zongheAndtestpaper">
+					<div class="con_left_div clear">
+							<div class="zonghe">
+								<div class="sousuo">
+									<input id="searchval" style="border: 1px solid gainsboro;padding-left: 2px;"type="search" placeholder="标题/出卷人" /> 
+									<img src="${ctx}/img/sousuo.jpg" onclick="search();" />
+								</div>
+							</div>
+					</div>
+					<div class="testpaper" ></div>
+				</div>
+			</div>
+		</div>
+		<form id="form">
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="type">
+			<input type="hidden" name="gradeName" value="${gradeName!''}">
+			<input type="hidden" name="subiectName" value="${subiectName!''}">
+			<input type="hidden" name="version" value="${version!''}">
+			<input type="hidden" name="area" value="${area!''}">
+			<input type="hidden" name="search">
+		</form>
+		
+		<!-- ie 下 location.href  跳转  times 参数 为空   所以改为表单提交-->
+		<form id="myformkaoshi" action="${ctx}/testwebtestquestion/getTestpaper" method="post">
+			<input type="hidden" name="testId">
+			<input type="hidden" name="times">
+		</form>
+		
+				
+		<!--内容end-->
+
+		<!--底部 start -->
+			<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<!--底部 end-->
+	</body>
+	<!--公共js-->
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript">var principal = "${principal!''}";</script>
+	<script type="text/javascript" src="${ctx}/js/web/test/exam.js"></script>
+</html>

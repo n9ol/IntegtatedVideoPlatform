@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TestWebStuTestQuestionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TestWebStuTestQuestion" >
+		<result column="id" property="id" />
+		<result column="questionId" property="questionId" />
+		<result column="studentId" property="studentId" />
+		<result column="questionType" property="questionType" />
+		<result column="stuType" property="stuType" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subjectName" property="subjectName" />
+		<result column="volume" property="volume" />
+		<result column="version" property="version" />
+		<result column="questionText" property="questionText" />
+		<result column="sortCode" property="sortCode" />
+		<result column="isRight" property="isRight" />
+		<result column="score" property="score" />
+		<result column="stuScore" property="stuScore" />
+		<result column="testId" property="testId" />
+		<result column="commTime" property="commTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,questionId,studentId,questionType,stuType,gradeName,subjectName,volume,version,questionText,sortCode,isRight,score,stuScore,testId,commTime
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_stu_testQuestion
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from test_web_stu_testQuestion
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TestWebStuTestQuestion" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into test_web_stu_testQuestion (id,questionId,studentId,questionType,stuType,gradeName,subjectName,volume,version,questionText,sortCode,isRight,score,stuScore,testId,commTime)
+		values (#{id},#{questionId},#{studentId},#{questionType},#{stuType},#{gradeName},#{subjectName},#{volume},#{version},#{questionText},#{sortCode},#{isRight},#{score},#{stuScore},#{testId},#{commTime})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TestWebStuTestQuestion" >
+		update test_web_stu_testQuestion
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="questionId != null" >
+				questionId = #{questionId},
+			</if>
+			<if test="studentId != null" >
+				studentId = #{studentId},
+			</if>
+			<if test="questionType != null" >
+				questionType = #{questionType},
+			</if>
+			<if test="stuType != null" >
+				stuType = #{stuType},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectName != null" >
+				subjectName = #{subjectName},
+			</if>
+			<if test="volume != null" >
+				volume = #{volume},
+			</if>
+			<if test="version != null" >
+				version = #{version},
+			</if>
+			<if test="questionText != null" >
+				questionText = #{questionText},
+			</if>
+			<if test="sortCode != null" >
+				sortCode = #{sortCode},
+			</if>
+			<if test="isRight != null" >
+				isRight = #{isRight},
+			</if>
+			<if test="score != null" >
+				score = #{score},
+			</if>
+			<if test="stuScore != null" >
+				stuScore = #{stuScore},
+			</if>
+			<if test="testId != null" >
+				testId = #{testId},
+			</if>
+			<if test="commTime != null" >
+				commTime = #{commTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TestWebStuTestQuestion" >
+		update test_web_stu_testQuestion
+		set 
+		id = #{id},
+		questionId = #{questionId},
+		studentId = #{studentId},
+		questionType = #{questionType},
+		stuType = #{stuType},
+		gradeName = #{gradeName},
+		subjectName = #{subjectName},
+		volume = #{volume},
+		version = #{version},
+		questionText = #{questionText},
+		sortCode = #{sortCode},
+		isRight = #{isRight},
+		score = #{score},
+		stuScore = #{stuScore},
+		testId = #{testId},
+		commTime = #{commTime}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="questionId != null" >
+				and questionId = #{questionId}
+			</if>
+			<if test="studentId != null" >
+				and studentId = #{studentId}
+			</if>
+			<if test="questionType != null" >
+				and questionType = #{questionType}
+			</if>
+			<if test="stuType != null" >
+				and stuType = #{stuType}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subjectName != null" >
+				and subjectName = #{subjectName}
+			</if>
+			<if test="volume != null" >
+				and volume = #{volume}
+			</if>
+			<if test="version != null" >
+				and version = #{version}
+			</if>
+			<if test="questionText != null" >
+				and questionText = #{questionText}
+			</if>
+			<if test="sortCode != null" >
+				and sortCode = #{sortCode}
+			</if>
+			<if test="isRight != null" >
+				and isRight = #{isRight}
+			</if>
+			<if test="score != null" >
+				and score = #{score}
+			</if>
+			<if test="stuScore != null" >
+				and stuScore = #{stuScore}
+			</if>
+			<if test="testId != null" >
+				and testId = #{testId}
+			</if>
+			<if test="commTime != null" >
+				and commTime = #{commTime}
+			</if>
+			<if test="search != null" >
+				and (
+				       questionText LIKE '%${search}%'
+				       or  gradeName LIKE '%${search}%'
+				       or  subjectName LIKE '%${search}%'
+				  )
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TestWebStuTestQuestion" resultType="TestWebStuTestQuestion">
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_stu_testQuestion
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TestWebStuTestQuestion" resultType="TestWebStuTestQuestion">
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_stu_testQuestion
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<update id="addQuestion" parameterType="TestWebStuTestQuestion">
+		insert into test_web_stu_testQuestion (id,questionId,studentId,questionType,stuType,gradeName,subjectName,volume,version,questionText,sortCode,isRight,score,stuScore,testId,commTime)
+		values 
+			((select uuid()),#{questionId},#{studentId},#{questionType},#{stuType},#{gradeName},#{subjectName},#{volume},#{version},#{questionText},#{sortCode},#{isRight},#{score},#{stuScore},#{testId},#{commTime})
+		 on DUPLICATE key update
+		 isRight=VALUES(isRight),score=VALUES(score),stuScore=VALUES(stuScore),testId=VALUES(testId),commTime=VALUES(commTime),
+		 
+	</update>
+ 
+ 	<select id="findOneByqId" parameterType="TestWebStuTestQuestion" resultMap="BaseResultMap">
+ 		select 
+ 		<include refid="Base_Column_List" />
+ 		from test_web_stu_testQuestion
+		where 
+		1=1
+		<if test="questionId != null" >
+				and questionId = #{questionId}
+		</if>
+		<if test="testId != null" >
+				and testId = #{testId}
+		</if>
+ 	</select>
+
+</mapper>

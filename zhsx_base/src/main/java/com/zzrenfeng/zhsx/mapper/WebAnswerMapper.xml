@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebAnswerMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebAnswer" >
+		<result column="id" property="id" />
+		<result column="qid" property="qid" />
+		<result column="answerId" property="answerId" />
+		<result column="answerContentTag" property="answerContentTag" />
+		<result column="answerContent" property="answerContent" />
+		<result column="time" property="time" />
+		<result column="ifShow" property="ifShow" />
+		<result column="ifBest" property="ifBest" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,qid,answerId,answerContentTag,answerContent,time,ifShow,ifBest,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_answer
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_answer
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebAnswer" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_answer (id,qid,answerId,answerContentTag,answerContent,time,ifShow,ifBest,bak1,bak2,bak3)
+		values (#{id},#{qid},#{answerId},#{answerContentTag},#{answerContent},#{time},#{ifShow},#{ifBest},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebAnswer" >
+		update web_answer
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="qid != null" >
+				qid = #{qid},
+			</if>
+			<if test="answerId != null" >
+				answerId = #{answerId},
+			</if>
+			<if test="answerContentTag != null" >
+				answerContentTag = #{answerContentTag},
+			</if>
+			<if test="answerContent != null" >
+				answerContent = #{answerContent},
+			</if>
+			<if test="time != null" >
+				time = #{time},
+			</if>
+			<if test="ifShow != null" >
+				ifShow = #{ifShow},
+			</if>
+			<if test="ifBest != null" >
+				ifBest = #{ifBest},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebAnswer" >
+		update web_answer
+		set 
+		id = #{id},
+		qid = #{qid},
+		answerId = #{answerId},
+		answerContentTag = #{answerContentTag},
+		answerContent = #{answerContent},
+		time = #{time},
+		ifShow = #{ifShow},
+		ifBest = #{ifBest},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1 
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="qid != null" >
+				and qid = #{qid}
+			</if>
+			<if test="answerId != null" >
+				and answerId = #{answerId}
+			</if>
+			<if test="answerContentTag != null" >
+				and answerContentTag = #{answerContentTag}
+			</if>
+			<if test="answerContent != null" >
+				and answerContent = #{answerContent}
+			</if>
+			<if test="time != null" >
+				and time = #{time}
+			</if>
+			<if test="ifShow != null" >
+				and ifShow = #{ifShow}
+			</if>
+			<if test="ifBest != null" >
+				and ifBest = #{ifBest}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+			<if test="search != null">
+				and qid in (SELECT id FROM `web_question` WHERE title LIKE '%${search}%')
+			</if>
+			<if test="gradeId != null">
+				and qid in (SELECT id FROM `web_question` WHERE bak1 in (SELECT id FROM `sys_dict` WHERE pid = #{gradeId}))
+			</if>
+			<if test="subjectId != null">
+				and qid in (SELECT id FROM `web_question` WHERE bak1 = #{subjectId}) 
+			</if>
+			<if test="area != null">
+				and answerId in (SELECT id FROM `user` u WHERE u.schoolId IN (
+						SELECT id FROM sys_school s WHERE s.cityId IN(SELECT id FROM sys_dict d WHERE d.`value` LIKE '%${area}%')
+					))
+			</if>
+		</where>
+	</sql>
+	
+	<update id="updateBatch" parameterType="java.util.Map">
+		update web_answer
+		set 
+		ifShow = #{ifShow}
+		where id in 
+		<foreach collection="ids" open="(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</update>
+	
+	<delete id="deleteBatch" parameterType="java.util.Map">
+		delete from web_answer
+		where id in
+		<foreach collection="ids" open="(" close=")" separator="," item="id" > 
+			#{id}
+		</foreach>
+	</delete>
+	
+	<delete id="deleteAnswer" parameterType="java.util.Map">
+		delete from web_answer
+		where qid in
+		<foreach collection="ids" open="(" close=")" separator="," item="id" > 
+			#{id}
+		</foreach>
+	</delete>
+	
+	<select id="findSelective" parameterType="WebAnswer" resultType="WebAnswer">
+		select 
+		<include refid="Base_Column_List" />
+		from web_answer
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebAnswer" resultType="WebAnswer">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.answerId) as nickName,
+		(SELECT title FROM `web_question` q WHERE q.id=t.qid) as title,
+		(SELECT nickName FROM `user` u WHERE u.id=(SELECT fromId FROM `web_question` a WHERE a.id=t.qid)) as quesName
+		
+		from web_answer t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<update id="updateIfBest" parameterType="String">
+		UPDATE web_answer t1,web_answer t2 SET t1.ifBest =1,t2.ifBest =0 WHERE t1.id = #{id} AND t2.id NOT IN (#{id})
+	</update>
+	
+	<select id="getNew" parameterType="WebAnswer" resultType="WebAnswer">
+		select <include refid="Base_Column_List" />,
+		(SELECT title FROM `web_question` q WHERE q.id=t.qid) as title,
+		(SELECT nickName FROM `user` u WHERE u.id=t.answerId) as nickName,
+		(SELECT filePath FROM `user` u WHERE u.id=t.answerId) as filepath,
+		(SELECT schoolName FROM `sys_school` s 	WHERE s.id = (SELECT schoolId from `user` u  WHERE u.id=t.answerId )) as schoolName,
+		(SELECT value FROM `sys_dict` d where d.id=(SELECT bak1 FROM web_question q where q.id=t.qid)) as subject,
+		(SELECT value FROM `sys_dict` d where d.id = (SELECT pid FROM `sys_dict` i where i.id=(SELECT bak1 FROM web_question q where q.id=t.qid))) as grade
+		from web_answer t  
+		<include refid="Dynamic_Conditions"/>
+		order by t.time DESC LIMIT 10
+	</select>
+	
+	<select id="getResolve" parameterType="WebAnswer" resultType="WebAnswer">
+		select t.id ,t.qid,t.time,q.title as title,count(t.qid) as count ,(SELECT nickName from user where id=(SELECT q.fromId FROM web_question q where q.id=t.qid )) as nickName
+		  from web_answer t 
+		  left join web_question q on t.qid=q.id
+		  where t.ifShow=1 and q.ifShow=1
+		  <if test="gradeId != null">
+				and qid in (SELECT id FROM `web_question` WHERE bak1 in (SELECT id FROM `sys_dict` WHERE pid = #{gradeId}))
+		  </if>
+		  <if test="subjectId != null">
+				and qid in (SELECT id FROM `web_question` WHERE bak1 = #{subjectId}) 
+		  </if>
+		  group by t.qid order by t.time DESC
+	</select>
+	
+	<select id="getByQid" parameterType="WebAnswer" resultType="WebAnswer">
+		select <include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.answerId) as nickName,
+		(SELECT filePath FROM `user` u WHERE u.id=t.answerId) as filepath
+		from web_answer t  
+		where  t.qid=#{qid} and ifShow=1
+		order by t.ifBest DESC
+	</select>
+
+</mapper>

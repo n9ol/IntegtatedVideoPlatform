@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TestWebTestMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TestWebTest" >
+		<result column="id" property="id" />
+		<result column="memberId" property="memberId" />
+		<result column="testTitle" property="testTitle" />
+		<result column="stuType" property="stuType" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subiectName" property="subiectName" />
+		<result column="volume" property="volume" />
+		<result column="version" property="version" />
+		<result column="search1" property="search1" />
+		<result column="search2" property="search2" />
+		<result column="totalScore" property="totalScore" />
+		<result column="times" property="times" />
+		<result column="questions" property="questions" />
+		<result column="publicType" property="publicType" />
+		<result column="validDays" property="validDays" />
+		<result column="views" property="views" />
+		<result column="tests" property="tests" />
+		<result column="isDrop" property="isDrop" />
+		<result column="lockTime" property="lockTime" />
+		<result column="addTime" property="addTime" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,memberId,testTitle,stuType,gradeName,subiectName,volume,version,search1,search2,totalScore,times,questions,publicType,validDays,views,tests,isDrop,lockTime,addTime,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_test t
+		where t.id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from test_web_test
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TestWebTest" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into test_web_test (id,memberId,testTitle,stuType,gradeName,subiectName,volume,version,search1,search2,totalScore,times,questions,publicType,validDays,views,tests,isDrop,lockTime,addTime,bak1,bak2,bak3)
+		values (#{id},#{memberId},#{testTitle},#{stuType},#{gradeName},#{subiectName},#{volume},#{version},#{search1},#{search2},#{totalScore},#{times},#{questions},#{publicType},#{validDays},#{views},#{tests},#{isDrop},#{lockTime},#{addTime},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TestWebTest" >
+		update test_web_test
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="memberId != null" >
+				memberId = #{memberId},
+			</if>
+			<if test="testTitle != null" >
+				testTitle = #{testTitle},
+			</if>
+			<if test="stuType != null" >
+				stuType = #{stuType},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subiectName != null" >
+				subiectName = #{subiectName},
+			</if>
+			<if test="volume != null" >
+				volume = #{volume},
+			</if>
+			<if test="version != null" >
+				version = #{version},
+			</if>
+			<if test="search1 != null" >
+				search1 = #{search1},
+			</if>
+			<if test="search2 != null" >
+				search2 = #{search2},
+			</if>
+			<if test="totalScore != null" >
+				totalScore = #{totalScore},
+			</if>
+			<if test="times != null" >
+				times = #{times},
+			</if>
+			<if test="questions != null" >
+				questions = #{questions},
+			</if>
+			<if test="publicType != null" >
+				publicType = #{publicType},
+			</if>
+			<if test="validDays != null" >
+				validDays = #{validDays},
+			</if>
+			<if test="views != null" >
+				views = #{views},
+			</if>
+			<if test="tests != null" >
+				tests = #{tests},
+			</if>
+			<if test="isDrop != null" >
+				isDrop = #{isDrop},
+			</if>
+			<if test="lockTime != null" >
+				lockTime = #{lockTime},
+			</if>
+			<if test="addTime != null" >
+				addTime = #{addTime},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TestWebTest" >
+		update test_web_test
+		set 
+		id = #{id},
+		memberId = #{memberId},
+		testTitle = #{testTitle},
+		stuType = #{stuType},
+		gradeName = #{gradeName},
+		subiectName = #{subiectName},
+		volume = #{volume},
+		version = #{version},
+		search1 = #{search1},
+		search2 = #{search2},
+		totalScore = #{totalScore},
+		times = #{times},
+		questions = #{questions},
+		publicType = #{publicType},
+		validDays = #{validDays},
+		views = #{views},
+		tests = #{tests},
+		isDrop = #{isDrop},
+		lockTime = #{lockTime},
+		addTime = #{addTime},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="memberId != null" >
+				and memberId = #{memberId}
+			</if>
+			<if test="testTitle != null" >
+				and testTitle = #{testTitle}
+			</if>
+			<if test="stuType != null" >
+				and stuType = #{stuType}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subiectName != null" >
+				and subiectName = #{subiectName}
+			</if>
+			<if test="volume != null" >
+				and volume = #{volume}
+			</if>
+			<if test="version != null" >
+				and version = #{version}
+			</if>
+			<if test="search1 != null" >
+				and search1 = #{search1}
+			</if>
+			<if test="search2 != null" >
+				and search2 = #{search2}
+			</if>
+			<if test="totalScore != null" >
+				and totalScore = #{totalScore}
+			</if>
+			<if test="times != null" >
+				and times = #{times}
+			</if>
+			<if test="questions != null" >
+				and questions = #{questions}
+			</if>
+			<if test="publicType != null" >
+				and publicType = #{publicType}
+			</if>
+			<if test="validDays != null" >
+				and validDays = #{validDays}
+			</if>
+			<if test="views != null" >
+				and views = #{views}
+			</if>
+			<if test="tests != null" >
+				and tests = #{tests}
+			</if>
+			<if test="isDrop != null" >
+				and isDrop = #{isDrop}
+			</if>
+			<if test="lockTime != null" >
+				and lockTime = #{lockTime}
+			</if>
+			<if test="addTime != null" >
+				and addTime = #{addTime}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+			<if test="search != null">
+				and (
+					testTitle LIKE '%${search}%'
+					or (memberId in (SELECT id FROM `user` WHERE nickName LIKE '%${search}%'))
+				) 
+			</if>
+			<if test="area != null">
+				and memberId in (SELECT id FROM `user` u WHERE u.schoolId IN (
+						SELECT id FROM sys_school s WHERE s.cityId IN(SELECT id FROM sys_dict d WHERE d.`value` LIKE '%${area}%')
+					))
+			</if>
+			<if test="lock !=null " >
+				  and sysdate() &lt;= lockTime
+			</if>
+			<if test="addTim != null" >
+				and addTime like '%${addTim}%'
+			</if>
+			<if test="lockTim != null" >
+				and lockTime like '%${lockTim}%'
+			</if>
+			<if test='status !=null and status=="N"'>
+				and sysdate() &gt;= lockTime
+			</if>
+			<if test='status !=null and status=="Y"'>
+				and publicType = 'Y'
+				and sysdate() &lt;= lockTime
+			</if>
+			<if test='status !=null and status=="C"'>
+				and publicType = 'N' or publicType is null
+				and sysdate() &lt;= lockTime
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TestWebTest" resultType="TestWebTest">
+		select 
+		<include refid="Base_Column_List" />
+		
+		from test_web_test t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TestWebTest" resultType="TestWebTest">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.memberId) as userName,
+		(SELECT schoolName FROM sys_school WHERE id = (SELECT u.schoolId FROM `user` u WHERE u.id=t.memberId)) as schoolName
+		from test_web_test t
+		<include refid="Dynamic_Conditions"/>
+		order by t.addTime DESC
+	</select>
+
+
+	
+	<delete id="delBatchTest" parameterType="java.util.Map">
+		delete from test_web_test
+		where id in
+		<foreach collection="ids" open="(" close=")" separator="," item="id" > 
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

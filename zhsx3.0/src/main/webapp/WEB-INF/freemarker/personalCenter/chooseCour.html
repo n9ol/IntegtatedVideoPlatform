@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教育综合视讯管理平台</title>
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/db_bofangye.css" />
+<style type="text/css">
+.swiper-container {
+	height: 370px;
+}
+
+.no1 {
+	width: 30%;
+}
+
+.no2 {
+	width: 25%;
+}
+
+.no3 {
+	width: 15%;
+}
+
+.no3 a {
+	color: #0c9076;
+}
+
+.noFar {
+	overflow: hidden;
+}
+
+.weights {
+	float: left;
+	padding-left: 8px;
+	width:20%;
+}
+
+.resourceName {
+	float: right;
+	margin-right: 20px;
+	width: 200px;
+	text-align: center;
+}
+
+.select {
+	float: right;
+	margin-right: 25px;
+	width: 15%;
+	text-align: center;
+}
+
+.noFar span {
+	display: block;
+	line-height: 25px;
+}
+</style>
+</head>
+<body>
+	<form id="myForm">
+		<div id="tianxie">
+			<div class="pingguneirong">
+				<div class="neirong_top clear">
+					<span class="no1">资源名称</span>
+					<span class="no3">操作</span>
+					<span class="no2">上传时间</span>
+				</div>
+				<ul>
+					<#if courresList?? && (courresList?size>0)><#list courresList as l>
+					<li class="noFar">
+						<span class="weights ellipsesSpan">${l_index+1}.${l.name!''}</span>
+						<span class="select">
+							<a href="javascript:;" class="check_look" onclick="confirm('${l.id}');">
+								<i class="layui-icon">&#xe642;</i>
+								&nbsp;确定
+							</a>
+						</span>
+						<span class="resourceName">${l.createTime?string('yyyy-MM-dd HH:mm')}</span>
+					</li>
+					</#list></#if>
+				</ul>
+			</div>
+		</div>
+	</form>
+</body>
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var pjInfoId = "${pjInfoId!''}";
+	var zId = "${zId!''}";
+</script>
+<script type="text/javascript" src="${ctx}/js/personalCenter/chossCour.js"></script>
+</html>

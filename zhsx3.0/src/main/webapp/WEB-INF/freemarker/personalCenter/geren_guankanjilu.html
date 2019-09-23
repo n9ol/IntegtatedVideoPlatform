@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/pageGroup.css" />
+	</head>
+	<body>
+	 						<form id="myform">
+							 
+								<input type="hidden" name="p">
+								<input type="hidden" name="searchType" value="${searchType!'R'}">
+								
+							</form>
+	
+		<ul id ="record" class="jilubiao news">
+
+		
+		</ul>
+		<div id="page"></div>
+	</body>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script src="${ctx}/js/personalCenter/geren_guankanjilu.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	 <script type="text/javascript">
+		var ctx="${ctx}";
+	</script>
+	<script type="text/javascript">var principal = "${principal!''}";</script>
+</html>

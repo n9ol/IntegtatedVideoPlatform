@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+
+	</head>
+
+	<body>
+		<div>
+			<div style="text-align: center;font-size: 22px;line-height: 45px;">
+				 ${title!''}
+			</div>
+			<div>
+				${remarks!''}
+			</div>
+			
+		</div>
+		<div>
+		<form class="layui-form" action="">
+		 <#if questions?? && (questions?size>0)>
+		 	<#list questions as l>
+				<label class="layui-form-label">Q${l_index+1}： ${l.question!''} </label>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+					<#if l.type=='A'>
+					    <#if l.options?? && (l.options?size>0)>
+		 	                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+		 	                <#list l.options as o>
+		 	                	<#assign inde=o_index>
+		 	                	<#assign sort="A">
+		 	                	<#if inde ==0> <#assign sort="A"> </#if>
+		 	                	<#if inde ==1> <#assign sort="B"> </#if>
+		 	                	<#if inde ==2> <#assign sort="C"> </#if>
+		 	                    <input type="radio" value="${o.id}" name="${l_index+1}" title="${o.option!''}">
+		 	                </#list>
+						 </#if>
+					<#else>
+						 <#if l.options?? && (l.options?size>0)>
+						  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+		 	                <#list l.options as o>
+		 	                    <input type="checkbox" name="${l_index+1}" value="${o.id}" title="${o.option!''}" lay-skin="primary">
+		 	                </#list>
+						 </#if>
+					</#if>
+					</div>
+				</div>
+		 	</#list>
+		 </#if>
+		
+	
+<!-- 				<label class="layui-form-label">Q：有什么建议？</label> -->
+<!-- 				<div class="layui-input-block" > -->
+<!-- 					<textarea id ="opinion" name="opinion" placeholder="请输入内容" class="layui-textarea"></textarea> -->
+<!-- 				</div> -->
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" lay-submit lay-filter="formDemo" style="background-color: #4596E5;">立即提交</button>
+						<button type="reset" class="layui-btn layui-btn-primary"  lay-filter="reset" >重置</button>
+					</div>
+					<div style="text-align: right;padding-top: 20px;">
+						<a class="layui-btn layui-btn-normal" href="javascript:downFile()">下载调查问卷（Word格式） </a>
+					</div>
+				</div>
+			</form>
+
+		</div>
+	</body>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script type="text/javascript">
+	var qId ='${id!''}'; //问卷Id
+		$(function() {
+			setIframeH22();
+
+			function setIframeH22() {
+				var body = $(document.body);
+				var iframe = $(parent.document.getElementById('parentIframeSurvey'));
+				iframe.height(body.height() +20);
+			}
+		})
+
+	function downFile(){
+			location.href = "${ctx}/datacenter/downloadWord?id=1&type=wenjuan";
+	}
+	 
+		layui.use(['form', 'laydate'], function() {
+			var form = layui.form,
+				laydate = layui.laydate;
+			//监听提交
+	         form.on('submit(formDemo)', function(data){
+	        	 
+	        	 var answer ="";
+	        	  $("input:checked").each(function(){
+	        		  answer+=this.value+";";
+	        		  });
+	        	 var opinion ="";//$("#opinion").val();去掉“建议”
+	        	 
+	        	 if(answer==""){
+	        		 layer.msg("您没有回答任何问题，无法提交！");
+	        		 return false;
+	        	 }else {
+	        		
+			   	   	 $.ajax({
+				   			url:"${ctx}/datacenter/addQuestionnaireResult",
+				   			type:'post',
+				   			data:{"ids":answer,"opinion":opinion,"qId":qId},
+				   			success:function(data){
+//		 		   				layer.msg(JSON.stringify(data.field));
+				   				layer.msg(data,{time : 1200},function() {
+									if (data == "操作成功")
+										window.location.reload();
+								});
+				   			}
+				   		 });
+				   	   	 return false; //禁止 页面自动刷新
+	        	 }
+	        	 
+
+	      	});
+			
+			laydate({
+				elem: '#id', //需显示日期的元素选择器
+				event: 'click', //触发事件
+				format: 'YYYY-MM-DD hh:mm:ss', //日期格式
+				istime: false, //是否开启时间选择
+				isclear: true, //是否显示清空
+				istoday: true, //是否显示今天
+				issure: true,
+				festival: true,
+				min: '1900-01-01 00:00:00', //最小日期
+				max: '2099-12-31 23:59:59', //最大日期
+				start: '2014-6-15 23:00:00', //开始日期
+				fixed: false, //是否固定在可视区域
+				zIndex: 99999999 //css z-index
+			});
+		})
+	</script>
+
+</html>

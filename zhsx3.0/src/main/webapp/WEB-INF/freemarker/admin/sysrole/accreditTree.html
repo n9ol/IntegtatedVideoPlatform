@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- <#global ctx=rc.contextPath/> -->
+    <link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+    <link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="${ctx}/css/admin/sysrole/accredit.css">
+</head>
+<body>
+<div></div>
+<form id="myform">
+<input type="hidden" name="id" value="${id!''}">
+<div class="tree">
+	<ul class="treeUlFar">
+		<#if firstSysPermissions?? && (firstSysPermissions?size>0)><#list firstSysPermissions as f>
+		<li class="treeLiFar">
+			<div class="treeOption treeDiv">
+				<#assign chk1 = "">
+				<#if sysRolePermissions?? && (sysRolePermissions?size>0)><#list sysRolePermissions as r>
+					<#if r.permissionId = f.id> <#assign chk1 = "checked"> </#if>
+				</#list></#if>
+				<input type="checkbox" class="a" ${chk1} name="permissionIds" value="${f.id!''}"/>
+				<label class="treeA">${f.name!''}</label>
+			</div>
+			<ul class="treeUlChil">
+				<#list sysPermissions as p>
+					<#if p.parentId = f.id>
+					<li class="treeLiChil">
+						<div class="treeOption">
+						
+							<#assign chk2 = "">
+							<#if sysRolePermissions?? && (sysRolePermissions?size>0)><#list sysRolePermissions as r>
+								<#if r.permissionId = p.id> <#assign chk2 = "checked"> </#if>
+							</#list></#if>
+							<input type="checkbox" class="b" ${chk2} name="permissionIds" value="${p.id!''}"/>
+							<label>${p.name!''}</label>
+						</div>
+					</li>
+					</#if>
+				</#list>
+			</ul>
+		</li>
+		</#list></#if>
+	</ul>
+	<div class="savess" onclick="submit();">保存</div>
+</div>
+</form>
+</body>
+<script type="text/javascript">var ctx='${ctx}';</script>
+<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+<script type="text/javascript" src="${ctx}/js/refresh.js"></script>
+<script type="text/javascript" src="${ctx}/js/admin/sysrole/accredit.js"></script>
+</html>

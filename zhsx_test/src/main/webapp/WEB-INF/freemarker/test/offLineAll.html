@@ -1,0 +1,42 @@
+				<!-- 		<#global ctx=rc.contextPath/> -->
+			
+				<ul class="lists news">
+					<#if lists??&&(lists?size>0)><#list lists as l>
+					<li>
+						<div class="touxiang"><img src="${ctx}/img/xls.png" /></div>
+						<div class="zhengwen">
+							<div class="biaoti">${l.title!''}</div>
+
+							<div class="xijie">
+								<span>总分：${l.score!''}分</span>
+								<span>班级：${l.classId!''}</span>
+								<span>及格率：${l.percentage!''}</span>
+								<span>平均分：${l.averScore!''}分</span>
+								<span>专业：${l.gradeName!''}</span>
+								<span>科目：${l.subjectName!''}</span>
+								<span>发布时间：${(l.addTime)?string('yyyy-MM-dd')}</span>
+							</div>
+
+						</div>
+						<div class="lianjie">
+
+							<div class="lianjie">
+							<div class="layui-btn layui-btn-primary download">
+								<a href="javascript:findOne('${l.id!''}');">查看</a>
+							</div>
+
+						</div>
+
+						</div>
+					</li>
+					</#list></#if>	
+				</ul>
+<!-- 分页 -->
+				<div id="page"></div>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		offLineAll();
+	}
+</script>				

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kehou.css" />
+		<style type="text/css">
+			.swiper-container {
+				height: 370px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a href="${ctx}/testOffLine/list">离线考试</a>
+  					<a><cite>详情</cite></a>
+				</span>
+			</div>
+
+			<!--视频窗口-->
+			
+			<div class="jilu">
+				<div class="tu1">
+					<div id="main1"></div>
+				</div>
+				<div class="tu2">
+					<div id="main2"></div>
+				</div>
+				<div class="tu3">
+					<div id="main3"></div>
+				</div>
+				<div class="tu4">
+					<div id="main4"></div>
+				</div>
+				<div class="tu5">
+					<div id="main5"></div>
+				</div>
+				<div class="tu6">
+					<div id="main6"></div>
+				</div>
+
+			</div>
+
+		</div>
+		<input type="hidden" id="failNum" value="${offLine.failNum!''}"/>
+		<input type="hidden" id="passNum" value="${offLine.passNum!''}"/>
+		<input type="hidden" id="sum" value="${offLine.sum!''}"/>
+		<!--内容end-->
+
+		<!--底部 start -->
+			<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<!--底部 end-->
+	</body>
+	<!--公共js-->
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<!--单独的js-->
+	<script type="text/javascript">
+		var subj="${subj!''}";
+		var  banji="${className!''}";
+		var jsonList="${jsonList!''}";
+		var banji2="${banji2!''}";
+		var nianji="${nianji!''}";
+		var tu3="${str3!''}";
+		var xuexiao="${schoolname!''}";
+		var tu5 =" ${str5!''}";
+		var tu6="${str6!''}";
+		var tu4="${str4!''} ";
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			$("#testTop").attr("class","has-sub active");
+			$("#testTopL").attr("class","active2");
+		});
+		
+	
+	
+	
+	
+		layui.use(['layer', 'element'], function() {
+			var layer = layui.layer,
+				element = layui.element;
+		});
+		
+		var myChart2 = echarts.init(document.getElementById("main2"));
+		var myChart3 = echarts.init(document.getElementById("main3"));
+		var myChart5 = echarts.init(document.getElementById("main5"));
+		var myChart6 = echarts.init(document.getElementById("main6"));
+		var myChart4 = echarts.init(document.getElementById("main4"));
+		var myChart1 = echarts.init(document.getElementById("main1"));
+		var failNum = $("#failNum").val();
+			var passNum = $("#passNum").val();
+			var sum = $("#sum").val();
+			
+			var color3 = ['#b7a3df','#5696e5','#2bc7c9'];
+			//图1
+			var option1 = {
+				color:color3,
+				title: {
+							text: '考试人数及格人数占比',
+							x: 'center'
+						},
+			    tooltip: {
+			        trigger: 'item',
+			        formatter: "{a} <br/>{b}: {c} ({d}%)"
+			    },
+			    legend: {
+			        orient: 'vertical',
+			        x: 'left',
+			        data:['考试不及格人数','考试及格人数','考试人数']
+			    },
+			    series: [
+			        {
+			            name:'访问来源',
+			            type:'pie',
+			            selectedMode: 'single',
+			            radius: [0, '30%'],
+
+			            label: {
+			                normal: {
+			                    position: 'inner'
+			                }
+			            },
+			            labelLine: {
+			                normal: {
+			                    show: false
+			                }
+			            },
+			            data:[
+			                {value:sum, name:'考试人数', selected:true}
+			            ]
+			        },
+			        {
+			            name:'访问来源',
+			            type:'pie',
+			            radius: ['40%', '55%'],
+
+			            data:[
+			                {value:failNum, name:'考试不及格人数'},
+			                {value:passNum, name:'考试及格人数'}
+			            ]
+			        }
+			    ]
+			};
+
+			myChart1.setOption(option1)	
+
+		//图2
+		var color2 = ["#ffb981", "#d97e84","#8d99b3","#2ec7c9"]
+		var option2 = {
+			color: color2,
+			title: {
+				text: "各个班级各科成绩对比图",
+				x:'center'
+			},
+			tooltip: {
+				trigger: 'axis',//弹框的显示与否
+				axisPointer: {
+					type: 'cross'
+				}
+			},
+			legend: {
+				data: [${banji2!''}],
+				y:'bottom'
+			},
+			xAxis: {
+				//data: ["一班", "二班:","三班","四班"],
+				data: ${subj!''},
+				name:'科目'
+			},
+			yAxis: {
+				
+					type: 'value',
+					min: 0,
+					max: 100
+				
+			},
+			series: ${jsonList!''}
+		}
+		//使用刚指定的配置项和数据显示图表
+		myChart2.setOption(option2);
+		//图3
+		var colors = ["#4596e5", "#b6a2de", "#2ec7c9"];
+		var option3 = {
+			color: colors,
+			title: {
+				text: '各专业平均分',
+				x: 'center'
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient: 'vertical',
+				left: 'left',
+				data: [${nianji!''}]
+			},
+			series: [{
+				name: '访问来源',
+				type: 'pie',
+				radius: '55%',
+				center: ['50%', '60%'],
+				data: ${str3!''},
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}]
+		};
+		myChart3.setOption(option3);
+		//图5
+
+		var colors = ["#5ab1ef", "#ffb981", "#d97e84","#8d99b3","#2ec7c9","#b7a3df"];
+		var option5 = {
+			color: colors,
+			title: {
+				text: '各个学校的平均分数对比',
+				x: 'center'
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient: 'vertical',
+				left: 'left',
+				data: [${schoolname!''}]
+			},
+			series: [{
+				name: '访问来源',
+				type: 'pie',
+				radius: '55%',
+				center: ['50%', '60%'],
+				data: ${str5!''},
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}]
+		};
+		myChart5.setOption(option5);
+		//图6
+		labelTop = {
+		    normal : {
+		        label : {
+		            show : true,
+		            position : 'center',
+		            formatter : '{b}',
+		            textStyle: {
+		                baseline : 'bottom'
+		            }
+		        },
+		        labelLine : {
+		            show : false
+		        }
+		    }
+		};
+		var labelFromatter = {
+		    normal : {
+		        label : {
+		            formatter : function (params){
+		                return 100 - params.value + '%'
+		            },
+		            textStyle: {
+		                baseline : 'top'
+		            }
+		        }
+		    },
+		}
+		var labelBottom = {
+		    normal : {
+		        color: '#ccc',
+		        label : {
+		            show : true,
+		            position : 'center'
+		        },
+		        labelLine : {
+		            show : false
+		        }
+		    },
+		    emphasis: {
+		        color: 'rgba(0,0,0,0)'
+		    }
+		};
+		var radius = [40, 55];
+		var color6 = ["#5ab1ef", "#ffb981", "#d97e84","#8d99b3","#2ec7c9","#b7a3df","#ffb981", "#d97e84","#8d99b3","#2ec7c9"]
+		var option6 = {
+			color:color6,
+		    legend: {
+		        x : 'center',
+		        y : 'center',
+		        data:[	${schoolname!''}]
+		    },
+		    title : {
+		        text: '各校考试合格占比',
+		        x: 'center'
+		    },
+		    toolbox: {
+		        show : true,
+		        feature : {
+		            magicType : {
+		                show: true, 
+		                type: ['pie', 'funnel'],
+		                option: {
+		                    funnel: {
+		                        width: '20%',
+		                        height: '30%',
+		                        itemStyle : {
+		                            normal : {
+		                                label : {
+		                                    formatter : function (params){
+		                                        return 'other\n' + params.value + '%\n'
+		                                    },
+		                                    textStyle: {
+		                                        baseline : 'middle'
+		                                    }
+		                                }
+		                            },
+		                        } 
+		                    }
+		                }
+		            }
+		        }
+		    },
+		   series : ${str6!''}
+		};
+
+		myChart6.setOption(option6);
+		
+		
+		//图4
+		var color2 = ["#ffb981", "#d97e84","#8d99b3","#2ec7c9"]
+		var option4 = {
+			color: color2,
+			title: {
+				text: "每个月份本专业各班综合平均成绩对比图",
+				x:'center'
+			},
+			tooltip: {
+				trigger: 'axis',//弹框的显示与否
+				axisPointer: {
+					type: 'cross'
+				}
+			},
+			legend: {
+				data: [${banji2!''}],
+				y:'bottom'
+			},
+			xAxis: {
+				data: ["一月", "二月", "三月", "四月", "五月","六月","七月","八月","九月","十月","十一月","十二月"],
+				name:'时间'
+			},
+			yAxis: {
+				
+					type: 'value',
+					min: 0,
+					max: 100
+				
+			},
+			series: ${str4!''} 
+		}
+
+		//使用刚指定的配置项和数据显示图表
+		myChart4.setOption(option4);
+		
+	</script>
+
+</html>
+
+
+
+
+
+
+

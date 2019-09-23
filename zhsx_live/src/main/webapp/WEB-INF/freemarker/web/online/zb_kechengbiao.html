@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zb_kechengbiao.css" />
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a href="${ctx}/online/zb_online">直播</a>
+  					<a><cite>课程表</cite></a>
+				</span>
+			</div>
+			<!--课程表-->
+			<div class="kb_shaixuan">
+				<form class="layui-form formm" action="">
+					<div class="layui-form-item">
+						
+						<#if platformLevel?? && platformLevel != 'A'>
+						
+						<#if platformLevel == 'N'>
+						<div class="layui-input-inline" style="margin-left:50px;">
+							<select name="quiz1" lay-filter="province" id="province" lay-search>
+        						<option value="">请选择省</option>
+								<#if provinceList?? && (provinceList?size>0)><#list provinceList as l>
+        							<option value="${l.id!''}">${l.value!''}</option>
+        						</#list></#if>
+      						</select>
+						</div>
+						</#if>
+						
+						<#if platformLevel == 'N' || platformLevel == 'P'>
+							<#assign marginLeftP = "">
+		                    <#if platformLevel == 'P'><#assign marginLeftP = "margin-left:50px;"></#if>
+							<div class="layui-input-inline" style="${marginLeftP!''}">
+								<select name="quiz1" lay-filter="city" id="city" lay-search>
+	        						<option value="">请选择市</option>
+	        						<#if platformLevel == 'P' && provinceList?? && (provinceList?size>0)><#list provinceList as l>
+	        							<option value="${l.id!''}">${l.value!''}</option>
+	        						</#list></#if>
+	      						</select>
+							</div>
+						</#if>
+						
+						<#if platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C'>
+							<#assign marginLeftC = "">
+		                    <#if platformLevel == 'C'><#assign marginLeftC = "margin-left:50px;"></#if>
+								<div class="layui-input-inline" style="${marginLeftC!''}">
+									<select name="quiz1" lay-filter="county" id="county" lay-search>
+		        						<option value="">请选择区（县）</option>
+		        						<#if platformLevel == 'C' && provinceList?? && (provinceList?size>0)><#list provinceList as l>
+		        							<option value="${l.id!''}">${l.value!''}</option>
+		        						</#list></#if>
+		      						</select>
+								</div>
+							</#if>
+						</#if>
+						
+						<#if schoolLevel?? && schoolLevel != 'Y'>
+							<div class="layui-input-inline">
+								<select name="quiz2" lay-filter="school" id="school" lay-search>
+	       			 				<option value="">请选择学校</option>
+	       			 				<#if sysSchools?? && (sysSchools?size>0)><#list sysSchools as l>
+	       			 					<option value="${l.id!''}">${l.schoolName!''}</option>
+	       			 				</#list></#if>
+	      						</select>
+							</div>
+						</#if>
+						
+						
+						<div class="layui-input-inline">
+							<select name="quiz3" lay-filter="classroom" id="classroom" lay-search>
+        						<option value="">请选择主讲教室</option>
+      						</select>
+						</div>
+						<div class="layui-input-inline" style="display:none;">
+							<select name="quiz3" lay-filter="teacher" id="teacher" lay-search>
+        						<option value="">请选择主讲教师</option>
+      						</select>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="zhong_right">
+				<table class="layui-table table">
+					<thead>
+						<tr>
+							<th></th>
+							<th>星期日</th>
+							<th>星期一</th>
+							<th>星期二</th>
+							<th>星期三</th>
+							<th>星期四</th>
+							<th>星期五</th>
+							<th>星期六</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>第1节</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>第2节</td>					
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>第3节</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>第4节</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>第5节</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>第6节</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>第7节</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>第8节</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="tongji">
+					<span>
+						周授课数：0
+					</span>
+					<span>
+						应授课数：0
+					</span>
+					<span>
+						已开设课时数：0
+					</span>
+					<span>
+						开设课时数占比：0%
+					</span>
+				</div>
+				<div class="tishi clear">
+					<span class="shi">提示：</span>
+					<div class="kai1" style="background-color:gray;"></div>
+					<span class="wei">已结束</span>
+					<div class="kai2"></div>
+					<span class="jin">进行中</span>
+					<div class="kai1"></div>
+					<span class="wei">未开始</span>
+				</div>
+			</div>
+		</div>
+		<!--内容end-->
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+	</body>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		var configuredSchoolId = "${schoolId!''}";
+		var schoolLevel = "${schoolLevel!''}";
+	</script>
+	<script type="text/javascript" src="${ctx}/js/web/online/zb_kechengbiao.js"></script>
+</html>

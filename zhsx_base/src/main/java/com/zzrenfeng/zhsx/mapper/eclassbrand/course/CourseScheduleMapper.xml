@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.zzrenfeng.zhsx.mapper.eclassbrand.course.CourseScheduleMapper">
+
+	<resultMap id="BaseResultMap"
+		type="com.zzrenfeng.zhsx.model.eclassbrand.course.CourseSchedule">
+		<result column="id" property="id" />
+		<result column="classroom_id" property="classroomId" />
+		<result column="day_of_week" property="dayOfWeek" />
+		<result column="section_of_day" property="sectionOfDay" />
+		<result column="big_section_of_day" property="bigSectionOfDay" />
+		<result column="odd_even_all" property="oddEvenAll" />
+		<result column="begin_week" property="beginWeek" />
+		<result column="end_week" property="endWeek" />
+		<result column="teacher_name" property="teacherName" />
+		<result column="subject_name" property="subjectName" />
+		<result column="the_class" property="theClass" />
+		<result column="department_name" property="departmentName" />
+		<result column="specialty_name" property="specialtyName" />
+		<result column="class_name" property="className" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="create_date" property="createDate" />
+		<result column="modiy_date" property="modiyDate" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="type" property="type" />
+		<result column="school_id" property="schoolId" />
+		<result column="school_name" property="schoolName" />
+		<result column="classroom_name" property="classroomName" />
+		<result column="teacher_id" property="teacherId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,classroom_id,day_of_week,section_of_day,big_section_of_day,odd_even_all,begin_week,end_week,teacher_name,subject_name,the_class,department_name,specialty_name,class_name,start_time,end_time,create_date,modiy_date,bak,bak1,bak2,type,school_id,school_name,classroom_name,teacher_id
+	</sql>
+
+
+	<insert id="insert" parameterType="CourseSchedule">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+			select uuid()
+		</selectKey>
+		insert into course_schedule
+		(id,classroom_id,day_of_week,section_of_day,big_section_of_day,odd_even_all,begin_week,end_week,teacher_name,subject_name,the_class,department_name,specialty_name,class_name,start_time,end_time,create_date,modiy_date,bak,bak1,bak2,type,school_id,school_name,classroom_name,teacher_id)
+		values
+		(#{id},#{classroomId},#{dayOfWeek},#{sectionOfDay},#{bigSectionOfDay},#{oddEvenAll},#{beginWeek},#{endWeek},#{teacherName},#{subjectName},#{theClass},#{departmentName},#{specialtyName},#{className},#{startTime},#{endTime},#{createDate},#{modiyDate},#{bak},#{bak1},#{bak2},#{type},#{schoolId},#{schoolName},#{classroomName},#{teacherId})
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		course_schedule
+		where id = #{id}
+	</delete>
+
+	<update id="updateByPrimaryKeySelective" parameterType="CourseSchedule">
+		update course_schedule
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="classroomId != null">
+				classroom_id = #{classroomId},
+			</if>
+			<if test="dayOfWeek != null">
+				day_of_week = #{dayOfWeek},
+			</if>
+			<if test="sectionOfDay != null">
+				section_of_day = #{sectionOfDay},
+			</if>
+			<if test="bigSectionOfDay != null">
+				big_section_of_day = #{bigSectionOfDay},
+			</if>
+			<if test="oddEvenAll != null">
+				odd_even_all = #{oddEvenAll},
+			</if>
+			<if test="beginWeek != null">
+				begin_week = #{beginWeek},
+			</if>
+			<if test="endWeek != null">
+				end_week = #{endWeek},
+			</if>
+			<if test="teacherName != null">
+				teacher_name = #{teacherName},
+			</if>
+			<if test="subjectName != null">
+				subject_name = #{subjectName},
+			</if>
+			<if test="theClass != null">
+				the_class = #{theClass},
+			</if>
+			<if test="departmentName != null">
+				department_name = #{departmentName},
+			</if>
+			<if test="specialtyName != null">
+				specialty_name = #{specialtyName},
+			</if>
+			<if test="className != null">
+				class_name = #{className},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate},
+			</if>
+			<if test="modiyDate != null">
+				modiy_date = #{modiyDate},
+			</if>
+			<if test="bak != null">
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null">
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null">
+				bak2 = #{bak2},
+			</if>
+			<if test="type != null">
+				type = #{type},
+			</if>
+			<if test="schoolId != null">
+				school_id = #{schoolId},
+			</if>
+			<if test="schoolName != null">
+				school_name = #{schoolName},
+			</if>
+			<if test="classroomName != null">
+				classroom_name = #{classroomName},
+			</if>
+			<if test="teacherId != null">
+				teacher_id = #{teacherId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="CourseSchedule">
+		update
+		course_schedule
+		set
+		id = #{id},
+		classroom_id = #{classroomId},
+		day_of_week = #{dayOfWeek},
+		section_of_day = #{sectionOfDay},
+		big_section_of_day = #{bigSectionOfDay},
+		odd_even_all = #{oddEvenAll},
+		begin_week = #{beginWeek},
+		end_week = #{endWeek},
+		teacher_name = #{teacherName},
+		subject_name = #{subjectName},
+		the_class = #{theClass},
+		department_name
+		= #{departmentName},
+		specialty_name = #{specialtyName},
+		class_name =
+		#{className},
+		start_time = #{startTime},
+		end_time =
+		#{endTime},
+		create_date = #{createDate},
+		modiy_date = #{modiyDate},
+		bak =
+		#{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		type = #{type},
+		school_id = #{schoolId},
+		school_name = #{schoolName},
+		classroom_name = #{classroomName},
+		teacher_id = #{teacherId}
+		where id = #{id}
+	</update>
+	
+	
+	
+	<update id="updateClassroomNameByClassroomId" parameterType="CourseSchedule">
+		update course_schedule
+		set
+			classroom_name = #{classroomName}
+		where 
+			classroom_id = #{classroomId}
+	</update>
+	
+	
+	
+	
+	
+
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="classroomId != null">
+				and classroom_id = #{classroomId}
+			</if>
+			<if test="dayOfWeek != null">
+				and day_of_week = #{dayOfWeek}
+			</if>
+			<if test="sectionOfDay != null">
+				and section_of_day = #{sectionOfDay}
+			</if>
+			<if test="bigSectionOfDay != null">
+				and big_section_of_day = #{bigSectionOfDay}
+			</if>
+			<if test="oddEvenAll != null">
+				and odd_even_all = #{oddEvenAll}
+			</if>
+			<if test="beginWeek != null">
+				and begin_week = #{beginWeek}
+			</if>
+			<if test="endWeek != null">
+				and end_week = #{endWeek}
+			</if>
+			<if test="teacherName != null">
+				and teacher_name = #{teacherName}
+			</if>
+			<if test="subjectName != null">
+				and subject_name = #{subjectName}
+			</if>
+			<if test="theClass != null">
+				and the_class = #{theClass}
+			</if>
+			<if test="departmentName != null">
+				and department_name = #{departmentName}
+			</if>
+			<if test="specialtyName != null">
+				and specialty_name = #{specialtyName}
+			</if>
+			<if test="className != null">
+				and class_name = #{className}
+			</if>
+			<if test="startTime != null">
+				and start_time = #{startTime}
+			</if>
+			<if test="endTime != null">
+				and end_time = #{endTime}
+			</if>
+			
+			<!-- 20190305-zjc add start; -->
+			<if test="startTimeStr != null">
+				and (
+					TIME_FORMAT(start_time,'%T') = #{startTimeStr}
+				 or (TIME_FORMAT(start_time,'%T') &lt; #{startTimeStr} and TIME_FORMAT(end_time,'%T') &gt; #{startTimeStr})
+				)
+			</if>
+			<if test="endTimeStr != null">
+				and (
+					TIME_FORMAT(end_time,'%T') = #{endTimeStr}
+				 or (TIME_FORMAT(start_time,'%T') &lt; #{endTimeStr} and TIME_FORMAT(end_time,'%T') &gt; #{endTimeStr})
+				)
+			</if>
+			<!-- 20190305-zjc add end; -->
+			
+			<if test="createDate != null">
+				and create_date = #{createDate}
+			</if>
+			<if test="modiyDate != null">
+				and modiy_date = #{modiyDate}
+			</if>
+			<if test="bak != null">
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null">
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null">
+				and bak2 = #{bak2}
+			</if>
+			<if test="type != null">
+				and type = #{type}
+			</if>
+			<if test="schoolId != null">
+				and school_id = #{schoolId}
+			</if>
+			<if test="schoolName != null">
+				and school_name = #{schoolName}
+			</if>
+			<if test="classroomName != null">
+				and classroom_name = #{classroomName}
+			</if>
+			<if test="teacherId != null">
+				and teacher_id = #{teacherId}
+			</if>
+			<if test="search != null">
+				<bind name="pattern" value="'%' + search + '%'" />
+				and(
+					classroom_name like #{pattern}
+					or teacher_name like #{pattern}
+				)
+			</if>
+			<if test="notId != null">
+				and id != #{notId}
+			</if>
+			<if test="timeSorting != null">
+				<!-- 获取不同时间段的视频 -->
+				<!-- Q 表示正在直播和即将直播 (未结束和未开始) -->
+				<if test="timeSorting == 'Q'.toString()">
+					and CURTIME() &lt;= end_time
+				</if>
+				<!-- Z 表示正在直播 -->
+				<if test="timeSorting == 'Z'.toString()">
+					and (CURTIME() between start_time and end_time)
+				</if>
+				<!-- J 表示即将直播 -->
+				<if test="timeSorting == 'J'.toString()">
+					and start_time &gt; CURTIME()
+				</if>
+				<!-- Y 表示已经结束的直播 -->
+				<if test="timeSorting == 'Y'.toString()">
+					and CURTIME() &gt; end_time
+				</if>
+			</if>
+		</where>
+		ORDER BY start_time
+	</sql>
+
+	<select id="getCourseSchedule" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from course_schedule
+		where id = #{id}
+	</select>
+
+	<select id="listAllCourseSchedule" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from course_schedule
+	</select>
+
+
+	<select id="listCourseSchedule" parameterType="CourseSchedule"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />,
+		(CASE
+			WHEN (
+				((DAYOFWEEK(NOW())-1) &gt; day_of_week) or ((DAYOFWEEK(NOW())-1) = day_of_week and (CURTIME() &gt; end_time))
+			) THEN
+				0
+			WHEN (
+				(DAYOFWEEK(NOW())-1) = day_of_week and (CURTIME() between start_time and end_time)
+			) THEN
+				1
+			ELSE
+				2
+		END) as isGoClass
+		from course_schedule
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<select id="getPageSelective" parameterType="CourseSchedule"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />,
+		(CASE
+			WHEN (
+				((DAYOFWEEK(NOW())-1) &gt; day_of_week) or ((DAYOFWEEK(NOW())-1) = day_of_week and (CURTIME() &gt; end_time))
+			) THEN
+				0
+			WHEN (
+				(DAYOFWEEK(NOW())-1) = day_of_week and (CURTIME() between start_time and end_time)
+			) THEN
+				1
+			ELSE
+				2
+		END) as isGoClass
+		from course_schedule
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+
+</mapper>

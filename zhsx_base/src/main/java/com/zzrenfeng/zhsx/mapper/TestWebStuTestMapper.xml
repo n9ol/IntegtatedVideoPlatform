@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TestWebStuTestMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TestWebStuTest" >
+		<result column="id" property="id" />
+		<result column="tempId" property="tempId" />
+		<result column="studentId" property="studentId" />
+		<result column="tempTitle" property="tempTitle" />
+		<result column="testId" property="testId" />
+		<result column="memberId" property="memberId" />
+		<result column="testTitle" property="testTitle" />
+		<result column="stuType" property="stuType" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subjectName" property="subjectName" />
+		<result column="volume" property="volume" />
+		<result column="version" property="version" />
+		<result column="scores" property="scores" />
+		<result column="totalScores" property="totalScores" />
+		<result column="questions" property="questions" />
+		<result column="times" property="times" />
+		<result column="addTime" property="addTime" />
+		<result column="isDone" property="isDone" />
+		<result column="doneTime" property="doneTime" />
+		<result column="isComm" property="isComm" />
+		<result column="commTime" property="commTime" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,tempId,studentId,tempTitle,testId,memberId,testTitle,stuType,gradeName,subjectName,volume,version,scores,totalScores,questions,times,addTime,isDone,doneTime,isComm,commTime,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		
+		from test_web_stu_test t
+		where t.id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from test_web_stu_test
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TestWebStuTest" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into test_web_stu_test (id,tempId,studentId,tempTitle,testId,memberId,testTitle,stuType,gradeName,subjectName,volume,version,scores,totalScores,questions,times,addTime,isDone,doneTime,isComm,commTime,bak1,bak2,bak3)
+		values (#{id},#{tempId},#{studentId},#{tempTitle},#{testId},#{memberId},#{testTitle},#{stuType},#{gradeName},#{subjectName},#{volume},#{version},#{scores},#{totalScores},#{questions},#{times},#{addTime},#{isDone},#{doneTime},#{isComm},#{commTime},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TestWebStuTest" >
+		update test_web_stu_test
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="tempId != null" >
+				tempId = #{tempId},
+			</if>
+			<if test="studentId != null" >
+				studentId = #{studentId},
+			</if>
+			<if test="tempTitle != null" >
+				tempTitle = #{tempTitle},
+			</if>
+			<if test="testId != null" >
+				testId = #{testId},
+			</if>
+			<if test="memberId != null" >
+				memberId = #{memberId},
+			</if>
+			<if test="testTitle != null" >
+				testTitle = #{testTitle},
+			</if>
+			<if test="stuType != null" >
+				stuType = #{stuType},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectName != null" >
+				subjectName = #{subjectName},
+			</if>
+			<if test="volume != null" >
+				volume = #{volume},
+			</if>
+			<if test="version != null" >
+				version = #{version},
+			</if>
+			<if test="scores != null" >
+				scores = #{scores},
+			</if>
+			<if test="totalScores != null" >
+				totalScores = #{totalScores},
+			</if>
+			<if test="questions != null" >
+				questions = #{questions},
+			</if>
+			<if test="times != null" >
+				times = #{times},
+			</if>
+			<if test="addTime != null" >
+				addTime = #{addTime},
+			</if>
+			<if test="isDone != null" >
+				isDone = #{isDone},
+			</if>
+			<if test="doneTime != null" >
+				doneTime = #{doneTime},
+			</if>
+			<if test="isComm != null" >
+				isComm = #{isComm},
+			</if>
+			<if test="commTime != null" >
+				commTime = #{commTime},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TestWebStuTest" >
+		update test_web_stu_test
+		set 
+		id = #{id},
+		tempId = #{tempId},
+		studentId = #{studentId},
+		tempTitle = #{tempTitle},
+		testId = #{testId},
+		memberId = #{memberId},
+		testTitle = #{testTitle},
+		stuType = #{stuType},
+		gradeName = #{gradeName},
+		subjectName = #{subjectName},
+		volume = #{volume},
+		version = #{version},
+		scores = #{scores},
+		totalScores = #{totalScores},
+		questions = #{questions},
+		times = #{times},
+		addTime = #{addTime},
+		isDone = #{isDone},
+		doneTime = #{doneTime},
+		isComm = #{isComm},
+		commTime = #{commTime},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="tempId != null" >
+				and tempId = #{tempId}
+			</if>
+			<if test="studentId != null" >
+				and studentId = #{studentId}
+			</if>
+			<if test="tempTitle != null" >
+				and tempTitle = #{tempTitle}
+			</if>
+			<if test="testId != null" >
+				and testId = #{testId}
+			</if>
+			<if test="memberId != null" >
+				and memberId = #{memberId}
+			</if>
+			<if test="testTitle != null" >
+				and testTitle = #{testTitle}
+			</if>
+			<if test="stuType != null" >
+				and stuType = #{stuType}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subjectName != null" >
+				and subjectName = #{subjectName}
+			</if>
+			<if test="volume != null" >
+				and volume = #{volume}
+			</if>
+			<if test="version != null" >
+				and version = #{version}
+			</if>
+			<if test="scores != null" >
+				and scores = #{scores}
+			</if>
+			<if test="totalScores != null" >
+				and totalScores = #{totalScores}
+			</if>
+			<if test="questions != null" >
+				and questions = #{questions}
+			</if>
+			<if test="times != null" >
+				and times = #{times}
+			</if>
+			<if test="addTime != null" >
+				and addTime = #{addTime}
+			</if>
+			<if test="isDone != null" >
+				and isDone = #{isDone}
+			</if>
+			<if test="doneTime != null" >
+				and doneTime = #{doneTime}
+			</if>
+			<if test="isComm != null" >
+				and isComm = #{isComm}
+			</if>
+			<if test="commTime != null" >
+				and commTime = #{commTime}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+			<if test="search !=null">
+				and (
+					testTitle LIKE '%${search}%'
+					or ((SELECT nickName FROM `user` u WHERE u.id=t.studentId) LIKE '%${search}%')
+					or (gradeName LIKE '%${search}%')
+					or (subjectName LIKE '%${search}%')
+				) 
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TestWebStuTest" resultType="TestWebStuTest">
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_stu_test 
+		<include refid="Dynamic_Conditions"/>
+		order by sortCode
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TestWebStuTest" resultType="TestWebStuTest">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.studentId) as userName
+		from test_web_stu_test t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<select id="histogram" parameterType="TestWebStuTest" resultType="TestWebStuTest">
+		select 
+		<include refid="Base_Column_List" />
+		
+		from test_web_stu_test t
+		<include refid="Dynamic_Conditions"/>
+		order By commTime DESC limit 10
+	</select>
+
+
+</mapper>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebPjdetailMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebPjdetail" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="pgId" property="pgId" />
+		<result column="pgPjInfoId" property="pgPjInfoId" />
+		<result column="onOff" property="onOff" />
+		<result column="content" property="content" />
+		<result column="score" property="score" />
+		<result column="weight" property="weight" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,pgId,pgPjInfoId,onOff,content,score,weight,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_pjdetail
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_pjdetail
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebPjdetail" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_pjdetail (id,userId,pgId,pgPjInfoId,onOff,content,score,weight,bak,bak1,bak2)
+		values (#{id},#{userId},#{pgId},#{pgPjInfoId},#{onOff},#{content},#{score},#{weight},#{bak},#{bak1},#{bak2})
+	</insert>
+	
+	<insert id="insterPjdetail" parameterType="WebPjdetail">
+		 insert into web_pjdetail (id,userId,pgId,pgPjInfoId,onOff,content,weight,bak,bak2)
+		(SELECT (SELECT UUID()),#{userId},#{pgId},pjinfoId AS pgPjInfoId,#{onOff},content,weight,bak,#{bak2} FROM pg_pjdetail WHERE pjinfoId = #{pgPjInfoId});
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebPjdetail" >
+		update web_pjdetail
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="pgId != null" >
+				pgId = #{pgId},
+			</if>
+			<if test="pgPjInfoId != null" >
+				pgPjInfoId = #{pgPjInfoId},
+			</if>
+			<if test="onOff != null" >
+				onOff = #{onOff},
+			</if>
+			<if test="content != null" >
+				content = #{content},
+			</if>
+			<if test="score != null" >
+				score = #{score},
+			</if>
+			<if test="weight != null" >
+				weight = #{weight},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebPjdetail" >
+		update web_pjdetail
+		set 
+		id = #{id},
+		userId = #{userId},
+		pgId = #{pgId},
+		pgPjInfoId = #{pgPjInfoId},
+		onOff = #{onOff},
+		content = #{content},
+		score = #{score},
+		weight = #{weight},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="pgId != null" >
+				and pgId = #{pgId}
+			</if>
+			<if test="pgPjInfoId != null" >
+				and pgPjInfoId = #{pgPjInfoId}
+			</if>
+			<if test="onOff != null" >
+				and onOff = #{onOff}
+			</if>
+			<if test="content != null" >
+				and content = #{content}
+			</if>
+			<if test="score != null" >
+				and score = #{score}
+			</if>
+			<if test="weight != null" >
+				and weight = #{weight}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+		</where>
+		ORDER BY bak
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebPjdetail" resultType="WebPjdetail">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pjdetail
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebPjdetail" resultType="WebPjdetail">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pjdetail
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysHistoryMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysHistory" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="pubType" property="pubType" />
+		<result column="pubFlag" property="pubFlag" />
+		<result column="pubId" property="pubId" />
+		<result column="createTime" property="createTime" />
+		<result column="modiyTime" property="modiyTime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,pubType,pubFlag,pubId,createTime,modiyTime,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from sys_history
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_history
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="SysHistory" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_history (id,userId,pubType,pubFlag,pubId,createTime,modiyTime,bak,bak1,bak2)
+		values (#{id},#{userId},#{pubType},#{pubFlag},#{pubId},curdate(),curtime(),#{bak},#{bak1},#{bak2})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysHistory" >
+		update sys_history
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="pubType != null" >
+				pubType = #{pubType},
+			</if>
+			<if test="pubFlag != null" >
+				pubFlag = #{pubFlag},
+			</if>
+			<if test="pubId != null" >
+				pubId = #{pubId},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="modiyTime != null" >
+				modiyTime = #{modiyTime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysHistory" >
+		update sys_history
+		set 
+		id = #{id},
+		userId = #{userId},
+		pubType = #{pubType},
+		pubFlag = #{pubFlag},
+		pubId = #{pubId},
+		createTime = #{createTime},
+		modiyTime = #{modiyTime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="pubType != null" >
+				and pubType = #{pubType}
+			</if>
+			<if test="pubFlag != null" >
+				and pubFlag = #{pubFlag}
+			</if>
+			<if test="pubId != null" >
+				and pubId = #{pubId}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="modiyTime != null" >
+				and modiyTime = #{modiyTime}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="startTime != null and endTime !=null">
+				and createTime  between #{startTime} and #{endTime} 
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysHistory" resultType="SysHistory">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_history
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="SysHistory" resultType="SysHistory">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_history
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<delete id="deleteByPub" parameterType="SysHistory">
+		delete from sys_history where pubType = #{pubType} and pubFlag = #{pubFlag} and pubId = #{pubId} and userId = #{userId}
+	</delete>
+
+
+
+	<select id="findGrowthCurve" parameterType="java.lang.String" resultType="java.util.Map">
+			SELECT
+				h.userId,
+				SUM(h.bak) AS exp,
+				MONTH (h.createTime) mon
+			FROM
+				sys_history h
+			WHERE
+				h.pubFlag = 'H'
+			AND YEAR (h.createTime) = YEAR (NOW())
+			AND (h.userId = #{_userId} OR h.pubId = #{_userId})
+			GROUP BY
+				DATE_FORMAT(h.createTime, '%Y-%m')
+
+	</select>
+	
+		<select id="findEXPBeforeThisYear" parameterType="java.lang.String" resultType="java.util.Map">
+					SELECT
+						(
+							CASE IFNULL(SUM(h.bak), 0)
+							WHEN 0 THEN
+								50
+							ELSE
+								SUM(h.bak) + 50
+							END
+						) AS exp
+					FROM
+						sys_history h
+					WHERE
+						h.pubFlag = 'H'
+		            <![CDATA[ AND YEAR (h.createTime)< YEAR (NOW())  ]]> 
+					AND (h.userId = #{_userId} OR h.pubId = #{_userId})
+
+	</select>
+	
+	
+		<select id="findCollectRecord" parameterType="java.util.Map" resultType="java.util.Map">
+				SELECT
+					h.userId,
+					h.pubType,
+			<if test="searchType == 0 " >
+					cr.id AS cId,
+					cr.name,
+					cr.downloadPath,
+					cr.pdfPath,
+					cr.type,
+					cr.size,
+					cr.state,
+					cr.uploadPersonId,
+					cu.nickName AS uploadPersonName,
+					cu.currName AS uploadPersoncurrName,
+					cr.authorId,
+					cr.gradeName,
+					cr.subjectsName,
+					
+					cr.createTime,
+					cr.bak,
+					cr.bak1,
+					cr.bak2,
+			</if>
+			<if test="searchType == 1 " >			
+					u.id As uId,
+					u.userCode,
+					u.nickName,
+					u.currName,
+					u.gender,
+					u.age,
+					u.politicsStatus,
+					u.stature,
+					u.HA,
+					u.grade,
+					u.EXP,
+					u.schoolId,
+					sc.schoolName,
+					u.userType,
+					u.phone,
+					u.phoneOk,
+					u.QQ,
+					u.email,
+					u.emailOk,
+					u.memos,
+					u.filePath,
+					u.photo,
+					u.createTime,
+					u.modiyTime,
+					u.bak AS uBak,
+					u.bak1 AS uBak1,
+					u.bak2 AS uBak2,
+			</if>
+			<if test="searchType == 2 " >	
+				    ov.id AS vId,
+					ov.userId AS vUserId,
+					ov.title AS vTitle,
+					ov.schoolId AS vSchoolId,
+					vs.schoolName AS vSchoolName,
+					ov.gradeName AS vGradeName,
+					ov.subjectName AS vSubjectName,
+					ov.teacherId AS vTeacherId,
+					vu.nickName AS vTeacherNickName,
+					vu.currName AS vTeacherName,
+					ov.uploadName AS vUploadName,
+					ov.videoPath AS vVideoPath,
+					ov.type AS vType,
+					ov.picPath AS vPicPath,
+					ov.transcodingState AS vtranscodingState,
+					ov.progress AS vProgress,
+					ov.timeLength AS vTimeLength,
+					ov.size AS vSize,
+					ov.releaseState AS vReleaseState,
+					ov.isShow AS vIsShow,
+					ov.pageView AS vPageView,
+					ov.createTime AS vCreateTime,
+					ov.bak AS vBak,
+					ov.bak1 AS vBak1,
+					ov.bak2 AS vBak2, 
+			</if>	
+			<if test="searchType == 3 " >
+					te.testTitle AS testTitle,
+					te.times AS times,
+					te.totalScore AS totalScore,
+					te.gradeName AS gradeName,
+					te.subiectName AS subjectName,
+					te.addTime AS addTime,
+					user.id AS Uid,
+					user.nickName AS userName,
+			</if>		
+			<if test="searchType == 4 " >
+					q.questionType AS questionType,
+					q.gradeName AS grade,
+					q.subjectName AS subject,
+					q.questionText AS questionText,
+					us.id AS uid,
+					us.nickName AS user,
+			</if>		
+					h.pubId
+				FROM
+					sys_history h
+					<if test="searchType == 0 " >
+							LEFT JOIN cour_resource cr ON cr.id = h.pubId
+							AND cr.state = 'Y'
+							AND cr.bak2 = 'Y'
+							LEFT JOIN `user` cu ON cu.id = cr.uploadPersonId
+					</if>
+					<if test="searchType == 1 " >
+							LEFT JOIN `user` u ON u.id = h.pubId
+							AND u.userType = 'T'
+							LEFT JOIN sys_school sc ON sc.id = u.schoolId 
+					</if>		
+					<if test="searchType == 2 " >	
+							LEFT JOIN offLine_videoResources ov ON ov.id = h.pubId
+							AND ov.isShow='Y'
+							AND ov.releaseState='Y'
+							LEFT JOIN `user` vu ON vu.id= ov.teacherId 
+							LEFT JOIN sys_school vs ON vs.id = ov.schoolId 
+					</if>	
+					<if test="searchType == 3 " >	
+							LEFT JOIN test_web_test te ON te.id = h.pubId
+							AND te.bak1='T'
+							LEFT JOIN `user` user on user.id = te.memberId
+					</if>
+					<if test="searchType == 4 " >	
+							LEFT JOIN test_web_question q ON q.id = h.pubId
+							
+							LEFT JOIN `user` us on us.id = q.memberId
+					</if>
+								WHERE 1=1 
+								<if test="pubType != null " >	
+										AND h.pubType = #{pubType}
+								</if>					
+								<if test="searchType == 0 " >
+										AND cr.id IS NOT NULL
+								</if>	
+								<if test="searchType == 1 " >
+										AND u.id IS NOT NULL
+								</if>	
+								<if test="searchType == 2 " >
+										AND ov.id IS NOT NULL
+								</if>	
+								<if test="searchType == 3 " >
+										AND te.id IS NOT NULL
+								</if>	
+								<if test="searchType == 4 " >
+										AND q.id IS NOT NULL
+								</if>	
+										AND h.pubFlag = 'C'
+								<if test="userId != null" >
+										AND h.userId = #{userId}
+								</if> 
+								ORDER BY
+									h.createTime DESC
+	</select>
+	
+	
+		<select id="findWatchRecord" parameterType="java.util.Map" resultType="java.util.Map">
+				SELECT
+					h.userId,
+					h.pubType,
+					ov.id AS oId,
+					ov.title AS oTitle,
+					ov.subjectName AS oSubjectName,
+					ov.teacherId AS oTeacherId,
+					vu.nickName,
+					vu.currName,
+					ov.timeLength AS oTimeLength,
+					ov.gradeName AS oGradeName,
+					ov.pageView AS oPageView,
+					ov.createTime AS oCreateTime,
+					ov.picPath AS oPicPath,
+					ov.type AS oType,
+				
+				
+					l.id AS lId,
+					l.classId,
+					cl.className,
+					l.schoolId,
+					sc.schoolName,
+					l.subjectId AS lSubjectName,
+					l.userId AS lTeacherId,
+					ul.nickName AS lNickName,
+					ul.currName AS lCurrName,
+					l.z_date,
+					l.bak AS z_time,
+					lc.starttime ,lc.endtime,
+					l.gradeId AS lGradeName,
+					l.coverpath AS lPicPath,
+					h.pubId
+				FROM
+					sys_history h
+				LEFT JOIN offLine_videoResources ov ON ov.id = h.pubId
+				AND ov.isShow = 'Y'
+				AND ov.releaseState = 'Y'
+				LEFT JOIN `user` vu ON vu.id = ov.teacherId
+				LEFT JOIN sys_school vs ON vs.id = ov.schoolId
+				LEFT JOIN lo_schedule l ON l.id = h.pubId
+				LEFT JOIN sys_school sc ON sc.id = l.schoolId
+				LEFT JOIN sys_classroom cl ON cl.id = l.classId
+				LEFT JOIN `user` ul ON ul.id = l.userId
+				LEFT JOIN lo_classTime lc ON lc.id=l.bak
+				WHERE
+					1 = 1
+				AND h.pubType IN ('N', 'V')
+				AND (
+					ov.id IS NOT NULL
+					OR l.id IS NOT NULL
+				)
+				AND h.pubFlag = 'K'
+			<if test="userId != null" >
+				AND h.userId = #{userId}
+			</if> 
+				ORDER BY
+					h.createTime DESC
+	   </select>
+	   
+	   <select id="getExp" parameterType="SysHistory" resultType="java.lang.String">
+	   		SELECT SUM(bak) expsum FROM sys_history
+	   		<include refid="Dynamic_Conditions"/>
+	   </select>
+	   
+	   <select id="getTeacherConTime" parameterType="java.lang.String" resultType="java.util.Date">
+	   		SELECT createTime FROM sys_history WHERE pubFlag = 'H' AND pubType IN ('N','V','R','E','A') and userId = #{userId}  ORDER BY createTime DESC LIMIT 1 
+	   </select>
+	   
+</mapper>

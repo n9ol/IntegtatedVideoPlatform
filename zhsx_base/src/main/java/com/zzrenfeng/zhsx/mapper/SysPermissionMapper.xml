@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysPermissionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysPermission" >
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="resourceType" property="resourceType" />
+		<result column="url" property="url" />
+		<result column="permission" property="permission" />
+		<result column="parentId" property="parentId" />
+		<result column="parentIds" property="parentIds" />
+		<result column="available" property="available" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,name,resourceType,url,permission,parentId,parentIds,available
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from sys_permission
+		where id = #{id}
+	</select>
+	
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_permission
+	</select>
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_permission
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="SysPermission" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_permission (id,name,resourceType,url,permission,parentId,parentIds,available)
+		values (#{id},#{name},#{resourceType},#{url},#{permission},#{parentId},#{parentIds},#{available})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysPermission" >
+		update sys_permission
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="name != null" >
+				name = #{name},
+			</if>
+			<if test="resourceType != null" >
+				resourceType = #{resourceType},
+			</if>
+			<if test="url != null" >
+				url = #{url},
+			</if>
+			<if test="permission != null" >
+				permission = #{permission},
+			</if>
+			<if test="parentId != null" >
+				parentId = #{parentId},
+			</if>
+			<if test="parentIds != null" >
+				parentIds = #{parentIds},
+			</if>
+			<if test="available != null" >
+				available = #{available}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysPermission" >
+		update sys_permission
+		set 
+		id = #{id},
+		name = #{name},
+		resourceType = #{resourceType},
+		url = #{url},
+		permission = #{permission},
+		parentId = #{parentId},
+		parentIds = #{parentIds},
+		available = #{available}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="name != null" >
+				and name = #{name}
+			</if>
+			<if test="resourceType != null" >
+				and resourceType = #{resourceType}
+			</if>
+			<if test="url != null" >
+				and url = #{url}
+			</if>
+			<if test="permission != null" >
+				and permission = #{permission}
+			</if>
+			<if test="parentId != null" >
+				and parentId = #{parentId}
+			</if>
+			<if test="parentIds != null" >
+				and parentIds = #{parentIds}
+			</if>
+			<if test="available != null" >
+				and available = #{available}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysPermission" resultType="SysPermission">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_permission
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="SysPermission" resultType="SysPermission">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_permission
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<select id="findSysPermissionByids" parameterType="java.util.List" resultType="SysPermission">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_permission  where id in 
+		<foreach collection="list" open="(" close=")" separator="," item="id">
+			 #{id}
+		</foreach>
+		and available = 1
+	</select>
+
+</mapper>

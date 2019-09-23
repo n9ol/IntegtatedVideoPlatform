@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+	
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+
+	<body>
+
+		<div id="duke2">
+			<div class="zhong_right2 duke" style="padding: 0;height: 517px;">
+				<p class="dukebiao">课后督课</p>
+				<div class="dafen">
+				<form id="form" action="">
+					<p class="ldl">
+						<span>打分：</span>
+						<input type="hidden" name="id" value="${id!''}">
+						<input type="text" name="bak1" maxlength="3" id="fen" value="" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" />
+					</p>
+					<textarea id="testd" name="bak2" rows="5"></textarea>
+					</form>
+					<p style="line-height: 40px;padding-left: 50px;color: gray;">最多可输入200字</p>
+					<button class="layui-btn layui-btn-primary qu" style="float: right;margin-right: 40px;">取消</button>
+					<button class="layui-btn layui-btn-normal ti" style="background-color: #4596E5;float: right;margin-right: 40px;">提交</button>
+				</div>
+				<div class="pay clear">
+					<p>一、课后督课注意事项：【在听课评课的过程中，能灵活的运用看、听、想、问四种观察方法对本节课能够系统、专业、准确的给出评价。】</p>
+					<p>二、督课专业性要求：观察力是督课最重要的基本功之一；观察力之功力来之督课人员的长期督导实践的积累；即：督课走进课堂看什么？听什么？想什么？问什么？ 　　</p>
+					<p>关于看。不是简单的就听课而听，而是从专业、职业的视角对班级环境进行了全面的看，而且赋予思考性的分析，能透过表象发现问题，属于资深督课。</p>
+					<p>关于听。教师的三维目标落实是否有偏差；课堂鲜活的生成问题是否能及时予以应对。</p>
+					<p>关于想。没有此作基础，即便是发现了问题，也较难说准错在何处？</p>
+					<p>关于问。它是引发专业提问的前提，所以督课的提问很重要，但一定要建立在思考的基础上，问什么？何时问？</p>
+				</div>
+			</div>
+		</div>
+
+	</body>
+	<!--公共js-->
+	<script src="${ctx}/common/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="${ctx}/js/web/template.js" type="text/javascript" charset="utf-8"></script>
+	<!--单独的js-->
+		<script src="${ctx}/common/layui/layui.js" type="text/javascript" charset="utf-8"></script>
+	<script src="${ctx}/js/web/mstd_geren.js" type="text/javascript" charset="utf-8"></script>
+
+	<script type="text/javascript">
+
+		//课后督课提交按钮
+		$(".ti").click(function() {
+			if($("#fen").val() == ''){
+				alert("请填写分数");
+				return false;
+			}
+			if(parseInt($("#fen").val())  >100){
+				alert("满分为100");
+				return false;
+			}
+			if ($("#testd").val() == '') {
+				alert("请填写评语");
+				return false;
+			}  
+			
+			$.ajax({
+				   type: "POST",
+				   url: "${ctx}/personalCenter/duke",
+				   data:  $("#form").serialize(),
+				   success: function(msg){
+					  if("操作成功" == msg){     
+							$("#fen").val(''); 
+							$("#testd").val('');
+							history.back(-1);
+					  }
+					  alert(msg);
+				   }
+				});
+			
+			
+
+		});
+		
+		$(".qu").click(function() {
+			
+				$("#fen").val(''); 
+				$("#testd").val('');
+			
+		});
+		
+		
+
+
+	</script>
+
+</html>

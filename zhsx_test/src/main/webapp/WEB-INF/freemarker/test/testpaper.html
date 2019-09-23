@@ -1,0 +1,54 @@
+				<!-- 		<#global ctx=rc.contextPath/> -->
+			
+				<ul class="lists news">
+					<#if lists??&&(lists?size>0)><#list lists as l>
+					<li>
+						<div class="touxiang"><img src="${ctx}/img/jpg.png" /></div>
+						<div class="zhengwen">
+							<div class="biaoti ellipsisDiv">${l.testTitle!''}</div>
+							<div class="leibie ellipsisDiv">
+								出卷人：<span>${l.userName!''}(${l.schoolName!''})</span>&nbsp;&nbsp;
+								专业：<span>${l.gradeName!''}</span>&nbsp;&nbsp;
+								科目：<span>${l.subiectName!''}</span>&nbsp;&nbsp;
+								版本：<span>${l.version!''}</span>
+							</div>
+							<div class="xijie ellipsisDiv">
+								
+								<span>考试时长：${l.times!''}分钟</span>
+								<span>试卷总分：${l.totalScore!''}分</span>
+								<span>浏览次数：${l.views!''}</span>
+								<span>发布时间：${(l.addTime)?string('yyyy-MM-dd')}</span>
+								
+							</div>
+							
+						</div>
+						<div class="lianjie">
+							<#if l.history??&&(l.history?size>0)>
+								<div class="layui-btn layui-btn-primary download" onclick="cancelCollection('${l.id!''}');" >
+									<i class="layui-icon">&#xe654;</i>
+									<a href="javascript:void(0);">取消收藏</a>
+								</div>
+							<#else>
+								<div class="layui-btn layui-btn-primary download" onclick="collection('${l.id!''}');">
+									<i class="layui-icon">&#xe654;</i>
+									<a href="javascript:void(0);">收藏</a>
+								</div>
+							</#if>	
+							<div class="layui-btn layui-btn-primary download">
+								<i class="layui-icon">&#xe642;</i>
+								<a href="javascript:;" onclick="testDetail('${l.id!''}','${l.times!''}')">在线考试</a> 
+							</div>
+						</div>
+					</li>
+					</#list></#if>	
+				</ul>
+<!-- 分页 -->
+				<div id="page">
+				</div>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		testpaper();
+	}
+</script>

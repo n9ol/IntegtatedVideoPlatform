@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>编辑评估小组成员</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<style type="text/css">
+.layui-elem-quote {
+	height: 70px;
+	overfllow: hidden;
+}
+
+.search-btn01 {
+	height: 38px;
+	width: 57px;
+}
+
+#searchval {
+	width: 180px;
+}
+</style>
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="layui-tab">
+				<blockquote class="layui-elem-quote mylog-info-tit">
+					<ul class="layui-tab-title" style="display: inline-block;">
+						<li class="layui-btn layui-this" onclick="add('${pgGroupId!''}');">添加成员</li>
+					</ul>
+					<ul class="pull-right">
+						<li>
+							<a class="layui-btn refresh_btn" style="margin: 0 30px 0 30px;" href="javascript:;" onclick="searchPgGroupUser();">
+								<i class="iconfont icon-shuaxin"></i>
+							</a>
+						</li>
+					</ul>
+					<ul class="pull-right">
+						<li>
+							<div class="layui-input-inline pull-left">
+								<input id="searchval" name="searchval" type="search" class="layui-input" placeholder="名称" value="${searchval!''}" />
+							</div>
+							<a class="layui-btn search-btn01 pull-left" href="javascript:;" onclick="searchPgGroupUser();">
+								<i class="layui-icon">&#xe615;</i>
+							</a>
+						</li>
+					</ul>
+				</blockquote>
+				<div class="larry-separate"></div>
+				<div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+					<div class="layui-tab-item layui-field-box layui-show">
+						<form id="myform">
+							<table class="layui-table table-hover" lay-even="" lay-skin="nob">
+								<thead>
+									<tr>
+										<th>
+											<input type="checkbox" id="selected-all-operation">
+										</th>
+										<th>NO</th>
+										<th>成员昵称</th>
+										<th>角色类型</th>
+										<th>所在学校</th>
+										<th>删除</th>
+									</tr>
+								</thead>
+								<tbody>
+									<#if loPgGroupUsers?? && (loPgGroupUsers?size>0)> <#list loPgGroupUsers as l>
+									<input type="hidden" name="userIds" value="${l.userId!''}">
+									<tr id="${l.id!''}">
+										<td>
+											<input type="checkbox" name="del_id" value="${l.id!''}">
+										</td>
+										<td>${l_index+1}</td>
+										<td>${l.nickName!''}</td>
+										<td>
+											<#if l.userType?? && l.userType=='L'>领导</#if>
+											<#if l.userType?? && l.userType=='R'>教研员 </#if>
+											<#if l.userType?? && l.userType=='T'>教师 </#if>
+										</td>
+										<td>${l.schoolName!'-----'}</td>
+										<td>
+											<a href="javascript:;" class="check_look" onclick="del('${l.id}');">
+												<i class="layui-icon">&#xe640;</i>
+												&nbsp;删除
+											</a>
+										</td>
+									</tr>
+									</#list> </#if>
+								</tbody>
+							</table>
+						</form>
+						<div class="larry-table-page clearfix">
+							<a href="javascript:;" class="layui-btn layui-btn-small" onclick="batchDel();">
+								<i class="iconfont icon-shanchu1"></i>
+								删除
+							</a>
+							<div id="page" class="page"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="pgGroupId" value="${pgGroupId!''}">
+	</section>
+	<script type="text/javascript" src="${ctx}/js/admin/pgGroup/editPgGroupUser.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+.layui-elem-quote {
+	height: 70px;
+	overfllow: hidden;
+}
+
+.search-btn01 {
+	height: 38px;
+	width: 57px;
+}
+
+#searchval {
+	width: 180px;
+}
+
+.xianshi {
+	width: 148px; /*必须设置宽度*/
+	overflow: hidden; /*溢出隐藏*/
+	text-overflow: ellipsis; /*以省略号...显示*/
+	white-space: nowrap; /*强制不换行*/
+	text-align: center;
+}
+
+.xianshi1 {
+	width: 148px; /*必须设置宽度*/
+	overflow: hidden; /*溢出隐藏*/
+	text-overflow: ellipsis; /*以省略号...显示*/
+	white-space: nowrap; /*强制不换行*/
+	text-align: center;
+	margin: 0 auto;
+}

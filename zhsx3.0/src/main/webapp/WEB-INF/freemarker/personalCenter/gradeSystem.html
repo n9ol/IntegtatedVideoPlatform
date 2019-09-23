@@ -1,0 +1,102 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<div class="gradeDefinition">
+	<p class="gradeDefinition_p1">教师等级定义</p>
+	<div class="clear xian2"></div>
+	<p class="gradeDefinition_p2">教师等级是用户活跃和荣誉的见证。随着客户在综合视讯平台上的探索和成长，等级会随之增长。等级越高代表荣誉越高。</p>
+</div>
+<div class="gradeDefinition">
+	<p class="gradeDefinition_p1">经验获得方法与计算规则</p>
+	<div class="clear xian2"></div>
+	<p class="gradeDefinition_p2">教师成长等级由用户累计的成长值决定。每天只需完成任务即可获取成长值，提升等级。</p>
+</div>
+<div class="gradeDefinition">
+	<p class="gradeDefinition_p1 gradeDefinition_renwu">一、基础任务</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">1.完成账号注册 奖励 50 经验值</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">2.上传头像,奖励 20 经验值</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">3.完善基本资料 奖励 60 经验值</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">4.关注人数,每人奖励 10  经验值 </p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">5.连续登陆任务(周)</p>
+	<table class="layui-table gradeDefinition_renwu" style="margin-left: 100px;">
+		<colgroup>
+			<col width="120">
+			<col>
+			<col>
+		</colgroup>
+		<thead>
+			<tr>
+				<th>任务名称</th>
+				<th>登陆天数</th>
+				<th>奖励经验值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td rowspan="7">连续登陆</td>
+				<td>本周首次登录</td>
+				<td>1</td>
+			</tr>
+			<tr>
+				<td>本周第2次登录</td>
+				<td>2</td>
+			</tr>
+			<tr>
+				<td>本周第3次登录</td>
+				<td>3</td>
+			</tr>
+			<tr>
+				<td>本周第4次登录</td>
+				<td>4</td>
+			</tr>
+			<tr>
+				<td>本周第5次登录</td>
+				<td>5</td>
+			</tr>
+			<tr>
+				<td>本周第6次登录</td>
+				<td>6</td>
+			</tr>
+			<tr>
+				<td>本周第7次登录</td>
+				<td>7</td>
+			</tr>
+		</tbody>
+	</table>
+	<p class="gradeDefinition_p1 gradeDefinition_renwu">二、贡献资源</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">1.发布一节直播课,并至少被一人观看   奖励 150 经验值</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">2.发布一个点播视频,奖励 20 经验值</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">3.发布一个课件, 奖励 10  经验值  (每天上限 100 经验值)</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">4.发布一套试卷, 奖励 20 经验值   (每天上限 100 经验值)</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">5.回答一个问题 , 奖励 10 经验值 . 如果被采纳 再奖励 50 经验值</p>
+</div>
+<div class="gradeDefinition">
+	<p class="gradeDefinition_p1 gradeDefinition_renwu">三、教师等级计算方法及标识</p>
+	<div class="clear xian2"></div>
+	<p class="gradeDefinition_p2">以下是每个等级对应的成长值，达到对应的成长值后就能升级。</p>
+	<table class="layui-table layui-table3 gradeDefinition_renwu" style="margin-left:100px;">
+		<thead>
+			<tr>
+				<th>等级</th>
+				<th>所需成长值</th>
+				<th>等级</th>
+				<th>所需成长值</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list 1..50 as i>
+				<tr>
+					<td>
+						<span class="grade grade1">Lv.${i}</span>
+					</td>
+					<td>${15*(i*i+i+2)}</td>
+					<td>
+						<span class="grade grade1">Lv.${50+i}</span>
+					</td>
+					<td>${15*((50+i)*(50+i)+(50+i)+2)}</td>
+				</tr>
+			</#list>
+		</tbody>
+	</table>
+	<p class="gradeDefinition_p1 gradeDefinition_renwu">四、惩罚制度</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">1.当教师等级达到30级时(不包含)  ,超过3天未提供任何新资源 每天扣除 15 经验值</p>
+	<p class="gradeDefinition_p2 gradeDefinition_renwu">2.取消关注扣除经验值(每少一人的关注减少 10 经验值)</p>
+</div>

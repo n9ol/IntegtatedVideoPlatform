@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.eclassbrand.sys.ESysRolePermissionMapper">
+
+	<resultMap id="BaseResultMap" type="com.zzrenfeng.zhsx.model.eclassbrand.sys.ESysRolePermission">
+		<result column="roleId" property="roleId" />
+		<result column="permissionId" property="permissionId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		roleId,permissionId
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_role_permission
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="ESysRolePermission">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_role_permission (roleId,permissionId)
+		values (#{roleId},#{permissionId})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="ESysRolePermission">
+		update sys_role_permission
+		<set>
+			<if test="roleId != null">
+				roleId = #{roleId},
+			</if>
+			<if test="permissionId != null">
+				permissionId = #{permissionId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<update id="updateByPrimaryKey" parameterType="ESysRolePermission">
+		update sys_role_permission
+		set
+		roleId = #{roleId},
+		permissionId = #{permissionId}
+		where id = #{id}
+	</update>
+
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="roleId != null">
+				and roleId = #{roleId}
+			</if>
+			<if test="permissionId != null">
+				and permissionId = #{permissionId}
+			</if>
+		</where>
+	</sql>
+
+
+	<select id="findSelective" parameterType="ESysRolePermission" resultType="ESysRolePermission">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<select id="findPageSelective" parameterType="ESysRolePermission" resultType="ESysRolePermission">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+
+	<insert id="updateRolePermission" parameterType="java.util.Map">
+		delete from sys_role_permission where roleId = #{roleId};
+		insert into sys_role_permission (roleId,permissionId)
+		values
+		<foreach collection="permissionIds" separator="," item="permissionId">
+			(#{roleId},#{permissionId})
+		</foreach>
+	</insert>
+
+
+</mapper>

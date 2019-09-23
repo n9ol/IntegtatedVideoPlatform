@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.PgPjinfoMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.PgPjinfo" >
+		<result column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="weight" property="weight" />
+		<result column="onOff" property="onOff" />
+		<result column="type" property="type" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,title,weight,onOff,type,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from pg_pjinfo
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_pg_cour where pjInfoId = #{id};
+		delete from pg_pjdetail where pjinfoId = #{id};
+		delete from pg_pjinfo where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="PgPjinfo" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into pg_pjinfo (id,title,weight,onOff,type,bak,bak1,bak2)
+		values (#{id},#{title},#{weight},#{onOff},#{type},#{bak},#{bak1},#{bak2})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="PgPjinfo" >
+		update pg_pjinfo
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="title != null" >
+				title = #{title},
+			</if>
+			<if test="weight != null" >
+				weight = #{weight},
+			</if>
+			<if test="onOff != null" >
+				onOff = #{onOff},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="PgPjinfo" >
+		update pg_pjinfo
+		set 
+		id = #{id},
+		title = #{title},
+		weight = #{weight},
+		onOff = #{onOff},
+		type = #{type},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="title != null" >
+				and title = #{title}
+			</if>
+			<if test="weight != null" >
+				and weight = #{weight}
+			</if>
+			<if test="onOff != null" >
+				and onOff = #{onOff}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+		</where>
+		ORDER BY bak+0
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="PgPjinfo" resultType="PgPjinfo">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT c.`name` FROM cour_resource c WHERE c.id = (SELECT courId FROM lo_pg_cour l WHERE l.loScheduleId = #{zId} AND l.pjInfoId = p.id)) as courName
+		from pg_pjinfo p
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="PgPjinfo" resultType="PgPjinfo">
+		select 
+		<include refid="Base_Column_List" />
+		from pg_pjinfo
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

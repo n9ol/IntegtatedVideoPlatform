@@ -1,0 +1,117 @@
+<!-- 		<#global ctx=rc.contextPath/> -->
+		<#if lists??&&(lists?size>0)>
+						<#list lists as l>
+						  <#if l.pubType=='V'>
+									<li class="clear">
+								<div class="con_left_li">
+										<#if l.oType = 'P'> <div class="zdb bg1">离线评估 </div></#if>
+										<#if l.oType = 'B'> <div class="zdb bg2">课堂回放 </div></#if>
+										<#if l.oType = 'S'> <div class="zdb bg3">精品微课 </div></#if>
+										<#if l.oType = 'H'> <div class="zdb bg4">优质课程 </div></#if>
+								    <div class="ke_img">
+										<img class="zbimg" src="${fileWebPath}/videoRes/${l.oPicPath!''}"  onerror="this.src='${ctx}/img/lunbo4.png'"/>
+								</div>
+									</div>
+								<div class="jilujieshao">
+									<p class="jjj0"><span>${l.oTitle!''}</span></p>
+									<p class="jjj">
+										<span>
+														授课教师： <span style="color: orange;">${l.nickName!''}</span>
+										</span>
+										<span>
+													  	科目：<span style="color: orange;">${l.oSubjectName!''}</span>
+										</span>
+									</p>
+									<p class="jjj">
+										<span>
+														授课时长：<span>${l.oTimeLength!''}</span>
+										</span>
+										<span>
+														系列课程：<span>${l.oGradeName!''}</span>
+										</span>
+										<span>
+														浏览：<span>${l.oPageView!'0'}</span>
+										</span>
+										<span>
+														发布时间：<span>${l.oCreateTime!''}</span>
+										</span>
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini see">
+										<img alt="" src="${ctx}/img/eye2.png">
+										<a href="javascript:watchofflineVideo('${l.oId}','${l.oType}');">&nbsp;查&nbsp;&nbsp;&nbsp;&nbsp;看&nbsp;</a>
+									</span>
+<!-- 									<span class="layui-btn layui-btn-mini du" style="background-color: white;color: black;border: 1px solid gainsboro;"><i class="layui-icon" style="font-size: 30px; color: gray;">&#xe615;</i> 课后督课</span> -->
+				
+								</div>
+							</li>
+							<#elseif l.pubType=='N'>
+								<li class="clear">
+								<div class="con_left_li">
+									<#if l.lType?? && l.lType=='G'>
+										 <div class="zdb bg5"> 专递课堂  </div>
+									<#else>
+										<div class="zdb"> 在线评估 </div>
+									</#if>
+									
+									<div class="ke_img">
+										
+										<#if l.lType?? && l.lType=='G'>
+											<img src="${ctx}/images/zhuandi270.png" />
+										<#else>
+											<img src="${ctx}/images/pinggu270.png" />
+										</#if>
+							       </div>
+							       </div>
+								<div class="jilujieshao">
+									<p class="jjj0"><span>${l.className!''}</span></p>
+									<p class="jjj">
+									   
+										<span>
+														授课教师： <span style="color: orange;">${l.lNickName!''}</span>
+										</span>
+										<span>
+													  	科目：<span style="color: orange;">${l.lSubjectName!''}</span>
+										</span>
+										<span>
+														学校： <span style="color: orange;">${l.schoolName!''}</span>
+										</span>
+									</p>
+									<p class="jjj">
+
+										<span>
+														系列课程：<span>${l.lGradeName!''}</span>
+										</span>
+<!-- 										<span> -->
+<!-- 														浏览：<span>{l.oPageView!'0'}</span> -->
+<!-- 										</span> -->
+										<span>
+														直播时间：<span>${l.z_date!''} (${l.starttime!'00:00:00'}--${l.endtime!'00:00:00'})</span>
+										</span>
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+<!-- 									<span class="layui-btn layui-btn-mini see" style="background-color: white;color: black;border: 1px solid gainsboro;"><i class="layui-icon" style="font-size: 30px; color: gray;">&#xe615;</i> 查看</span> -->
+<!-- 									<span class="layui-btn layui-btn-mini du" style="background-color: white;color: black;border: 1px solid gainsboro;"><i class="layui-icon" style="font-size: 30px; color: gray;">&#xe615;</i> 课后督课</span> -->
+				
+								</div>
+							</li>
+							</#if>
+					</#list>
+				</#if>
+
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getListData();
+	}
+	
+	//观看离线视频
+	function watchofflineVideo(id,type){
+		window.open(ctx+"/offLine/videoPlayback?id="+id+"&type="+type,"_blank");
+	}
+</script>

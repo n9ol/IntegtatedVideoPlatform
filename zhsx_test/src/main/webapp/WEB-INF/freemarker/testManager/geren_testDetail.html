@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<!-- 		<#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<style type="text/css">
+			.testbody {
+				width: 800px;
+				margin: 0 auto;
+			}
+			
+			.testbody .viewdiv {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				padding: 20px;
+				border: 1px solid #ccc;
+				background: #f6f6f6;
+			}
+			
+			.testbody .testtitle {
+				font-size: 20px;
+				font-weight: bold;
+				color: #4596E5;
+				padding-top: 20px;
+				padding-bottom: 5px;
+			}
+			
+			.testinfo2 {
+				padding-top: 3px;
+				padding-bottom: 3px;
+				font-family: arial;
+				font-size: 12px;
+				color: #666;
+			}
+			
+			.testbody .score .text1 {
+				padding-top: 32px;
+				padding-left: 10px;
+				font-size: 12px;
+				color: #666;
+			}
+			
+			.testbody .score .score1 {
+				padding-top: 25px;
+				font-size: 20px;
+				color: #666;
+			}
+			
+			.testbody .score .text2 {
+				padding-top: 32px;
+				padding-left: 3px;
+				font-size: 12px;
+				color: #666;
+			}
+			
+			.testbody .score .score2 {
+				padding-top: 12px;
+				font-size: 32px;
+				font-weight: bold;
+				color: #4596E5;
+			}
+			
+			.fontred {
+				color: #f00;
+			}
+			
+			.dotline2 {
+				height: 11px;
+				margin-top: 10px;
+				border-top: 1px dotted #999;
+			}
+			
+			.hsplit {
+				height: 10px;
+			}
+			
+			.fontarial {
+				font-family: arial;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="testbody">
+			<#if test??>
+			<div class="testtitle">在线考试：【${test.testTitle!''}】</div>
+			<div class="viewdiv clear">
+				<div class="fl">
+					<div class="testinfo2">
+						${test.stuType!''}:${test.gradeName!''} &nbsp;&nbsp;${test.subjectName!''} &nbsp;&nbsp;<#if test.volume==0>全册</#if><#if test.volume==1>上册</#if><#if test.volume==2>下册</#if> &nbsp;&nbsp;${test.version!''}
+					</div>
+					<div class="testinfo2">
+						考试时间：${test.times!''}分钟 &nbsp;&nbsp; 试卷总分：${test.totalScores!''}分 &nbsp;&nbsp; 试题数量：${test.questions!''} 题
+					</div>
+					<div class="testinfo2">
+					添加时间：${(test.addTime)?string('yyyy-MM-dd HH:mm')}
+					</div>
+				</div>
+			</div>
+			</#if>
+			
+			
+			<#if lists??&&(lists?size>0)><#list lists as l>
+			<!-- 多选 -->
+				 <#assign qty="">
+				 <#if l.questionType=="2">
+				 	 <#assign qty="多选题">
+				 </#if>
+				 <#if l.questionType=="1">
+				 	 <#assign qty="单选题">
+				 </#if>
+				 <#if l.questionType=="0">
+				 	 <#assign qty="判断题">
+				 </#if>
+				<div>
+					<div class="yahei font18 fontbold">
+						
+						第${l_index+1+((pageNum-1)*4)}题、${qty}：
+					
+						
+					</div>
+					
+					<div class="clear"></div>
+					<div class="dotline2"></div>
+					<div style="padding-top:8px; padding-bottom:8px; line-height:1.6; font-size:14px;">${l.questionTitle!''}</div>
+					<div class="hsplit"></div>
+					<!--多选题-->
+					 <#if l.questionType=="2">
+						<div class="yahei font18">
+						
+						</div>
+						<div class="hsplit"></div>
+						<!--是非题-->
+						<!--单选题-->
+					
+					  	<#if l.questionAnswer??&&(l.questionAnswer?size>0)><#list l.questionAnswer as queAns>
+							<div>
+							
+								
+							
+								<div style="padding-top:8px;padding-right:8px;" class="fl">
+									<input type="checkbox" name="" id="" value="${queAns.id}" disabled/>
+								</div>
+							
+								
+								<div style="line-height:28px;" class="fl fontarial">选项${queAns.xuanxiang!''}:${queAns.answerText!''}</div>
+								
+								<div class="clear"></div>
+							</div>
+							
+						</#list></#if> 
+					</#if>
+					
+					<!--单选题-->
+					 <#if l.questionType=="1">
+						<div class="yahei font18">
+						
+						</div>
+						<div class="hsplit"></div>
+						<!--是非题-->
+						
+					<!--多选题-->
+					  	<#if l.questionAnswer??&&(l.questionAnswer?size>0)><#list l.questionAnswer as queAns>
+							<div>
+							
+								
+							
+								<div style="padding-top:8px;padding-right:8px;" class="fl">
+									<input type="radio" name="" id="" value="${queAns.id}" disabled />
+								</div>
+							
+								
+								<div style="line-height:28px;" class="fl fontarial">选项${queAns.xuanxiang!''}:${queAns.answerText!''}</div>
+								
+								<div class="clear"></div>
+							</div>
+							
+						</#list></#if> 
+					</#if>
+					
+					
+					<!--是非题-->
+					 <#if l.questionType=="0">
+						<div class="yahei font18">
+							
+						<!-- <#if l.stuAnswer??&&(l.stuAnswer?size>0)><#list l.stuAnswer as stuAn>
+							${stuAn.answerId}
+						</#list></#if>	 -->
+						</div>
+						<div class="hsplit"></div>
+						
+						<!--单选题-->
+					<!--多选题-->
+					  	<#if l.questionAnswer??&&(l.questionAnswer?size>0)><#list l.questionAnswer as queAns>
+							<div>
+							
+								
+							
+								<div style="padding-top:8px;padding-right:8px;" class="fl">
+									<input type="radio" name="" id="" value="${queAns.id}" disabled />
+								</div>
+							
+								
+								<div style="line-height:28px;" class="fl fontarial">${queAns.answerText!''}</div>
+								
+								<div class="clear"></div>
+							</div>
+							
+						</#list></#if> 
+					</#if>
+					
+					
+					
+							<!-- 参考答案选项 -->
+							<div class="hsplit"></div>
+							<div class="yahei font18" style="color:red">参考答案:</div>
+							<div class="hsplit"></div>
+							<div>答案:
+								<#if l.questionAnswer??&&(l.questionAnswer?size>0)><#list l.questionAnswer as a>
+									<#if a.isRight==1>
+										${a.xuanxiang!''}
+									</#if>
+								</#list></#if> 
+							</div>
+							<div class="hsplit"></div>
+							<div class="hsplit"></div>
+					
+					
+				</div>
+			    
+			</#list>
+			</#if>
+			
+			<!-- 分割线 -->
+			
+
+			<div id="page" style="text-align: center;"></div>
+		</div>
+		<form id="form" action="${ctx}/test/findOne"method="post">
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="testId" value="${testId!''}">
+		</form>
+	</body>
+	<script type="text/javascript">var ctx ="${ctx}";</script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script src="${ctx}/js/web/mstd_geren.js" type="text/javascript" charset="utf-8"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+		}
+	</script>
+<script type="text/javascript">
+
+
+	function setIframeH() {
+		var body = $(document.body);
+		var iframe = $(parent.document.getElementById('parentIframe'));
+		iframe.height(body.height());
+	}
+	
+	function refreshPage(){
+		
+		$("#form").submit();
+	}
+	
+</script>
+
+</html>

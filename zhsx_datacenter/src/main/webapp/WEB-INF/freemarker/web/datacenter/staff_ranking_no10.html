@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+
+		<!--历年使用平台人数的变化-->
+		<div class="nr1">
+			<p class="tittle">历年使用平台人数的变化</p>
+			<div id="main2"></div>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	<script type="text/javascript">
+		setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeRanking'));
+			iframe.height(body.height()+20);
+		}
+		
+		//
+		var datas=[];
+		datas.push("${(resultMap.pre3Up)!''}");
+		datas.push("${(resultMap.pre3Down)!''}");
+		datas.push("${(resultMap.pre2Up)!''}");
+		datas.push("${(resultMap.pre2Down)!''}");
+		datas.push("${(resultMap.pre1Up)!''}");
+		datas.push("${(resultMap.pre1Down)!''}");
+		
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var myChart2 = echarts.init(document.getElementById("main2"));
+		var option2 = {
+			color: color3,
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: { // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				},
+				formatter: function(params) {
+					var tar;
+					if (params[1].value != '-') {
+						tar = params[1];
+					} else {
+						tar = params[0];
+					}
+					return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+				}
+			},
+			legend: {
+				data: ['使用人数']
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: {
+				type: 'category',
+				splitLine: {
+					show: false
+				},
+				data: ['2014年上半年', '2014年下半年', '2015年上半年', '2015年下半年', '2016年上半年', '2016年下半年']
+			},
+			yAxis: {
+				type: 'value'
+			},
+			series: [{
+				name: '辅助',
+				type: 'bar',
+				stack: '总量',
+				itemStyle: {
+					normal: {
+						barBorderColor: 'rgba(0,0,0,0)',
+						color: 'rgba(0,0,0,0)'
+					},
+					emphasis: {
+						barBorderColor: 'rgba(0,0,0,0)',
+						color: 'rgba(0,0,0,0)'
+					}
+				},
+				data: [0, 450, 600, 700, 800, 900]
+			}, {
+				name: '使用人数',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'top'
+					}
+				},
+				data: datas/* [135, 600, 800, 1000, 1300, 1800] */
+			}]
+		};
+		myChart2.setOption(option2);
+	</script>
+
+</html>

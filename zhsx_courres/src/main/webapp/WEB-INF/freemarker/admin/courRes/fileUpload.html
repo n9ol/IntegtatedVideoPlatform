@@ -1,0 +1,36 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<ul class="container" id="${file.id!''}">
+	<li class="file-list status-success">
+		<div class="process" style="width:0%;"></div>
+		<div class="info">
+			<div class="file-name" title="${file.name!''}">
+				<div class="file-icon fileicon-sys-s-web">
+					<#if file.ext == 'ppt' || file.ext == 'pptx'><img src="${ctx}/img/Ppt_54_6165188.png" /></#if>
+					<#if file.ext == 'doc' || file.ext == 'docx'><img src="${ctx}/img/Word_54_6167687.png" /></#if>
+					<#if file.ext == 'xls' || file.ext == 'xlsx'><img src="${ctx}/img/Excel_54_7880c8c.png" /></#if>
+					<#if file.ext == 'pdf'><img src="${ctx}/img/PDF_54_ae4e37a.png" /></#if>
+					<#if file.ext == 'txt'><img src="${ctx}/img/Txt_54_1885188.png" /></#if>
+				</div>
+				<span class="name-text">${file.name!''}</span>
+			</div>
+			<div class="file-size">${file.size!''}</div>
+			<div class="file-status">
+				<span class="waiting">排队中…</span>
+				<span class="uploading">
+					<em class="precent"></em>
+<!-- 					<em class="speed">(5.9MB/s)</em> -->
+				</span>
+			</div>
+			<div class="file-operate">
+				<em class="operate-pause"></em>
+				<em class="operate-continue"></em>
+				<em class="operate-retry"></em>
+				<em class="operate-remove"></em>
+				<a href="javascript:void(0);" class="error-link" onclick="delFile('${file.id}');"><img src="${ctx}/img/shanchu.png" style="width:10px;height:10px;"></a>
+<!-- 				<a href="javascript:void(0);" class="error-link" onclick="pauseAndStart('${file.id}',this)" id="pause" > -->
+<!-- 					<img src="${ctx}/img/zanting.png" style="width:10px;height:10px;"> -->
+<!-- 				</a> -->
+			</div>
+		</div>
+	</li>
+</ul>

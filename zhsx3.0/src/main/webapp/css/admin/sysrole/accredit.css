@@ -1,0 +1,45 @@
+.treeOption {
+	line-height: 40px;
+	border-bottom: 1px solid #f2f2f2;
+	overflow: hidden;
+}
+
+.treeOption input {
+	margin: 13px 5px 0 5px;
+}
+
+.treeUlChil {
+	margin-left: 50px;
+	display: none;
+	background-color: #fff;
+}
+
+.treeDiv {
+	background-color: #f2f2f2;
+}
+
+.a{
+	clear: both;
+	float: left;
+	margin-top: 13px;
+}
+
+.treeA {
+	float: left;
+	width: 90%;
+}
+
+.savess {
+	width: 50px;
+	line-height: 30px;
+	text-align: center;
+	float: right;
+	border: 1px solid gray;
+	border-radius: 4px;
+	cursor: pointer;
+	margin: 30px;
+}
+
+.savess:hover {
+	border-color: #4596e5;
+}

@@ -1,0 +1,821 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.DataStatisticsMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.DataStatistics" >
+		<result column="id" property="id" />
+	</resultMap>
+
+
+	<select id="findTeacherContributionOfDay" parameterType="java.lang.String"  resultType="java.util.Map">
+	
+				SELECT
+					t.teacherid,
+					SUM(t.classtimes) AS classtimes,
+					t.weekNum AS weekNum
+				FROM
+					(
+						SELECT
+							l.id,
+							l.userId AS teacherid,
+							COUNT(l.id) AS classtimes,
+							(WEEKDAY(l.z_date) + 1) AS weekNum,
+							YEARWEEK(now()) + 1
+						FROM
+							lo_schedule l
+						WHERE
+							1 = 1
+					<![CDATA[
+						AND l.z_date<=NOW()
+						AND WEEKDAY(l.z_date) < 5
+					]]>
+						AND YEARWEEK(l.z_date) = YEARWEEK(now())
+					<if test="_parameter != null" >
+							AND l.userId = #{_teacherId}
+					</if>
+						GROUP BY
+							weekNum
+						UNION
+							SELECT
+								o.id,
+								o.teacherId AS teacherid,
+								COUNT(o.id) AS classtimes,
+								(WEEKDAY(o.createTime) + 1) AS weekNum,
+								YEARWEEK(now())
+							FROM
+								offLine_videoResources o
+							WHERE
+								1 = 1
+							AND o.isShow='Y'
+							AND o.releaseState='Y'
+							<![CDATA[
+						 	 AND WEEKDAY(o.createTime) < 5
+							]]>
+							AND YEARWEEK(o.createTime) = YEARWEEK(now())
+						<if test="_parameter != null" >
+							AND o.teacherId  = #{_teacherId}
+						</if>
+							GROUP BY
+								weekNum
+					) t
+				GROUP BY
+					t.weekNum
+				ORDER BY
+					t.weekNum
+				
+	</select>
+
+<select id="findTeacherContributionOfWeek" parameterType="java.util.Map"  resultType="java.util.Map">
+				SELECT 
+				t.teacherid ,
+				SUM(t.classtimes) AS classtimes,
+				t.theweek
+				FROM(	
+
+					SELECT
+							DISTINCT l.id,
+							l.userId AS teacherid,
+							COUNT(DISTINCT l.id) AS classtimes,
+							YEARWEEK(DATE_SUB(now(),INTERVAL 7*#{week} DAY )) AS theweek 
+						FROM
+							lo_schedule l
+							<if test="isPg != null" >
+								LEFT JOIN web_pj p ON l.id = p.pgId
+							</if>
+						WHERE
+							1 = 1
+							<![CDATA[
+								AND l.z_date<=NOW()
+							]]>
+							
+							<if test="isPg != null" >
+							AND p.onOff = 'ON'
+							AND p.ispj='1'
+							</if>
+						AND YEARWEEK(l.z_date) = YEARWEEK(DATE_SUB(now(),INTERVAL 7*#{week} DAY ))
+					<if test="userId != null" >
+							AND l.userId = #{userId}
+					</if>
+						GROUP BY
+							theweek
+						UNION
+							SELECT
+								DISTINCT o.id,
+								o.teacherId AS teacherid,
+								COUNT(DISTINCT o.id) AS classtimes,
+								YEARWEEK(DATE_SUB(now(),INTERVAL 7*#{week} DAY )) AS theweek 
+							FROM
+								offLine_videoResources o
+								<if test="isPg != null" >
+									LEFT JOIN web_pj p ON o.id = p.pgId
+							    </if>
+							WHERE
+								1 = 1
+							<if test="isPg != null" >
+							AND p.onOff = 'OFF'
+							AND p.ispj='1'
+							</if>
+							AND o.isShow='Y'
+							AND o.releaseState='Y'
+							AND YEARWEEK(o.createTime) = YEARWEEK(DATE_SUB(now(),INTERVAL 7*#{week} DAY ))
+						<if test="userId != null" >
+							AND o.teacherId  = #{userId}
+						</if>
+							GROUP BY
+								theweek
+				) t GROUP BY t.theweek
+	</select>
+
+<select id="findTeacherContributionOfMonth" parameterType="java.util.Map"  resultType="java.util.Map">
+				SELECT 
+				t.teacherid , 
+				SUM(t.classtimes) AS classtimes,
+				t.themonth
+				FROM(	
+					SELECT
+							DISTINCT l.id, 
+							l.userId AS teacherid,
+							COUNT(DISTINCT l.id) AS classtimes,
+				DATE_FORMAT(DATE_SUB(now(),INTERVAL #{month} MONTH  ),'%Y%m') AS themonth 
+						FROM
+							lo_schedule l
+							<if test="isPg != null" >
+								LEFT JOIN web_pj p ON l.id = p.pgId
+							</if>
+						WHERE
+							1 = 1
+							<![CDATA[
+								AND l.z_date<=NOW()
+							]]>
+							
+							<if test="isPg != null" >
+							AND p.onOff = 'ON'
+							AND p.ispj='1'
+							</if>
+						AND DATE_FORMAT(l.z_date,'%Y%m') = DATE_FORMAT(DATE_SUB(now(),INTERVAL #{month} MONTH  ),'%Y%m') 
+  					<if test="userId != null" >
+ 							AND l.userId = #{userId}
+  					</if>
+						GROUP BY
+							themonth
+						UNION
+							SELECT
+								DISTINCT o.id, 
+								o.teacherId AS teacherid,
+								COUNT(DISTINCT o.id) AS classtimes,
+								DATE_FORMAT(DATE_SUB(now(),INTERVAL #{month} MONTH  ),'%Y%m') AS themonth
+							FROM
+								offLine_videoResources o
+								<if test="isPg != null" >
+									LEFT JOIN web_pj p ON o.id = p.pgId
+							  </if>
+							WHERE
+								1 = 1
+							<if test="isPg != null" >
+							AND p.onOff = 'OFF'
+							AND p.ispj='1'
+							</if>
+							AND o.isShow='Y'
+							AND o.releaseState='Y'
+							AND DATE_FORMAT(o.createTime,'%Y%m') = DATE_FORMAT(DATE_SUB(now(),INTERVAL #{month} MONTH  ),'%Y%m')
+  						<if test="userId != null" >
+ 							AND o.teacherId  = #{userId}
+  						</if>
+							GROUP BY themonth
+				) t GROUP BY t.themonth
+	</select>
+
+
+<select id="findTeacherContributionOfSemester" parameterType="java.util.Map"  resultType="java.util.Map">
+				SELECT 
+				t.teacherid , 
+				SUM(t.classtimes) AS classtimes ,
+				t.record
+				FROM(	
+					SELECT
+							DISTINCT l.id, 
+							l.userId AS teacherid,
+							COUNT(DISTINCT l.id) AS classtimes ,
+							0 AS record
+						FROM
+							lo_schedule l
+							<if test="isPg != null" >
+								LEFT JOIN web_pj p ON l.id = p.pgId
+							</if>
+						WHERE
+							1 = 1
+							<![CDATA[
+								AND l.z_date<=NOW()
+							]]>
+							<if test="isPg != null" >
+							AND p.onOff = 'ON'
+							AND p.ispj='1'
+							</if>
+						
+						<if test="pama == 0" >
+							<![CDATA[
+							AND DATE_FORMAT(l.z_date,'%Y%m') >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{month} MONTH  ),'%Y%m')
+							]]>
+						</if>
+						
+						<if test="pama == 1" >
+							<![CDATA[
+							AND DATE_FORMAT(l.z_date,'%Y%m') >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{month} MONTH  ),'%Y%m')
+							AND DATE_FORMAT(l.z_date,'%Y%m') < DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{month_} MONTH  ),'%Y%m')
+							]]>
+						</if>
+						
+  					<if test="userId != null" >
+ 							AND l.userId = #{userId}
+  					</if>
+						GROUP BY
+							record
+						UNION
+							SELECT
+								DISTINCT o.id, 
+								o.teacherId AS teacherid,
+								COUNT(DISTINCT o.id) AS classtimes ,
+								0 AS record
+							FROM
+								offLine_videoResources o
+								<if test="isPg != null" >
+									LEFT JOIN web_pj p ON o.id = p.pgId
+							  </if>
+							WHERE
+								1 = 1
+							<if test="isPg != null" >
+							AND p.onOff = 'OFF'
+							AND p.ispj='1'
+							</if>
+							AND o.isShow='Y'
+							AND o.releaseState='Y'
+							
+						<if test="pama == 0" >
+							<![CDATA[
+							AND DATE_FORMAT(o.createTime,'%Y%m') >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{month} MONTH  ),'%Y%m')
+							]]>
+						</if>
+						
+						<if test="pama == 1" >
+							<![CDATA[
+							AND DATE_FORMAT(o.createTime,'%Y%m') >= DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{month} MONTH  ),'%Y%m')
+							AND DATE_FORMAT(o.createTime,'%Y%m') < DATE_FORMAT(DATE_SUB(NOW(),INTERVAL #{month_} MONTH  ),'%Y%m')
+							]]>
+						</if>
+
+  						<if test="userId != null" >
+ 							AND o.teacherId  = #{userId}
+  						</if>
+							GROUP BY
+								record
+				) t GROUP BY t.record
+	</select>
+
+
+	<select id="scoreOfLastOnce" parameterType="java.lang.String"  resultType="java.util.Map">
+	
+				SELECT
+				l.id,
+				l.z_date,
+				t.id AS pjId,
+				(
+					CASE IFNULL(t.bak, '')
+					WHEN '' THEN
+						0
+					ELSE
+						t.bak
+					END
+				) AS q,
+				(
+					CASE IFNULL(t.score, '')
+					WHEN '' THEN
+						0
+					ELSE
+						t.score
+					END
+				) AS z,
+				(
+					CASE IFNULL(t.bak1, '')
+					WHEN '' THEN
+						0
+					ELSE
+						t.bak1
+					END
+				) AS h
+			FROM
+				lo_schedule l
+			LEFT JOIN web_pj t ON l.id = t.pgId
+			WHERE
+			<![CDATA[
+				l.z_date <= NOW()
+			]]>
+			AND t.ispj = '1'
+			AND t.onOff = 'ON'
+			
+			<if test="_parameter != null" >
+				AND l.userId  = #{_teacherId}
+			</if>
+			ORDER BY
+				l.z_date DESC
+			LIMIT 0, 1
+				
+	</select>
+		<select id="scoreOfLastOnceKeqian" parameterType="java.lang.String"  resultType="java.util.Map">
+	
+				SELECT
+					title,
+					AVG(total) AS score
+				FROM
+					web_pjinfo w
+				WHERE
+				1=1
+				<if test="_parameter != null" >
+					AND w.pgId  = #{_pgId}
+				</if>
+				AND w.bak1 = 'F'
+				GROUP BY
+					w.title
+
+				
+	</select>
+	
+	
+	
+	<select  id="averageScoreOfThisWeek" parameterType="java.util.Map"  resultType="java.util.Map">
+					SELECT
+					(
+						CASE IFNULL(SUM(t.bak) / COUNT(t.id), '')
+						WHEN '' THEN
+							0
+						ELSE
+							round(AVG(t.bak),0)   
+						END
+					) AS q,
+					(
+						CASE IFNULL(SUM(t.score) / COUNT(t.id), '')
+						WHEN '' THEN
+							0
+						ELSE
+							round(AVG(t.score),0)  
+						END
+					) AS z,
+					(
+						CASE IFNULL(SUM(t.bak1) / COUNT(t.id), '')
+						WHEN '' THEN
+							0
+						ELSE
+							round(AVG(t.bak1),0) 
+						END
+					) AS h
+				FROM
+					web_pj t
+					LEFT JOIN offLine_videoResources o ON o.id = t.pgId
+					AND t.onOff = 'OFF'
+					AND o.releaseState = 'Y'
+					AND o.isShow = 'Y'
+					<if test="userId != null" >
+         			 AND WEEKDAY(o.createTime) = #{week}
+         			 </if>	
+					AND YEARWEEK(o.createTime) = YEARWEEK(now())
+					LEFT JOIN `user` ou ON ou.id = o.teacherId
+					LEFT JOIN lo_schedule l ON l.id = t.pgId
+					AND t.onOff = 'ON'
+					<if test="userId != null" >
+					AND WEEKDAY(l.z_date) = #{week}	
+					</if>
+					AND YEARWEEK(l.z_date) = YEARWEEK(now())
+					LEFT JOIN `user` ul ON ul.id = l.userId
+					WHERE
+						(o.id IS NOT NULL
+							OR l.id IS NOT NULL
+						)
+					<if test="userId != null" >
+						  AND (ou.id= #{userId}
+						  OR  ul.id= #{userId}
+						  )
+					</if>
+					AND t.ispj='1'
+	
+	</select>
+	
+	
+	
+	<select  id="rankingAverageScoreOfKq" parameterType="java.util.Map"  resultType="java.util.Map">
+	 SELECT 
+		(
+		CASE IFNULL(SUM(p.bak) / COUNT(u.id),'')
+		WHEN '' THEN 0
+		ELSE round(AVG(p.bak),0) 
+		END
+		)  AS score
+			  
+		from `user` u 
+		LEFT JOIN lo_schedule l ON l.userId = u.id 
+		LEFT JOIN web_pj p ON p.pgId = l.id  
+		WHERE 
+		1=1
+		AND YEARWEEK(p.addTime) = YEARWEEK(NOW())  
+		AND p.onOff = 'ON'
+		AND WEEKDAY(p.addTime) = #{week} 
+		AND p.ispj='1'
+		<![CDATA[
+		AND u.EXP >= #{exp} 
+		AND u.EXP < #{exp_}
+		]]>
+		AND u.schoolId=#{schoolId} 
+	
+	</select>
+	
+	
+		<select  id="rankingAverageScoreOfKz" parameterType="java.util.Map"  resultType="java.util.Map">
+				SELECT 
+				(
+				CASE IFNULL(AVG(t.score),'')
+				WHEN '' THEN 0
+				ELSE round(AVG(t.score),0)
+				END
+				)
+			   AS score  
+			 from (
+				 SELECT 
+					u.id ,
+					p.score
+					from `user` u 
+					LEFT JOIN lo_schedule l ON l.userId = u.id 
+					LEFT JOIN web_pj p ON p.pgId = l.id 
+					WHERE 
+					1=1
+					AND YEARWEEK(p.addTime) = YEARWEEK(NOW())  
+					AND p.onOff = 'ON'
+					AND WEEKDAY(p.addTime) = #{week} 
+					AND p.ispj='1'
+					<![CDATA[
+					AND u.EXP >= #{exp} 
+					AND u.EXP < #{exp_}
+					]]>
+					AND u.schoolId=#{schoolId}
+			   UNION ALL
+				 SELECT 
+					u.id ,
+					p.score
+					from `user` u 
+					LEFT JOIN offLine_videoResources o  ON o.teacherId = u.id 
+				 AND o.releaseState = 'Y'
+				 AND o.isShow = 'Y'
+					LEFT JOIN web_pj p ON p.pgId = o.id 
+			
+					WHERE 
+					1=1
+			    AND YEARWEEK(p.addTime) = YEARWEEK(NOW())  
+					AND p.onOff = 'OFF'
+					AND WEEKDAY(o.createTime) = #{week} 
+					AND p.ispj='1'
+					<![CDATA[
+					AND u.EXP >= #{exp} 
+					AND u.EXP < #{exp_}
+					]]>
+					AND u.schoolId=#{schoolId}
+			) t
+	
+	</select>
+	
+	
+		<select  id="KzScoreFormTheSameSchoolTeacher" parameterType="java.util.Map"  resultType="java.util.Map">
+						SELECT
+							t.id,
+							t.schoolId,
+							(
+								CASE IFNULL(t.score, '')
+								WHEN '' THEN
+									0
+								ELSE
+									 round(t.score,0) 
+								END
+							) AS score,
+							t.subjectName,
+							t.addTime
+						FROM
+							(
+								SELECT
+									u.id,
+									u.schoolId,
+									p.score,
+									l.subjectId AS subjectName,
+									p.addTime
+								FROM
+									`user` u
+								LEFT JOIN lo_schedule l ON l.userId = u.id
+								LEFT JOIN web_pj p ON p.pgId = l.id
+								WHERE
+									1 = 1
+								AND YEARWEEK(p.addTime) =  YEARWEEK(DATE_SUB(now(),INTERVAL 7*#{week} DAY ))
+								AND p.onOff = 'ON'
+								AND p.ispj = '1'
+								UNION
+									SELECT
+										u.id,
+										u.schoolId,
+										p.score,
+										o.subjectName AS subjectName,
+										p.addTime
+									FROM
+										`user` u
+									LEFT JOIN offLine_videoResources o ON o.teacherId = u.id
+									AND o.releaseState = 'Y'
+									AND o.isShow = 'Y'
+									LEFT JOIN web_pj p ON p.pgId = o.id
+									WHERE
+										1 = 1
+									AND YEARWEEK(p.addTime) =  YEARWEEK(DATE_SUB(now(),INTERVAL 7*#{week} DAY ))
+									AND p.onOff = 'OFF'
+									AND p.ispj = '1'
+							) t
+						WHERE
+							1 = 1
+						AND t.id = #{teacherId} 
+						<if test="subjectName != null" >
+						AND t.subjectName = #{subjectName}
+						</if>
+						ORDER BY
+							t.addTime DESC
+						LIMIT 0, 1
+	</select>
+	
+			<select  id="lastPjTeacher" parameterType="java.util.Map"  resultType="java.util.Map">
+						SELECT
+						DISTINCT	t.id ,
+						t.userName
+						FROM
+							(
+								SELECT
+									u.id,
+									(CASE IFNULL(u.currName,'')
+									WHEN '' 
+									THEN u.nickName
+									ELSE u.currName
+									END
+									) AS userName,	
+									p.addTime
+								FROM
+									`user` u
+								LEFT JOIN lo_schedule l ON l.userId = u.id
+								LEFT JOIN web_pj p ON p.pgId = l.id
+								WHERE
+									1 = 1
+						    AND l.subjectId =#{subjectName}
+								AND p.onOff = 'ON'
+								AND p.ispj = '1'
+								AND u.schoolId = #{schoolId}
+								UNION
+									SELECT
+										u.id,
+									(CASE IFNULL(u.currName,'')
+									WHEN '' 
+									THEN u.nickName
+									ELSE u.currName
+									END
+									) AS userName,
+									 p.addTime
+									FROM
+										`user` u
+									LEFT JOIN offLine_videoResources o ON o.teacherId = u.id
+									AND o.releaseState = 'Y'
+									AND o.isShow = 'Y'
+									LEFT JOIN web_pj p ON p.pgId = o.id
+									WHERE
+										1 = 1
+									AND o.subjectName =#{subjectName}
+									AND u.schoolId = #{schoolId}
+									AND p.onOff = 'OFF'
+									AND p.ispj = '1'
+									
+							) t
+						WHERE
+							1 = 1
+							and t.id != #{teacherId}
+						ORDER BY
+							t.addTime DESC
+						LIMIT 0, 7
+	</select>
+	
+	
+				<select  id="lastZxPjTeacher" parameterType="java.util.Map"  resultType="java.util.Map">
+							SELECT DISTINCT
+								u.id,
+								(
+									CASE IFNULL(u.currName, '')
+									WHEN '' THEN
+										u.nickName
+									ELSE
+										u.currName
+									END
+								) AS userName,
+								tt.lid AS lId
+							FROM
+								`user` u
+							JOIN (
+								SELECT
+									l.id AS lid,
+									l.userId,
+									l.subjectId AS subjectName
+								FROM
+									lo_schedule l
+								LEFT JOIN web_pj p ON p.pgId = l.id
+								WHERE
+									1 = 1
+								AND p.onOff = 'ON'
+								AND p.ispj = '1'
+								and l.subjectId =#{subjectName}
+								GROUP BY
+									l.userId
+								ORDER BY
+									p.addTime DESC
+							) tt ON tt.userId = u.id
+							
+							WHERE u.id!= #{teacherId}
+							 and u.schoolId = #{schoolId}
+							 LIMIT 0, 5
+	</select>
+	
+	
+					<select  id="lastZxPjTeacherInfo" parameterType="java.util.Map"  resultType="java.util.Map">
+								SELECT	DISTINCT u.id,
+									(CASE IFNULL(u.currName,'')
+									WHEN '' 
+									THEN u.nickName
+									ELSE u.currName
+									END
+									) AS userName,
+									u.schoolId ,
+								l.id AS lId,
+								l.subjectId AS subjectName
+								FROM
+									`user` u
+								LEFT JOIN lo_schedule l ON l.userId = u.id
+								LEFT JOIN web_pj p ON p.pgId = l.id
+								WHERE
+									1 = 1
+									<if test="yearweek != null" >
+									 AND YEARWEEK(p.addTime) = YEARWEEK(NOW())  
+									</if>
+							        and u.id =#{teacherId}
+									AND p.onOff = 'ON'
+									AND p.ispj = '1' 
+									ORDER BY p.addTime desc
+									LIMIT 0,1
+				</select>
+				
+				
+				<select  id="differentWaysOnScoring" parameterType="java.util.Map"  resultType="java.util.Map">
+							SELECT
+								COUNT(*) counts,
+								(
+									CASE IFNULL(AVG(aqc.timelength), '')
+									WHEN '' THEN
+										0
+									ELSE
+										round(AVG(aqc.timelength),0)
+									END
+								) AS avgTimelength
+							FROM
+								lo_schedule los
+							JOIN answer_questions_collected aqc ON los.id = aqc.zid
+							WHERE
+								los.id = #{lId}
+				</select>
+				
+				
+				<select  id="thisWeekZhScoreTeachers" parameterType="java.util.Map"  resultType="java.util.Map">
+							SELECT
+									l.userId,
+									IFNULL(u.currName,u.nickName) AS userName,
+									l.subjectId AS subjectName 
+								 
+								FROM
+									lo_schedule l
+								LEFT JOIN web_pj p ON p.pgId = l.id
+								LEFT JOIN `user` u ON u.id = l.userId 
+								WHERE
+									1 = 1
+								AND p.onOff = 'ON'
+								AND p.ispj = '1'
+								and l.subjectId =#{subjectName}
+								AND u.schoolId=#{schoolId}
+								AND l.userId!=#{teacherId}
+								AND YEARWEEK(p.addTime) = YEARWEEK(NOW())  		
+								GROUP BY l.userId 
+								ORDER BY p.addTime desc
+								LIMIT 0 ,7
+				</select>
+				
+				
+				<select  id="thisWeekZhScore" parameterType="java.util.Map"  resultType="java.util.Map">
+							SELECT
+									l.userId,
+									l.subjectId AS subjectName,
+									round(AVG(IFNULL(p.bak,0)*0.1+IFNULL(p.score,0)*0.8+IFNULL(p.bak1,0)*0.1 ),0) AS zhscore  
+								FROM
+									lo_schedule l
+								LEFT JOIN web_pj p ON p.pgId = l.id
+					 
+								WHERE
+									1 = 1
+								AND p.onOff = 'ON'
+								AND p.ispj = '1'
+								and l.subjectId =#{subjectName}
+								AND YEARWEEK(p.addTime) = YEARWEEK(NOW())  
+								AND l.userId =#{teacherId}
+				</select>
+				
+				<select  id="findQuestionnaire" parameterType="java.util.Map"  resultType="java.util.Map">
+						 SELECT
+							t.id,
+							t.title,
+							t.remarks,
+							t.createId,
+							t.isShown,
+							t.createTime
+							FROM
+								web_questionnaire t
+							WHERE
+								1 = 1
+							AND t.isShown = 'Y'
+							ORDER BY
+								t.modiyTime DESC
+							LIMIT 0, 1
+				</select>
+				
+				<select  id="findQuestionnaireQuestion" parameterType="java.util.Map"  resultType="java.util.Map">
+						SELECT
+							t.id,
+							t.lid,
+							t.qid,
+							t.question,
+							t.sort,
+							t.type,
+							t.createId,
+							t.createTime,
+							t.isShown
+							FROM
+								web_questionnaire_question t
+							WHERE
+								1 = 1
+							AND t.isShown = 'Y'
+							AND t.qid=#{qId}
+							ORDER BY sort
+						 
+				</select>
+								
+				<select  id="findQuestionnaireOption" parameterType="java.util.Map"  resultType="java.util.Map">
+						 SELECT
+							t.id,
+							t.qid,
+							t.option,
+							t.sort,
+							t.createId,
+							t.createTime,
+							t.isShown
+							FROM
+								web_questionnaire_option t
+							WHERE
+								1 = 1
+							AND t.isShown = 'Y'
+							AND t.qid=#{lId}
+							ORDER BY sort
+						 
+				</select>
+				
+				<select  id="findQuestionnaireSurvey" parameterType="java.util.Map"  resultType="java.util.Map">
+						SELECT
+							t.id,
+							t.qid,
+							t.question,
+							t.sort,
+							t.type,
+							t.createId,
+							t.createTime,
+							t.isShown,
+							o.`option`,
+             				 o.id AS oId,
+							COUNT(DISTINCT r.userId) as num
+							FROM
+								web_questionnaire_question t 
+							LEFT JOIN web_questionnaire_option o ON o.qid = t.lid   
+							LEFT JOIN web_questionnaire_result r on r.optionId= o.id  and r.bak=#{qqId}
+							WHERE
+								1 = 1
+							AND t.isShown = 'Y'
+							AND t.id  = #{qId}	
+							<if test="method == 1" >
+              				GROUP BY o.`option`
+              				</if>
+							<if test="method == 2" >
+              				GROUP BY t.question
+              				</if>
+							ORDER BY sort
+						 
+				</select>
+				
+				
+ 			
+</mapper>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>综合视讯</title>
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/play.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+<style type="text/css">
+.swiper-container {
+	height: 370px;
+}
+</style>
+</head>
+<body>
+	<!--头部start-->
+	<#include "/zhsx/t/head.html" encoding="utf-8"/>
+	<!--内容start-->
+	<div class="con">
+		<!--路径导航-->
+		<div class="mianbaoxue">
+			<span class="layui-breadcrumb">
+				<a href="${ctx}/index">首页</a>
+				<a href="${ctx}/online/zb_online?type=A">质量评估</a>
+				<a>
+					<cite>课程播放</cite>
+				</a>
+			</span>
+			<span class="qualityPlayTime">
+				<img class="qualityPlayPng" alt="" src="${ctx}/img/time.png">
+				开始时间：${schedule.startTime?string('HH:mm:ss')} &nbsp; 结束时间：${schedule.endTime?string('HH:mm:ss')}
+			</span>
+		</div>
+		<!--视频窗口-->
+		<div class="videosss">
+			<div class="video_shipin clear">
+				<div class="video_shipin_left" id="video_shipin_left">
+					<#-- 视频开始 -->
+					<div id="flashContent">
+						<p>To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.</p>
+						<script type="text/javascript">
+							var pageHost = ((document.location.protocol == "https:") ? "https://"
+									: "http://");
+							document
+									.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+				                                + pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>");
+						</script>
+					</div>
+					<#-- 视频结束 -->
+				</div>
+				<div class="video_shipin_right">
+					<div class="shouke clear">
+						<img src="${fileWebPath}/userheadPortrait/${schedule.userPic!''}" onerror="this.src='${ctx}/img/user80.jpg'" />
+						<div class="shouke_right">
+							<p class="ellipsesDiv" style="color: orange; font-size: 15px; line-height: 28px;">${schedule.teacherName!''}</p>
+							<p class="ellipsesDiv" style="color: gainsboro; font-size: 15px; line-height: 28px;">${schedule.classroomName!''}</p>
+							<p class="ellipsesDiv" style="color: gainsboro; line-height: 28px;">${schedule.specialtyName!''}	${schedule.subjectName!''}</p>
+						</div>
+					</div>
+					<div style="background: url(${ctx}/img/fengexian.png) no-repeat; height: 5px;" class="clear"></div>
+					<div class="kecheng">
+						<div class="swiper-container">
+							<input type="hidden" id="RCListsLength" value="${RCLists?size!'0'}">
+							<div class="swiper-wrapper">
+								<#if RCLists?? && (RCLists?size>0)><#list RCLists as l>
+								<div class="swiper-slide" onclick="enterPlay('${l.type}','${l.id}','${l.isGoClass!''}')">
+									<#if l.type?? && l.type=='G'>
+									<img src="${ctx}/images/zhuandi100.png" />
+									<#else>
+									<img src="${ctx}/images/pinggu100.png" />
+									</#if>
+									<div class="kecheng_right clear">
+										<p>
+											<span class="ellipsesSpan" style="width: 60px; float: left; color: orange;" title="${l.teacherName!''}">${l.teacherName!''}</span>
+											<span class="ellipsesSpan" style="width: 100px; float: left; margin-top: 2px;" title="${l.classroomName!''}">${l.classroomName!''}</span>
+										</p>
+										<p>
+											<span class="school12 ellipsesSpan" title="${l.specialtyName!''}  ${l.subjectName!''}">
+												${l.specialtyName!''} ${l.subjectName!''} 
+											</span>
+										</p>
+										<p>
+											<span class="timeB">
+												<#if l.isGoClass?? && l.isGoClass == 1> <span style="color: green;">正在直播 </span></#if>
+												<#if l.isGoClass?? && l.isGoClass == 2> <span style="color: red;">即将直播</span></#if>
+											</span>
+											<span class="timeB">${l.startTime?string('HH:mm')} - ${l.endTime?string('HH:mm')} </span>
+										</p>
+									</div>
+								</div>
+								</#list></#if>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="jilu">
+			<div class="jilu_top">
+				<div class="layui-tab layui-tab-card iii">
+					<ul class="layui-tab-title uuu" style="background-color: #4596E5;">
+						<#if principal?? && principal.userType != 'S' && isPgAuthority == 'Y'>
+						<li>课前备课</li>
+						<li class="layui-this kkk">课中评课</li>
+						<li>查看结果</li>
+						</#if>
+						<li>点评信息</li>
+						<#if duke?? && duke == 'D'>
+						<li>课后督课</li>
+						</#if>
+					</ul>
+				</div>
+			</div>
+			<div class="tap00" style="display: none;"></div>
+			<div class="tap11"></div>
+			<div class="tap22" style="display: none;"></div>
+			<div class="tap33" style="display: none;"></div>
+			<div class="tap44" style="display: none;"></div>
+		</div>
+	</div>
+	<!--内容end-->
+	<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+</body>
+<!--公共js-->
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var userType = "${principal.userType!''}";
+	var isPgAuthority = "${isPgAuthority!''}";
+	var receive = {};
+	receive.id = "${id!''}";
+	var duke = "${duke!''}";
+</script>
+<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+<script type="text/javascript" src="${ctx}/js/web/online/qualityPlay.js"></script>
+<script type="text/javascript" src="${ctx}/Inc/swfobject.js"></script>
+<script type="text/javascript">
+	// For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. 
+	var swfVersionStr = "11.1.0";
+	// To use express install, set to playerProductInstall.swf, otherwise the empty string. 
+	var xiSwfUrlStr = "${ctx}/Inc/playerProductInstall.swf";
+	var flashvars = {};
+	flashvars.code = "${classCode!''}";
+	flashvars.httpUrl = "${rtmpUrl!''}";
+	flashvars.cip = "${cip!''}";
+	flashvars.ciptype = "${ciptype!''}";
+	flashvars.buffertime = "${buffertime!'0'}";
+	var params = {};
+	params.quality = "high";
+	params.bgcolor = "#ffffff";
+	params.allowscriptaccess = "sameDomain";
+	params.allowfullscreen = "true";
+	params.wmode = "Opaque";
+	var attributes = {};
+	attributes.id = "RFLVideo";
+	attributes.name = "RFLVideo";
+	attributes.align = "middle";
+	swfobject.embedSWF("${ctx}/Inc/RFLVideo${svc}.swf", "flashContent", "100%",
+			"100%", swfVersionStr, xiSwfUrlStr, flashvars, params, attributes);
+	// JavaScript enabled so display the flashContent div in case it is not replaced with a swf object.
+	swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(document).bind("keydown", function(e) {
+			e = window.event || e;
+			if (e.keyCode == 116) {
+				e.keyCode = 0;
+				return false;
+			}
+		});
+
+		$("#video_shipin_left").hover(function() {
+			$(this).find('.fullScreen').css("display", "block");
+		}, function() {
+			$(this).find('.fullScreen').css("display", "none");
+		})
+
+	});
+</script>
+</html>

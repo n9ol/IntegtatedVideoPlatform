@@ -1,0 +1,87 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<table class="layui-table table">
+	<thead>
+		<tr>
+			<th></th>
+			<th>星期日</th>
+			<th>星期一</th>
+			<th>星期二</th>
+			<th>星期三</th>
+			<th>星期四</th>
+			<th>星期五</th>
+			<th>星期六</th>
+		</tr>
+	</thead>
+	<tbody>
+		<#assign i = 0> 
+		<#assign seq = [0,1,2,3,4,5,6]> 
+		<#if listCourseScheduleBigTime?? &&(listCourseScheduleBigTime?size>0)><#list listCourseScheduleBigTime as c>
+		<tr>
+			<td title="${(c.startTime)?string('HH:mm')} - ${(c.endTime)?string('HH:mm')}">
+				${c.oddSectionOfDay!''} - ${c.evenSectionOfDay!''}节
+			</td>
+			<#list seq as l>
+			<td>
+				<#if listCourseSchedule?? && (listCourseSchedule?size>0)> <#list listCourseSchedule as lo> 
+				<#if (lo.bigSectionOfDay == c.bigSectionOfDayString) && (lo.dayOfWeek)==l> 
+					<#assign col=""> 
+					<#if lo.isGoClass?? && lo.isGoClass == 0><#assign col="style='color:gray'"></#if> 
+					<#if lo.isGoClass?? && lo.isGoClass == 1><#assign col="style='color:orange'"></#if> 
+					<#if lo.isGoClass?? && lo.isGoClass == 2>
+						<#assign col="style='color:#4596E5'">
+						<#assign i = i+1 >
+					</#if>
+					<span class="plan_course_name">
+						<a href="javascript:;" onclick="watchVidoe('${lo.id}','${lo.type}','${lo.isGoClass!''}')"
+							onmouseover="alertf('${lo.id}','${lo.type}',this)" ${col}>
+							${lo.subjectName!''}<br>
+							${lo.className!''}<br>
+							<#if lo.oddEvenAll == 'odd'>单周<#elseif lo.oddEvenAll == 'even'>双周</#if>
+							(${lo.beginWeek!''}-${lo.endWeek!''})[${lo.sectionOfDay!''}节]
+						</a>
+						<div class="plan_course_info plan_course_info1">
+							<div class="plan_course_mainteach1">
+								<span class="blue">主讲教师</span>
+								<br>
+								<p class="fuzi">
+									<span>${lo.teacherName!''}</span>
+								</p>
+							</div>
+							<div class="plan_course_otherteach_mid plan_course_otherteach_mid1"></div>
+							<div class="plan_course_otherteach_btm1"></div>
+						</div>
+					</span>
+					<#break> 
+				</#if> 
+				</#list> </#if>
+			</td>
+			</#list>
+		</tr>
+		</#list></#if>
+	</tbody>
+</table>
+<div class="tongji">
+	<span> 周授课数： <#if listCourseSchedule?? > ${listCourseSchedule?size!'0'} <#else> 0 </#if> </span>
+	<span> 应授课数： <#if listCourseSchedule?? > ${listCourseSchedule?size!'0'} <#else> 0 </#if> </span>
+	<span> 已开设课时数： <#if listCourseSchedule?? > ${listCourseSchedule?size - i} <#else> 0 </#if> </span>
+	<span> 开设课时数占比： 
+		<#if listCourseSchedule?? > 
+			<#if (listCourseSchedule?size - i) == 0> 
+				0% 
+			<#else>
+				${(listCourseSchedule?size - i)/(listCourseSchedule?size)*100}% 
+			</#if> 
+		<#else> 
+			0% 
+		</#if> 
+	</span>
+</div>
+<div class="tishi clear">
+	<span class="shi">提示：</span>
+	<div class="kai1" style="background-color: gray;"></div>
+	<span class="wei">已结束</span>
+	<div class="kai2"></div>
+	<span class="jin">进行中</span>
+	<div class="kai1"></div>
+	<span class="wei">未开始</span>
+</div>

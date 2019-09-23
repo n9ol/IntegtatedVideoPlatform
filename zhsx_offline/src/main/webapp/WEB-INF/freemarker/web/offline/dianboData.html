@@ -1,0 +1,41 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<#if lists?? && (lists?size>0)><#list lists as l>
+<li class="con_left_li">
+		<#if l.type = 'P'> <div class="zdb bg1">离线评估</div> </#if>
+		<#if l.type = 'B'> <div class="zdb bg2">课堂回放</div> </#if>
+		<#if l.type = 'S'> <div class="zdb bg3">精品微课</div> </#if>
+		<#if l.type = 'H'> <div class="zdb bg4">优质课程</div> </#if>
+	<div class="demo">
+		<figure class="imghvr-slide-down">
+		<img src="${fileWebPath}/videoRes${l.picPath!''}" onerror="this.src='${ctx}/img/lunbo4.png'"/>
+			<figcaption style="padding-top: 70px;background-color: rgba(0,0,0,0.7);">
+				<p style="text-align: center;"><span class="ellipsesSpan">${l.schoolName!''}</span><span></span></p>
+				<p style="text-align: center;"><span class="ellipsesSpan">${l.teacherName!''}</span></p>
+			</figcaption>
+			<a href="${ctx}/offLine/videoPlayback?id=${l.id!''}&type=${l.type!''}" target="_blank"></a>
+			<span class="classTime">
+				${l.timeLength!''}
+			</span>
+			<span class="pageView">
+				<img class="zuanImgs" alt="浏览量" title="浏览量" src="${ctx}/img/pageView.png"> ${l.pageView!''}
+			</span>
+		</figure>
+		<div class="school_zuan">
+			<div class="school">
+				<span class="schoolSpan" title="${l.title!''}">${l.title!''}</span>
+			</div>
+			<div class="zuan">
+				<span style="background-color: #ff8800;">${l.subjectName!''}</span>
+				<span style="background-color: #4596E5;">${l.gradeName!''}</span>
+			</div>
+		</div>
+	</div>
+</li>
+</#list></#if>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getdianboData();
+	}
+</script>

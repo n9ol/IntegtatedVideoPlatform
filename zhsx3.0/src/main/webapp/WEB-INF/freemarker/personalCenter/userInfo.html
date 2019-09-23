@@ -1,0 +1,231 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<style>
+	.msg{
+		margin-left: 20px;
+	}
+</style>
+<p>
+	<span class="jbxx">基本信息</span>
+	<span class="xian"></span>
+	<span class="bj">编辑</span>
+</p>
+<div class="base_view">
+	<ul class="basicInformation">
+		<#if user.nickName??>
+		<li class="clear">
+			<div class="liLeft">昵称</div>
+			<div class="liRight">${user.nickName!''}</div>
+		</li>
+		</#if>
+		<#if user.HA?? && user.userType != "S">
+		<li class="clear">
+			<div class="liLeft">职称</div>
+			<div class="liRight">${user.HA!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.stature?? && user.userType != "S">
+		<li class="clear">
+			<div class="liLeft">教龄</div>
+			<div class="liRight">${user.stature!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.areaName??>
+			<li class="clear">
+				<div class="liLeft">所在地区</div>
+				<div class="liRight">${user.areaName!'暂无'}</div>
+			</li>
+		</#if>
+		<#if user.schoolName??>
+		<li class="clear">
+			<div class="liLeft">所在学校</div>
+			<div class="liRight">${user.schoolName!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.politicsStatus??>
+		<li class="clear">
+			<div class="liLeft">政治面貌</div>
+			<div class="liRight">${user.politicsStatus!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.email??>
+		<li class="clear">
+			<div class="liLeft">邮箱</div>
+			<div class="liRight">${user.email!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.phone??>
+		<li class="clear">
+			<div class="liLeft">手机号</div>
+			<div class="liRight">${user.phone!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.currName??>
+		<li class="clear">
+			<div class="liLeft">真实姓名</div>
+			<div class="liRight">${user.currName!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.gender??>
+		<li class="clear">
+			<div class="liLeft">性别</div>
+			<div class="liRight">${user.gender!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.age??>
+		<li class="clear">
+			<div class="liLeft">年龄</div>
+			<div class="liRight">${user.age!'暂无'}</div>
+		</li>
+		</#if>
+		<#if user.memos??>
+		<li class="clear">
+			<div class="liLeft">简介</div>
+			<div class="liRight">${user.memos!'暂无'}</div>
+		</li>
+		</#if>
+	</ul>
+</div>
+<div class="base">
+	<form id="myformUserInfo">
+	<input type="hidden" name="id" value="${user.id!''}">
+	<ul class="basicInformation">
+		<li class="clear">
+			<div class="liLeft">昵称</div>
+			<div class="liRight">
+				<input type="text" class="inputText" name="nickName" value="${user.nickName!''}" title="昵称" id="nickName"/>
+				<span id="nickName_msg" class="msg" style="color:#F7B824;">&nbsp;&nbsp;*&nbsp;必填 </span>
+			</div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">职称</div>
+			<div class="liRight"><input type="text" class="inputText" name="HA" value="${user.HA!''}"/></div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">教龄</div>
+			<div class="liRight">
+				<input type="text" class="inputText" name="stature" value="${user.stature!''}" style="width: 100px;" id="stature"/>
+				<span>年</span>
+				<span id="stature_msg" class="msg" style="color:#F7B824;"></span>
+			</div>
+		</li>
+		
+		<#if platformLevel?? && platformLevel != 'A'>
+		<li class="clear">
+			<div class="liLeft">所在地区</div>
+			<div class="liRight">
+				
+				<#if platformLevel == 'N'>
+				<select onchange="getcity(this);">
+					<#if provinces?? && (provinces?size>0)><#list provinces as l>
+						<#assign sel1 ="">
+						<#if user.provinceId?? && user.provinceId = l.id> <#assign sel1 ="selected"></#if>
+						<option value="${l.id}" ${sel1}>${l.value!''}</option>
+					</#list></#if>
+				</select>
+				</#if>
+				
+				<#if platformLevel == 'N' || platformLevel == 'P'>
+				<select id="cityId" onchange="getcounty(this);" >
+					<#if citys?? && (citys?size>0)><#list citys as l>
+						<#assign sel2 ="">
+						<#if user.cityId?? && user.cityId = l.id> <#assign sel2 ="selected"></#if>
+						<option value="${l.id}" ${sel2}>${l.value!''}</option>
+					</#list></#if>
+				</select>
+				</#if>
+				
+				<#if platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C'>
+				<select id="countyId" onchange="getschool(this);" name="bak2" title="地区">
+					<#if countys?? && (countys?size>0)><#list countys as l>
+						<#assign sel3 ="">
+						<#if user.countyId?? && user.countyId = l.id> <#assign sel3 ="selected"></#if>
+						<option value="${l.id}" ${sel3}>${l.value!''}</option>
+					</#list></#if>
+				</select>
+				</#if>
+				
+				
+				<span id="bak2_msg" class="msg" style="color:#F7B824;">&nbsp;&nbsp;*&nbsp;必填 </span>
+			</div>
+		</li>
+		<#else>
+			<li>
+				<input type="hidden" id="countyId" name="bak2" value="${platformLevelId!''}">			
+			</li>
+		</#if>
+		
+		<#if schoolLevel?? && schoolLevel == 'Y'>
+			<li>
+				<input type="hidden" name="schoolId" value="${schoolId!''}" id="schoolId">
+			</li>
+		<#else>
+			<li class="clear">
+				<div class="liLeft">所在学校</div>
+				<div class="liRight">
+					<select name="schoolId" id="schoolId" title="学校">
+						<#if schoolList?? && (schoolList?size>0)><#list schoolList as l>
+							<#assign sel ="">
+							<#if user.schoolId?? && user.schoolId = l.id> <#assign sel ="selected"></#if>
+							<option value="${l.id}" ${sel} >${l.schoolName!''}</option>
+						</#list></#if>
+					</select>
+					<span id="schoolId_msg" class="msg" style="color:#F7B824;">
+						<#if user.userType == "T" || user.userType == "S">
+							&nbsp;&nbsp;*&nbsp;必填  
+						</#if>
+					</span>
+				</div>
+			</li>
+		</#if>
+		
+		<li class="clear">
+			<div class="liLeft">政治面貌</div>
+			<div class="liRight"><input type="text" class="inputText" name="politicsStatus" value="${user.politicsStatus!''}"/></div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">邮箱</div>
+			<div class="liRight">
+				<input type="text" class="inputText" id="email" name="email" value="${user.email!''}" title="邮箱"/>
+				<span id="email_msg" class="msg" style="color:#F7B824;"> </span>
+			</div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">手机号</div>
+			<div class="liRight">
+				<input type="text" class="inputText" id="phone" name="phone" value="${user.phone!''}" title="手机号"/>
+				<span id="phone_msg" class="msg" style="color:#F7B824;"> </span>
+			</div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">真实姓名</div>
+			<div class="liRight"><input type="text" class="inputText" name="currName" value="${user.currName!''}" /></div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">性别</div>
+			<div class="liRight">
+				<#assign ugm= "">
+				<#assign ugw= "">
+				<#if user.gender?? && user.gender = "男" > <#assign ugm= "checked"> </#if>
+				<#if user.gender?? && user.gender = "女" > <#assign ugw= "checked"> </#if>
+				<input type="radio" name="gender" class="inputRadio" value="男" ${ugm}/>男
+				<input type="radio" name="gender" value="女" ${ugw}/>女
+			</div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">年龄</div>
+			<div class="liRight"><input type="text" class="inputText" name="age" value="${user.age!''}" /></div>
+		</li>
+		<li class="clear">
+			<div class="liLeft">简介</div>
+			<div class="liRight">
+				<textarea style="width:500px;height:200px;" class="inputText" name="memos">${user.memos!''}</textarea>
+			</div>
+		</li>
+	</ul>
+	</form>
+</div>
+<script type="text/javascript">
+	var oldEmail = "${user.email!''}";
+	var oldPhone = "${user.phone!''}";
+</script>
+<script type="text/javascript" src="${ctx}/js/personalCenter/userInfo.js"></script>

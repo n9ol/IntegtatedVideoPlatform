@@ -1,0 +1,166 @@
+.xinwen {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+#pager {
+	/*text-align: center;*/
+	/*padding-bottom: 15px;*/
+}
+
+
+/*左半边*/
+
+.left {
+	background-color: white;
+	width: 840px;
+	border: 1px solid gainsboro;
+	float: left;
+}
+
+.local_con {
+	margin: 30px 30px 0 30px;
+	height:664px;
+}
+
+.local_con li {
+	height: 82px;
+	border-bottom: 1px dashed #E7E7E7;
+}
+
+.local_con li a:hover {
+	color: #4596E5;
+}
+
+.local_tittle {
+	font-size: 16px;
+	height: 50px;
+	line-height: 50px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.abb {
+	width: 290px;
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.local_link {
+	color: #999999;
+	padding-left: 10px;
+}
+
+.local_link span {
+	margin-right: 20px;
+}
+
+
+/*底部分*/
+
+.pagers {
+	background-color: white;
+	padding: 10px;
+	margin-top: 20px;
+}
+
+.pagenation {
+	display: inline-block;
+	width: 300px;
+	margin-left: 100px;
+	margin-top: 20px;
+	padding-left: 50px;
+}
+
+
+/*右部分*/
+
+.FL {
+	float: right;
+	display: block;
+}
+
+.list {
+	margin-bottom: 16px;
+}
+
+/*.news_right {
+	width: 300px;
+	height: 100%;
+	padding: 0 15px;
+	background: #ffffff;
+}
+
+.list_t {
+	width: 300px;
+	font-size: 14px;
+	color: #898989;
+	line-height: 26px;
+	display: inline-block;
+	text-align: left;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.list .list_t span {
+	display: inline-block;
+	width: 25px;
+}
+
+.list .list_t:hover {
+	color: #eb2100;
+}*/
+.news_right {
+	width: 300px;
+	height: 100%;
+	padding: 0 15px;
+	background: #ffffff;
+}
+.title {
+	height: 60px;
+	line-height: 60px;
+	font-size: 24px;
+}
+
+
+/*排行榜样式*/
+.tiji li {
+    padding-left: 10px;
+    border-top: 1px dashed #f0f0f0;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 2px;
+    cursor: pointer;
+}
+
+
+.paiming {
+    float: left;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #4596E5;
+    color: white;
+    line-height: 20px;
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.tiji li span {
+    float: left;
+    display: inline-block;
+    margin: 0 3px;
+    height: 100%;
+    line-height: 40px;
+    font-size: 15px;
+}
+.timu1 {
+    width: 180px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

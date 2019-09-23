@@ -1,0 +1,116 @@
+.top {
+	background-color: #2092e7;
+	height: 72px;
+}
+
+.top_zhong {
+	width: 1200px;
+	height: 100%;
+	font-size: 28px;
+	color: white;
+	margin: 0 auto;
+	line-height: 72px;
+}
+.top_zhong a{
+	color: white;
+	
+}
+.conss {
+	height: 755px;
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.bg_deng {
+	margin-top: 100px;
+}
+
+.deng_kuang {
+	width: 282px;
+	height: 340px;
+	border: 1px solid gainsboro;
+	border-radius: 5px;
+	float: right;
+	margin-top: 140px;
+	margin-right: 150px;
+	background-color: #f3f4f5;
+}
+
+.kuang_top {
+	background-color: #0db9f2;
+	color: white;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	font-size: 20px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.shuru input {
+	background-color: #f3f4f5;
+	border: 1px solid gainsboro;
+	border-radius: 2px;
+	float: left;
+	/*margin-right: 30px;*/
+	height: 25px;
+	padding-left: 5px;
+	color: gray;
+}
+
+.shuru {
+	height: 25px;
+	text-align: right;
+	margin-top: 30px;
+	color: gray;
+	line-height: 25px;
+	position: relative;
+	/*padding-left: 40px;*/
+}
+.shuru span{
+	float: left;
+	text-align: right;
+	display: inline-block;
+	width: 80px;
+}
+.tishiyu {
+	position: absolute;
+	font-size: 0.8em;
+	height: 20px;
+	line-height: 20px;
+	color: red;
+	top: 30px;
+	left: 84px;
+	display: none;
+}
+.xia_la {
+	background-color: #f3f4f5;
+	border: 1px solid gainsboro;
+	color: gray;
+	margin-right: 145px;
+}
+
+.queren {
+	text-align: center;
+	width: 100%;
+	margin-top: 10px;
+	position: relative;
+	border-top: 1px dashed gainsboro;
+	padding-top: 10px;
+}
+.queren button{
+	width: 80px;
+}
+.queren a{
+	color: #4596E5;
+	font-size: 0.8em;
+	position: absolute;
+	top: 27px;
+	right: 60px;
+}
+.yes1,.yes2,.yes3{
+	display: none;
+	position: absolute;
+	right: 10px;
+	top: 8px;
+}

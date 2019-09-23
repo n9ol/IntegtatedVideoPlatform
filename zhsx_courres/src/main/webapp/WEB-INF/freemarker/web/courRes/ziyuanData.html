@@ -1,0 +1,51 @@
+<!-- 		<#global ctx=rc.contextPath/> -->
+<#if lists?? && (lists?size>0)><#list lists as l>
+<li>
+	<div class="touxiang">
+		<#if l.type == 'ppt' || l.type == 'pptx'><img src="${ctx}/img/Ppt_54_6165188.png" /></#if>
+		<#if l.type == 'doc' || l.type == 'docx'><img src="${ctx}/img/Word_54_6167687.png" /></#if>
+		<#if l.type == 'xls' || l.type == 'xlsx'><img src="${ctx}/img/Excel_54_7880c8c.png" /></#if>
+		<#if l.type == 'pdf'><img src="${ctx}/img/PDF_54_ae4e37a.png" /></#if>
+		<#if l.type == 'txt'><img src="${ctx}/img/Txt_54_1885188.png" /></#if>
+	</div>
+	<div class="zhengwen">
+		<div class="biaoti"><a href="${ctx}/courRes/watchCour?id=${l.id!''}">${l.name!''}</a></div>
+		<div class="leibie">
+			专业：<span>${l.gradeName!''}</span>&nbsp;&nbsp;
+			科目：<span>${l.subjectsName!''}</span>&nbsp;&nbsp;
+			版本：<span>${l.bak!''}</span>&nbsp;&nbsp;
+			册次：<span>${l.bak1!''}</span>&nbsp;&nbsp;
+		</div>
+		<div class="xijie">
+			<span>上传者：${l.uploadPersonName!''}</span>
+			<span>上传时间：${l.createTime?string('yyyy-MM-dd HH:mm:ss')}</span>
+		</div>
+	</div>
+	<div class="lianjie">
+		<span class="shou_shu">${l.collectionNum!'0'}</span>
+		<#if principal?? && (l.isCollection>0)>
+			<div class="layui-btn layui-btn-primary download" onclick="cancelCollection('${l.id}');">
+				<i class="layui-icon">&#xe654;</i>
+				<a href="javascript:void(0);">取消收藏</a>
+			</div>
+		<#else>
+			<div class="layui-btn layui-btn-primary download" onclick="collection('${l.id}',this);">
+				<i class="layui-icon">&#xe654;</i>
+				<a href="javascript:void(0);">收藏</a>
+			</div>
+		</#if>
+		<span class="xia_shu">${l.downloadNum!'0'}</span>
+		<div class="layui-btn layui-btn-primary download" onclick="downloadCourRes('${l.id}',this)">
+			<i class="layui-icon">&#xe601;</i>
+			<a href="javascript:void(0);">下载</a>
+		</div>
+	</div>
+</li>
+</#list></#if>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getziyuanData();
+	}
+</script>

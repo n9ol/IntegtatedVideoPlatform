@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>仁峰后台管理系统</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#global ctx=rc.contextPath />
+		<script type="text/javascript">var ctx='${ctx}';</script>	
+		<link rel="icon" href="${ctx}/img/rflogo.png" type="image/x-icon"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css" media="all">
+		<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/login.css" media="all">
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	</head>
+<body>
+<div class="layui-canvs"></div>
+
+<div class="layui-layout layui-layout-login">
+	<h1>
+		 <strong>综合视讯后台管理系统</strong>
+		 <em>RF Equipment Management System</em>
+	</h1>
+	<form action="${ctx}/adminlogin" method="post" onsubmit="return check()">
+	<div class="layui-user-icon larry-login">
+		 <input type="text" placeholder="账号/手机号/邮箱" class="login_txtbx" name="username"/>
+	</div>
+	<div class="layui-pwd-icon larry-login">
+		 <input type="password" placeholder="密码" class="login_txtbx" name="password"/>
+	</div>
+    <div class="layui-submit larry-login">
+    	<input type="submit" value="立即登陆" class="submit_btn"/>
+    </div>
+	</form>
+    <div class="layui-login-text">
+    	<p>© 2016-2017郑州仁峰软件开发有限公司版权所有</p>
+        <p>豫ICP备14000520号 <a href="http://www.www.zzrenfeng.com" title="">http://www.www.zzrenfeng.com</a></p>
+    </div>
+
+</div>
+<script type="text/javascript" src="${ctx}/js/login.js"></script>
+<script type="text/javascript" src="${ctx}/common/jparticle.jquery.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".layui-canvs").jParticle({
+		background: "#222",
+		color: "#aaa"
+	});
+});
+function check(){
+	var res =true;
+	var username=$("input[name='username']").val();
+	if(username==""){
+		res=false;
+	}
+	var password=$("input[name='password']").val();
+	if(password==""){
+		res=false;
+	}
+	return res;
+}
+</script>
+</body>
+</html>

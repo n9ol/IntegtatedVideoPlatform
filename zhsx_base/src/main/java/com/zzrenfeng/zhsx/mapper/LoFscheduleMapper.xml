@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoFscheduleMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoFschedule" >
+		<result column="id" property="id" />
+		<result column="zId" property="zId" />
+		<result column="classId" property="classId" />
+		<result column="schoolId" property="schoolId" />
+		<result column="userId" property="userId" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,zId,classId,schoolId,userId,bak,bak1,bak2
+	</sql>
+	
+	
+	<insert id="insert" parameterType="LoFschedule" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_fschedule (id,zId,classId,schoolId,userId,bak,bak1,bak2)
+		values (#{id},#{zId},#{classId},#{schoolId},#{userId},#{bak},#{bak1},#{bak2})
+	</insert>
+	
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into lo_fschedule (id,zId,classId,schoolId,userId,bak,bak1,bak2)
+		values
+		<foreach collection="list" item="f"  separator=",">
+			 ((select uuid()),#{f.zId},#{f.classId},#{f.schoolId},#{f.userId},#{f.bak},#{f.bak1},#{f.bak2})
+		</foreach>
+	</insert>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_fschedule
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteByzId" parameterType="java.lang.String" >
+		delete from lo_fschedule
+		where zId = #{zId}
+	</delete>
+	
+	<delete id="deletebatch" parameterType="java.util.List">
+		delete from lo_fschedule where zId in 
+		<foreach collection="list" item="zId"  separator="," open="(" close=")">
+			#{zId}
+		</foreach>
+	</delete>
+	
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoFschedule" >
+		update lo_fschedule
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="zId != null" >
+				zId = #{zId},
+			</if>
+			<if test="classId != null" >
+				classId = #{classId},
+			</if>
+			<if test="schoolId != null" >
+				schoolId = #{schoolId},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoFschedule" >
+		update lo_fschedule
+		set 
+		id = #{id},
+		zId = #{zId},
+		classId = #{classId},
+		schoolId = #{schoolId},
+		userId = #{userId},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="zId != null" >
+				and zId = #{zId}
+			</if>
+			<if test="classId != null" >
+				and classId = #{classId}
+			</if>
+			<if test="schoolId != null" >
+				and schoolId = #{schoolId}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_fschedule
+		where id = #{id}
+	</select>
+	
+	
+	<select id="findSelective" parameterType="LoFschedule" resultType="LoFschedule">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=s.userId) as userName,
+		(SELECT schoolName FROM sys_school sc WHERE sc.id=s.schoolId) as schoolName,
+		(SELECT className FROM sys_classroom c WHERE c.id=s.classId) as className
+		from lo_fschedule s
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoFschedule" resultType="LoFschedule">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_fschedule
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	
+
+</mapper>

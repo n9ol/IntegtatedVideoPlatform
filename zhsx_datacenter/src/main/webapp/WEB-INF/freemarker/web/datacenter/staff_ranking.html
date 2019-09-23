@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>排行榜</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<!--排行榜-->
+		<div class="neirong clear">
+			<div class="dingwei111">
+				<p class="biaotiji">标题</p>
+				<ul>
+					<li>课前备课</li>
+					<li>课中评估</li>
+					<li>综合得分</li>
+					<li>教师等级</li>
+					<li>区域划分</li>
+					<li>年度统计</li>
+
+				</ul>
+				<p class="fanhui">回到顶部 <span class="layui-icon">&#xe619;</span></p>
+			</div>
+			<iframe src="${ctx}/datacenter/teacherRankingsDataNo1" width="100%" height="100%" style="overflow-y: hidden;border: none;" id="parentIframeRanking"></iframe>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var ctx="${ctx}";
+	 	var principal = "${principal!''}"; 
+	</script>
+	 <script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	 <script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	 <script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	 <script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/template.js"></script>
+	<!--单独的js-->
+<!-- 	<script src="js/河南省.js" type="text/javascript" charset="utf-8"></script> -->
+<!-- 	<script src="${ctx}/js/web/sjzx_sjzx.js" type="text/javascript" charset="utf-8"></script> -->
+	<script type="text/javascript">
+		//当点击跳转链接后，回到页面顶部位置
+		$(".fanhui").click(function() {
+			$("html,body").animate({
+				scrollTop: 0
+			}, 500)
+		});
+
+		$(".dingwei111 ul li").click(function() {
+			$(".dingwei111 ul li").removeClass("bgColor");
+			$(this).addClass("bgColor");
+			if($(this).index() === 0) {
+				$("#parentIframeRanking").attr("src", "${ctx}/datacenter/teacherRankingsDataNo1")
+			}
+			if($(this).index() === 1) {
+				$("#parentIframeRanking").attr("src", "${ctx}/datacenter/teacherRankingsDataNo3")
+			}
+			if($(this).index() === 2) {
+				$("#parentIframeRanking").attr("src", "${ctx}/datacenter/teacherRankingsDataNo5")
+			}
+			if($(this).index() === 3) {
+				$("#parentIframeRanking").attr("src", "${ctx}/datacenter/teacherRankingsDataNo8")
+			}
+			if($(this).index() === 4) {
+				$("#parentIframeRanking").attr("src", "${ctx}/datacenter/teacherRankingsDataNo9")
+			}
+			if($(this).index() === 5) {
+				$("#parentIframeRanking").attr("src", "${ctx}/datacenter/teacherRankingsDataNo10")
+			}
+
+		});
+	</script>
+	<script type="text/javascript">
+		setIframeH2();
+		function setIframeH2() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframesjzx'));
+			iframe.height(body.height()+1500);
+		}
+	</script>
+</html>

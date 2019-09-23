@@ -1,0 +1,40 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<p>已有回答：</p>
+<ul class="huifu">
+	<#if lists?? && (lists?size>0)><#list lists as l>
+		<li class="clear" style="position: relative;overflow: hidden;">
+			<div class="huifu_img">
+				<img src="${fileWebPath}/userheadPortrait/${l.filePath!''}" onerror="this.src='${ctx}/img/user80.jpg'"/>
+			</div>
+			<#if isBest=='IS'>
+				<#if l.ifBest==1>
+					<div class="zuijia">
+						最佳答案
+					</div>
+				</#if>
+			<#else>
+				<div class="layui-btn layui-btn-mini" onclick="zuijia('${l.id!''}','${l.qid!''}','${l.answerId!''}')" style="float:right;">设为最佳</div>	
+			</#if>
+			<div class="huifu_ren">
+				<p class="hfnm">
+					${l.nickName!''}
+				</p>
+				<div class="huifu_zhengwen">
+				<div class="main_TEXT">${l.answerContentTag!''}</div>
+				</div>
+			</div>
+			<p class="huifu_riqi"><span>${(l.time)?string('yyyy-MM-dd')}</span><span>${(l.time)?string('HH:mm')}</span></p>
+		</li>
+	</#list>
+	<#else>
+		<div style="text-align: center;"><font  size="4" color="CCCCCC">还没有人解答，快来解答吧！</font></div>
+	</#if>
+</ul>
+<div id="page" ></div>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getByQid();
+	}
+</script>

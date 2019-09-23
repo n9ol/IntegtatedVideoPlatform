@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <title>仁峰后台管理系统</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/webuploader/webuploader.css">
+		<style type="text/css">
+			.layui-larry-box {
+				padding: 0;
+			}
+			#jj {
+				text-align:right;
+				width: 80px;
+				float:left;
+			}
+			.layui-input-block{
+				margin-right:120px;
+				margin-left: 100px;
+			}
+			.msg{
+				float:right;
+				margin-top:-25px;
+				width:100px;
+			}
+			.msg1{
+				float:right;
+				margin-top:12px;
+				width:350px;
+			}
+			.webuploader-pick {
+			    line-height: 36px;
+			    background-color:#fff;
+			    color:#666666;
+ 			    border:1px solid;
+				border-color:  #c9c9c9;
+			}
+			.box_nav_chuan:HOVER div.webuploader-pick{
+				border-color: rgb(170,170,170);
+			}
+			div.larry-personal{
+				min-height: 100px;
+			}
+		</style>
+    </head>
+<body>
+<section class="layui-larry-box">
+	<div class="larry-personal">
+		<div class="larry-personal-body clearfix">
+			<form class="layui-form col-lg-5" id="myformUser">
+				<input id="filePathUser" type="hidden" name="filePathUser" title="文件">
+                <div class="layui-form-item">
+					<label class="layui-form-label" id="jj">用户：</label>
+					<div style="width:90px;margin-left: 20px;height:36px;float:left;">
+						<div class="box_nav_chuanUser">+ 选择文件</div>
+					</div>
+					<span id="filePathUser_msg" class="msg1" style="color:#F7B824;">*&nbsp;&nbsp;&nbsp;</span>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<input type="button" class="layui-btn" onclick="javascript:submitFormUser();" value="立即提交">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+<section class="layui-larry-box">
+	<div class="larry-personal">
+		<div class="larry-personal-body clearfix">
+			<form class="layui-form col-lg-5" id="myformSchool">
+				<input id="filePathSchool" type="hidden" name="filePathSchool" title="文件">
+                <div class="layui-form-item">
+					<label class="layui-form-label" id="jj">学校：</label>
+					<div style="width:90px;margin-left: 20px;height:36px;float:left;">
+						<div class="box_nav_chuanSchool">+ 选择文件</div>
+					</div>
+					<span id="filePathSchool_msg" class="msg1" style="color:#F7B824;">*&nbsp;&nbsp;&nbsp;</span>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<input type="button" class="layui-btn" onclick="javascript:submitFormSchool();" value="立即提交">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+<section class="layui-larry-box">
+	<div class="larry-personal">
+		<div class="larry-personal-body clearfix">
+			<form class="layui-form col-lg-5" id="myformClass">
+				<input id="filePathClass" type="hidden" name="filePathClass" title="文件">
+                <div class="layui-form-item">
+					<label class="layui-form-label" id="jj">教室：</label>
+					<div style="width:90px;margin-left: 20px;height:36px;float:left;">
+						<div class="box_nav_chuanClass">+ 选择文件</div>
+					</div>
+					<span id="filePathClass_msg" class="msg1" style="color:#F7B824;">*&nbsp;&nbsp;&nbsp;</span>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<input type="button" class="layui-btn" onclick="javascript:submitFormClass();" value="立即提交">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</section>
+<script type="text/javascript" src="${ctx}/common/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="${ctx}/js/check.js"></script>
+<script type="text/javascript" src="${ctx}/js/oldToNew/oldToNew.js"></script>
+</body>
+</html>

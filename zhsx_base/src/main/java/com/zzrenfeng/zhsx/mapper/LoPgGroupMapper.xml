@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoPgGroupMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoPgGroup" >
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="createrId" property="createrId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,name,createrId
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pg_group
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pg_group
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_pg_group where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="LoPgGroup" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_pg_group (id,name,createrId)
+		values (#{id},#{name},#{createrId})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoPgGroup" >
+		update lo_pg_group
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="name != null" >
+				name = #{name},
+			</if>
+			<if test="createrId != null" >
+				createrId = #{createrId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoPgGroup" >
+		update lo_pg_group
+		set 
+		id = #{id},
+		name = #{name},
+		createrId = #{createrId}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="name != null" >
+				and name = #{name}
+			</if>
+			<if test="createrId != null" >
+				and createrId = #{createrId}
+			</if>
+			<if test="search != null">
+				and name like '%${search}%'
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="LoPgGroup" resultType="LoPgGroup">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pg_group
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoPgGroup" resultType="LoPgGroup">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pg_group
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	
+	<delete id="batchDelPgGroup">
+		delete from lo_pg_group
+		where id in (
+			<foreach collection="array" item="id" separator=",">
+				#{id}
+			</foreach>
+		)
+	</delete>
+
+</mapper>

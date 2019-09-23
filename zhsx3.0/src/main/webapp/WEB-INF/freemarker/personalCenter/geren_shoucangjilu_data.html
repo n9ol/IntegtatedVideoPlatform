@@ -1,0 +1,383 @@
+<!-- 		<#global ctx=rc.contextPath/> -->
+<#if lists??&&(lists?size>0)>
+						<#list lists as l>
+						  <#if l.pubType=='R'>
+									<li class="clear">
+								<div class="tubiao">
+										<#if l.type == 'ppt' || l.type == 'pptx'><img style="width: 64px;" src="${ctx}/img/Ppt_54_6165188.png" /></#if>
+										<#if l.type == 'doc' || l.type == 'docx'><img style="width: 72px;" src="${ctx}/img/Word_54_6167687.png" /></#if>
+										<#if l.type == 'xls' || l.type == 'xlsx'><img style="width: 72px;" src="${ctx}/img/Excel_54_7880c8c.png" /></#if>
+										<#if l.type == 'pdf'><img style="width: 72px;" src="${ctx}/img/PDF_54_ae4e37a.png" /></#if>
+										<#if l.type == 'txt'><img style="width: 72px;" src="${ctx}/img/Txt_54_1885188.png" /></#if>
+								</div>
+								<div class="jilujieshao">
+									<p class="jjj0"><span>${l.name!''}</span></p>
+									<p class="jjj">
+										<span>
+														专业： <span style="color: orange;">${l.gradeName!''}</span>
+										</span>
+										<span>
+													  	科目：<span style="color: orange;">${l.subjectsName!''}</span>
+										</span>
+									</p>
+									<p class="jjj">
+										<span>
+														版本：<span>${l.bak!''}</span>
+										</span>
+										<span>
+														上下册：<span>${l.bak1!''}</span>
+										</span>
+										<span>
+														上传者：<span>${l.uploadPersonName!''}</span>
+										</span>
+										<span>
+														上传时间：<span>${l.createTime!''}</span>
+										</span>
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini du">
+										<i class="layui-icon">&#xe601;</i>
+										<a href="javascript:downloadCourRes('${l.cId}');">下载</a>
+									</span>
+									<span class="layui-btn layui-btn-mini du">
+										<i class="layui-icon">&#xe654;</i> 
+										<a href="javascript:cancelCollection('${l.cId}');">取消收藏</a>
+									</span>
+				
+								</div>
+							</li>
+							<#elseif l.pubType=='T'>
+								<li class="clear">
+								<img src="${fileWebPath}/userheadPortrait/${l.filePath!''}" style="width:112px;height:78px;float:left;" onerror="this.src='${ctx}/img/user126.jpg'"/>
+								<div class="jilujieshao">
+									<p class="jjj0"><span><#if l.currName?? && (l.currName!='') >${l.currName!''} <#else>${l.nickName!''}</#if></span></p>
+									<p class="jjj">
+									   
+										<span>
+														教师职称： <span style="color: orange;">${l.HA!''}</span>
+										</span>
+										<span>
+													  	学校：<span style="color: orange;">${l.schoolName!''}</span>
+										</span>
+										<span>
+													  	邮箱：<span style="color: orange;">${l.email!'暂无'}</span>
+										</span>
+									</p>
+									<p class="jjj">
+
+ 										<span>
+														简介： <span><#if l.memos?? && (l.memos?length>30)> ${l.memos?substring(0,30)}... <#else>  ${l.memos!'暂无'}</#if></span>
+										</span>
+										
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini du">
+										<img alt="" src="${ctx}/img/eye2.png">
+										<a href="javascript:teacherInfo('${l.uId}');">查看</a>
+									</span>
+									<span class="layui-btn layui-btn-mini du">
+										<i class="layui-icon">&#xe654;</i> 
+										<a href="javascript:cancelCollectiont('${l.uId}');">取消关注</a>
+									</span>
+				
+								</div>
+							</li>
+							<#elseif l.pubType=='V'>
+								<li class="clear">
+								<div class="con_left_li">
+								<#if l.vType = 'P'> <div class="zdb bg1">离线评估 </div></#if>
+								<#if l.vType = 'B'> <div class="zdb bg2">课堂回放 </div></#if>
+								<#if l.vType = 'S'> <div class="zdb bg3">精品微课 </div></#if>
+								<#if l.vType = 'H'> <div class="zdb bg4">优质课程 </div></#if>
+								<div class="ke_img">
+									<img class="zbimg" src="${fileWebPath}/videoRes/${l.vPicPath!''}"  onerror="this.src='${ctx}/img/lunbo4.png'"/>
+								</div>
+								</div>
+								<div class="jilujieshao">
+									<p class="jjj0"><span>${l.vTitle!''}</span></p>
+									<p class="jjj">
+									   
+										<span>
+												主讲教师： <span style="color: orange;">${l.vTeacherNickName!''}</span>
+										</span>
+										<span>
+												专业：<span style="color: orange;">${l.vGradeName!''}</span>
+										</span>
+										<span>
+												科目：<span style="color: orange;">${l.vSubjectName!''}</span>
+										</span>
+									</p>
+									<p class="jjj">
+
+										<span>
+												学校： <span  > ${l.vSchoolName!''}</span>
+										</span>
+ 										<span>
+												授课时长： <span  > ${l.vTimeLength!''}</span>
+										</span>
+										<span>
+												浏览： <span  > ${l.vPageView!'0'}</span>
+										</span>
+										<span>
+												发布时间： <span  > ${l.vCreateTime!''}</span>
+										</span>
+										
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini see">
+										<img alt="" src="${ctx}/img/eye2.png">
+										<a href="javascript:watchofflineVideo('${l.vId}','${l.vType}');">查看</a>
+									</span>
+									<span class="layui-btn layui-btn-mini du">
+										<i class="layui-icon" style="font-size: 30px; color: gray;">&#xe654;</i>
+										<a href="javascript:cancelCollectV('${l.vId}');">取消收藏</a> 
+									</span>
+				
+								</div>
+							</li>
+							<#elseif l.pubType=='E'>
+								<li class="clear">
+								<#if l.subjectName == '语文'>
+								<img src="${ctx}/img/jpg.png"  style="width: 64px;height: 64px;float:left;margin-top: 11px;"  onerror="this.src='${ctx}/img/user126.jpg'"/>
+								<#elseif l.subjectName == '数学'>
+								<img src="${ctx}/img/shuxue.png" style="width: 64px;height: 64px;float:left;margin-top: 11px;" onerror="this.src='${ctx}/img/user126.jpg'"/>
+								<#elseif l.subjectName == '英语'>
+								<img src="${ctx}/img/panduan.png" style="width: 64px;height: 64px;float:left;margin-top: 11px;" onerror="this.src='${ctx}/img/user126.jpg'"/>
+								<#elseif l.subjectName == '物理'>
+								<img src="${ctx}/img/wuli.png" style="width: 64px;height: 64px;float:left;margin-top: 11px;" onerror="this.src='${ctx}/img/user126.jpg'"/>
+								<#elseif l.subjectName == '历史'>
+								<img src="${ctx}/img/kaoshi.png" style="width: 64px;height: 64px;float:left;margin-top: 11px;" onerror="this.src='${ctx}/img/user126.jpg'"/>
+								<#else>
+									<img src="${ctx}/img/shuxue.png" style="width: 64px;height: 64px;float:left;margin-top: 11px;" onerror="this.src='${ctx}/img/user126.jpg'"/>
+								</#if>
+								<div class="jilujieshao">
+									<p class="jjj0"><span>${l.testTitle!''}</span></p>
+									<p class="jjj">
+									   
+										<span>
+														测试时间： <span style="color: orange;">${l.times!''}分钟</span>
+										</span>
+										<span>
+													  	总分：<span style="color: orange;">${l.totalScore!''}分</span>
+										</span>
+										<span>
+													  	系列课程：<span style="color: orange;">${l.gradeName!''}</span>
+										</span>
+										<span>
+													  	科目：<span style="color: orange;">${l.subjectName!''}</span>
+										</span>
+									</p>
+									<p class="jjj">
+
+ 										<span>
+														发布时间： <span>${(l.addTime)?string('yyyy-MM-dd HH:mm')}</span>
+										</span>
+										
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini du">
+										<img alt="" src="${ctx}/img/eye2.png">
+										<a href="javascript:findOne('${l.pubId!''}')">查看</a>
+									</span>
+									<span class="layui-btn layui-btn-mini du">
+										<i class="layui-icon">&#xe654;</i> 
+										<a href="javascript:cancelCol('${l.pubId!''}');">取消收藏</a>
+									</span>
+				
+								</div>
+							</li>
+							<#elseif l.pubType=='Q'>
+							
+							<li class="clear">
+								<div class="jilujieshao">
+									<p class="jjj0"><span style="color: red;">${l.questionText!''}</span></p>
+									<p class="jjj">
+										<#if l.questionType==0>
+												<span>
+														题型： <span style="color: orange;">判断题</span>
+												</span>
+									   
+											</#if>
+											<#if l.questionType==1>
+												<span>
+														类型： <span style="color: orange;">单选题</span>
+												</span>
+									   
+											</#if>
+											<#if l.questionType==2>
+												<span>
+														类型： <span style="color: orange;">多选题</span>
+												</span>
+									   
+											</#if>
+										
+										<span>
+													  	出题人：<span style="color: orange;">${l.user!''}</span>
+										</span>
+										<span>
+													  	系列课程：<span style="color: orange;">${l.grade!''}</span>
+										</span>
+										<span>
+													  	科目：<span style="color: orange;">${l.subject!''}</span>
+										</span>
+									</p>
+								</div>
+								<div class="jilu_anniu">
+				
+									<span class="layui-btn layui-btn-mini du" style="background-color: white;color: black;border: 1px solid gainsboro;"><i class="layui-icon" style="font-size: 30px; color: gray;">&#xe615;</i><a href="javascript:findTi('${l.pubId!''}')">查看</a></span>
+									<span class="layui-btn layui-btn-mini du" style="background-color: white;color: black;border: 1px solid gainsboro;"><i class="layui-icon">&#xe654;</i> <a href="javascript:cancelTi('${l.pubId!''}');">取消收藏</a></span>
+				
+								</div>
+							</li>
+							
+							
+							
+							
+							
+							</#if>
+					</#list>
+				</#if>
+				
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getListData();
+	}
+</script>				
+<script type="text/javascript">
+	//下载资源
+	function downloadCourRes(id){
+		if(principal != ""){
+			$.ajax({
+			   type: "POST",
+			   url: ctx+"/sysHistory/insterSysHistory",
+			   data: {pubType:"R",pubFlag:"D",pubId:id},
+			   success: function(msg){
+				   location.href = ctx+"/adminCourRes/downloadCourRes?id="+id;
+			   }
+			});
+		}else{
+			layer.msg("请先登录!");
+		}
+	}
+	
+	//取消收藏
+	function cancelCollection(id){
+		if(principal != ""){
+			$.ajax({
+			   type: "POST",
+			   url: ctx+"/sysHistory/delSysHistory",
+			   data: {pubType:"R",pubFlag:"C",pubId:id},
+			   success: function(msg){
+				   getListData();
+				  layer.msg(msg);
+			   }
+			});
+		}else{
+			layer.msg("请先登录!");
+		}
+	}
+	//取消收藏
+	function cancelCol(id){
+		if(principal != ""){
+			$.ajax({
+			   type: "POST",
+			   url: ctx+"/sysHistory/delSysHistory",
+			   data: {pubType:"E",pubFlag:"C",pubId:id},
+			   success: function(msg){
+				   getListData();
+				  layer.msg(msg);
+			   }
+			});
+		}else{
+			layer.msg("请先登录!");
+		}
+	}
+	//取消收藏
+	function cancelTi(id){
+		if(principal != ""){
+			$.ajax({
+			   type: "POST",
+			   url: ctx+"/sysHistory/delSysHistory",
+			   data: {pubType:"Q",pubFlag:"C",pubId:id},
+			   success: function(msg){
+				   getListData();
+				  layer.msg(msg);
+			   }
+			});
+		}else{
+			layer.msg("请先登录!");
+		}
+	}
+	//观看离线视频
+	function watchofflineVideo(id,type){
+		window.open(ctx+"/offLine/videoPlayback?id="+id+"&type="+type,"_blank");
+	}
+	//离线视频取消收藏
+	function cancelCollectV(id){
+		$.ajax({
+		   type: "POST",
+		   url: ctx+"/sysHistory/delSysHistory",
+		   data: {pubType:"V",pubFlag:"C",pubId:id},
+		   success: function(msg){
+			   getListData();
+				  layer.msg(msg);
+		   }
+		});
+	}
+	
+	
+	//查看教师信息
+	function teacherInfo(id){
+		window.open(ctx+"/teacher/teacherDetails?id="+id);
+	}
+	//取消关注
+	function cancelCollectiont(id){
+		if(principal != ""){
+			$.ajax({
+			   type: "POST",
+			   url: ctx+"/teacher/delSysHistory",
+			   data: {pubType:"T",pubFlag:"C",pubId:id},
+			   success: function(msg){
+				   
+				   if("操作成功" == msg){     
+					   getListData();
+					  }
+				   layer.msg(msg);
+			   }
+			});
+		}else{
+			layer.msg("请先登录!");
+		}
+	}
+	
+	//查看
+	 function findOne(id){
+			 parent.$(".zhong_right iframe").attr("src", ctx+"/test/findOne?testId="+id);
+				setIframeH();
+				function setIframeH() {
+					var body = $(document.body);
+					var iframe = $(parent.document.getElementById('parentIframe'));
+					iframe.height(body.height());
+				}
+		 }
+	//查看试题详情
+	 function findTi(id){
+			 parent.$(".zhong_right iframe").attr("src", ctx+"/testwebquestionanswer/QueAnswer?questionId="+id);
+				setIframeH();
+				function setIframeH() {
+					var body = $(document.body);
+					var iframe = $(parent.document.getElementById('parentIframe'));
+					iframe.height(body.height());
+				}
+		 }
+</script>

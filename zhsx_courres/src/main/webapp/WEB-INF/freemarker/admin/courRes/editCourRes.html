@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>编辑资源</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<style type="text/css">
+			.layui-larry-box {
+				padding: 0;
+			}
+			#jj {
+				text-align:right;
+				width: 80px;
+				float:left;
+			}
+			.layui-input-block{
+				margin-right:150px;
+				margin-left: 100px;
+			}
+			.msg{
+				float:right;
+				margin-top:-25px;
+				width: 125px;
+			}
+			.msg1{
+				float:right;
+				margin-top:10px;
+				width: 125px;
+			}
+ 			.layui-form-item .layui-input-inline{
+				width: 180px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="larry-personal-body clearfix">
+					<form id="form" class="layui-form">
+						<input type="hidden" name="id" value="${courResource.id!''}">
+						<div class="row">
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">文件名称：</label>
+								<div class="layui-input-block">
+									<input type="text" id="name" title="文件名称" name="name" class="layui-input" onblur="javascript:checkOk(this,checkString(this));" value="${courResource.name!''}">
+								</div>
+								<span id="name_msg" class="msg" style="color:red;">*</span>
+							</div>
+							<div class="layui-form-item">
+		                      <label class="layui-form-label" id="jj">专业科目：</label>
+		                      <div class="layui-input-inline" style="margin-left:20px;">
+		                          <select name="gradeName" lay-filter="gradeName" id="gradeName">
+		                              <option value="">请选择专业</option>
+									  <#if gradeList?? && (gradeList?size>0)><#list gradeList as l>
+									  		<#assign sel = "">
+									  		<#if courResource.gradeName?? && courResource.gradeName == l.value> <#assign sel = "selected"> </#if>
+									　　		<option value="${l.value!''}" id="${l.id!''}" ${sel}>${l.value!''}</option>
+									　　</#list></#if>
+		                          </select>
+		                      </div>
+		                      <div class="layui-input-inline">
+		                          <select id="subjectsName" name="subjectsName" lay-filter="subjectsName" title="专业科目">
+		                              <option value="">请选择科目</option>
+		                              <#if subjectsList?? && (subjectsList?size>0)><#list subjectsList as l>
+									  		<#assign sel = "">
+									  		<#if courResource.subjectsName?? && courResource.subjectsName == l.value> <#assign sel = "selected"> </#if>
+									　　		<option value="${l.value!''}" ${sel}>${l.value!''}</option>
+									　　</#list></#if>
+		                          </select>
+		                      </div>
+		                      <span id="subjectsName_msg" class="msg1" style="color:red;">*</span>
+			                </div>
+			                <div class="layui-form-item">
+								<label class="layui-form-label" id="jj">版本册次：</label>
+								<div class="layui-input-inline" style="margin-left:20px;">
+		            				<select id="bak" name="bak" lay-filter="bak" lay-search>
+			                              <option value="">请选择版本</option>
+			                              <#if versionList?? && (versionList?size>0)><#list versionList as l>
+										  		<#assign sel = "">
+										  		<#if courResource.bak?? && courResource.bak == l.value> <#assign sel = "selected"> </#if>
+										　　		<option value="${l.value!''}" ${sel}>${l.value!''}</option>
+										　　</#list></#if>
+			                          </select>
+		                     	</div>
+			                    <div class="layui-input-inline">
+			                          <select id="bak1" name="bak1" lay-filter="bak1" title="版本册次">
+			                              <#assign quance = "">
+			                              <#assign shangce = "">
+			                              <#assign xiace = "">
+				                         <#if courResource.bak1?? && courResource.bak1 == "下册" >
+				                         	<#assign xiace = "selected"> 
+										 <#elseif courResource.bak1?? && courResource.bak1 == "上册">
+										 	<#assign shangce = "selected"> 
+										 <#elseif courResource.bak1?? && courResource.bak1 == "全册">
+										 	<#assign quance = "selected">
+									     </#if>
+			                              <option  value="">请选择册次</option>
+			                              <option  value="全册" ${quance} >全册</option>
+			                              <option  value="上册" ${shangce} >上册</option>
+			                              <option  value="下册" ${xiace}>下册</option>
+			                          </select>
+			                    </div>
+								<span id="bak1_msg" class="msg1" style="color:red;">*</span>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">发布状态：</label>
+								<div class="layui-input-block">
+									<#assign ystate = "">
+									<#assign nstate = "">
+									<#if courResource.state == "Y" > 
+										<#assign ystate = "checked"> 
+								    <#elseif  courResource.state == "N">
+								    	<#assign nstate = "checked"> 
+								    </#if>
+									<input type="radio" name="state" value="Y" title="发布"  ${ystate}>
+									<input type="radio" name="state" value="N" title="不发布" ${nstate}>
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<div class="layui-input-block">
+									<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript"> var type = "${type!''}"; </script>
+	<script type="text/javascript" src="${ctx}/js/check.js"></script>
+	<script type="text/javascript" src="${ctx}/js/admin/courRes/editCourRes.js"></script>
+</html>

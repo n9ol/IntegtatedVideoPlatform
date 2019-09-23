@@ -1,0 +1,97 @@
+@CHARSET "UTF-8";
+
+span {
+	display: inline-block;
+}
+
+.sheng {
+	padding: 10px;
+}
+
+.guanli, .sheng_nav, .tishi {
+	font-size: 15px;
+}
+
+.guanli {
+	float: right;
+	color: blue;
+	cursor: pointer;
+}
+
+.fenge {
+	float: right;
+	margin: 0 10px;
+	color: gray;
+}
+
+.sheng_nav {
+	margin-right: 20px;
+}
+
+.tishi {
+	color: gray;
+}
+
+.sheng_ul {
+	padding: 10px;
+}
+
+.sheng_ul li {
+	overflow: hidden;
+}
+
+.sheng_ul li span {
+	width: 200px;
+	height: 25px;
+	line-height: 25px;
+	font-size: 15px;
+	cursor: pointer;
+	color: #0066cc;
+	float: left;
+	margin-top: 5px;
+}
+
+.logo {
+	margin-right: 10px;
+}
+
+.diqu, .des {
+	margin: 0 10px;
+}
+
+.diqu {
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px dotted #999999;
+}
+
+.map {
+	color: green;
+	font-size: 17px;
+	height: 40px;
+	line-height: 40px;
+}
+
+.logos {
+	margin-right: 2px;
+}
+
+.des {
+	height: 40px;
+	line-height: 40px;
+	color: green;
+	border-bottom: 1px dotted #999999;
+}
+
+.fenge2 {
+	float: right;
+	margin: 0 10px;
+	color: black;
+}
+.city {
+	display: none;
+}
+
+.county {
+	display: none;
+}

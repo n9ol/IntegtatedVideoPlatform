@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教育综合视讯管理平台</title>
+<!-- <#global ctx=rc.contextPath/> -->
+<link rel="icon" href="${ctx}/img/rflogo.png" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/template.css" />
+<!--公共样式表-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+<!--去除默认行为-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/denglu.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/ScanCode.css" />
+<!--公共样式表-->
+</head>
+<body>
+	<!--头部start-->
+	<div class="top">
+		<div class="top_zhong">
+			<a href="index.html">综合视讯平台</a>
+		</div>
+	</div>
+	<form action="${ctx}/login/denglu.do" method="post" onsubmit="return check()" id="myform">
+		<div class="conss clear">
+			<img class="bg_deng" src="${ctx}/img/denglu.png" />
+
+			<div class="deng_kuang">
+				<div class="kuang_top">登录</div>
+				<div class="shuru clear">
+					账号：
+					<img class="yes1" src="${ctx}/img/duihao.png" />
+					<input type="text" id="username" placeholder="账号/手机号/邮箱" name="username" />
+					<p class="tishiyu alert1">请输入3-16个字符或数字</p>
+				</div>
+				<div class="shuru clear">
+					密码：
+					<img class="yes2" src="${ctx}/img/duihao.png" />
+					<input type="password" id="password" name="password" />
+					<p class="tishiyu alert2">密码只能输入6-40位数字和字符</p>
+					<div class="forgetPad">
+						<a href="${ctx}/forgetPwd" id="forgetPad_a" tabindex="-1">忘记密码 ?</a>
+					</div>
+				</div>
+				<div class="queren clear">
+					<button class="layui-btn layui-btn-small layui-btn-normal deng_btn" type="submit">登录</button>
+				</div>
+				<img class="saoma" alt="" src="${ctx}/images/saoma.png">
+			</div>
+
+			<div class="er_deng_kuang" style="display: none;">
+				<div class="er_kuang_top">手机扫码</div>
+				<div class="er_queren">
+					<div class="ewm" id="qrcode"></div>
+					<div>
+						<img src="${ctx}/img/saoma.png" alt="">
+						打开
+						<span style="color: #4596E5;">手机</span>
+						扫一扫
+					</div>
+					<a href="#" class="mmdl">密码登录</a>
+				</div>
+			</div>
+
+		</div>
+	</form>
+	<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+</body>
+<!--公共js-->
+<script type="text/javascript">
+	var channel = "${channel!''}", base = "${ctx}", webUrl = "${webUrl!''}";
+</script>
+<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${ctx}/common/qrcode/jqueryqr.js"></script>
+<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+<script type="text/javascript" src="${ctx}/js/web/template.js"></script>
+<script type="text/javascript" src="${ctx}/common/webSocket/sockjs.min.js"></script>
+<script type="text/javascript" src="${ctx}/common/webSocket/stomp.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/denglu.js"></script>
+</html>

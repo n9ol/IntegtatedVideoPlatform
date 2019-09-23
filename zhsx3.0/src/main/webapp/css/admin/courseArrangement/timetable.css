@@ -1,0 +1,77 @@
+.table-hover {
+	width: 200px;
+}
+
+.table-hover {
+	width: 300px;
+}
+
+.table-time {
+	float: left;
+	margin-left: 30px;
+	margin-top: 20px;
+}
+
+.aa {
+	float: left;
+	border: 2px solid #1aa094;
+}
+
+.layui-field-box .layui-table tr th:first-child, .layui-field-box .layui-table tr td:first-child
+	{
+	width: 0px;
+}
+
+.msg {
+	margin-left: 30px;
+}
+
+.zong {
+	float: left;
+	margin-left: 50px;
+	max-width: 1072px;
+}
+
+.biao {
+	text-align: right;
+}
+
+.zong table tr>td {
+	width: 130px;
+	height: 50px;
+}
+
+.span1 {
+	margin-right: 15px;
+}
+
+.b_right {
+	float: right;
+}
+
+.layui-elem-quote {
+	height: 65px;
+}
+
+#searchval {
+	width: 180px;
+}
+
+#scName {
+	margin-left: 80px;
+}
+
+@media only screen and (max-width: 1680px) {
+	.zong {
+		float: left;
+		max-width: 1030px;
+	}
+}
+
+@media only screen and (max-width: 1400px) {
+	.zong {
+		float: left;
+		max-width: 805px;
+		margin-left: 0
+	}
+}

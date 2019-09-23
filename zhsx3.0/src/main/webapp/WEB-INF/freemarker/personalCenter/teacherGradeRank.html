@@ -1,0 +1,28 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<ul class="listUl">
+	<#if userList?? && (userList?size>0)><#list userList as l>
+	<li class="clear listLi">
+		<#assign num="">
+		<#if (l_index>2)> <#assign num="number2"> </#if>
+		<div class="fl number ${num}">${l_index+1}</div>
+		<div class="toupicture fl">
+		<img src="${fileWebPath}/userheadPortrait/${l.filePath!''}" onerror="this.src='${ctx}/img/user80.jpg'"/>
+		</div>
+		<div class="fl Introduc">
+			<p class="clear">
+				<span class="span1 yahei ellipsisSpan">${l.nickName!''}</span>
+				<span class="span1 teachGrade1"><img src="${ctx}/img/vip.png"/></span>
+				<span class="span1 dengji grade grade1">Lv${l.userGrade!'0'}</span>
+			</p>
+			<p class="ellipsisDiv">${l.schoolName!''}</p>
+		</div>
+
+		<div class="fr experience ellipsisDiv">${l.memos!''}</div>
+		<div class="fr teachPicture">
+			<span class="teachPicture1">
+				<img src="${ctx}/img/geren_dengji.png" style="top:${-354 + (68)*(l_index)}px;"/>
+			</span>
+		</div>
+	</li>
+	</#list></#if>
+</ul>

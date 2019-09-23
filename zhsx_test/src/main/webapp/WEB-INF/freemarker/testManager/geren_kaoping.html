@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<style type="text/css">
+			#fenxi{
+				width: 930px;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="kao_right">
+			<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 考评分析</p>
+			<div id="fenxi"></div>
+			<div id="fenxi2"></div>
+		</div>
+	</body>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script  type="text/javascript" charset="utf-8">var ctx='${ctx}';</script>
+	<script type="text/javascript">
+		$(function(){
+			setIframeH();
+		});
+		
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height()+50);
+		}
+		
+		
+		var fenxi = echarts.init(document.getElementById("fenxi"));
+		var fenxi2 = echarts.init(document.getElementById("fenxi2"));
+	
+		var color9 = ["#4596e5"]
+		var option = {
+			color: color9,
+			title: {
+				text: "考试成绩柱状图",
+				left: "45%",
+				textStyle:{
+				   align : 'center'
+				}
+			},
+			tooltip: {
+				trigger: 'axis', //弹框的显示与否
+				axisPointer: { // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				}
+			},
+			xAxis: {
+				data: [<#if lists??&&(lists?size>0)><#list lists as l>"${l_index+1}",</#list></#if>],
+				name: '最近考试次数'
+			},
+			yAxis: {
+				name: '考试得分',
+				type: 'value',
+				min: 0,
+				max: 100
+	
+			},
+			series: [{
+				name: '考试得分',
+				type: 'bar',
+				data: [<#if lists??&&(lists?size>0)><#list lists as l>"${l.scores!''}",</#list></#if>]
+			}]
+	
+		}
+		fenxi.setOption(option)
+	
+		$(".zong_subfrm .btnsrows").click(function() {
+			$("#subfrm").hide();
+		});
+	</script>
+</html>

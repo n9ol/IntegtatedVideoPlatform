@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.CourResourceMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.CourResource" >
+		<result column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="downloadPath" property="downloadPath" />
+		<result column="pdfPath" property="pdfPath" />
+		<result column="type" property="type" />
+		<result column="size" property="size" />
+		<result column="state" property="state" />
+		<result column="uploadPersonId" property="uploadPersonId" />
+		<result column="authorId" property="authorId" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subjectsName" property="subjectsName" />
+		<result column="fileMd5" property="fileMd5" />
+		<result column="createTime" property="createTime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,name,downloadPath,pdfPath,type,size,state,uploadPersonId,authorId,gradeName,subjectsName,fileMd5,createTime,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />,
+		(select nickname from `user` u where u.id = r.uploadpersonid) as uploadpersonname,
+		(SELECT COUNT(0) FROM sys_history h WHERE h.pubFlag = 'D' AND h.pubId = r.id) as downloadNum,
+		(SELECT COUNT(0) FROM sys_history h WHERE h.pubFlag = 'C' AND h.pubId = r.id) as collectionNum
+		from cour_resource r
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_pg_cour where courId = #{id};
+		delete from cour_resource where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="CourResource" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into cour_resource (id,name,downloadPath,pdfPath,type,size,state,uploadPersonId,authorId,gradeName,subjectsName,fileMd5,createTime,bak,bak1,bak2)
+		values (#{id},#{name},#{downloadPath},#{pdfPath},#{type},#{size},#{state},#{uploadPersonId},#{authorId},#{gradeName},#{subjectsName},#{fileMd5},#{createTime},#{bak},#{bak1},#{bak2})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="CourResource" >
+		update cour_resource
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="name != null" >
+				name = #{name},
+			</if>
+			<if test="downloadPath != null" >
+				downloadPath = #{downloadPath},
+			</if>
+			<if test="pdfPath != null" >
+				pdfPath = #{pdfPath},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="size != null" >
+				size = #{size},
+			</if>
+			<if test="state != null" >
+				state = #{state},
+			</if>
+			<if test="uploadPersonId != null" >
+				uploadPersonId = #{uploadPersonId},
+			</if>
+			<if test="authorId != null" >
+				authorId = #{authorId},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectsName != null" >
+				subjectsName = #{subjectsName},
+			</if>
+			<if test="fileMd5 != null" >
+				fileMd5 = #{fileMd5},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="CourResource" >
+		update cour_resource
+		set 
+		id = #{id},
+		name = #{name},
+		downloadPath = #{downloadPath},
+		pdfPath = #{pdfPath},
+		type = #{type},
+		size = #{size},
+		state = #{state},
+		uploadPersonId = #{uploadPersonId},
+		authorId = #{authorId},
+		gradeName = #{gradeName},
+		subjectsName = #{subjectsName},
+		fileMd5 = #{fileMd5},
+		createTime = #{createTime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="name != null" >
+				and name = #{name}
+			</if>
+			<if test="downloadPath != null" >
+				and downloadPath = #{downloadPath}
+			</if>
+			<if test="pdfPath != null" >
+				and pdfPath = #{pdfPath}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="size != null" >
+				and size = #{size}
+			</if>
+			<if test="state != null" >
+				and state = #{state}
+			</if>
+			<if test="uploadPersonId != null" >
+				and uploadPersonId = #{uploadPersonId}
+			</if>
+			<if test="authorId != null" >
+				and authorId = #{authorId}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subjectsName != null" >
+				and subjectsName = #{subjectsName}
+			</if>
+			<if test="fileMd5 != null" >
+				and fileMd5 = #{fileMd5}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="search != null">
+				and (
+						(name like '%${search}%')  or
+						(gradeName like '%${search}%')  or
+						(subjectsName like '%${search}%')  or
+						(bak like '%${search}%')  or
+						(bak1 like '%${search}%') or
+						(uploadPersonId in (select id from `user` u where u.nickname like '%${search}%' ))
+					)
+			</if>
+			<if test="area != null">
+				and uploadPersonId in (
+					SELECT id FROM `user` u WHERE u.schoolId IN (
+						SELECT id FROM sys_school s WHERE s.cityId IN(SELECT id FROM sys_dict d WHERE d.`value` LIKE '%${area}%')
+					)
+				)
+			</if>
+			<if test="sortord == 'name'">
+				ORDER BY name
+			</if>
+			<if test="sortord == 'downloadNum'">
+				ORDER BY downloadNum DESC
+			</if>
+			<if test="sortord == 'size'">
+				ORDER BY FIELD(SUBSTRING(size,LENGTH(size)),'K','M','G'),SUBSTRING(size,1,LENGTH(size)-1)
+			</if>
+			<if test="sortord == 'state'">
+				ORDER BY state
+			</if>
+			<if test="sortord == 'bak2'">
+				ORDER BY bak2
+			</if>
+			<if test="(sortord == 'time')  or  (sortord == null)">
+				ORDER BY createTime DESC
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="CourResource" resultType="CourResource">
+		select 
+		<include refid="Base_Column_List" />
+		from cour_resource
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="CourResource" resultType="CourResource">
+		select 
+		<include refid="Base_Column_List" />,
+		(select nickname from `user` u where u.id = r.uploadpersonid) as uploadpersonname,
+		(SELECT schoolName FROM sys_school s WHERE s.id = (select schoolId from `user` u where u.id = r.uploadpersonid)) as uploadpersonschool,
+		(SELECT COUNT(0) FROM sys_history h WHERE h.pubFlag = 'D' AND h.pubId = r.id) as downloadNum,
+		(SELECT COUNT(0) FROM sys_history h WHERE h.pubFlag = 'C' AND h.pubId = r.id) as collectionNum
+		<if test="currUserId != null">
+			,(SELECT COUNT(0) FROM sys_history h WHERE h.pubFlag = 'C' AND h.pubId = r.id AND h.userId = #{currUserId}) isCollection
+		</if>
+		from cour_resource r
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<delete id="batchDelCourRes" parameterType="java.util.List">
+		delete from lo_pg_cour where courId in  <foreach collection="list" open="(" close=")" item="id" separator=",">#{id}</foreach>;
+		delete from cour_resource where id in <foreach collection="list" open="(" close=")" item="id" separator=",">#{id}</foreach>
+	</delete>
+	
+	
+	<update id="batchUpdataCourRes" parameterType="java.util.Map">
+		update cour_resource
+		<set >
+			<if test="state != null" >
+				state = #{state},
+			</if>
+			<if test="authorId != null" >
+				authorId = #{authorId},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectsName != null" >
+				subjectsName = #{subjectsName},
+			</if>
+			<if test="fileMd5 != null" >
+				fileMd5 = #{fileMd5},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id in <foreach collection="ids" open="(" close=")" item="id" separator=",">#{id}</foreach>
+	</update>
+	
+
+</mapper>

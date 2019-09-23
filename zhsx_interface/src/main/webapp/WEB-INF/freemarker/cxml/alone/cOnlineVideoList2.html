@@ -1,0 +1,12 @@
+<?xml version="1.0"	encoding="UTF-8"?>
+<onlinevideolist>
+	<shoolList>
+	<#if schlist?? && (schlist?size>0)> <#list schlist as l>
+    <node id="s_${(l.id)!'0'}" label="${(l.schoolName)!''}">
+    	<#if (l.classRoomList)?? && ((l.classRoomList)?size>0)><#list (l.classRoomList) as ll>
+    	<node id="${(ll.id)!'0'}" label="${(ll.className)!''}" schoolname="${(l.schoolName)!''}" type="class" onlivestate="${(ll.bak1)!''}"/>
+    	</#list></#if>
+    </node>
+    </#list></#if>
+    </shoolList>
+</onlinevideolist>

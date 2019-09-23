@@ -1,0 +1,49 @@
+<!-- 		<#global ctx=rc.contextPath/> -->
+<div class="layui-tab-item layui-show clear">
+	<ul>
+		<#if lists?? && (lists?size>0)><#list lists as l>
+		<li class="clear borderBottom layui-tab-item-li">
+			<div class="jiaoshi">
+				<img src="${fileWebPath}/userheadPortrait/${l.filePath!''}" onerror="this.src='${ctx}/img/user80.jpg'"/>
+			</div>
+			<div class="boxx">
+			
+					<a  class="clear" href="javascript:;" onclick="findOne('${l.id}')">
+						<span class="chenghu">${l.nickName!''}</span>
+						<span>提出</span>
+						<span class="timu">“${l.title!''}”</span>
+					</a>
+				<br />
+				<span class="nianji"><span>科目：</span>[${l.grade!''}${l.subject!''}]</span>
+				<span class="time"><span>提问时间：</span>${l.dateTime!''}</span>
+			</div>
+
+		</li>
+		</#list></#if>	
+	</ul>
+	<div id="page" style="text-align: center;"></div>
+</div>
+	<form id="myform22">
+		<input type="hidden" name="member" value="${memberId!''}" >
+	</form>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			getNew();
+		}
+	</script>
+	
+									
+	<script type="text/javascript">
+	$(function (){
+		var me =  $("input[name='search1']").val();
+		if(me=="S"){
+			$("#zuixintiwen").removeClass("shai_kuang");
+			$("#mytiwen").addClass("shai_kuang");
+		}else{
+			$("#mytiwen").removeClass("shai_kuang");
+			$("#zuixintiwen").addClass("shai_kuang");
+		}
+	});
+</script>		

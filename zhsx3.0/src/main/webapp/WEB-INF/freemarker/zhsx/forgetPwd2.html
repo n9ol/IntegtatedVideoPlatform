@@ -1,0 +1,17 @@
+<dl class="sel-yzyx">
+	<dt><span class="colorRed">*</span>邮箱：</dt>
+	<dd>
+		<input type="text" value="${userEmail!''}" readonly  style="border:none;outline:medium;width:260px;"/>
+	</dd>
+	<div class="clears"></div>
+</dl>
+<dl class="sel-yzyx">
+	<dt><span class="colorRed">*</span>验证码：</dt>
+	<dd>
+		<input type="text" id="emailCode"/> 
+		<button onclick="getEmailCode(this);">获取验证码</button>
+	</dd>
+	<p class="verificationCode"></p>
+	<div class="clears"></div>
+</dl>
+<div class="subtijiao"><input type="button" value="提交" onclick="verifyEmailCode();"/></div>

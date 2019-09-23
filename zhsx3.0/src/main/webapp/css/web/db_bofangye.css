@@ -1,0 +1,55 @@
+
+.ddd li{
+	float: left;
+	width: 100px;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 0;
+}
+.kkk{
+	color: #000000;
+	background-color: #fff;
+}
+#bianji{
+	width: 90%;
+	margin: 0 auto;
+}
+.layui-layedit{
+	width: 98%;
+	margin: 0 auto;
+}
+.swiper-slide a{
+	display:inline-block;
+	width:100%;
+	height:100%;
+	position:relative;
+}
+.smallClassTime{
+	position: absolute;
+	left: 45px;
+	top: 55px;
+	width: 55px;
+	height: 20px;
+	background-color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	line-height: 20px;
+	color:#fff;
+	font-size:12px;
+}
+
+
+.swiper-container {
+	height: 370px;
+}
+.collectImg{
+	float:right;
+	margin-right:323px;
+}
+.downloadImg{
+	margin-right:5px;
+	float:right;
+}
+
+

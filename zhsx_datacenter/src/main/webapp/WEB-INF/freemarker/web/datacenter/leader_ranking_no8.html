@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<div class="nr1 clear">
+			<p class="tittle">教师等级人数占比变化</p>
+			<div id="main19">
+
+			</div>
+		</div>
+		<div class="nr1 clear">
+		<!-- 	<p class="tittle">2016教师等级人数占比</p> -->
+			<div id="main10">
+
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	<script type="text/javascript">
+		setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeRanking'));
+			iframe.height(body.height()+20);
+		}
+		
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		
+		var preDatas=[];
+	    <#list preResultMap?keys as tempkey>
+	      var temp = {};	
+          temp.value="${(preResultMap[tempkey])!''}";
+	      temp.name="${tempkey!''}";
+          preDatas.push(temp);
+	    </#list>
+	    
+		var myChart19 = echarts.init(document.getElementById("main19"));
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var option19 = {
+				color: color3,
+				title: {
+					text: '上学期等级人数占比',
+					x: 'center'
+				},
+				tooltip: {
+					trigger: 'item',
+					formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+				legend: {
+					orient: 'vertical',
+					left: 'left',
+					/* data: ['新手教师', '普通教师', '二级教师', '三级教师', '特级教师'] */
+					data: ['初级教师', '三级教师', '二级教师', '一级教师', '高级教师', '特级教师']
+				},
+				series: [{
+					type: 'pie',
+					radius: '55%',
+					center: ['50%', '60%'],
+					data: preDatas,
+					itemStyle: {
+						emphasis: {
+							shadowBlur: 10,
+							shadowOffsetX: 0,
+							shadowColor: 'rgba(0, 0, 0, 0.5)'
+						}
+					}
+				}]
+		};
+		myChart19.setOption(option19);
+		
+		var nextDatas=[];
+	    <#list nowResultMap?keys as tempkey>
+	      var temp = {};	
+          temp.value='${nowResultMap[tempkey]!''}';
+	      temp.name='${tempkey!''}';
+	      nextDatas.push(temp);
+	    </#list>
+		var myChart10 = echarts.init(document.getElementById("main10"));
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var option10 = {
+			color: color3,
+			title: {
+				text: '本学期等级人数占比',//'2016教师等级人数占比'
+				x: 'center'
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{a} <br/>{b} : {c} ({d}%)"
+			},
+			legend: {
+				orient: 'vertical',
+				left: 'left',
+				data: ['初级教师', '三级教师', '二级教师', '一级教师', '高级教师', '特级教师']
+			},
+			series: [{
+				type: 'pie',
+				radius: '55%',
+				center: ['50%', '60%'],
+				data: nextDatas,
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}]
+		};
+		myChart10.setOption(option10);
+		
+	</script>
+
+</html>

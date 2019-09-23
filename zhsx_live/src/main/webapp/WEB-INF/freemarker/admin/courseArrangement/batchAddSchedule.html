@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="utf-8">
+<title>添加课程</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<style type="text/css">
+.layui-larry-box {
+	padding: 0;
+}
+
+#jj {
+	text-align: right;
+	width: 80px;
+	float: left;
+}
+
+.layui-input-block {
+	margin-right: 150px;
+	margin-left: 100px;
+}
+
+.msg {
+	float: right;
+	margin-top: 12px;
+	width: 280px;
+}
+
+.msg1 {
+	float: right;
+	margin-top: -25px;
+	width: 130px;
+}
+
+.msg2 {
+	float: right;
+	margin-top: 12px;
+	width: 130px;
+}
+
+.layui-form-item .layui-input-inline {
+	width: 185px;
+}
+
+.inMany .layui-form-item .layui-input-inline {
+	width: 170px;
+}
+</style>
+</head>
+
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="larry-personal-body clearfix">
+				<form id="form" class="layui-form">
+					<input type="hidden" name="classId" value="${classId!''}">
+					<input type="hidden" name="schoolId" value="${schoolId!''}">
+					<input type="hidden" name="bak1" value="${termTimeId!''}">
+					<input type="hidden" name="bak">
+					<div class="row">
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">专业科目：</label>
+							<div class="layui-input-inline" style="margin-left: 20px;">
+								<select name="gradeId" id="gradeId" lay-filter="grade">
+									<option value="">请选择专业</option>
+									<#if sysDicts?? && (sysDicts?size>0)><#list sysDicts as g>
+									<option value="${g.value}" id="${g.id!''}">${g.value!''}</option>
+									</#list></#if>
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<select id="subjectId" name="subjectId">
+									<option value="">请选择科目</option>
+								</select>
+							</div>
+							<span id="gradeId_msg" class="msg" style="color: red;">*</span>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">主讲教师：</label>
+							<div class="layui-input-block">
+								<select name="userId" id="userId" lay-search>
+									<option value="">请选择主讲教师</option>
+									<#if userList?? && (userList?size>0)><#list userList as u>
+									<option value="${u.id}">${u.nickName}</option>
+									</#list></#if>
+								</select>
+							</div>
+							<span id="userId_msg" class="msg1" style="color: red;">*</span>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">周次：</label>
+							<div class="layui-input-inline" style="margin-left: 20px;">
+								<select name="startWeek" id="startWeek" lay-filter="startWeek" lay-search>
+									<option value="">请选择开始周次</option>
+									<#if totalWeeks??> <#list 1..totalWeeks as s>
+									<option value="${s}">第${s}周</option>
+									</#list></#if>
+								</select>
+							</div>
+							<div class="layui-input-inline">
+								<select id="endWeek" name="endWeek" lay-search>
+									<option value="">请选择结束周次</option>
+									<#if totalWeeks??> <#list 1..totalWeeks as s>
+									<option value="${s}">第${s}周</option>
+									</#list></#if>
+								</select>
+							</div>
+							<span id="week_msg" class="msg" style="color: red;">*</span>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">星期：</label>
+							<div class="layui-input-block">
+								<select name="dayofweek" id="dayofweek">
+									<option value="">请选择星期</option>
+									<#list 0..6 as t> <#assign tt=''> <#if t==0><#assign tt='天'></#if> <#if t==1><#assign tt='一'></#if> <#if t==2><#assign tt='二'></#if> <#if t==3><#assign tt='三'></#if> <#if t==4><#assign
+									tt='四'></#if> <#if t==5><#assign tt='五'></#if> <#if t==6><#assign tt='六'></#if>
+									<option value="${t}">星期${tt}</option>
+									</#list>
+								</select>
+							</div>
+							<span id="dayofweek_msg" class="msg1" style="color: red;">*</span>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">节次：</label>
+							<div class="layui-input-block">
+								<select name="sectionofday" id="sectionofday" lay-filter="sectionofday">
+									<option value="">请选择节次</option>
+									<#if loClassTimes?? && (loClassTimes?size>0)><#list loClassTimes as lo>
+									<option value="${lo.sectionofDay!''}" id="${lo.id!''}">第${lo.sectionofDay!''}节</option>
+									</#list></#if>
+								</select>
+							</div>
+							<span id="sectionofday_msg" class="msg1" style="color: red;">*</span>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">上课模式：</label>
+							<div class="layui-input-block">
+<!-- 								<input type="radio" name="type" value="Z" title="直播课堂" checked lay-filter="vtype"> -->
+								<input type="radio" name="type" value="A" title="在线评估" lay-filter="vtype" checked>
+								<input type="radio" name="type" value="G" title="专递课堂" lay-filter="vtype">
+							</div>
+						</div>
+						<div class="inMany" style="display: none;">
+							<div class="layui-form-item fone">
+								<label class="layui-form-label" id="jj">辅教室1：</label>
+								<div class="layui-input-inline" style="margin-left: 20px;">
+									<select name="loFscheduleList[0].schoolId" id="f1sid" lay-filter="school1" lay-search>
+										<option value="">请选择学校</option>
+										<#if schoolList?? && (schoolList?size>0)><#list schoolList as s>
+										<option value="${s.id}">${s.schoolName}</option>
+										</#list></#if>
+									</select>
+								</div>
+								<div class="layui-input-inline">
+									<select name="loFscheduleList[0].classId" id="f1cid" lay-search lay-filter="classRoom">
+										<option value="">请选择教室</option>
+									</select>
+								</div>
+								<div class="layui-input-inline">
+									<select name="loFscheduleList[0].userId" id="f1uid" lay-search>
+										<option value="">请选择教师</option>
+									</select>
+								</div>
+								<span id="fs_msg" class="msg2" style="color: red;">*</span>
+							</div>
+							<div class="layui-form-item ftwo">
+								<label class="layui-form-label" id="jj">辅教室2：</label>
+								<div class="layui-input-inline" style="margin-left: 20px;">
+									<select name="loFscheduleList[1].schoolId" id="f2sid" lay-filter="school2" lay-search>
+										<option value="">请选择学校</option>
+										<#if schoolList?? && (schoolList?size>0)><#list schoolList as s>
+										<option value="${s.id}">${s.schoolName}</option>
+										</#list></#if>
+									</select>
+								</div>
+								<div class="layui-input-inline">
+									<select name="loFscheduleList[1].classId" id="f2cid" lay-search lay-filter="classRoom">
+										<option value="">请选择教室</option>
+									</select>
+								</div>
+								<div class="layui-input-inline">
+									<select name="loFscheduleList[1].userId" id="f2uid" lay-search>
+										<option value="">请选择教师</option>
+									</select>
+								</div>
+							</div>
+							<div class="layui-form-item fthree">
+								<label class="layui-form-label" id="jj">辅教室3：</label>
+								<div class="layui-input-inline" style="margin-left: 20px;">
+									<select name="loFscheduleList[2].schoolId" id="f3sid" lay-filter="school3" lay-search>
+										<option value="">请选择学校</option>
+										<#if schoolList?? && (schoolList?size>0)><#list schoolList as s>
+										<option value="${s.id}">${s.schoolName}</option>
+										</#list></#if>
+									</select>
+								</div>
+								<div class="layui-input-inline">
+									<select name="loFscheduleList[2].classId" id="f3cid" lay-search lay-filter="classRoom">
+										<option value="">请选择教室</option>
+									</select>
+								</div>
+								<div class="layui-input-inline">
+									<select name="loFscheduleList[2].userId" id="f3uid" lay-search>
+										<option value="">请选择教师</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</body>
+<script type="text/javascript" src="${ctx}/js/admin/courseArrangement/batchAddSchedule.js"></script>
+</html>

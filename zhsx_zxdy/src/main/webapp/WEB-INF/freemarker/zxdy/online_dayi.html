@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/filter.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/dayi.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/pageGroup.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/ziyuan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a><cite>在线答疑</cite></a>
+				</span>
+			</div>
+			<ul class="filter1">
+				<li class="filter2 borderBottom clear">
+					<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+					<ul class="filter3 clear">
+						<li class="filterActive" onclick="selectGrade()">全部</li>
+						<#if grades?? && (grades?size>0)><#list grades as g>
+							<li onclick="selectGrade('${g.id}')">${g.value}</li>
+						</#list></#if>
+					</ul>
+					<span class="category2">
+					<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+					<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+				</span>
+				</li>
+				<li class="filter2 clear">
+					<span class="category1">科&nbsp;&nbsp;&nbsp;&nbsp;目 ></span>
+					<ul class="filter3 clear " id="hhh">
+						<li class="filterActive" onclick="selectSubjects('',this)">全部</li>
+						<#if subjects?? && (subjects?size>0)><#list subjects as s>
+							<li onclick="selectSubjects('${s.id}',this)">${s.value}</li>
+						</#list></#if>
+					</ul>
+					<span class="category2">
+					<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+					<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+				</span>
+				</li>
+			</ul>
+			<div class="con_con clear">
+				<div class="onlineLeft">
+					<div class="layui-tab layui-tab-card">
+						<ul class="layui-tab-title">
+							<li class="layui-this" onclick="allQue();">最新提问</li>
+							<li onclick="myQue();">我的提问</li>
+							<li onclick="getResolve();">已解决问题</li>
+							<li onclick="getNotAnswer();">未解决问题</li>
+						</ul>
+						<div class="layui-tab-content">
+							
+							
+						</div>
+					</div>
+				</div>
+				
+				<!--问题集的排行-->
+					<div class="di_right">
+						<div class="tiwenhuanjie">
+							<a href="${ctx}/zxdy/tiwen"><img src="${ctx}/img/tuceng11.png" /></a>
+						</div>
+						<div class="jingxun">精选问题集</div>
+
+						<ul class="tiji">
+							
+						</ul>
+
+					</div>
+
+			</div>
+
+		</div>
+		<!--内容end-->
+		<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/> 
+		<!--底部 end-->
+			<form id="myform">
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="type">
+			<input type="hidden" name="gradeId">
+			<input type="hidden" name="subjectId">
+			<input type="hidden" name="search">
+			<input type="hidden" name="search1">
+			<input type="hidden" name="ifShow" value="1">
+			<input type="hidden" name="area" >
+			<input type="hidden" name="memberId" value="${memberId!''}" >
+			
+		</form>
+	</body>
+	<!--公共js-->
+	<script type="text/javascript">var principal = "${principal!''}";</script>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript">
+	
+	$(function(){
+		$("#dayiTop").attr("class","has-sub active");
+		
+		getNew();
+		getBest();
+	});	
+	
+	//专业查询
+	function selectGrade(gradeId){
+		$("input[name='gradeId']").val(gradeId);
+		agradeSubject(gradeId);
+		var textVal = $(".layui-tab-title").find("li.layui-this").text();
+		if(textVal === "最新提问"){
+			allQue();
+		}else if(textVal === "我的提问"){
+			myQue();
+		}else if(textVal === "已解决问题"){
+			getResolve();
+		}else if(textVal === "未解决问题"){
+			getNotAnswer();
+		}
+		
+	}
+	//科目查询
+	function selectSubjects(subjectId,src){
+		$("#hhh li").removeClass("filterActive");
+		src.setAttribute("class","filterActive");
+		$("input[name='subjectId']").val(subjectId);
+		var textVal = $(".layui-tab-title").find("li.layui-this").text();
+		if(textVal === "最新提问"){
+			allQue();
+		}else if(textVal === "我的提问"){
+			myQue();
+		}else if(textVal === "已解决问题"){
+			getResolve();
+		}else if(textVal === "未解决问题"){
+			getNotAnswer();
+		}
+	}
+	
+	//地区查询
+	//地区搜索事件
+	function updateData(Cityname){
+			$("input[name='p']").val(1);
+			$("input[name='area']").val(Cityname);
+			var textVal = $(".layui-tab-title").find("li.layui-this").text();
+			if(textVal === "最新提问"){
+				allQue();
+			}else if(textVal === "我的提问"){
+				myQue();
+			}else if(textVal === "已解决问题"){
+				getResolve();
+			}else if(textVal === "未解决问题"){
+				getNotAnswer();
+			}
+			
+	}
+
+	//取消地区筛选
+	$(".quxia").click(function(){
+		$(".area-danxuan").text("选择地区");
+		$("input[name='p']").val(1);
+		$("input[name='area']").val(null);
+		$("input[name='diqu']").val("");
+		var textVal = $(".layui-tab-title").find("li.layui-this").text();
+		if(textVal === "最新提问"){
+			allQue();
+		}else if(textVal === "我的提问"){
+			myQue();
+		}else if(textVal === "已解决问题"){
+			getResolve();
+		}else if(textVal === "未解决问题"){
+			getNotAnswer();
+		}
+		
+	});
+
+	//获得科目
+	function agradeSubject(id){
+		$("#hhh").empty();
+		$("#hhh").append("<li class='filterActive' onclick=selectSubjects('"+''+"',this)>全部</li>");
+		$.getJSON("${ctx}/adminBaseData/getSubjects", { gradeId: id}, function(json){
+ 			for (var int = 0; int < json.length; int++) {
+				var arrayJson=json[int];
+				$("#hhh").append("<li onclick=selectSubjects('"+arrayJson.id+"',this)>"+arrayJson.value+"</li>");
+			} 
+		});
+	}
+	
+	function getNew(){
+		$.ajax({
+			   type: "POST",
+			   url: "${ctx}/zxdy/findNewQue",
+			   data: $("#myform").serialize(),
+			   success: function(msg){
+			   		$(".layui-tab-content").html(msg);
+			   }
+			});	
+		
+	}
+	
+	function findOne(id){
+			location.href="${ctx}/zxdy/getById?id="+id;
+	}
+	
+	function getResolve(){
+		$.ajax({
+			type: "post",
+			url: "${ctx}/zxdy/getResolve",
+			data: $("#myform").serialize(),
+			 success: function(msg){
+				 
+			   	$(".layui-tab-content").html(msg);
+			   		
+			   }
+			
+		});
+		
+	}
+	function getNotAnswer(){
+		$.ajax({
+			type: "post",
+			url: "${ctx}/zxdy/getNotAnswer",
+			data: $("#myform").serialize(),
+			 success: function(msg){
+				 	
+			   	$(".layui-tab-content").html(msg);
+			   		
+			   }
+			
+		});
+		
+	}
+	function getBest(){
+		$.ajax({
+			type: "post",
+			url: "${ctx}/zxdy/getBest",
+			data: $("#myform").serialize(),
+			 success: function(msg){
+			   	$(".tiji").html(msg);
+			   		
+			   }
+			
+		});
+		
+	}
+	
+	function myQue(src){
+		
+		if(principal != ""){
+			$("input[name='search1']").val("S");
+			$("input[name='p']").val(1);
+			getNew();
+		}else{
+			layer.msg("请先登录!");
+		}
+		
+	}
+	
+	function allQue(src){
+		//$("#mytiwen").removeClass("shai_kuang");
+		//$("#zuixintiwen").addClass("shai_kuang");
+		$("input[name='p']").val(1);
+		$("input[name='memberId']").val(null);
+		$("input[name='search1']").val(null);
+		getNew();
+	}
+	</script>
+</html>

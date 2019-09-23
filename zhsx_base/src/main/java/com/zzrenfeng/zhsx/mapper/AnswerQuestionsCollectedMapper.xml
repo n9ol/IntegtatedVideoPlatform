@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.AnswerQuestionsCollectedMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.AnswerQuestionsCollected" >
+		<result column="id" property="id" />
+		<result column="classid" property="classid" />
+		<result column="subjectname" property="subjectname" />
+		<result column="timelength" property="timelength" />
+		<result column="zid" property="zid" />
+		<result column="createtime" property="createtime" />
+		<result column="createdate" property="createdate" />
+		<result column="isz" property="isz" />
+		<result column="type" property="type" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,classid,subjectname,timelength,zid,createtime,createdate,isz,type,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from answer_questions_collected
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from answer_questions_collected
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="AnswerQuestionsCollected" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into answer_questions_collected (id,classid,subjectname,timelength,zid,createtime,createdate,isz,type,bak1,bak2,bak3)
+		values (#{id},#{classid},#{subjectname},#{timelength},#{zid},#{createtime},#{createdate},#{isz},#{type},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="AnswerQuestionsCollected" >
+		update answer_questions_collected
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="classid != null" >
+				classid = #{classid},
+			</if>
+			<if test="subjectname != null" >
+				subjectname = #{subjectname},
+			</if>
+			<if test="timelength != null" >
+				timelength = #{timelength},
+			</if>
+			<if test="zid != null" >
+				zid = #{zid},
+			</if>
+			<if test="createtime != null" >
+				createtime = #{createtime},
+			</if>
+			<if test="createdate != null" >
+				createdate = #{createdate},
+			</if>
+			<if test="isz != null" >
+				isz = #{isz},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="AnswerQuestionsCollected" >
+		update answer_questions_collected
+		set 
+		id = #{id},
+		classid = #{classid},
+		subjectname = #{subjectname},
+		timelength = #{timelength},
+		zid = #{zid},
+		createtime = #{createtime},
+		createdate = #{createdate},
+		isz = #{isz},
+		type = #{type},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="classid != null" >
+				and classid = #{classid}
+			</if>
+			<if test="subjectname != null" >
+				and subjectname = #{subjectname}
+			</if>
+			<if test="timelength != null" >
+				and timelength = #{timelength}
+			</if>
+			<if test="zid != null" >
+				and zid = #{zid}
+			</if>
+			<if test="createtime != null" >
+				and createtime = #{createtime}
+			</if>
+			<if test="createdate != null" >
+				and createdate = #{createdate}
+			</if>
+			<if test="isz != null" >
+				and isz = #{isz}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="AnswerQuestionsCollected" resultType="AnswerQuestionsCollected">
+		select 
+		<include refid="Base_Column_List" />
+		from answer_questions_collected
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="AnswerQuestionsCollected" resultType="AnswerQuestionsCollected">
+		select 
+		<include refid="Base_Column_List" />
+		from answer_questions_collected
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<select id="findNumByzid" parameterType="AnswerQuestionsCollected" resultType="AnswerQuestionsCollected">
+		select COUNT(0) num,isz from answer_questions_collected WHERE zid = #{zid} AND classid = #{classid} GROUP BY isz
+	</select>
+
+</mapper>

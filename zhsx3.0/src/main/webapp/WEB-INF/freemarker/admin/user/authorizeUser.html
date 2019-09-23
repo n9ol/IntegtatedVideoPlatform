@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>用户授权</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<style type="text/css">
+.layui-larry-box {
+	padding: 0;
+}
+
+#jj {
+	text-align: right;
+	width: 100px;
+	float: left;
+}
+
+.layui-input-block {
+	margin-left: 135px;
+	margin-right: 180px;
+}
+
+.msg {
+	float: right;
+	margin-top: -25px;
+	width: 160px;
+}
+</style>
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="larry-personal-body clearfix">
+				<form id="myform" class="layui-form">
+					<input type="hidden" name="id" value="${user.id!''}">
+					<div class="row">
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">是否为管理员：</label>
+							<div class="layui-input-block">
+								<#assign chk7 = ""> 
+								<#assign chk8 = ""> 
+								<#assign display = ""> 
+								<#if !(user.bak1??) || user.bak1 == 'NA'> 
+									<#assign chk8 = "checked"> 
+									<#assign display = "style='display: none;'"> 
+								<#else>
+									<#assign chk7 = "checked"> 
+								</#if>
+								<input type="radio" name="isadmin" value="1" title="是" ${chk7} lay-filter="isadmin">
+								<input type="radio" name="isadmin" value="0" title="否" ${chk8} lay-filter="isadmin">
+							</div>
+						</div>
+						
+						
+						<div id="isadmin" ${display}>
+							<#if schoolLevel?? && schoolLevel == "Y">
+								<input type="hidden" name="bak1" value="SA" title="校级管理员" >
+								<input type="hidden" id="schoolId" name="schoolId" value="${schoolId!''}">
+							<#else>
+								<div class="layui-form-item">
+									<label class="layui-form-label" id="jj">区域权限：</label>
+									<div class="layui-input-block">
+										<#assign displaySchool = "style='display: none;'"> 
+										<#assign chk1 = ""> 
+										<#assign chk2 = ""> 
+										<#assign chk3 = ""> 
+										<#assign chk4 = ""> 
+										<#assign chk5 = ""> 
+										<#assign chk6 = ""> 
+										<#if user.bak1?? && user.bak1 == 'OA'> <#assign chk1 = "checked"> </#if> 
+										<#if user.bak1?? && user.bak1 == 'PA'> <#assign chk2 = "checked"> </#if> 
+										<#if user.bak1?? && user.bak1 == 'CA'> <#assign chk3 = "checked"> </#if> 
+										<#if user.bak1?? && user.bak1 == 'AA'> <#assign chk4 = "checked"> </#if> 
+										<#if user.bak1?? && user.bak1 == 'SA'> <#assign chk5 = "checked"> <#assign displaySchool = ""> </#if> 
+										<#if user.bak1?? && user.bak1 == 'NA'> <#assign chk6 = "checked"> </#if> 
+										
+										<#if userbak1??> 
+											<#if userbak1 == 'OA' && (platformLevel == 'N' || platformLevel == 'P')>
+												<input type="radio" name="bak1" value="PA" title="省级管理员"${chk2} lay-filter="isSaAdmin">
+											</#if> 
+											<#if (userbak1 == 'OA' || userbak1 == 'PA') && (platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C')>
+												<input type="radio" name="bak1" value="CA" title="市级管理员"${chk3} lay-filter="isSaAdmin">
+											</#if>
+											<#if userbak1 == 'OA' || userbak1 == 'PA' || userbak1 == 'CA'>
+												<input type="radio" name="bak1" value="AA" title="县(区)管理员"${chk4} lay-filter="isSaAdmin">
+											</#if>
+											<input type="radio" name="bak1" value="SA" title="校级管理员"${chk5} lay-filter="isSaAdmin">
+										</#if>
+									</div>
+								</div>
+								<div class="layui-form-item school" ${displaySchool}>
+									<label class="layui-form-label" id="jj">选择学校：</label>
+									<div class="layui-input-block">
+										<select name="schoolId" id="schoolId" lay-search>
+											<option value="">请选择学校</option>
+											<#if schools?? && (schools?size>0)><#list schools as l> 
+												<#assign sel = ""> 
+												<#if user.schoolId?? && user.schoolId == l.id><#assign sel = "selected"></#if>
+												<option value="${l.id!''}" ${sel}>${l.schoolName!''}</option>
+											</#list></#if>
+										</select>
+									</div>
+									<span id="schoolId_msg" class="msg" style="color: #F7B824;"> *&nbsp;&nbsp;校级管理员,必选 </span>
+								</div>
+							</#if>
+							
+							
+						    <div class="layui-form-item">
+								<label class="layui-form-label" id="jj">基本信息管理权：</label>
+								<div class="layui-input-block">
+									<#if sysRoles?? && (sysRoles?size>0)><#list sysRoles as r>
+										<#if r.roleType=="base">
+											<#assign dis = "">  
+											<#if !(r.available)> <#assign dis = "disabled"> </#if> 
+											<#assign chk = ""> 
+											<#if sysUserRoles?? && (sysUserRoles?size>0)><#list sysUserRoles as u> 
+												<#if u.roleId == r.id> <#assign chk = "checked"> <#break> </#if> 
+											</#list></#if>
+											<input type="checkbox" name="role_id" title="${r.role!''}" ${dis} value="${r.id!''}" ${chk}>
+										</#if>
+									</#list></#if>
+								</div>
+							</div>
+							
+							
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">课程安排管理权：</label>
+								<div class="layui-input-block">
+									<#if listESysRole?? && (listESysRole?size>0)><#list listESysRole as role>
+										<#if role.roleType?? && role.roleType == "schedule">
+											<#assign chk = ""> 
+											<#if role.isHave> <#assign chk = "checked"> </#if> 
+											<input type="checkbox" name="roleIds" title="${role.description!''}" value="${role.id!''}" ${chk}>
+										</#if>
+									</#list></#if>
+								</div>
+							</div>
+							
+							
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">综合视讯管理权：</label>
+								<div class="layui-input-block">
+									<#if sysRoles?? && (sysRoles?size>0)><#list sysRoles as r>
+										<#if r.roleType=="zhsx">
+											<#assign dis = "">  
+											<#if !(r.available)> <#assign dis = "disabled"> </#if> 
+											<#assign chk = ""> 
+											<#if sysUserRoles?? && (sysUserRoles?size>0)><#list sysUserRoles as u> 
+												<#if u.roleId == r.id> <#assign chk = "checked"> <#break> </#if> 
+											</#list></#if>
+											<input type="checkbox" name="role_id" title="${r.role!''}" ${dis} value="${r.id!''}" ${chk}>
+										</#if>
+									</#list></#if>
+								</div>
+							</div>
+							
+							
+							<#if iSEClassBrand?? && iSEClassBrand == "Y">
+								<div class="layui-form-item">
+									<label class="layui-form-label" id="jj">电子班牌管理权：</label>
+									<div class="layui-input-block">
+										<#if listESysRole?? && (listESysRole?size>0)><#list listESysRole as role>
+											<#if role.roleType?? && role.roleType == "EClassBrand">
+												<#assign chk = ""> 
+												<#if role.isHave> <#assign chk = "checked"> </#if> 
+												<input type="checkbox" name="roleIds" title="${role.description!''}" value="${role.id!''}" ${chk}>
+											</#if>
+										</#list></#if>
+									</div>
+								</div>
+							</#if>
+							
+							
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</body>
+<script type="text/javascript" src="${ctx}/js/check.js"></script>
+<script type="text/javascript" src="${ctx}/js/admin/user/authorizeUser.js"></script>
+</html>

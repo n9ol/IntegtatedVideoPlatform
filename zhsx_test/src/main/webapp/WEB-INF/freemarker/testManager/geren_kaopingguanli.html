@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!-- <#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+
+	<body>
+		<div class="kao_right">
+			<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 学员考卷考评管理</p>
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this">全部</li>
+				</ul>
+				
+			</div>
+			<div class="guanjian">
+				<img alt="" src="${ctx}/img/sousuo.jpg" onclick="searchSchool();" style="float:right;"> 
+				<input type="search" name="searchval" id="searchval" value="${search!''}" style="width:172px;height:27px;float:right;" placeholder="标题/学员名称" />
+			</div>
+			<table class="layui-table table">
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>考试标题</th>
+						<th>学员名称</th>
+						<th>交卷时间</th>
+						<th>成绩/总分</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+			<#if lists?? && (lists?size>0)><#list lists as l>
+					<tr>
+						<td>${l_index+1}</td>
+						<td>${l.testTitle!''}</td>
+						<td>${l.userName!''}</td>
+						<td>${(l.commTime)?string('yyyy-MM-dd HH:mm')}</td>
+						<td><font color="red">${l.scores!''}</font>&nbsp;&nbsp;/&nbsp;&nbsp;${l.totalScores!''}</td>
+						<td><a href="javascript:;" class="check_look" onclick="findOne('${l.id!''}','${l.testId!''}')">
+							<img alt="" src="${ctx}/img/eye2.png" style="width:15px;height:15px;">查看
+						</td>
+					</tr>
+			</#list></#if>
+
+				</tbody>
+			</table>
+			<div id="page" style="text-align: center;"></div>
+		</div>
+
+		<div>
+			<form id="form" action="${ctx}/testwebstutest/list" method="post" >
+				<input type="hidden" name="memberId" value="${memberId!''}">
+				<input type="hidden" name="p" value="${pageNum!'1'}"> 
+				<input type="hidden" name="search" value="${search!''}">
+			</form>
+		</div>
+		
+	</body>
+	<script type="text/javascript">var ctx="${ctx}"; </script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			$("#form").submit();
+		}
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			setIframeH();
+		});
+	
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height());
+		} 
+		
+	 	layui.use(['form','element'], function() {
+			var form = layui.form,
+			element = layui.element;
+			//监听提交
+			form.on('submit(formDemo)', function(data) {
+				layer.msg(JSON.stringify(data.field));
+				return false;
+			});
+		});
+		
+		 
+	 	$("#searchval").keyup(function(){
+	 		if(event.keyCode == 13){
+	 			searchSchool();
+	 		} 
+	 	});
+		 function searchSchool() {
+			var search = $("input[name='searchval']").val();
+			$("input[name='search']").val(search);
+			$("#form").submit();
+		} 
+		 
+			
+		function refreshPage(){
+			$("#form").submit();
+		}
+	
+		function findOne(id,testId){
+			parent.$(".zhong_right iframe").attr("src", ctx+"/testwebstutestquestionanswer/findOne?stuTestId="+id+"&testId="+testId);
+		}	
+			
+	</script>
+</html>

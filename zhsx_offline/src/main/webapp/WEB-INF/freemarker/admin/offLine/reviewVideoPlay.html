@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>审核课程</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<style type="text/css">
+			.layui-larry-box {
+				padding: 0;
+			}
+			#jj {
+				text-align:right;
+				width: 80px;
+				float:left;
+			}
+			.layui-input-block{
+				margin-right:50px;
+				margin-left: 100px;
+			}
+			#a1{
+				width: 700px;
+				height: 500px;
+			}
+		</style>
+	</head>
+	<body>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="larry-personal-body clearfix">
+					<form id="form" class="layui-form">
+						<input type="hidden" name="id" value="${id!''}">
+						<input type="hidden" name="isShow">
+						<div class="row">
+							<div class="layui-form-item">
+								<div id="a1" style="text-align:center;width:100%;"></div>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">驳回原因：</label>
+								<div class="layui-input-block">
+									<input type="text" name="bak" class="layui-input" value="${bak!''}">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<div class="layui-input-block">
+									<input type="button" class="layui-btn" onclick="javascript:review('Y');" value="通过">
+									<input type="button" class="layui-btn" onclick="javascript:review('N');" value="驳回">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="${ctx}/common/ckplayer/ckplayer/ckplayer.js"></script>
+	<script type="text/javascript" src="${ctx}/js/admin/offLine/reviewVideoPlay.js"></script>
+	<script type="text/javascript">
+		var receive = {};
+		receive.id = "${id!''}";
+		receive.picPath = "${picPath!''}";
+		receive.div="a1";
+		receive.width="790";
+		receive.height="500";
+		receive.swf="${ctx}/common/ckplayer/ckplayer/ckplayer.swf";
+	</script>
+	<script type="text/javascript" src="${ctx}/js/videoPlay.js"></script>
+</html>

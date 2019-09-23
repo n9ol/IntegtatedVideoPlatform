@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebNewsMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebNews" >
+		<result column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="author" property="author" />
+		<result column="createid" property="createid" />
+		<result column="modelType" property="modelType" />
+		<result column="addtime" property="addtime" />
+		<result column="view" property="view" />
+		<result column="source" property="source" />
+		<result column="status" property="status" />
+		<result column="sortOrder" property="sortOrder" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,title,author,createid,modelType,addtime,view,source,status,sortOrder,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_news
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_news
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebNews" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_news (id,title,author,createid,modelType,addtime,view,source,status,sortOrder,bak1,bak2,bak3)
+		values (#{id},#{title},#{author},#{createid},#{modelType},#{addtime},#{view},#{source},#{status},#{sortOrder},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebNews" >
+		update web_news
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="title != null" >
+				title = #{title},
+			</if>
+			<if test="author != null" >
+				author = #{author},
+			</if>
+			<if test="createid != null" >
+				createid = #{createid},
+			</if>
+			<if test="modelType != null" >
+				modelType = #{modelType},
+			</if>
+			<if test="addtime != null" >
+				addtime = #{addtime},
+			</if>
+			<if test="view != null" >
+				view = #{view},
+			</if>
+			<if test="source != null" >
+				source = #{source},
+			</if>
+			<if test="status != null" >
+				status = #{status},
+			</if>
+			<if test="sortOrder != null" >
+				sortOrder = #{sortOrder},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebNews" >
+		update web_news
+		set 
+		id = #{id},
+		title = #{title},
+		author = #{author},
+		createid = #{createid},
+		modelType = #{modelType},
+		addtime = #{addtime},
+		view = #{view},
+		source = #{source},
+		status = #{status},
+		sortOrder = #{sortOrder},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="title != null" >
+				and title = #{title}
+			</if>
+			<if test="author != null" >
+				and author = #{author}
+			</if>
+			<if test="createid != null" >
+				and createid = #{createid}
+			</if>
+			<if test="modelType != null" >
+				and modelType = #{modelType}
+			</if>
+			<if test="addtime != null" >
+				and addtime = #{addtime}
+			</if>
+			<if test="view != null" >
+				and view = #{view}
+			</if>
+			<if test="source != null" >
+				and source = #{source}
+			</if>
+			<if test="status != null" >
+				and status = #{status}
+			</if>
+			<if test="sortOrder != null" >
+				and sortOrder = #{sortOrder}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebNews" resultType="WebNews">
+		select 
+		<include refid="Base_Column_List" />
+		from web_news
+		<include refid="Dynamic_Conditions"/>
+		order by sortOrder
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebNews" resultType="WebNews">
+		select 
+		<include refid="Base_Column_List" />
+		from web_news
+		<include refid="Dynamic_Conditions"/>
+		order by sortOrder
+	</select>
+	
+	<select id="findAll" parameterType="WebNews" resultType="WebNews">
+		select 
+		<include refid="Base_Column_List" />
+		from web_news
+		where status=1 	
+		order by sortOrder ASC
+	</select>
+	
+	<select id="getTop" parameterType="WebNews" resultType="WebNews">
+		select 
+		<include refid="Base_Column_List" />
+		from web_news
+		where status=1 		
+		order by view DESC LIMIT 10
+	</select>
+
+
+
+</mapper>

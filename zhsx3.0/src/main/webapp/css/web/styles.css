@@ -1,0 +1,161 @@
+/* Unessential CSS - Just here to make this sample page prettier */
+
+
+.wrapper {
+    margin: 0 auto;
+    width: 1190px;
+    padding: 1px 3em;
+}
+header {
+    background-color: #4596e5;
+    font-size: 16px;
+    margin-top: 10px;
+}
+header:after {
+    content: " ";
+    display: table;
+    clear: both;
+}
+.brand, h1, h2, h3 {
+     font-family: 'Roboto Condensed', sans-serif;
+     font-weight: 400;
+     letter-spacing: 1px;
+ }
+h4, h5, h6 {
+    letter-spacing: 1px;
+}
+h1 {
+    font-size: 28px;
+}
+.main .dev-output pre {
+    overflow: auto;
+    max-height: 500px;
+    background-color: #EBF4FD;
+    padding: 0 1em 1em;
+}
+.brand {
+    float: left;
+    height: 80px;
+}
+.brand p {
+    margin: 0;
+}
+.rm-nav {
+    letter-spacing: 2px;
+}
+.logo {
+    font-size: 1.4em;
+    line-height: 40px;
+    margin: 20px 0 0;
+    width: 100px;
+    height: 40px;
+    background-color: #3C97D5;
+    text-align: center;
+    font-weight: bold;
+    letter-spacing: 2px;
+    display: block;
+    float: left;
+    text-decoration: none;
+    color: #fff;
+    padding: 0;
+}
+.rm-toggle.rm-button {
+    margin-top: 25px;
+}
+.rm-css-animate.rm-menu-expanded {
+    max-height: none;
+    display: block;
+}
+.rm-container.rm-layout-expanded {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1190px;  
+}
+.rm-nav li a,
+.rm-top-menu a {
+    font-size: 1.0em;
+    line-height: 1.5rem;
+    text-transform: uppercase;
+}
+.rm-layout-expanded .rm-nav > ul > li > a,
+.rm-layout-expanded .rm-top-menu > .rm-menu-item > a {
+    height: 50px;
+    line-height: 50px;
+}
+.main {
+    background-position: center top;
+    background-repeat: repeat-x;
+    min-height: 100%;
+    padding-top: 1px;
+}
+.tagline {
+    width: 360px;
+    font-size: 1.75em;
+    font-weight: bold;
+    letter-spacing: 2px;
+    line-height: 1.2;
+    text-align: center;
+    margin: 275px auto;
+    color: #1A88D3;
+}
+.tagline strong {
+    font-size: 1.3em;
+}
+.dev-output {
+    background-color: #e1eaf3;
+    background-color: rgba(255,255,255,.85);
+    color: #000;
+    padding: 2em;
+    margin-bottom: 2em;
+}
+.news{ margin-bottom:18px;}
+.news_left,.news_cen{ width:358px; height:100%; padding:0 15px; background:#ffffff; }
+.more{ font-size:12px; color:#898989; display:inline-block; float:right;}
+.more:hover{ color:#444444; cursor:pointer;}
+.list .list_text:hover { color:#eb2100; background:url('../Images/pointred.png')  no-repeat 0 8px; }
+.news_left,.news_cen{ margin-right:18px;}
+.pfsp01{display: block; float: left; margin-left: 10px;}
+
+.pfsp{display: block; width:520px; height: 320px;  float: left; margin-right:10px;}
+.pfsp img{display: block; width: 518px; height: 280px; float: left; margin: 10px 10px;}
+.pfsp .js_title{ padding-top:0px; display: block; font-size:18px;}
+.spjj { width: 600px;display: block; float: left; margin-left: 20px;}
+.spjj .js_01{display: block; width: 618px; float: left; margin-top: 20px;  color: #444444; text-align: left; font-size: 18px; margin-left: 20px;}
+.js_02{display: block;font-size: 14px; text-align: left; text-indent: 2em; margin: 20px 20px; color:#999999; line-height: 20px; }
+.js_03{display: block;font-size: 14px; text-align: left; text-indent: 2em; margin: 0px 20px; color:#999999; line-height: 20px; }
+.pfsp02{display: block; float: left;}
+.pfsp02 img{display: block; width: 190px; height: 120px; float: left; margin: 10px 0px;}
+
+.xslb{width: 220px; height:40px; line-height: 40px; font-size: 20px; background-color:#529ee8; color: white; text-align: center;}
+.pfsp01{
+	overflow: hidden;
+}
+.kuang{
+	width: 200px;
+	float: left;
+	margin: 0 14.5px;
+	cursor: pointer;
+}
+.pfsp01{
+	width: 100%;
+}
+.kuang>img{
+	width: 100%;
+}
+
+.biaoming{
+	clear: both;
+	width: 100%;
+	
+}
+
+.kecheng{
+	font-size: 16px;
+	text-align: center;
+	height: 25px;
+	line-height: 25px;
+}
+.jia{
+	display: flex;
+	justify-content: space-between;
+}

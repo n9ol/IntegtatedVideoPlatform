@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<!-- <#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<style type="text/css">
+			.testbody {
+				width: 800px;
+				margin: 0 auto;
+			}
+			
+			.testbody .viewdiv {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				padding: 20px;
+				border: 1px solid #ccc;
+				background: #f6f6f6;
+			}
+			
+			.testbody .testtitle {
+				font-size: 20px;
+				font-weight: bold;
+				color: #4596E5;
+				padding-top: 20px;
+				padding-bottom: 5px;
+			}
+			
+			.testinfo2 {
+				padding-top: 3px;
+				padding-bottom: 3px;
+				font-family: arial;
+				font-size: 12px;
+				color: #666;
+			}
+			
+			.testbody .score .text1 {
+				padding-top: 32px;
+				padding-left: 10px;
+				font-size: 12px;
+				color: #666;
+			}
+			
+			.testbody .score .score1 {
+				padding-top: 25px;
+				font-size: 20px;
+				color: #666;
+			}
+			
+			.testbody .score .text2 {
+				padding-top: 32px;
+				padding-left: 3px;
+				font-size: 12px;
+				color: #666;
+			}
+			
+			.testbody .score .score2 {
+				padding-top: 12px;
+				font-size: 32px;
+				font-weight: bold;
+				color: #4596E5;
+			}
+			
+			.fontred {
+				color: #f00;
+			}
+			
+			.dotline2 {
+				height: 11px;
+				margin-top: 10px;
+				border-top: 1px dotted #999;
+			}
+			
+			.hsplit {
+				height: 10px;
+			}
+			
+			.fontarial {
+				font-family: arial;
+			}
+		</style>
+	</head>
+
+	<body >
+
+		<div class="testbody" >
+			
+			<!-- 多选 -->
+				 <#assign qty="">
+				 <#if question.questionType==2>
+				 	 <#assign qty="多选题">
+				 </#if>
+				 <#if question.questionType==1>
+				 	 <#assign qty="单选题">
+				 </#if>
+				 <#if question.questionType==0>
+				 	 <#assign qty="判断题">
+				 </#if>
+				<div>
+					<div class="clear"></div>
+					<div class="dotline2"></div>
+					<div style="padding-top:8px; padding-bottom:8px; line-height:1.6; font-size:20px; color:red;">标题：${question.questionText!''}</div>
+					<div class="hsplit"></div>
+					<!--多选题-->
+					 <#if question.questionType==2>
+						<div class="yahei font18">
+						</div>
+						<div class="hsplit"></div>
+						<!--是非题-->
+						<!--单选题-->
+					
+					  	<#if lists??&&(lists?size>0)><#list lists as queAns>
+							<div>
+							
+								
+							
+								<div style="padding-top:8px;padding-right:8px;" class="fl">
+									<input type="checkbox" name="" id="" value="${queAns.id}" disabled/>
+								</div>
+							
+								
+								<div style="line-height:28px;" class="fl fontarial">${queAns.xuanxiang!''}:${queAns.answerText!''}</div>
+								
+								<div class="clear"></div>
+							</div>
+							
+						</#list></#if> 
+					</#if>
+					
+					<!--单选题-->
+					 <#if question.questionType==1>
+						<div class="yahei font18">
+						</div>
+						<div class="hsplit"></div>
+						<!--是非题-->
+						
+					<!--多选题-->
+					  	<#if lists??&&(lists?size>0)><#list lists as queAns>
+							<div>
+							
+								
+							
+								<div style="padding-top:8px;padding-right:8px;" class="fl">
+									<input type="radio" name="" id="" value="${queAns.id}" disabled />
+								</div>
+							
+								
+								<div style="line-height:28px;" class="fl fontarial">${queAns.xuanxiang!''}:${queAns.answerText!''}</div>
+								
+								<div class="clear"></div>
+							</div>
+							
+						</#list></#if> 
+					</#if>
+					
+					
+					<!--是非题-->
+					 <#if question.questionType==0>
+						<div class="yahei font18">
+							
+						
+						</div>
+						<div class="hsplit"></div>
+						
+						
+					  	<#if lists??&&(lists?size>0)><#list lists as queAns>
+							<div>
+							
+								
+							
+								<div style="padding-top:8px;padding-right:8px;" class="fl">
+									<input type="radio" name="" id="" value="${queAns.id}" disabled />
+								</div>
+							
+								
+								<div style="line-height:28px;" class="fl fontarial">${queAns.answerText!''}</div>
+								
+								<div class="clear"></div>
+							</div>
+							
+						</#list></#if> 
+					</#if>
+					
+					
+					
+							<!-- 参考答案选项 -->
+							<div class="hsplit"></div>
+							<div class="yahei font18" style="color:red">问题答案:</div>
+							<div class="hsplit"></div>
+							<div>答案:
+								 <#if question.questionType==0>
+								 	<#if lists??&&(lists?size>0)><#list lists as a>
+									<#if a.isRight==1>
+										${a.answerText!''}
+									</#if>
+								</#list></#if> 
+								 <#else>
+								<#if lists??&&(lists?size>0)><#list lists as a>
+									<#if a.isRight==1>
+										${a.xuanxiang!''}
+									</#if>
+								</#list></#if> 
+								</#if>
+							</div>
+							<div class="hsplit"></div>
+							<div class="hsplit"></div>
+					
+					
+				</div>
+		
+			
+			<!-- 分割线 -->
+
+		</div>
+	</body>
+	<script type="text/javascript">
+		setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height());
+		}
+	</script>
+</html>

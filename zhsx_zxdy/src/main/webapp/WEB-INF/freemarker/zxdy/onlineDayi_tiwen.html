@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>综合视讯</title>
+		<!--公共样式表-->
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/onlineDayi_tiwen.css" />
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a href="${ctx}/zxdy/online_dayi">在线答疑</a>
+  					<a><cite>发布问题</cite></a>
+			</span>
+			</div>
+			<div class="box clear">
+				<div class="fabu">
+					<p class="yao">我要发布问题</p>
+					<form class="layui-form" id="form"  >
+						<div class="layui-form-item">
+							<label class="layui-form-label" name="title">问题标题：</label>
+							<div class="layui-input-block">
+								<input type="text" name="title" id="title"  required lay-verify="required" style="width:500px;display:inline-block;float:left;" placeholder="请输入" autocomplete="off" class="layui-input">
+								<span id="coverpath_msg" class="msg" style="color:red;float:left;margin-top:15px;margin-left:13px;">*</span>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">问题分类：</label>
+							<div class="layui-input-inline">
+								<select name="quiz1" id="quiz1" lay-filter="quiz">
+       									<option value="">选择专业</option>
+       									<#if grades??&&(grades?size>0)><#list grades as g>
+       										<option    value="${g.id}">${g.value}</option>
+       									</#list></#if>
+      							</select>
+							</div>
+							<div class="layui-input-inline" style="display:inline-block;float:left;">
+								<select name="bak1" class="quiz2" id="subjectId">
+        								<option  value="">选择科目</option>
+      								</select>
+							</div>
+							<span id="gradeId_msg" class="msg" style="color:red;float:left;margin-top:15px;">*</span>
+						</div>
+
+						<div class="wentimiaoshu">
+							<p>问题描述：</p>
+							<textarea id="demo" style="display:none;" name="contentTag"></textarea>
+							<input type="button" id="bt" class="layui-btn"   value="确认提交">
+						</div>
+					</form>
+
+				</div>
+
+				<!--问题集的排行-->
+				<div class="di_right">
+<!-- 					<div class="tiwenhuanjie"> -->
+<!-- 						<a href="${ctx}/zxdy/tiwen"><img src="${ctx}/img/tiwen.png" /></a> -->
+<!-- 					</div> -->
+					<div class="jingxun">精选问题集</div>
+
+					<ul class="tiji">
+
+					</ul>
+
+				</div>
+
+			</div>
+
+		</div>
+		<!--内容end-->
+		<form id="myform">
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="id" value="${id!''}"> 
+		</form>
+		
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/> 
+	</body>
+	<!--单独的js -->
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<!--单独的js-->
+	<script type="text/javascript">var principal = "${principal!''}";</script>
+	<script src="${ctx}/js/web/onlineDayi_tiwen.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	//获取精选	
+	$(function(){
+		$("#dayiTop").attr("class","has-sub active");
+		
+		
+		$.ajax({
+			type: "post",
+			url: "${ctx}/zxdy/getBest",
+			data: $("#myform").serialize(),
+			 success: function(msg){
+			   	$(".tiji").html(msg);
+			   }
+		});
+		
+		
+	});
+
+	layui.use(['layedit','form','upload','jquery','layer'], function(){
+	 	var layedit = layui.layedit;
+	    var layer = layui.layer;
+	  	
+		var form = layui.form;
+		var index = layedit.build('demo',{
+			tool: [
+					'strong' //加粗
+					, 'italic' //斜体
+					, 'underline' //下划线
+					, 'del' //删除线
+					, '|' //分割线
+					, 'left' //左对齐
+					, 'center' //居中对齐
+					, 'right' //右对齐
+					, 'face' //表情
+				]
+		}); //建立编辑器
+			
+			
+			//下拉列表
+			form.on('select(quiz)', function(data){
+				$(".quiz2").empty();
+				$(".quiz2").append('<option value="">请选择科目</option>');
+	 			$.getJSON("${ctx}/adminBaseData/getSubjects", { gradeId: data.value}, function(json){
+		 			for (var int = 0; int < json.length; int++) {
+						var arrayJson=json[int];
+						$(".quiz2").append('<option value="'+arrayJson.id+'">'+arrayJson.value+'</option>');
+		 			}
+		 			form.render('select');
+				}); 
+			});
+			
+			$('#bt').click(function(){
+				submitForm();
+			});
+			
+			//表单提交
+			function submitForm() {
+				var contentTag=layedit.getContent(index);
+				var content = layedit.getText(index);
+					if(content==null){
+						content="点击查看图片";
+					}
+				chkForm();
+				if(chkForm()){
+					if(principal!=""){
+						$.getJSON("${ctx}/zxdy/insert", { "title":$("input[name='title']").val(),"bak1":$("#subjectId").find("option:selected").val(),"contentTag":contentTag,"content":content}, function(json){
+							
+										var msg = json.msg 
+										if(msg=="添加成功"){
+											
+										alert(msg);							
+										findOne(json.id);
+										}else{
+											alert("添加失败");
+										}
+								
+							
+							
+						});
+					}else{
+						layer.msg("请先登录!");
+					}
+				}
+			}
+		});
+/////////////////////////////
+
+	//表单验证
+			function chkForm() {
+				var isok = true;
+				var  subjectId=$("#subjectId").find("option:selected").val();
+				if(subjectId==""){
+					isok = false;
+					$("#gradeId_msg").css("color","#f00");
+					$("#gradeId_msg").text("请选择专业科目!");
+				}else{
+					$("#gradeId_msg").css("color","#060");
+					$("#gradeId_msg").html("<img src='${ctx}/images/chk_ok.jpg' border=0>");
+				}
+				
+				var coverpath=$("#title").val();
+				if(coverpath==""){
+					isok = false;
+					$("#coverpath_msg").css("color","#f00");
+					$("#coverpath_msg").text("标题不能为空!");
+				}else{
+					$("#coverpath_msg").css("color","#060");
+					$("#coverpath_msg").html("<img src='${ctx}/images/chk_ok.jpg' border=0>");
+				}
+				return isok;
+			}
+			
+			function findOne(id) {
+				location.href="${ctx}/zxdy/getById?id="+id;
+			}
+	
+
+	
+	</script>
+</html>

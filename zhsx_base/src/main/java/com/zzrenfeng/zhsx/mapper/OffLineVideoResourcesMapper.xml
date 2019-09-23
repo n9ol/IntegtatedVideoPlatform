@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.OffLineVideoResourcesMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.OffLineVideoResources" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="title" property="title" />
+		<result column="schoolId" property="schoolId" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subjectName" property="subjectName" />
+		<result column="teacherId" property="teacherId" />
+		<result column="uploadName" property="uploadName" />
+		<result column="videoPath" property="videoPath" />
+		<result column="type" property="type" />
+		<result column="picPath" property="picPath" />
+		<result column="transcodingState" property="transcodingState" />
+		<result column="progress" property="progress" />
+		<result column="timeLength" property="timeLength" />
+		<result column="size" property="size" />
+		<result column="releaseState" property="releaseState" />
+		<result column="isShow" property="isShow" />
+		<result column="pageView" property="pageView" />
+		<result column="createTime" property="createTime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="isRecord" property="isRecord" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,title,schoolId,gradeName,subjectName,teacherId,uploadName,type,picPath,transcodingState,progress,timeLength,size,releaseState,isShow,pageView,createTime,bak,bak1,bak2,isRecord
+	</sql>
+	
+	<insert id="insert" parameterType="OffLineVideoResources" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into offLine_videoResources (id,userId,title,schoolId,gradeName,subjectName,teacherId,uploadName,videoPath,type,picPath,transcodingState,progress,timeLength,size,releaseState,isShow,pageView,createTime,bak,bak1,bak2,isRecord)
+		values (#{id},#{userId},#{title},#{schoolId},#{gradeName},#{subjectName},#{teacherId},#{uploadName},#{videoPath},#{type},#{picPath},#{transcodingState},#{progress},#{timeLength},#{size},#{releaseState},#{isShow},#{pageView},#{createTime},#{bak},#{bak1},#{bak2},#{isRecord})
+	</insert>
+	
+	<insert id="appendOffLineVideoResources" parameterType="OffLineVideoResources" >
+		insert into offLine_videoResources (id,userId,title,schoolId,gradeName,subjectName,teacherId,uploadName,videoPath,type,picPath,transcodingState,progress,timeLength,size,releaseState,isShow,pageView,createTime,bak,bak1,bak2,isRecord)
+		values (#{id},#{userId},#{title},#{schoolId},#{gradeName},#{subjectName},#{teacherId},#{uploadName},#{videoPath},#{type},#{picPath},#{transcodingState},#{progress},#{timeLength},#{size},#{releaseState},#{isShow},0,#{createTime},#{bak},#{bak1},#{bak2},#{isRecord})
+	</insert>
+	
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from offLine_record_video where offLineVideoId = #{id};
+		delete from offLine_videoResources where id = #{id}
+	</delete>
+	
+	<delete id="batchDelVideoRes" parameterType="java.util.List">
+		delete from offLine_videoResources where id in
+		<foreach collection="list" open="(" close=")" item="id" separator=",">#{id}</foreach>
+	</delete>
+	
+
+	<update id="updateByPrimaryKeySelective" parameterType="OffLineVideoResources" >
+		update offLine_videoResources
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="title != null" >
+				title = #{title},
+			</if>
+			<if test="schoolId != null" >
+				schoolId = #{schoolId},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectName != null" >
+				subjectName = #{subjectName},
+			</if>
+			<if test="teacherId != null" >
+				teacherId = #{teacherId},
+			</if>
+			<if test="uploadName != null" >
+				uploadName = #{uploadName},
+			</if>
+			<if test="videoPath != null" >
+				videoPath = #{videoPath},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="picPath != null" >
+				picPath = #{picPath},
+			</if>
+			<if test="transcodingState != null" >
+				transcodingState = #{transcodingState},
+			</if>
+			<if test="progress != null" >
+				progress = #{progress},
+			</if>
+			<if test="timeLength != null" >
+				timeLength = #{timeLength},
+			</if>
+			<if test="size != null" >
+				size = #{size},
+			</if>
+			<if test="releaseState != null" >
+				releaseState = #{releaseState},
+			</if>
+			<if test="isShow != null" >
+				isShow = #{isShow},
+			</if>
+			<if test="pageView != null" >
+				pageView = #{pageView},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+			<if test="isRecord != null">
+				isRecord = #{isRecord}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="OffLineVideoResources" >
+		update offLine_videoResources
+		set 
+		id = #{id},
+		userId = #{userId},
+		title = #{title},
+		schoolId = #{schoolId},
+		gradeName = #{gradeName},
+		subjectName = #{subjectName},
+		teacherId = #{teacherId},
+		uploadName = #{uploadName},
+		videoPath = #{videoPath},
+		type = #{type},
+		picPath = #{picPath},
+		transcodingState = #{transcodingState},
+		progress = #{progress},
+		timeLength = #{timeLength},
+		size = #{size},
+		releaseState = #{releaseState},
+		isShow = #{isShow},
+		pageView = #{pageView},
+		createTime = #{createTime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		isRecord = #{isRecord}
+		where id = #{id}
+	</update>
+	
+	<update id="updatePageView" parameterType="java.lang.String">
+		update offLine_videoResources set  pageView = pageView+1 where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="title != null" >
+				and title = #{title}
+			</if>
+			<if test="schoolId != null" >
+				and schoolId = #{schoolId}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subjectName != null" >
+				and subjectName = #{subjectName}
+			</if>
+			<if test="uploadName != null" >
+				and uploadName = #{uploadName}
+			</if>
+			<if test="videoPath != null" >
+				and videoPath = #{videoPath}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="picPath != null" >
+				and picPath = #{picPath}
+			</if>
+			<if test="transcodingState != null" >
+				and transcodingState = #{transcodingState}
+			</if>
+			<if test="progress != null" >
+				and progress = #{progress}
+			</if>
+			<if test="timeLength != null" >
+				and timeLength = #{timeLength}
+			</if>
+			<if test="size != null" >
+				and size = #{size}
+			</if>
+			<if test="releaseState != null" >
+				and releaseState = #{releaseState}
+			</if>
+			<if test="isShow != null" >
+				and isShow = #{isShow}
+			</if>
+			<if test="pageView != null" >
+				and pageView = #{pageView}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="isRecord != null">
+				and isRecord = #{isRecord}
+			</if>
+			<if test="userId != null" >
+				and (userId = #{userId} or teacherId = #{userId})
+			</if>
+			<if test="search != null">
+				and (
+						(uploadName like '%${search}%') or
+						(title like '%${search}%') or 
+						(gradeName like '%${search}%') or
+						(subjectName like '%${search}%') or
+						(teacherId in (SELECT id FROM `user` u WHERE u.nickName LIKE '%${search}%')) or
+						(schoolId in (SELECT id FROM sys_school s WHERE s.schoolName LIKE '%${search}%'))
+					)
+			</if>
+			<if test="area != null">
+				and schoolId in (
+					SELECT id FROM sys_school s WHERE s.cityId in (SELECT id FROM sys_dict d WHERE d.`value` LIKE '%${area}%')
+				)
+			</if>
+			<if test="sortord == 'name'">
+				ORDER BY uploadName
+			</if>
+			<if test="sortord == 'title'">
+				ORDER BY title
+			</if>
+			<if test="sortord == 'releaseState'">
+				ORDER BY releaseState
+			</if>
+			<if test="sortord == 'view'">
+				ORDER BY pageView DESC
+			</if>
+			<if test="(sortord == 'time')  or  (sortord == null)">
+				ORDER BY createTime DESC
+			</if>
+		</where>
+	</sql>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT schoolName FROM sys_school s WHERE s.id = v.schoolId)  as schoolName,
+		(SELECT nickName FROM `user` u  WHERE u.id = v.teacherId) as teacherName,
+		(SELECT filePath FROM `user` u  WHERE u.id = v.teacherId) as teacherPic
+		from offLine_videoResources v
+		where id = #{id}
+	</select>
+	
+	
+	<select id="findVideoPathById" parameterType="java.lang.String" resultType="java.lang.String">
+		select  videoPath from offLine_videoResources where id = #{id}
+	</select>
+	
+	
+	<select id="findSelective" parameterType="OffLineVideoResources" resultType="OffLineVideoResources">
+		select 
+		<include refid="Base_Column_List" />
+		from offLine_videoResources
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="OffLineVideoResources" resultType="OffLineVideoResources">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT schoolName FROM sys_school s WHERE s.id = v.schoolId)  as schoolName,
+		(SELECT nickName FROM `user` u  WHERE u.id = v.teacherId) as teacherName,
+		(SELECT filePath FROM `user` u  WHERE u.id = v.teacherId) as teacherPic
+		from offLine_videoResources v
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+
+	<select id="listOffLineVideoResourcesByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from offLine_videoResources where id in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">  
+            #{item}  
+        </foreach>
+	</select>
+
+	
+</mapper>

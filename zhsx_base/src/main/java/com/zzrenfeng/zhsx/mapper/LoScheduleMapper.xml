@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoScheduleMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoSchedule" >
+		<result column="id" property="id" />
+		<result column="classId" property="classId" />
+		<result column="schoolId" property="schoolId" />
+		<result column="dayofweek" property="dayofweek" />
+		<result column="sectionofday" property="sectionofday" />
+		<result column="gradeId" property="gradeId" />
+		<result column="subjectId" property="subjectId" />
+		<result column="userId" property="userId" />
+		<result column="coverpath" property="coverpath" />
+		<result column="john_num" property="john_num" />
+		<result column="z_date" property="z_date" />
+		<result column="weeks" property="weeks" />
+		<result column="type" property="type" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,classId,schoolId,dayofweek,sectionofday,gradeId,subjectId,userId,coverpath,john_num,z_date,weeks,type,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=s.userId) as userName,
+		(SELECT filePath FROM `user` u WHERE u.id=s.userId) as userPic,
+		(SELECT schoolName FROM sys_school sc WHERE sc.id=s.schoolId) as schoolName,
+		(SELECT className FROM sys_classroom c WHERE c.id=s.classId) as className,
+		(SELECT c.starttime FROM lo_classTime c WHERE s.bak = c.id) as startDate,
+		(SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id) as endDate
+		from lo_schedule s
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_pgGroup_schedule where loscheduleId = #{id};
+		delete from lo_fschedule where zId = #{id};
+		delete from lo_schedule  where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="LoSchedule" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_schedule (id,classId,schoolId,dayofweek,sectionofday,gradeId,subjectId,userId,coverpath,john_num,z_date,weeks,type,bak,bak1,bak2)
+		values (#{id},#{classId},#{schoolId},#{dayofweek},#{sectionofday},#{gradeId},#{subjectId},#{userId},#{coverpath},#{john_num},#{z_date},#{weeks},#{type},#{bak},#{bak1},#{bak2})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoSchedule" >
+		update lo_schedule
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="classId != null" >
+				classId = #{classId},
+			</if>
+			<if test="schoolId != null" >
+				schoolId = #{schoolId},
+			</if>
+			<if test="dayofweek != null" >
+				dayofweek = #{dayofweek},
+			</if>
+			<if test="sectionofday != null" >
+				sectionofday = #{sectionofday},
+			</if>
+			<if test="gradeId != null" >
+				gradeId = #{gradeId},
+			</if>
+			<if test="subjectId != null" >
+				subjectId = #{subjectId},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="coverpath != null" >
+				coverpath = #{coverpath},
+			</if>
+			<if test="john_num != null" >
+				john_num = #{john_num},
+			</if>
+			<if test="z_date != null" >
+				z_date = #{z_date},
+			</if>
+			<if test="weeks != null" >
+				weeks = #{weeks},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoSchedule" >
+		update lo_schedule
+		set 
+		id = #{id},
+		classId = #{classId},
+		schoolId = #{schoolId},
+		dayofweek = #{dayofweek},
+		sectionofday = #{sectionofday},
+		gradeId = #{gradeId},
+		subjectId = #{subjectId},
+		userId = #{userId},
+		coverpath = #{coverpath},
+		john_num = #{john_num},
+		z_date = #{z_date},
+		weeks = #{weeks},
+		type = #{type},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="classId != null" >
+				and classId = #{classId}
+			</if>
+			<if test="schoolId != null" >
+				and schoolId = #{schoolId}
+			</if>
+			<if test="dayofweek != null" >
+				and dayofweek = #{dayofweek}
+			</if>
+			<if test="sectionofday != null" >
+				and sectionofday = #{sectionofday}
+			</if>
+			<if test="gradeId != null" >
+				and gradeId = #{gradeId}
+			</if>
+			<if test="subjectId != null" >
+				and subjectId = #{subjectId}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="coverpath != null" >
+				and coverpath = #{coverpath}
+			</if>
+			<if test="john_num != null" >
+				and john_num = #{john_num}
+			</if>
+			<if test="z_date != null" >
+				and z_date = #{z_date}
+			</if>
+			<if test="weeks != null" >
+				and weeks = #{weeks}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="startDate != null and endDate != null">
+				and  z_date &gt;= #{startDate}  and  z_date &lt;= #{endDate}
+			</if>
+			<if test="startWeek != null and endWeek != null">
+				and weeks &gt;= #{startWeek} and weeks &lt;= #{endWeek}
+			</if>
+			<if test="timeSorting != null and timeSorting == 'Q'.toString()">
+				and ((s.z_date = curdate() AND (SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id) &gt;= CURTIME()) OR  (s.z_date &gt; curdate()))
+			</if>
+			<if test="timeSorting != null and timeSorting == 'G'.toString()">
+				and  s.z_date &lt;= curdate()
+			</if>
+			<if test="search!=null">
+				and (
+						schoolId in (SELECT id FROM sys_school sc WHERE sc.schoolName like '%${search}%' )  or 
+						userId in (SELECT id FROM `user` u WHERE u.nickName like '%${search}%')
+					)
+			</if>
+			<if test="ispj != null and ispj == 'Y'.toString()">
+				and (s.id IN (SELECT pgId FROM web_pj WHERE ispj = 1))
+			</if>
+			<if test="pgUserId != null">
+				and id IN(
+					SELECT loscheduleId FROM lo_pgGroup_schedule WHERE pgGroupId IN (SELECT pgGroupId FROM lo_pgGroup_user WHERE userId = #{pgUserId})
+				)
+			</if>
+		</where>
+		<if test="shootingWay != null and shootingWay == 'DESC'.toString()">
+			ORDER BY s.z_date DESC
+		</if>
+		<if test="shootingWay == null">
+			ORDER BY s.z_date
+		</if>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="LoSchedule" resultType="LoSchedule">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=s.userId) as userName,
+		(SELECT schoolName FROM sys_school sc WHERE sc.id=s.schoolId) as schoolName,
+		(SELECT className FROM sys_classroom c WHERE c.id=s.classId) as className,
+		(SELECT c.starttime FROM lo_classTime c WHERE s.bak = c.id) as startDate,
+		(SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id) as endDate,
+		(CASE
+			WHEN (
+				(curdate() &gt; s.z_date) or ((curdate() = s.z_date) and (curtime() &gt; (SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id)))
+			) THEN
+				0
+			WHEN (
+				(curdate() = s.z_date) and (curtime() between (SELECT c.starttime FROM lo_classTime c WHERE s.bak = c.id) and (SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id))
+			) THEN
+				1
+			ELSE
+				2
+		END) as isGoClass
+		from lo_schedule s
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<select id="listLoscheduleIncludeLoFschedule" parameterType="LoSchedule" resultType="LoSchedule">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=s.userId) as userName,
+		(SELECT schoolName FROM sys_school sc WHERE sc.id=s.schoolId) as schoolName,
+		(SELECT className FROM sys_classroom c WHERE c.id=s.classId) as className,
+		(SELECT c.starttime FROM lo_classTime c WHERE s.bak = c.id) as startDate,
+		(SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id) as endDate,
+		(CASE
+			WHEN (
+				(curdate() &gt; s.z_date) or ((curdate() = s.z_date) and (curtime() &gt; (SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id)))
+			) THEN
+				0
+			WHEN (
+				(curdate() = s.z_date) and (curtime() between (SELECT c.starttime FROM lo_classTime c WHERE s.bak = c.id) and (SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id))
+			) THEN
+				1
+			ELSE
+				2
+		END) as isGoClass,
+		(SELECT GROUP_CONCAT(className) FROM sys_classroom WHERE id IN (SELECT classId FROM lo_fschedule WHERE zId = s.id)) as fClassNames,
+		(SELECT GROUP_CONCAT(nickName) FROM `user` WHERE id IN ( SELECT userId FROM lo_fschedule WHERE zId = s.id)) as fTeachers
+		from lo_schedule s
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoSchedule" resultType="LoSchedule">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=s.userId) as userName,
+		(SELECT schoolName FROM sys_school sc WHERE sc.id=s.schoolId) as schoolName,
+		(SELECT className FROM sys_classroom c WHERE c.id=s.classId) as className,
+		(SELECT starttime FROM lo_classTime c WHERE c.id= s.bak) as startDate,
+		(SELECT endtime FROM lo_classTime c WHERE c.id= s.bak) as endDate,
+		(CASE
+			WHEN (
+				(curdate() &gt; s.z_date) or ((curdate() = s.z_date) and (curtime() &gt; (SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id)))
+			) THEN
+				0
+			WHEN (
+				(curdate() = s.z_date) and (curtime() between (SELECT c.starttime FROM lo_classTime c WHERE s.bak = c.id) and (SELECT c.endtime FROM lo_classTime c WHERE s.bak = c.id))
+			) THEN
+				1
+			ELSE
+				2
+		END) as isGoClass
+		from lo_schedule s
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	
+	<sql id="Dynamic_Conditions12">
+		<where>
+			1=1
+			<if test="classId != null" >
+				and classId = #{classId}
+			</if>
+			<if test="schoolId != null" >
+				and schoolId = #{schoolId}
+			</if>
+			<if test="startDate != null and endDate != null">
+				and  z_date &gt;= #{startDate}  and  z_date &lt;= #{endDate}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="startWeek != null and endWeek != null">
+				and weeks &gt;= #{startWeek} and weeks &lt;= #{endWeek}
+			</if>
+			<if test="dayofweek != null" >
+				and dayofweek = #{dayofweek}
+			</if>
+			<if test="sectionofday != null" >
+				and sectionofday = #{sectionofday}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<delete id="deleteScheduleSelective" parameterType="LoSchedule">
+		delete from lo_pgGroup_schedule where loscheduleId in (select id from lo_schedule <include refid="Dynamic_Conditions12"/>);
+		delete from lo_fschedule where zId in (select id from lo_schedule <include refid="Dynamic_Conditions12"/>);
+		delete from lo_schedule 
+		<include refid="Dynamic_Conditions12"/>
+	</delete>
+	
+	<insert id="insertScheduleBatch" parameterType="java.util.List" >
+		insert into lo_schedule (id,classId,schoolId,dayofweek,sectionofday,gradeId,subjectId,userId,coverpath,john_num,z_date,weeks,type,bak,bak1,bak2)
+		values 
+		<foreach collection="list" separator="," item="s">
+			((select uuid()),#{s.classId},#{s.schoolId},#{s.dayofweek},#{s.sectionofday},#{s.gradeId},#{s.subjectId},#{s.userId},#{s.coverpath},#{s.john_num},#{s.z_date},#{s.weeks},#{s.type},#{s.bak},#{s.bak1},#{s.bak2})
+		</foreach>
+	</insert>
+	
+	
+	
+	<sql id="Dynamic_Conditions11">
+		<where>
+			1=1
+			<if test="gradeId != null" >
+				and gradeId = #{gradeId}
+			</if>
+			<if test="subjectId != null" >
+				and subjectId = #{subjectId}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="z_date != null" >
+				and z_date = #{z_date}
+			</if>
+			<if test="search!=null">
+				and (
+					schoolId in (SELECT id FROM sys_school sc WHERE sc.schoolName like '%${search}%' )  or 
+					userId in (SELECT id FROM `user` u WHERE u.nickName like '%${search}%') or
+				    (gradeId like '%${search}%') or
+					(subjectId like '%${search}%')
+				)
+			</if>
+			<if test="area != null">
+				and schoolId in (
+					SELECT id FROM sys_school s WHERE s.cityId in (SELECT id FROM sys_dict d WHERE d.`value` LIKE '%${area}%')
+				)
+			</if>
+			and s.bak=ct.id
+			<if test="timeSorting != null and timeSorting == 'Q'.toString()">
+				and ((s.z_date = curdate() AND ct.endtime &gt;= CURTIME()) OR  (s.z_date &gt; curdate()))
+			</if>
+			<if test="timeSorting != null and timeSorting == 'Z'.toString()">
+				and s.z_date = curdate() and ct.starttime &lt;= CURTIME() and ct.endtime &gt;= CURTIME()
+			</if>
+			<if test="timeSorting != null and timeSorting == 'J'.toString()">
+				and ( (s.z_date = curdate() and ct.starttime &gt; CURTIME()) or (s.z_date &gt; curdate()) )
+			</if>
+			<if test="timeSorting == null">
+				and ((s.z_date = curdate() and CURTIME() &lt; ct.endtime) or (s.z_date &gt; curdate())) 
+			</if>
+		</where>
+		ORDER BY s.z_date,ct.starttime
+	</sql>
+	
+	<select id="findPage" parameterType="LoSchedule" resultType="LoSchedule">
+		select s.*,
+		(SELECT nickName FROM `user` u WHERE u.id=s.userId) as userName,
+		(SELECT schoolName FROM sys_school sc WHERE sc.id=s.schoolId) as schoolName,
+		(SELECT className FROM sys_classroom c WHERE c.id=s.classId) as className,
+		DATE_FORMAT(ct.starttime,'%H:%i') as startDate,
+		DATE_FORMAT(ct.endtime,'%H:%i') as endDate,
+		(CASE
+			WHEN (
+				(curdate() &gt; s.z_date) or ((curdate() = s.z_date) and (curtime() &gt; ct.endtime))
+			) THEN
+				0
+			WHEN (
+				(curdate() = s.z_date) and (curtime() between ct.starttime and ct.endtime)
+			) THEN
+				1
+			ELSE
+				2
+		END) as isGoClass
+		from lo_schedule s,lo_classTime ct
+		<include refid="Dynamic_Conditions11"/>
+	</select>
+	
+	
+	
+	<select id="findByCDtime" parameterType="java.lang.String" resultType="LoSchedule">
+		SELECT 
+			s.id,s.classId,ct.starttime as startDate,s.subjectId 
+		FROM lo_schedule s ,lo_classTime ct 
+		WHERE s.bak = ct.id 
+			AND
+				s.classId = (SELECT c.id FROM  sys_classroom c WHERE c.classCode = #{classCode} )
+			AND 
+				s.z_date = CURDATE() 
+			AND 
+				CURTIME() BETWEEN ct.starttime AND ct.endtime
+	</select>
+	
+	
+	<select id="findFByCDtime" parameterType="java.lang.String" resultType="LoSchedule">
+		SELECT 
+			s.id,ct.starttime as startDate,s.subjectId,
+			(SELECT c.id FROM sys_classroom c WHERE c.classCode = #{classCode}) AS classId 
+		FROM lo_schedule s ,lo_classTime ct WHERE s.bak = ct.id 
+			AND
+				s.id in (SELECT f.zId FROM lo_fschedule f WHERE f.classId = (SELECT c.id FROM sys_classroom c WHERE c.classCode = #{classCode}))
+			AND 
+				s.z_date = CURDATE() 
+			AND 
+				CURTIME() BETWEEN ct.starttime AND ct.endtime
+			AND s.type = 'G'	
+	</select>
+	
+	
+<!-- 	<SELECT ID="FINDMYPGLOSCHEDULE" PARAMETERTYPE="JAVA.LANG.STRING" RESULTTYPE="LOSCHEDULE"> -->
+<!-- 		SELECT  -->
+<!-- 		<INCLUDE REFID="BASE_COLUMN_LIST" />, -->
+<!-- 		(SELECT NICKNAME FROM `USER` U WHERE U.ID=S.USERID) AS USERNAME, -->
+<!-- 		(SELECT SCHOOLNAME FROM SYS_SCHOOL SC WHERE SC.ID=S.SCHOOLID) AS SCHOOLNAME, -->
+<!-- 		(SELECT CLASSNAME FROM SYS_CLASSROOM C WHERE C.ID=S.CLASSID) AS CLASSNAME, -->
+<!-- 		(SELECT STARTTIME FROM LO_CLASSTIME C WHERE C.ID= S.BAK) AS STARTDATE, -->
+<!-- 		(SELECT ENDTIME FROM LO_CLASSTIME C WHERE C.ID= S.BAK) AS ENDDATE -->
+<!-- 		FROM LO_SCHEDULE  -->
+<!-- 		WHERE ID IN( -->
+<!-- 			SELECT LOSCHEDULEID FROM LO_PGGROUP_SCHEDULE WHERE PGGROUPID IN (SELECT PGGROUPID FROM LO_PGGROUP_USER WHERE USERID = #{USERID}) -->
+<!-- 		) -->
+<!-- 		AND ((S.Z_DATE = CURDATE() AND (SELECT C.ENDTIME FROM LO_CLASSTIME C WHERE S.BAK = C.ID) &GT;= CURTIME()) OR  (S.Z_DATE &GT; CURDATE())) -->
+<!-- 	</SELECT> -->
+	
+		
+
+</mapper>

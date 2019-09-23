@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebDeviceRecordMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebDeviceRecord" >
+		<result column="dr_id" property="dr_id" />
+		<result column="device_code" property="device_code" />
+		<result column="dr_start_time" property="dr_start_time" />
+		<result column="dr_end_time" property="dr_end_time" />
+		<result column="dr_using_long" property="dr_using_long" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		dr_id,device_code,dr_start_time,dr_end_time,dr_using_long
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_record
+		where dr_id = #{dr_id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_device_record
+		where dr_id = #{dr_id}
+	</delete>
+	<!-- 清空所有记录 -->
+	<delete id="deleteAllDRecord">
+		delete from web_device_record
+	</delete>
+
+	<insert id="insert" parameterType="WebDeviceRecord" >
+		<selectKey keyProperty="dr_id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_device_record (dr_id,device_code,dr_start_time,dr_end_time,dr_using_long)
+		values (#{dr_id},#{device_code},#{dr_start_time},#{dr_end_time},#{dr_using_long})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebDeviceRecord" >
+		update web_device_record
+		<set >
+			<!-- <if test="dr_id != null" >
+				dr_id = #{dr_id},
+			</if> -->
+			<if test="device_code != null" >
+				device_code = #{device_code},
+			</if>
+			<if test="dr_start_time != null" >
+				dr_start_time = #{dr_start_time},
+			</if>
+			<if test="dr_end_time != null" >
+				dr_end_time = #{dr_end_time},
+			</if>
+			<if test="dr_using_long != null" >
+				dr_using_long = #{dr_using_long}
+			</if>
+		</set>
+		where dr_id = #{dr_id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebDeviceRecord" >
+		update web_device_record
+		set 
+		<!-- dr_id = #{dr_id}, -->
+		device_code = #{device_code},
+		dr_start_time = #{dr_start_time},
+		dr_end_time = #{dr_end_time},
+		dr_using_long = #{dr_using_long}
+		where dr_id = #{dr_id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="dr_id != null" >
+				and dr_id = #{dr_id}
+			</if>
+			<if test="device_code != null" >
+				and device_code = #{device_code}
+			</if>
+			<if test="dr_start_time != null" >
+				<!-- and dr_start_time = #{dr_start_time} -->
+				and <![CDATA[  dr_start_time >= #{dr_start_time} ]]>
+			</if>
+			<if test="dr_end_time != null" >
+				<!-- and dr_end_time = #{dr_end_time} -->
+				and <![CDATA[  dr_end_time <= #{dr_end_time} ]]>
+			</if>
+			<if test="dr_using_long != null" >
+				and dr_using_long = #{dr_using_long}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebDeviceRecord" resultType="WebDeviceRecord">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_record
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebDeviceRecord" resultType="WebDeviceRecord">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_record
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<select id="selectEndTimeByDeviceCode" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT
+			wdr.dr_end_time
+		FROM
+			web_device_record wdr
+		WHERE 
+			wdr.device_code=#{deviceCode}
+		ORDER BY wdr.dr_end_time DESC
+		LIMIT 1
+	</select>
+
+
+</mapper>

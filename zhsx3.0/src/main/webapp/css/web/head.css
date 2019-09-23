@@ -1,0 +1,45 @@
+#iosAPK {
+	float: left;
+	margin-right: 20px;
+}
+
+.textDownload {
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	background-color: #fff;
+	font-size: 12px;
+}
+
+#androidAPK {
+	float: left;
+	position: relative;
+}
+
+#qrCodeIco {
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	top: 33px;
+	left: 33px;
+}
+
+#iosLogo {
+	position: absolute;
+	width: 25px;
+	height: 25px;
+	top: 51px;
+	left: 52px;
+}
+
+#qrcode, #iosqrcode {
+	height: 88px;
+}
+
+.erweima {
+	overflow: hidden;
+	width: 196px;
+	background-color: #fff;
+	padding: 20px;
+	padding-bottom: 4px;
+}

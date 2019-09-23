@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.eclassbrand.classroom.ClassroomProfileMapper">
+
+	<resultMap id="BaseResultMap" type="com.zzrenfeng.zhsx.model.eclassbrand.classroom.ClassroomProfile">
+		<result column="id" property="id" />
+		<result column="classroom_id" property="classroomId" />
+		<result column="classroom_name" property="classroomName" />
+		<result column="message_info" property="messageInfo" />
+		<result column="state" property="state" />
+		<result column="create_date" property="createDate" />
+		<result column="moidy_date" property="moidyDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,classroom_id,classroom_name,message_info,state,create_date,moidy_date
+	</sql>
+
+
+	<insert id="insert" parameterType="ClassroomProfile">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into classroom_profile (id,classroom_id,classroom_name,message_info,state,create_date,moidy_date)
+		values
+		(#{id},#{classroomId},#{classroomName},#{messageInfo},#{state},#{createDate},#{moidyDate})
+	</insert>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from classroom_profile
+		where id = #{id}
+	</delete>
+
+
+	<delete id="deleteBatch">
+		delete from classroom_profile
+		<where>
+			id
+			<foreach collection="array" open="in (" item="id" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<delete id="deleteAll">
+		delete from classroom_profile
+	</delete>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="ClassroomProfile">
+		update classroom_profile
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="classroomId != null">
+				classroom_id = #{classroomId},
+			</if>
+			<if test="classroomName != null">
+				classroom_name = #{classroomName},
+			</if>
+			<if test="messageInfo != null">
+				message_info = #{messageInfo},
+			</if>
+			<if test="state != null">
+				state = #{state},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate},
+			</if>
+			<if test="moidyDate != null">
+				moidy_date = #{moidyDate}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="ClassroomProfile">
+		update classroom_profile
+		set
+		id = #{id},
+		classroom_id = #{classroomId},
+		classroom_name =
+		#{classroomName},
+		message_info = #{messageInfo},
+		state = #{state},
+		create_date = #{createDate},
+		moidy_date = #{moidyDate}
+		where id = #{id}
+	</update>
+	
+	<update id="updateClassroomNameByclassroomId" parameterType="ClassroomProfile">
+		update classroom_profile
+		set
+		classroom_name = #{classroomName}
+		where classroom_id = #{classroomId}
+	</update>
+	
+
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="classroomId != null">
+				and classroom_id = #{classroomId}
+			</if>
+			<if test="classroomName != null">
+				and classroom_name = #{classroomName}
+			</if>
+			<if test="messageInfo != null">
+				and message_info = #{messageInfo}
+			</if>
+			<if test="state != null">
+				and state = #{state}
+			</if>
+			<if test="createDate != null">
+				and create_date = #{createDate}
+			</if>
+			<if test="moidyDate != null">
+				and moidy_date = #{moidyDate}
+			</if>
+			<if test="search != null">
+				<bind name="pattern" value="'%' + search + '%'" />
+				and classroom_name like #{pattern}
+			</if>
+		</where>
+	</sql>
+
+	<select id="getClassroomProfile" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from classroom_profile
+		where id = #{id}
+	</select>
+
+
+	<select id="getClassroomProfileByClassroomId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from classroom_profile
+		where classroom_id = #{classroomId}
+	</select>
+
+
+	<select id="getClassroomProfileStartUsing" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from classroom_profile
+		where classroom_id = #{classroomId} and state = 1;
+	</select>
+
+
+	<select id="listAllClassroomProfile" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from classroom_profile
+	</select>
+
+
+	<select id="listClassroomProfile" parameterType="ClassroomProfile" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from classroom_profile
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<select id="getPageSelective" parameterType="ClassroomProfile" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from classroom_profile
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysRolePermissionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysRolePermission" >
+		<result column="id" property="id" />
+		<result column="roleId" property="roleId" />
+		<result column="permissionId" property="permissionId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,roleId,permissionId
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_role_permission
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="SysRolePermission" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_role_permission (id,roleId,permissionId)
+		values (#{id},#{roleId},#{permissionId})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysRolePermission" >
+		update sys_role_permission
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="roleId != null" >
+				roleId = #{roleId},
+			</if>
+			<if test="permissionId != null" >
+				permissionId = #{permissionId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysRolePermission" >
+		update sys_role_permission
+		set 
+		id = #{id},
+		roleId = #{roleId},
+		permissionId = #{permissionId}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="roleId != null" >
+				and roleId = #{roleId}
+			</if>
+			<if test="permissionId != null" >
+				and permissionId = #{permissionId}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysRolePermission" resultType="SysRolePermission">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="SysRolePermission" resultType="SysRolePermission">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_role_permission
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	
+	<select id="findPermissionIdSByRoleIds" parameterType="java.util.List" resultType="java.lang.String">
+		select permissionId from sys_role_permission where 1=1 and roleId in
+		<foreach collection="list" open="(" close=")" separator="," item="roleId">
+			#{roleId}
+		</foreach>
+	</select>
+	
+	<delete id="delSysRolePermissionByRoleId" parameterType="java.lang.String">
+		delete from sys_role_permission
+		where roleId = #{roleId}
+	</delete>
+
+</mapper>

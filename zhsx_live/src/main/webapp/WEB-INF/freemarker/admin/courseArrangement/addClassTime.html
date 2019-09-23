@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>添加学校时间</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<script type="text/javascript" src="${ctx}/common/My97DatePicker/WdatePicker.js"></script>
+		<style type="text/css">
+			.layui-larry-box {
+				padding: 0;
+			}
+			#jj {
+				text-align:right;
+				width: 80px;
+				float:left;
+			}
+			.layui-input-block{
+				margin-right:150px;
+				margin-left: 100px;
+			}
+			.msg{
+				float:left;
+				margin-left:100px;
+				margin-top: 20px;
+			}
+ 			.layui-form-item .layui-input-inline{
+				width: 120px;
+			}
+			.layui-input-inline{
+				margin-left:30px;
+			}
+			.layui-input-inline .layui-input{
+				width: 180px;
+			}	
+		</style>
+	</head>
+	
+	<body>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="larry-personal-body clearfix">
+					<form id="form" class="layui-form">
+						<div class="row">
+							<#list 0..7 as l>
+								<div class="layui-form-item del${l}">
+								  <input type="hidden" name="loClassTimeList[${l}].termTimeId" value="${termTimeId!''}"> 
+			                      <input type="hidden" name="loClassTimeList[${l}].sectionofDay" value="${l+1}">
+			                      <label class="layui-form-label" id="jj">第${l+1}节:</label>
+			                      <#assign st = "">
+			                      <#assign et = "">
+			                      <#if loClassTimes?? && (loClassTimes?size>0)><#list loClassTimes as lc>
+										<#if lc.sectionofDay == (l+1)>
+											<#assign st = "${lc.starttime?string('HH:mm')}">
+											<#assign et = "${lc.endtime?string('HH:mm')}">
+										</#if>
+			                      </#list></#if>
+			                      <div class="layui-input-inline">
+									 <input type="text" id="starttime${l}" value="${st}" placeholder="开始时间" name="loClassTimeList[${l}].starttime" class="layui-input" onclick="WdatePicker({dateFmt:'HH:mm'});">
+								   </div>
+			                      <div class="layui-input-inline">
+									 <input type="text" id="endtime${l}" value="${et}" placeholder="结束时间" name="loClassTimeList[${l}].endtime" class="layui-input" onclick="WdatePicker({dateFmt:'HH:mm'});">
+								  </div>
+				                </div>
+			                </#list>
+							<div class="layui-form-item">
+								<div class="layui-input-block">
+									<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								</div>
+							</div>
+							<div>
+								<span id="msg" class="msg" style="color:#FF5722;">注意: 填写时间为空或不完整的,将视为不添加</span>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="${ctx}/js/admin/courseArrangement/addClassTime.js"></script>
+</html>

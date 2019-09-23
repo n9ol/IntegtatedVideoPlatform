@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>添加教学楼</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8" />
+<style type="text/css">
+.layui-larry-box {
+	padding: 0;
+}
+
+#jj {
+	text-align: right;
+	width: 80px;
+	float: left;
+}
+
+.layui-input-block {
+	margin-right: 50px;
+	margin-left: 100px;
+}
+
+.msg {
+	float: right;
+	margin-top: -25px;
+	margin-right: 30px;
+}
+</style>
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="larry-personal-body clearfix">
+				<form id="form" class="layui-form">
+					<input type="hidden" name="id" value="${id!''}">
+					<div class="row">
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">名称：</label>
+							<div class="layui-input-block">
+								<input type="text" id="buildName" name="buildName" class="layui-input" value="${buildName!''}">
+							</div>
+							<span class="msg" style="color: red;">*</span>
+						</div>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</body>
+<script type="text/javascript" src="${ctx}/js/admin/base/editbuild.js"></script>
+</html>

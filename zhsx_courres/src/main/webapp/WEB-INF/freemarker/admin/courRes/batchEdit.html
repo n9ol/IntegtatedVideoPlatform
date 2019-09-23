@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<title>编辑资源</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<style type="text/css">
+			.layui-larry-box {
+				padding: 0;
+			}
+			#jj {
+				text-align:right;
+				width: 80px;
+				float:left;
+			}
+			.layui-input-block{
+				margin-right:150px;
+				margin-left: 100px;
+			}
+			.msg{
+				float:right;
+				margin-top:-25px;
+				width: 130px;
+			}
+			.msg1{
+				float:right;
+				margin-top:10px;
+				width: 130px;
+			}
+ 			.layui-form-item .layui-input-inline{
+				width: 185px;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="larry-personal-body clearfix">
+					<form id="form" class="layui-form">
+						<#if ids?? && (ids?size>0)><#list ids as l>
+							<input type="hidden" name="del_id" value="${l!''}">
+						</#list></#if>
+						<div class="row">
+							<div class="layui-form-item">
+		                      <label class="layui-form-label" id="jj">专业科目：</label>
+		                      <div class="layui-input-inline" style="margin-left:20px;">
+		                          <select name="gradeName" lay-filter="gradeName" id="gradeName">
+		                              <option value="">请选择专业</option>
+									  <#if gradeList?? && (gradeList?size>0)><#list gradeList as l>
+									　　		<option value="${l.value!''}" id="${l.id!''}">${l.value!''}</option>
+									　　</#list></#if>
+		                          </select>
+		                      </div>
+		                      <div class="layui-input-inline">
+		                          <select id="subjectsName" name="subjectsName" lay-filter="subjectsName" title="专业科目">
+		                              <option value="">请选择科目</option>
+		                          </select>
+		                      </div>
+		                      <span id="subjectsName_msg" class="msg1" style="color:red;">*</span>
+			                </div>
+			                <div class="layui-form-item">
+								<label class="layui-form-label" id="jj">版本册次：</label>
+								<div class="layui-input-inline" style="margin-left:20px;">
+		            				<select id="bak" name="bak" lay-filter="bak" lay-search>
+			                              <option value="">请选择版本</option>
+			                              <#if versionList?? && (versionList?size>0)><#list versionList as l>
+										　　		<option value="${l.value!''}">${l.value!''}</option>
+										　　</#list></#if>
+			                          </select>
+		                     	</div>
+			                    <div class="layui-input-inline">
+			                          <select id="bak1" name="bak1" lay-filter="bak1" title="版本册次">
+			                              <option value="">请选择册次</option>
+			                              <option id="shangce" value="上册">上册</option>
+			                              <option id="xiace" value="下册">下册</option>
+			                          </select>
+			                    </div>
+								<span id="bak1_msg" class="msg1" style="color:red;">*</span>
+							</div>
+							<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">发布状态：</label>
+								<div class="layui-input-block">
+									<input type="radio" name="state" value="Y" title="发布" id="ystate">
+									<input type="radio" name="state" value="N" title="不发布" id="nstate">
+								</div>
+							</div>
+							<div class="layui-form-item">
+								<div class="layui-input-block">
+									<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+									<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</body>
+	<script type="text/javascript" src="${ctx}/js/check.js"></script>
+	<script type="text/javascript" src="${ctx}/js/admin/courRes/batchEdit.js"></script>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_people.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/imagehover.min.css" />
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					
+  					<a><cite>名师团队</cite></a>
+				</span>
+			</div>
+			<div class="jianjie clear">
+				<div class="jian_left">
+					<p class="geren">个人简介
+					          		<span class="attention clear">
+									<#if teacher.isGz == 0>  
+									<img class="add" src="${ctx}/img/jiahao1.png">
+									<span class="atten">关注</span>
+									</#if>
+									<#if teacher.isGz == 1>  
+									<img class="add" src="${ctx}/img/duihao1.png">
+									<span class="atten">已关注</span>
+									</#if> 	 	
+									<span class="theId" style="display:none">${teacher.id!''}</span>
+									<span class="isGz" style="display:none">${teacher.isGz!'0'}</span>
+								
+								</span></p>
+					<div class="xinxi">
+						<div class="xinxi_tou clear">
+							<img class="xinxi_img" src="${fileWebPath}/userheadPortrait/${teacher.filePath!''}" onerror="this.src='${ctx}/img/user172.jpg'"/>
+							<div class="xinxi_xin">
+								<div class="mingzi">
+									<span class="li"><#if teacher.currName?? && (teacher.currName!='') >${teacher.currName!''} <#else>${teacher.nickName!''}</#if></span>
+									<span class="te"><span>教师职称：</span>${teacher.HA!''}</span>
+								</div>
+								<div class="nianling clear">
+									<span>年龄：<span>${teacher.age!'0'}岁</span></span>
+									<span>性别：<span>${teacher.gender!''}</span></span>
+<!-- 									<span>编号：<span>200001094545</span></span> -->
+									<span>政治面貌：<span>${teacher.politicsStatus!''}</span></span>
+<!-- 									<span>籍贯：<span>${teacher.hA!''}</span></span> -->
+									<span>学校：<span>${teacher.schoolName!''}</span></span>
+									<span>教龄：<span>${teacher.stature!'0'}年</span></span>
+<!-- 									<span>浏览次数：<span>99次</span></span> -->
+									<span>关注度：<span>${gzd!'0'}</span></span>
+									<span>专业：<span>${teacher.gradeName!''}</span></span>
+<!-- 									<span>班级：<span>六年一、二班</span></span> -->
+									<span>科目：<span>${teacher.subjectName!''}</span></span>
+									<span>市级：<span>${teacher.city!''}</span></span>
+									<span>区县：<span>${teacher.county!''}</span></span>
+									<span>联系方式：<span>${teacher.phone!''}</span></span>
+									<span>邮箱：<span>${teacher.email!''}</span></span>
+									<span>成长等级：<span>${teacher.grade!''}</span></span>
+<!-- 									<span>家庭住址：<span>${teacher.hA!''}</span></span> -->
+									
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="jian_right">
+					<div class="you_xia">
+						<p class="bang">名师关注排行榜</p>
+						<ul class="biaoti">
+						    <#if hotTeacher??&&(hotTeacher?size>0)>
+								<#list hotTeacher as h>
+								<li onclick="getDetail('${h.id}')">·<#if h.currName?? && (h.currName!='') >${h.currName!''} <#else>${h.nickName!''}</#if></li>
+								</#list>
+							</#if>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="mstd_tap">
+				<div class="imgssss">
+					<img class="imgss" src="${ctx}/img/pagers1.png" />
+					<img class="imgss" src="${ctx}/img/pager2.png" />
+					<img class="imgss" src="${ctx}/img/pager3.png" style="display: none;"/>
+					<img class="imgss" src="${ctx}/img/pager4.png" />
+				</div>
+
+				<div class="biaomingzi">
+					<div class="no1 tongyi">
+						<div class="xian borderss"></div>
+						<p class="colorsss ppp">成长体系</p>
+						<p class="colorsss sss">Deveopment syetem</p>
+					</div>
+
+					<div class="no2 tongyi">
+						<div class="xian"></div>
+						<p class="ppp">成长曲线</p>
+						<p class="sss">Growth curve diagram</p>
+					</div>
+
+					<div class="no3 tongyi"  style="display: none;">
+						<div class="xian"></div>
+						<p class="ppp">课余学课</p>
+						<p class="sss">After school discipline</p>
+					</div>
+
+					<div class="no3 tongyi">
+						<div class="xian"></div>
+						<p class="ppp">相关视频</p>
+						<p class="sss">Related video</p>
+
+					</div>
+				</div>
+
+			</div>
+			<!--成长体系-->
+			<div class="xiangqing">
+				<div id="main2"></div>
+			</div>
+			<!--成长曲线-->
+			<div class="xiangqing" style="display: none;">
+				<div id="main3"></div>
+			</div>
+			<!--课与学科-->
+			<div class="xiangqing" style="display: none;">
+<!-- 				<div class="xiangqing_top"> -->
+<!-- 					文件详细列表 -->
+<!-- 				</div> -->
+<!-- 				<ul class="xiangqing_ul"> -->
+<!-- 					<li> -->
+<!-- 						<span>序号</span> -->
+<!-- 						<span>文件名称</span> -->
+<!-- 						<span>文件类型</span> -->
+<!-- 						<span>最后上传时间</span> -->
+<!-- 						<span>操作</span> -->
+<!-- 						<span>打分（满分100分）</span> -->
+<!-- 					</li> -->
+<!-- 					<li> -->
+<!-- 						<span>01</span> -->
+<!-- 						<span>调查问卷</span> -->
+<!-- 						<span>问卷调查</span> -->
+<!-- 						<span>2017-02-15 10：00</span> -->
+<!-- 						<span><a style="color: orange;" href="javascript:;">查看</a>  <a style="color: orange;" href="javascript:;">下载</a></span> -->
+<!-- 						<span><input style="width: 25px;text-align: center;" maxlength="2" type="text" id="" value="" /></span> -->
+<!-- 					</li> -->
+					
+<!-- 				</ul> -->
+<!-- 				<div class="pinggu clear"> -->
+
+<!-- 					<button class="layui-btn layui-btn-mini pinggu3">提交</button> -->
+<!-- 				</div> -->
+				<div id="main1" style="display: none;">
+
+				</div>
+
+			</div>
+
+			<!--相关视频-->
+			<div class="xiangqing" style="display: none;">
+				<div class="main clear">
+					<#assign  relatedVideosize = ((relatedVideo?size)/4)?ceiling>
+					<#if (relatedVideosize>1)>
+					<img class="pre" src="${ctx}/img/left.jpg">
+					<img class="next" src="${ctx}/img/right.jpg">
+					</#if>
+					<div class="myslide">
+						<ul class="myslidetwo">
+						
+						
+						<#if relatedVideo?? && (relatedVideo?size>0)><#list relatedVideo as l>
+							<li>
+								<div class="demo">
+									<div class="right_ke">
+										<div class="biaoqian">
+											<#if l.type = 'P'> <div class=" bg1">离线评估 </div></#if>
+											<#if l.type = 'B'> <div class=" bg2">课堂回放 </div></#if>
+											<#if l.type = 'S'> <div class=" bg3">精品微课 </div></#if>
+											<#if l.type = 'H'> <div class=" bg4">优质课程 </div></#if>
+										</div>
+										<div class="ke_img">
+										<a href="javascript:watchofflineVideo('${l.id}','${l.type}');">
+										<span class="mainTime">${l.timeLength!''}</span>
+										   <img src="${fileWebPath}/videoRes/${l.picPath!''}" onerror="this.src='${ctx}/img/lunbo4.png'"/>
+										</a>
+										</div>
+										<div class="ke_p">
+											<p class="p1 clear">
+												<span class="span1">
+										${l.title!''}
+									</span>
+												<span class="span2">
+										${l.className!''}
+									</span>
+											</p>
+											<p class="p2">
+												<span>${l.gradeName!''}-${l.subjectName!''}</span>
+											</p>
+											<p class="p3">
+												<span>授课教师：</span>
+												<span style="color: orange;">${l.schoolName!''} &nbsp;&nbsp; ${l.teacherName!''}</span>
+											</p>
+										</div>
+									</div>
+								</div>
+
+							</li>
+							
+							
+						</#list></#if>				
+								
+						</ul>
+						<ol class="label">
+							<li class="current">1</li>
+							<#if (relatedVideosize>1) ><#list 2..relatedVideosize as i>    
+							  <li>${i}</li>
+							</#list></#if>
+						</ol>
+					</div>
+				</div>
+				
+				
+			</div>
+
+		</div>
+
+		<!--内容end-->
+
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<!--底部 end-->
+	</body>
+	<!--公共js-->
+    <script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/template.js"></script>
+	<script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/responsive-menu.js"></script>
+	<script  type="text/javascript"  src="${ctx}/js/web/nav.js"></script>
+    <script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	<!--单独的js-->
+	<script type="text/javascript">
+	var ctx="${ctx}";
+	 var principal = "${principal!''}"; 
+	var deveopmentSyetem='${deveopmentSyetem!''}';
+	var growthCurve='${growthCurve!''}';
+	var afterSchoolDiscipline='${afterSchoolDiscipline!''}';
+	
+	var relatedVideosize = "${((relatedVideo?size)/4)?ceiling}";
+	function getDetail(id){
+		location.href="${ctx}/teacher/teacherDetails?id="+id;
+	}
+	
+	$(function(){
+		$("#teacherTop").attr("class","has-sub active");
+	});
+	
+	
+	//关注按钮的逻辑关系
+	$(".attention").click(function(){
+	//	if ($(this).children(".atten").html()==="关注") {
+		if(principal != ""){
+			var theId = $(this).children(".theId").html();
+			if ($(this).children(".isGz").html()==="0") {
+				$(this).children(".atten").html("已关注");
+				$(this).children(".add").attr("src","${ctx}/img/duihao1.png");
+				$(this).children(".isGz").html("1");
+				
+				collection(theId);
+			}else{
+				$(this).children(".atten").html("关注");
+				$(this).children(".add").attr("src","${ctx}/img/jiahao1.png");
+				$(this).children(".isGz").html("0");
+				cancelCollection(theId);
+			}
+		}else{
+			layer.msg("请先登录!");
+		}
+	});
+	
+		//关注
+		function collection(id){
+			if(principal != ""){
+				$.ajax({
+				   type: "POST",
+				   url: ctx+"/teacher/insterSysHistory",
+				   data: {pubType:"T",pubFlag:"C",pubId:id},
+				   success: function(msg){
+					  if("操作失败" == msg){     
+						$(this).children(".atten").html("关注");
+						$(this).children(".add").attr("src","${ctx}/img/jiahao1.png"); 
+						$(this).children(".isGz").html("0");
+					  }
+					   
+				   }
+				});
+			}else{
+				layer.msg("请先登录!");
+			}
+		}	
+		//取消关注
+		function cancelCollection(id){
+			if(principal != ""){
+				$.ajax({
+				   type: "POST",
+				   url: ctx+"/teacher/delSysHistory",
+				   data: {pubType:"T",pubFlag:"C",pubId:id},
+				   success: function(msg){
+					   
+					   if("操作失败" == msg){     
+						   $(this).children(".atten").html("已关注");
+							$(this).children(".add").attr("src","${ctx}/img/duihao1.png");
+							$(this).children(".isGz").html("1");
+						  }
+					   layer.msg(msg);
+				   }
+				});
+			}else{
+				layer.msg("请先登录!");
+			}
+		}
+		//观看离线视频
+		function watchofflineVideo(id,type){
+			window.open(ctx+"/offLine/videoPlayback?id="+id+"&type="+type,"_blank");
+		}
+	</script>
+	<script src="${ctx}/js/web/mstd_people.js" type="text/javascript" charset="utf-8"></script>
+
+</html>

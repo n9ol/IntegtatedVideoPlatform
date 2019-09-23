@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.UserMapper">
+
+	<resultMap id="BaseResultMap" type="com.zzrenfeng.zhsx.model.User">
+		<result column="id" property="id" />
+		<result column="userCode" property="userCode" />
+		<result column="password" property="password" />
+		<result column="nickName" property="nickName" />
+		<result column="currName" property="currName" />
+		<result column="gender" property="gender" />
+		<result column="age" property="age" />
+		<result column="politicsStatus" property="politicsStatus" />
+		<result column="stature" property="stature" />
+		<result column="HA" property="hA" />
+		<result column="grade" property="grade" />
+		<result column="EXP" property="eXP" />
+		<result column="schoolId" property="schoolId" />
+		<result column="userType" property="userType" />
+		<result column="phone" property="phone" />
+		<result column="phoneOk" property="phoneOk" />
+		<result column="QQ" property="qQ" />
+		<result column="email" property="email" />
+		<result column="emailOk" property="emailOk" />
+		<result column="memos" property="memos" />
+		<result column="filePath" property="filePath" />
+		<result column="photo" property="photo" />
+		<result column="createTime" property="createTime" />
+		<result column="modiyTime" property="modiyTime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userCode,password,nickName,currName,gender,age,politicsStatus,stature,HA,grade,EXP,schoolId,userType,phone,phoneOk,QQ,email,emailOk,memos,filePath,photo,createTime,modiyTime,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(select schoolName from sys_school s where s.id=u.schoolId) as
+		schoolName,
+		(SELECT CONCAT((SELECT d2.`value` FROM sys_dict d2 WHERE
+		d2.id = (SELECT d1.pid FROM sys_dict d1 WHERE d1.id = d.pid)),(SELECT
+		`value` FROM sys_dict d1 WHERE d1.id = d.pid),`value`) FROM sys_dict d
+		WHERE d.id = u.bak2 ) as areaName
+		from user u
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from lo_pgGroup_user where userId = #{id};
+		delete from lo_fschedule where zid in (select id from lo_schedule where userid =#{id});
+		delete from lo_schedule where userid = #{id};
+		delete from user where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="User">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select
+			uuid()
+		</selectKey>
+		insert into user
+		(id,userCode,password,nickName,currName,gender,age,politicsStatus,stature,HA,grade,EXP,schoolId,userType,phone,phoneOk,QQ,email,emailOk,memos,filePath,photo,createTime,modiyTime,bak,bak1,bak2)
+		values
+		(#{id},#{userCode},#{password},#{nickName},#{currName},#{gender},#{age},#{politicsStatus},#{stature},#{hA},#{grade},#{eXP},#{schoolId},#{userType},#{phone},#{phoneOk},#{qQ},#{email},#{emailOk},#{memos},#{filePath},#{photo},#{createTime},#{modiyTime},#{bak},#{bak1},#{bak2})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="User">
+		update user
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="userCode != null">
+				userCode = #{userCode},
+			</if>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="nickName != null">
+				nickName = #{nickName},
+			</if>
+			<if test="currName != null">
+				currName = #{currName},
+			</if>
+			<if test="gender != null">
+				gender = #{gender},
+			</if>
+			<if test="age != null">
+				age = #{age},
+			</if>
+			<if test="politicsStatus != null">
+				politicsStatus =
+				#{politicsStatus},
+			</if>
+			<if test="stature != null">
+				stature = #{stature},
+			</if>
+			<if test="HA != null">
+				HA = #{hA},
+			</if>
+			<if test="grade != null">
+				grade = #{grade},
+			</if>
+			<if test="EXP != null">
+				EXP = #{eXP},
+			</if>
+			<if test="schoolId != null">
+				schoolId = #{schoolId},
+			</if>
+			<if test="userType != null">
+				userType = #{userType},
+			</if>
+			<if test="phone != null">
+				phone = #{phone},
+			</if>
+			<if test="phoneOk != null">
+				phoneOk = #{phoneOk},
+			</if>
+			<if test="QQ != null">
+				QQ = #{qQ},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="emailOk != null">
+				emailOk = #{emailOk},
+			</if>
+			<if test="memos != null">
+				memos = #{memos},
+			</if>
+			<if test="filePath != null">
+				filePath = #{filePath},
+			</if>
+			<if test="photo != null">
+				photo = #{photo},
+			</if>
+			<if test="createTime != null">
+				createTime = #{createTime},
+			</if>
+			<if test="modiyTime != null">
+				modiyTime = #{modiyTime},
+			</if>
+			<if test="bak != null">
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null">
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null">
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<update id="updateByPrimaryKey" parameterType="User">
+		update user
+		set
+		id =
+		#{id},
+		userCode = #{userCode},
+		password = #{password},
+		nickName =
+		#{nickName},
+		currName = #{currName},
+		gender = #{gender},
+		age = #{age},
+		politicsStatus = #{politicsStatus},
+		stature = #{stature},
+		HA = #{hA},
+		grade = #{grade},
+		EXP = #{eXP},
+		schoolId = #{schoolId},
+		userType =
+		#{userType},
+		phone = #{phone},
+		phoneOk = #{phoneOk},
+		QQ = #{qQ},
+		email =
+		#{email},
+		emailOk = #{emailOk},
+		memos = #{memos},
+		filePath = #{filePath},
+		photo = #{photo},
+		createTime = #{createTime},
+		modiyTime = #{modiyTime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="userCode != null">
+				and userCode = #{userCode}
+			</if>
+			<if test="password != null">
+				and password = #{password}
+			</if>
+			<if test="nickName != null">
+				and nickName = #{nickName}
+			</if>
+			<if test="currName != null">
+				and currName = #{currName}
+			</if>
+			<if test="gender != null">
+				and gender = #{gender}
+			</if>
+			<if test="age != null">
+				and age = #{age}
+			</if>
+			<if test="politicsStatus != null">
+				and politicsStatus =
+				#{politicsStatus}
+			</if>
+			<if test="stature != null">
+				and stature = #{stature}
+			</if>
+			<if test="HA != null">
+				and HA = #{hA}
+			</if>
+			<if test="grade != null">
+				and grade = #{grade}
+			</if>
+			<if test="EXP != null">
+				and EXP = #{eXP}
+			</if>
+			<if test="schoolId != null">
+				and schoolId = #{schoolId}
+			</if>
+			<if test="userType != null">
+				and userType = #{userType}
+			</if>
+			<if test="phone != null">
+				and phone = #{phone}
+			</if>
+			<if test="phoneOk != null">
+				and phoneOk = #{phoneOk}
+			</if>
+			<if test="QQ != null">
+				and QQ = #{qQ}
+			</if>
+			<if test="email != null">
+				and email = #{email}
+			</if>
+			<if test="emailOk != null">
+				and emailOk = #{emailOk}
+			</if>
+			<if test="memos != null">
+				and memos = #{memos}
+			</if>
+			<if test="filePath != null">
+				and filePath = #{filePath}
+			</if>
+			<if test="photo != null">
+				and photo = #{photo}
+			</if>
+			<if test="createTime != null">
+				and createTime = #{createTime}
+			</if>
+			<if test="modiyTime != null">
+				and modiyTime = #{modiyTime}
+			</if>
+			<if test="bak != null">
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null">
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null">
+				and bak2 = #{bak2}
+			</if>
+			<if test="search != null">
+				and (
+				userCode like '%${search}%' or
+				nickName like
+				'%${search}%' or
+				currName like '%${search}%' or
+				schoolId in (select id
+				from sys_school s where s.schoolName like
+				'%${search}%')
+				)
+			</if>
+			<if test="authority != null">
+				<if test="authority == 'OA'">
+					and bak1 in ('PA','CA','AA','SA','NA')
+				</if>
+				<if test="authority == 'PA'">
+					and bak1 in ('CA','AA','SA','NA')
+					and (
+						  	SELECT d1.pid FROM sys_dict d1 WHERE d1.id = 
+							(SELECT d.pid FROM sys_dict d WHERE d.id = #{countyId})
+						) 
+						= 
+						(SELECT d1.pid FROM sys_dict d1 WHERE d1.id = (SELECT d.pid FROM sys_dict d WHERE d.id = u.bak2))
+				</if>
+				<if test="authority == 'CA'">
+					and bak1 in ('AA','SA','NA')
+					and (SELECT d.pid FROM
+					sys_dict d WHERE d.id = #{countyId}) = (SELECT
+					d.pid FROM sys_dict d
+					WHERE d.id = u.bak2)
+				</if>
+				<if test="authority == 'AA'">
+					and bak1 in ('SA','NA') and #{countyId} = u.bak2
+				</if>
+				<if test="authority == 'SA'">
+					and bak1 in ('NA')
+				</if>
+			</if>
+			<if test="sortord == null">
+				ORDER BY
+				FIELD(`userType`,'L','R','T','S'),FIELD(`bak1`,'OA','PA','CA','AA','SA','NA'),schoolId
+				DESC
+			</if>
+			<if test="sortord == 'EXP'">
+				ORDER BY EXP DESC
+			</if>
+		</where>
+
+	</sql>
+
+
+	<select id="findSelective" parameterType="User" resultType="User">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(select schoolName from sys_school s where s.id=u.schoolId) as
+		schoolName,
+		(SELECT CONCAT((SELECT d2.`value` FROM sys_dict d2 WHERE
+		d2.id = (SELECT d1.pid FROM sys_dict d1 WHERE d1.id = d.pid)),(SELECT
+		`value` FROM sys_dict d1 WHERE d1.id = d.pid),`value`) FROM sys_dict d
+		WHERE d.id = u.bak2 ) as areaName
+		from user u
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<select id="findPageSelective" parameterType="User" resultType="User">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(select schoolName from sys_school s where s.id=u.schoolId) as schoolName,
+		(SELECT CONCAT((SELECT d2.`value` FROM sys_dict d2 WHERE
+		d2.id = (SELECT d1.pid FROM sys_dict d1 WHERE d1.id = d.pid)),(SELECT
+		`value` FROM sys_dict d1 WHERE d1.id = d.pid),`value`) FROM sys_dict d
+		WHERE d.id = u.bak2 ) as areaName
+		from user u
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into user
+		(
+			id,
+			userCode,password,nickName,currName,gender,age,politicsStatus,stature,HA,grade,EXP,
+			schoolId,
+			userType,phone,phoneOk,QQ,email,emailOk,memos,filePath,photo,createTime,modiyTime,bak,bak1,
+			bak2
+		)
+		values
+		<foreach collection="list" separator="," item="u">
+			(
+				(select uuid()),
+				#{u.userCode},#{u.password},#{u.nickName},#{u.currName},#{u.gender},#{u.age},#{u.politicsStatus},#{u.stature},#{u.hA},#{u.grade},#{u.eXP},
+				#{u.schoolId},
+				#{u.userType},#{u.phone},#{u.phoneOk},#{u.qQ},#{u.email},#{u.emailOk},#{u.memos},#{u.filePath},#{u.photo},#{u.createTime},#{u.modiyTime},#{u.bak},#{u.bak1},
+				#{u.bak2}
+			)
+		</foreach>
+	</insert>
+
+	<select id="findHotTeacher" parameterType="java.lang.String"
+		resultType="java.util.Map">
+		SELECT
+		t.id,
+		t.userCode,
+		t.nickName,
+		t.currName,
+		t.filePath,
+		t.EXP,
+		t.HA,
+		t.photo,
+		s.schoolName,
+		count(h.id) AS gzd
+		FROM
+		user t
+		LEFT JOIN sys_history
+		h ON h.pubId = t.id
+		AND h.pubType = 'T'
+		AND h.pubFlag = 'C'
+		LEFT JOIN
+		sys_school s ON s.id = t.schoolId
+		WHERE
+		t.userType = 'T'
+		and t.bak='Y'
+		<if test="_parameter != null">
+			and t.id = #{_userId}
+		</if>
+		GROUP BY
+		t.id
+		ORDER BY
+		gzd DESC
+	</select>
+
+	<select id="findNewTeacher" resultType="User">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		user t
+		WHERE
+		t.userType = 'T'
+		and t.bak='Y'
+		ORDER BY
+		t.createTime DESC
+	</select>
+
+	<select id="findTeacherList" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT
+		DISTINCT (u.id),
+		(
+		CASE IFNULL(h.pubId, '')
+		WHEN '' THEN
+		0
+		ELSE
+		1
+		END
+		)
+		isGz,
+		h.pubId,
+		u.userCode,
+		u.PASSWORD,
+		u.nickName,
+		u.currName,
+		u.gender,
+		u.age,
+		u.politicsStatus,
+		u.stature,
+		u.HA,
+		u.grade,
+		u.EXP,
+		u.schoolId,
+		u.userType,
+		u.phone,
+		u.phoneOk,
+		u.QQ,
+		u.email,
+		u.emailOk,
+		u.memos,
+		u.filePath,
+		u.photo,
+		u.createTime,
+		u.modiyTime,
+		u.bak,
+		u.bak1,
+		u.bak2,
+		tt.gradeName,
+		tt.subjectName
+		FROM
+		`user` u
+		LEFT JOIN sys_school s ON s.id
+		= u.schoolId
+		LEFT JOIN sys_dict d ON d.id = s.cityId
+		LEFT JOIN
+		sys_history h ON h.pubId = u.id AND h.pubType='T'AND
+		h.pubFlag='C'
+		<if test="userId != null">
+			and h.userId = #{userId}
+		</if>
+		LEFT JOIN (
+		SELECT
+		fv.gradeName,
+		fv.subjectName,
+		COUNT(DISTINCT fv.id) AS
+		coun,
+		fv.schoolId,
+		fv.teacherId
+		FROM
+		offLine_videoResources fv
+		WHERE
+		1 = 1
+		AND fv.releaseState = 'Y'
+		AND fv.isShow = 'Y'
+		GROUP BY
+		fv.subjectName,
+		fv.gradeName,
+		fv.teacherId
+		UNION
+		SELECT
+		ls.gradeId AS gradeName,
+		ls.subjectId AS subjectName,
+		COUNT(DISTINCT ls.id) AS coun,
+		ls.schoolId,
+		ls.userId AS teacherId
+		FROM
+		lo_schedule ls
+		WHERE
+		1 = 1
+		GROUP BY
+		ls.subjectId,
+		ls.gradeId,
+		ls.userId
+		ORDER BY
+		coun DESC
+		) tt ON tt.teacherId
+		= u.id
+		WHERE
+		1=1
+		<if test="currName != null">
+			and u.currName like '%${currName}%'
+		</if>
+		<if test="userType != null">
+			and u.userType = #{userType}
+		</if>
+		<if test="bak != null">
+			and u.bak = #{bak}
+		</if>
+		<if test="area != null">
+			and d.value LIKE '%${area}%'
+		</if>
+
+		<if test="gradeName != null">
+			and tt.gradeName LIKE '%${gradeName}%'
+		</if>
+
+		<if test="subjectName != null">
+			and tt.subjectName LIKE '%${subjectName}%'
+		</if>
+
+		GROUP BY u.id
+
+		<if test="sort == 1">
+			order by u.createTime desc
+		</if>
+		<if test="sort == 0">
+			order by u.grade desc
+		</if>
+
+
+	</select>
+
+	<select id="findTeacherDetails" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT
+		DISTINCT (t.id),
+
+		<if test="userId != null">
+			(
+			CASE IFNULL(h.pubId, '')
+			WHEN '' THEN
+			0
+			ELSE
+			1
+			END
+			) isGz,
+		</if>
+		<if test="userId == null">
+			0 isGz,
+		</if>
+		t.userCode,
+		t.PASSWORD,
+		t.nickName,
+		t.currName,
+		t.gender,
+		t.age,
+		t.politicsStatus,
+		t.stature,
+		t.HA,
+		t.grade,
+		t.EXP,
+		t.schoolId,
+		t.userType,
+		t.phone,
+		t.phoneOk,
+		t.QQ,
+		t.email,
+		t.emailOk,
+		t.memos,
+		t.filePath,
+		t.photo,
+		t.createTime,
+		t.modiyTime,
+		t.bak,
+		t.bak1,
+		t.bak2,
+		s.schoolName,
+		d.`value` AS
+		pro,
+		d1.`value` AS city,
+		d2.`value` AS county,
+		tt.gradeName,
+		tt.subjectName
+		FROM
+		user t
+		LEFT JOIN sys_school s ON s.id = t.schoolId
+		LEFT JOIN sys_dict d ON s.provinceId = d.id
+		LEFT JOIN sys_dict d1 ON
+		d1.id = s.cityId
+		LEFT JOIN sys_dict d2 ON d2.id = s.countyId
+		LEFT JOIN
+		sys_history h ON h.pubId = t.id AND h.pubType='T'AND
+		h.pubFlag='C'
+		<if test="userId != null">
+			and h.userId = #{userId}
+		</if>
+		LEFT JOIN (
+		SELECT
+		fv.gradeName,
+		fv.subjectName,
+		COUNT(DISTINCT fv.id) AS
+		coun,
+		fv.schoolId,
+		fv.teacherId
+		FROM
+		offLine_videoResources fv
+		WHERE
+		fv.teacherId =#{id}
+		AND fv.releaseState = 'Y'
+		AND fv.isShow = 'Y'
+		GROUP
+		BY
+		fv.subjectName, fv.gradeName
+		UNION
+		SELECT
+		ls.gradeId AS gradeName,
+		ls.subjectId AS subjectName,
+		COUNT(DISTINCT ls.id) AS coun,
+		ls.schoolId,
+		ls.userId as teacherId
+		FROM
+		lo_schedule ls
+		WHERE
+		ls.userId =
+		#{id}
+		GROUP BY
+		ls.subjectId, ls.gradeId
+		ORDER BY
+		coun DESC
+		LIMIT 0, 1
+
+		) tt
+		ON tt.teacherId = t.id
+
+		WHERE
+		t.userType = 'T'
+		and t.bak='Y'
+		AND t.id =
+		#{id}
+
+		GROUP BY t.id
+		ORDER BY
+		t.createTime DESC
+	</select>
+
+
+
+	<update id="updateUserExp" parameterType="User">
+		update user set EXP =
+		EXP+#{eXP} where id = #{id}
+	</update>
+
+
+	<select id="findTeacherBySchoolId" parameterType="java.lang.String"
+		resultType="User">
+		select id,nickName,schoolId from user where userType in
+		('L','R','T') and schoolId = #{schoolId}
+	</select>
+
+	<select id="selectEXPs" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		SELECT u.EXP FROM `user` u WHERE DATE_FORMAT(u.createTime,'%Y-%m-%d') <![CDATA[<]]>
+		#{dates}
+	</select>
+	<!-- (领导角色):查询用户的EXP值 -->
+	<select id="selectEXPsByLeader" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		SELECT
+		u.EXP
+		FROM
+		`user` u
+		<if test="isadmin == 'PA'">
+			LEFT JOIN sys_dict sd ON sd.id=u.bak2
+			LEFT JOIN sys_dict
+			sd2 ON sd2.id=sd.pid
+			WHERE
+			sd2.pid=#{regionId}
+		</if>
+		<if test="isadmin == 'CA'">
+			LEFT JOIN sys_dict sd ON sd.id=u.bak2
+			WHERE
+			sd.pid=#{regionId}
+		</if>
+		<if test="isadmin == 'AA' or isadmin == 'NA'">
+			WHERE
+			u.bak2=#{regionId}
+		</if>
+
+		<if test="isadmin == 'SA'">
+			WHERE
+			u.schoolId=#{regionId}
+		</if>
+		<if test="isadmin == 'OA'"><!-- 无任何的条件可以限制 -->
+			WHERE
+			u.id <![CDATA[<>]]>
+			''
+		</if>
+
+		AND DATE_FORMAT(u.createTime, '%Y-%m-%d') <![CDATA[<]]>
+		#{dates}
+	</select>
+
+
+	<insert id="insertBatchFromOld" parameterType="java.util.List">
+		insert into user
+		(id,userCode,password,nickName,currName,gender,age,politicsStatus,stature,HA,grade,EXP,schoolId,userType,phone,phoneOk,QQ,email,emailOk,memos,filePath,photo,createTime,modiyTime,bak,bak1,bak2)
+		values
+		<foreach collection="list" separator="," item="u">
+			((select
+			uuid()),#{u.userCode},#{u.password},#{u.nickName},#{u.currName},#{u.gender},#{u.age},#{u.politicsStatus},#{u.stature},#{u.hA},#{u.grade},#{u.eXP},#{u.schoolId},#{u.userType},#{u.phone},#{u.phoneOk},#{u.qQ},#{u.email},#{u.emailOk},#{u.memos},#{u.filePath},#{u.photo},#{u.createTime},#{u.modiyTime},#{u.bak},#{u.bak1},#{u.bak2})
+		</foreach>
+	</insert>
+	<!-- 今年教师使用平台人数:那个地方使用，就显示那个区域 -->
+	<select id="countTeacherUsedThisYear" parameterType="java.util.Map"
+		resultType="java.util.Map">
+		SELECT
+		sdd.`value` cityName,COUNT(DISTINCT(sh.userId)) cityNum
+		FROM
+		sys_history sh
+		LEFT JOIN `user` u ON sh.userId = u.id
+		LEFT JOIN
+		sys_school sc ON
+		u.schoolId = sc.id
+		LEFT JOIN sys_dict sd ON
+		sc.provinceId = sd.id
+		LEFT
+		JOIN sys_dict sdd ON sc.cityId = sdd.id
+		WHERE
+		YEAR (sh.createTime) = YEAR (NOW())
+		AND sd.`value` ='河南省'<!-- 暂时不使用登录用户所在的地区 -->
+		GROUP BY sc.cityId
+	</select>
+	<!-- 历年使用平台人数的变化 -->
+	<select id="countOverYearsUsed" resultType="java.util.Map">
+		SELECT
+		(
+		SELECT
+		COUNT(DISTINCT(sh.userId))
+		FROM
+		sys_history sh
+		WHERE
+		DATE_FORMAT(sh.createTime, '%Y-%m-%d') <![CDATA[>]]>
+		CONCAT(YEAR(NOW()) - 3, '-01-01')
+		AND DATE_FORMAT(sh.createTime,
+		'%Y-%m-%d') <![CDATA[<]]>
+		CONCAT(YEAR(NOW()) - 3, '-07-01')
+		AND sh.pubType='D'
+		) AS pre3Up,
+		(
+		SELECT
+		COUNT(DISTINCT(sh.userId))
+		FROM
+		sys_history sh
+		WHERE
+		DATE_FORMAT(sh.createTime, '%Y-%m-%d') <![CDATA[>]]>
+		CONCAT(YEAR(NOW()) - 3, '-07-01')
+		AND DATE_FORMAT(sh.createTime,
+		'%Y-%m-%d') <![CDATA[<]]>
+		CONCAT(YEAR(NOW()) - 3, '-12-31')
+		AND sh.pubType='D'
+		) AS pre3Down,
+		(
+		SELECT
+		COUNT(DISTINCT(sh.userId))
+		FROM
+		sys_history sh
+		WHERE
+		DATE_FORMAT(sh.createTime, '%Y-%m-%d') <![CDATA[>]]>
+		CONCAT(YEAR(NOW()) - 2, '-01-01')
+		AND DATE_FORMAT(sh.createTime,
+		'%Y-%m-%d') <![CDATA[<]]>
+		CONCAT(YEAR(NOW()) - 2, '-07-01')
+		AND sh.pubType='D'
+		) AS pre2Up,
+		(
+		SELECT
+		COUNT(DISTINCT(sh.userId))
+		FROM
+		sys_history sh
+		WHERE
+		DATE_FORMAT(sh.createTime, '%Y-%m-%d') <![CDATA[>]]>
+		CONCAT(YEAR(NOW()) - 2, '-07-01')
+		AND DATE_FORMAT(sh.createTime,
+		'%Y-%m-%d') <![CDATA[<]]>
+		CONCAT(YEAR(NOW()) - 2, '-12-31')
+		AND sh.pubType='D'
+		) AS pre2Down,
+		(
+		SELECT
+		COUNT(DISTINCT(sh.userId))
+		FROM
+		sys_history sh
+		WHERE
+		DATE_FORMAT(sh.createTime, '%Y-%m-%d') <![CDATA[>]]>
+		CONCAT(YEAR(NOW()) - 1, '-01-01')
+		AND DATE_FORMAT(sh.createTime,
+		'%Y-%m-%d') <![CDATA[<]]>
+		CONCAT(YEAR(NOW()) - 1, '-07-01')
+		AND sh.pubType='D'
+		) AS pre1Up,
+		(
+		SELECT
+		COUNT(DISTINCT(sh.userId))
+		FROM
+		sys_history sh
+		WHERE
+		DATE_FORMAT(sh.createTime, '%Y-%m-%d') <![CDATA[>]]>
+		CONCAT(YEAR(NOW()) - 1, '-07-01')
+		AND DATE_FORMAT(sh.createTime,
+		'%Y-%m-%d') <![CDATA[<]]>
+		CONCAT(YEAR(NOW()) - 1, '-12-31')
+		AND sh.pubType='D'
+		) AS pre1Down
+	</select>
+
+
+	<select id="findNotStudents" parameterType="User" resultType="User">
+		SELECT 
+			id,nickName,userType,
+			(select schoolName from sys_school s where s.id=u.schoolId) as schoolName 
+		FROM `user` u
+		<where>
+			<if test="schoolId != null">
+				and schoolId = #{schoolId}
+			</if>
+			<if test="authority != null">
+				<if test="authority == 'OA'">
+					and bak1 in ('PA','CA','AA','SA','NA')
+				</if>
+				<if test="authority == 'PA'">
+					and bak1 in ('CA','AA','SA','NA')
+					and 
+						(SELECT d1.pid FROM sys_dict d1 WHERE d1.id = (SELECT d.pid FROM sys_dict d WHERE d.id = #{countyId})) 
+						= 
+						(SELECT d1.pid FROM sys_dict d1 WHERE d1.id =(SELECT d.pid FROM sys_dict d WHERE d.id = u.bak2))
+				</if>
+				<if test="authority == 'CA'">
+					and bak1 in ('AA','SA','NA')
+					and 
+						(SELECT d.pid FROM sys_dict d WHERE d.id = #{countyId}) = (SELECT d.pid FROM sys_dict d WHERE d.id = u.bak2)
+				</if>
+				<if test="authority == 'AA'">
+					and bak1 in ('SA','NA') and #{countyId} = u.bak2
+				</if>
+				<if test="authority == 'SA'">
+					and bak1 in ('NA')
+				</if>
+			</if>
+			<if test="userIds != null">
+				and id not in (
+				<foreach collection="userIds" separator="," item="id">
+					#{id}
+				</foreach>
+				)
+			</if>
+			<if test="search != null">
+				and (
+				nickName like '%${search}%' or
+				schoolId in (select id from sys_school s where s.schoolName like '%${search}%')
+				)
+			</if>
+			and userType != 'S'
+			ORDER BY FIELD(`userType`,'R','T','L')
+		</where>
+	</select>
+	
+	
+</mapper>

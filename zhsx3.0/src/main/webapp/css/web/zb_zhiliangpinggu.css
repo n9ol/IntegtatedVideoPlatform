@@ -1,0 +1,398 @@
+.cityinput {
+	height: 25px;
+}
+
+.shai22 {
+	border-bottom: 1px dashed gainsboro;
+	border-top: 1px dashed gainsboro;
+}
+
+.sa {
+	float: left;
+	width: 80px;
+	text-align: right;
+	font-size: 15px;
+}
+
+.sa span {
+	margin-left: 25px;
+}
+
+.sa2, .sa3, .sa1, .sa4, .sa5 {
+	float: left;
+	margin-left: 55px;
+	width: 80%;
+}
+
+/*正文部分*/
+.con_con {
+	width: 1200px;
+	margin: 0 auto;
+	min-height: 500px;
+	margin-top: 20px;
+}
+
+.con_left {
+	width: 890px;
+	background-color: #fff;
+	float: left;
+	border: 1px solid gainsboro;
+}
+
+.con_right {
+	width: 300px;
+	background-color: #fff;
+	float: right;
+	border: 1px solid gainsboro;
+	/* 	padding-bottom: 10px; */
+	border-bottom: none;
+}
+
+.demo figure>img {
+	width: 100%;
+	height: 193px;
+}
+
+.school, .zuan {
+	/* 	width: 270px; */
+	/* 	padding-bottom: 10px; */
+	text-align: center;
+	clear: both;
+	line-height: 25px;
+}
+
+/* 20190306-zjc noted;
+.schoolName {
+	font-size: 15px;
+	line-height: 24px;
+	height: 24px;
+	margin: 0 5px;
+	float:left;
+} */
+/* 20190306-zjc modified */
+.schoolName {
+    display: inline-block;
+    font-size: 15px;
+    line-height: 24px;
+    height: 24px;
+    margin: 0 5px;
+    max-width: 60px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    float: left;
+}
+
+.school_zuan:hover {
+	background-color: #F0F0F0;
+}
+
+.schoolSpan {
+	font-size: 15px;
+	line-height: 20px;
+	margin: 0 auto;
+	margin-top: 10px;
+	display: inline-block;
+	width: 50%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.zuan span {
+	display: inline-block;
+	height: 24px;
+	color: white;
+	border-radius: 3px;
+	line-height: 24px;
+	text-align: center;
+	font-size: 14px;
+	margin: 0 5px;
+	padding: 0 5px;
+	max-width: 80px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.zuan span img {
+	width: 15px;
+	height: 14px;
+}
+
+.con_left_div {
+	border-bottom: 1px solid gainsboro;
+	height: 50px;
+}
+
+.zonghe {
+	height: 25px;
+	padding-left: 10px;
+}
+
+.zonghe a {
+	display: inline-block;
+	height: 50px;
+	margin-right: 20px;
+	line-height: 50px;
+}
+
+/*搜索框*/
+.sousuo input {
+	height: 27px;
+	float: left;
+}
+
+.sousuo img {
+	float: left;
+}
+
+.sousuo {
+	float: right;
+	margin-top: -12px;
+	margin-right: 20px;
+}
+
+.con_left_ul {
+	margin-top: 20px;
+	padding: 0 13px;
+}
+
+.con_left_li {
+	float: left;
+	margin: 2px 17px;
+	position: relative;
+	overflow: hidden;
+	width: 29.2%;
+	height: 260px;
+}
+
+.con_left_li figcaption {
+	/*margin: 0 0;*/
+	width: 100%;
+}
+
+/*直播点播的表明*/
+.zdb {
+	position: absolute;
+	width: 200px;
+	text-align: center;
+	right: -50px;
+	top: 16px;
+	transform: rotate(30deg);
+	height: 30px;
+	line-height: 30px;
+	background-color: #4596E5;
+	color: white;
+	z-index: 129;
+	font-size: 16px;
+}
+
+/*热门推荐中的横幅*/
+.zdbHot {
+	position: absolute;
+	width: 200px;
+	text-align: center;
+	right: -73px;
+	top: 9px;
+	transform: rotate(30deg);
+	height: 20px;
+	line-height: 20px;
+	background-color: #4596E5;
+	color: white;
+	font-size: 13px;
+}
+
+.spanHidden {
+	overflow: hidden;
+	float: left;
+	position: relative;
+	z-index: 2222;
+}
+/*右半部分*/
+.re {
+	line-height: 50px;
+	border-bottom: 1px solid gainsboro;
+	padding-left: 10px;
+	font-size: 17px;
+	color: gray;
+}
+
+.re_ul li {
+	width: 300px;
+	height: 80px;
+	padding: 5px 0;
+	/*margin: 0 5px;*/
+	border-bottom: 1px solid gainsboro;
+	cursor: pointer;
+	position: relative;
+}
+
+.re_ul li img {
+	float: left;
+	width: 112px;
+	height: 78px;
+	margin-left: 5px;
+}
+
+.zbSmallClassTime {
+	position: absolute;
+	left: 46px;
+	top: 51px;
+	width: 68px;
+	height: 27px;
+	background-color: rgba(0, 0, 0, 0.5);
+	text-align: right;
+	color: #fff;
+	font-size: 12px;
+	z-index: 6666;
+	padding-right: 2px
+}
+
+.re_ul_div {
+	float: left;
+	margin-left: 10px;
+	width: 170px;
+	color: gray;
+}
+
+.re_ul_div p {
+	height: 25px;
+	line-height: 25px;
+	overflow: hidden;
+}
+
+.school12 {
+	display: inline-block;
+	width: 130px;
+	height: 40px;
+	float: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.dierge {
+	display: inline-block;
+	margin-left: 5px;
+	float: left;
+}
+
+/*分页*/
+#pagerss {
+	height: 40px;
+	width: 100%;
+	/* 	border-top: 1px solid gainsboro; */
+	padding-top: 10px;
+	text-align: center;
+}
+
+.classTime {
+	position: absolute;
+	right: 0;
+	top: 169px;
+	width: 80px;
+	height: 25px;
+	background-color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	line-height: 25px;
+}
+
+.pageView {
+	position: absolute;
+	left: 0;
+	top: 169px;
+	width: 80px;
+	height: 25px;
+	background-color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	line-height: 25px;
+}
+
+.smallClassTime {
+	position: absolute;
+	left: 62px;
+	top: 63px;
+	width: 55px;
+	height: 20px;
+	background-color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	line-height: 20px;
+	color: #fff;
+	font-size: 12px;
+	z-index: 6666;
+}
+
+.bg1 {
+	background-color: #f56b80;
+}
+
+.bg2 {
+	background-color: #6585d7;
+}
+
+.bg3 {
+	background-color: #ff7743;
+}
+
+.bg4 {
+	background-color: #68c768;
+}
+
+.bg5 {
+	background-color: red;
+}
+
+.layui-laypage {
+	margin: 0;
+}
+
+.zonghe .area-danxuan {
+	color: white;
+	height: 25px;
+	line-height: 25px;
+	display: inline-block;
+	padding: 0 5px;
+	width: 67px;
+	text-align: center;
+	cursor: pointer;
+	float: left;
+}
+
+.choosess {
+	display: inline-block;
+	background-color: #4596E5;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	margin-top: 12.5px;
+}
+
+.quxiao {
+	display: inline-block;
+	width: 25px;
+	line-height: 25px;
+	background-color: #4596e5;
+	color: #fff;
+	text-align: center;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	cursor: pointer;
+	float: left;
+}
+
+.quxiao:hover {
+	color: #c7edcc;
+}
+
+/*直播点播首页的浏览量图标样式*/
+.zuanImgs {
+	width: 15px;
+	height: 10px;
+	float: left;
+	margin-top: 6px;
+	margin-left: 6px;
+}

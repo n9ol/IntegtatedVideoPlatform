@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!-- 		<#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<style type="text/css">
+			.guanjian img{
+    			margin-top: 12px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<!--<div class="kao_right">-->
+		<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 我的考卷管理</p>
+		<div class="guanjian">
+			<img  onclick="searchSchool();" alt="搜索" src="${ctx}/img/sousuo.jpg"> 
+			<input type="search" name="search1" id="search1" value="${search!''}" style="width: 172px;height:27px;float:right;margin-top:12px;" placeholder="标题/专业/科目"/>
+		</div>
+		<table class="layui-table table">
+
+			<thead>
+				<tr>
+					<th>NO</th>
+					<th>专业</th>
+					<th>科目</th>
+					<th>试卷标题</th>
+					<th>得分</th>
+					<th>总分</th>
+					<th>考试时间</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<#if lists?? && (lists?size>0)><#list lists as l>
+				<tr>
+					<td>${l_index+1}</td>
+					<td>${l.gradeName!''}</td>
+					<td>${l.subjectName!''}</td>
+					<td title="${l.testTitle!''}">${l.testTitle!''}</td>
+					<td>${l.scores!''}</td>
+					<td>${l.totalScores!''}</td>
+					<td>${(l.addTime)?string('yyyy-MM-dd HH:mm')}</td>
+					<td>
+						<a href="javascript:;" class="check_look" onclick="findOne('${l.id!''}','${l.testId!''}')">
+							<img alt="" src="${ctx}/img/eye2.png" style="width:15px;height:15px;">查看
+						</a>&nbsp;&nbsp;
+						<a href="javascript:;" class="check_look" onclick="del('${l.id!''}');"><i class="layui-icon">&#xe640;</i>删除</a>
+					</td>
+				</tr>
+			</#list></#if>	
+			</tbody>
+		</table>
+		<div id="page" style="text-align: center;height: 40px;"></div>
+		<form id="form" action="${ctx}/testwebstutest/findStuTest" method="post">
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="search" value="${search!''}">
+			<input type="hidden" name="studentId" value="${memberId!''}">
+		</form>
+	</body>
+	<script type="text/javascript">var ctx ="${ctx}";</script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+		}
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			setIframeH();
+		});
+		
+
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height()+50);
+		}
+		
+		var layer;
+		layui.use(['form','layer'], function() {
+			var form = layui.form;
+			layer = layui.layer;
+			
+			//监听提交
+			form.on('submit(formDemo)', function(data) {
+				layer.msg(JSON.stringify(data.field));
+				return false;
+			});
+			
+		}); 
+		
+		
+		
+		//搜索框键盘enter事件
+		$("#search1").keyup(function(){
+			if(event.keyCode == 13){
+				searchSchool();
+			} 
+		});
+		function searchSchool() {
+			var search = $("input[name='search1']").val();
+			 $("input[name='search']").val(search);
+			 $("input[name='p']").val(null);
+			 refreshPage();
+			
+		} 
+		
+		function refreshPage(){
+			$("#form").submit();
+		}
+		
+		function findOne(id,testId){
+			parent.$(".zhong_right iframe").attr("src", ctx+"/testwebstutestquestionanswer/findOne?stuTestId="+id+"&testId="+testId);
+		}
+		
+		function del(id){
+			layer.confirm("你确定要删除?", {shade: [0.2, '#FFFFFF']}, function(){
+				$.ajax({
+					type : "POST",
+					url : ctx+"/testwebstutest/delStuTest",
+					data : {id : id},
+					success : function(data) {
+						layer.msg(data,{time : 1500},function() {
+							if (data == "操作成功"){
+								refreshPage();
+							}
+						});
+					}
+				});
+			});
+		}
+	</script>
+
+</html>

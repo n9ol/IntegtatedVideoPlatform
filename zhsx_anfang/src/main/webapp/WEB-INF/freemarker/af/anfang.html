@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>综合视讯</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/anfang.css" />
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a><cite>校园安防</cite></a>
+				</span>
+			</div>
+			<div class="an_con clear">
+				<div class="an_left">
+					<div class="div">
+						<img src="${ctx}/img/dianziyan.png" /><span>安全守护者</span>
+					</div>
+					<div class="shanglabiao" style="border-top: 1px solid white;">
+						<img src="${ctx}/img/shangla2.png" />
+					</div>
+					<div class="left_ul">
+						<ul class="left_li"></ul>
+					</div>
+					<div class="details" ></div>
+					<div class="xialabiao">
+						<img src="${ctx}/img/xiala.png" />
+					</div>
+				</div>
+				<div class="con_right">
+					<div class="daohang clear">
+							
+							
+							
+					</div> 
+					<div class="dd">
+						<ul id="fenpingmu" class="fenpingmu clear"></ul>
+					</div>
+					<div class="con_right2" >
+					</div>
+				</div>
+				<div class="con_right" style="height:50px;">
+					<div id="page" class="page" style="text-align:center;" ></div> 
+				</div>
+			</div>
+		</div>
+		<div>
+			<input type="hidden" name="p">
+			<input type="hidden" name="pages"> 
+			<input type="hidden" name="schoolid" > 
+			<input type="hidden" name="schoolarea">
+			<input type="hidden" name="state" value="1"> 
+		</div> 
+		<!--内容end-->
+
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+	</body>
+	<!--公共js-->
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script src="${ctx}/js/web/anfang.js" type="text/javascript" charset="utf-8"></script>
+</html>

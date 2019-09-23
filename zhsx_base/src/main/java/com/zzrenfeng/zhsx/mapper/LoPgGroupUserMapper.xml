@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoPgGroupUserMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoPgGroupUser" >
+		<result column="id" property="id" />
+		<result column="pgGroupId" property="pgGroupId" />
+		<result column="userId" property="userId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,pgGroupId,userId
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pgGroup_user
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pgGroup_user
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_pgGroup_user
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="LoPgGroupUser" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_pgGroup_user (id,pgGroupId,userId)
+		values (#{id},#{pgGroupId},#{userId})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoPgGroupUser" >
+		update lo_pgGroup_user
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="pgGroupId != null" >
+				pgGroupId = #{pgGroupId},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoPgGroupUser" >
+		update lo_pgGroup_user
+		set 
+		id = #{id},
+		pgGroupId = #{pgGroupId},
+		userId = #{userId}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="pgGroupId != null" >
+				and pgGroupId = #{pgGroupId}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="search != null">
+				and (
+						(SELECT nickName FROM `user` u WHERE  u.id = l.userId) like '%${search}%' or
+						(SELECT schoolName FROM sys_school s WHERE s.id = ( SELECT schoolId FROM `user` u WHERE  u.id = l.userId)) like '%${search}%'
+					)
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="LoPgGroupUser" resultType="LoPgGroupUser">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE  u.id = l.userId) as nickName,
+		(SELECT userType FROM `user` u WHERE  u.id = l.userId) as userType,
+		(SELECT schoolName FROM sys_school s WHERE s.id = ( SELECT schoolId FROM `user` u WHERE  u.id = l.userId)) as schoolName
+		from lo_pgGroup_user l
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoPgGroupUser" resultType="LoPgGroupUser">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE  u.id = l.userId) as nickName,
+		(SELECT userType FROM `user` u WHERE  u.id = l.userId) as userType,
+		(SELECT schoolName FROM sys_school s WHERE s.id = ( SELECT schoolId FROM `user` u WHERE  u.id = l.userId)) as schoolName
+		from lo_pgGroup_user l
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<insert id="batchInster" parameterType="java.util.Map">
+		insert into lo_pgGroup_user (id,pgGroupId,userId)
+		values 
+		<foreach collection="userIds" separator="," item="userId">
+			((select uuid()),#{pgGroupId},#{userId})
+		</foreach>
+		ON DUPLICATE KEY UPDATE pgGroupId = #{pgGroupId}
+	</insert>
+	
+	<delete id="batchDel">
+		delete from lo_pgGroup_user
+		where id in (
+			<foreach collection="array" separator="," item="id">
+				#{id}
+			</foreach>
+		) 
+	</delete>
+	
+	
+	<select id="isPgAuthority" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(0) FROM lo_pgGroup_user 
+		WHERE 
+			pgGroupId IN  ( SELECT pgGroupId FROM lo_pgGroup_schedule WHERE loscheduleId = #{loscheduleId})
+		AND userId = #{userId}
+	</select>
+	
+	
+</mapper>

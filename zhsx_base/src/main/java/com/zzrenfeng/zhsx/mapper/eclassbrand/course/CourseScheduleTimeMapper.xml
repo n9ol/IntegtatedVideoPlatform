@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.eclassbrand.course.CourseScheduleTimeMapper">
+
+	<resultMap id="BaseResultMap" type="com.zzrenfeng.zhsx.model.eclassbrand.course.CourseScheduleTime">
+		<result column="id" property="id" />
+		<result column="section_of_day" property="sectionOfDay" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="create_date" property="createDate" />
+		<result column="modiy_date" property="modiyDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,section_of_day,start_time,end_time,create_date,modiy_date
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from course_schedule_time
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from course_schedule_time
+		ORDER BY section_of_day
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from course_schedule_time
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="CourseScheduletime">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into course_schedule_time (id,section_of_day,start_time,end_time,create_date,modiy_date)
+		values
+		(#{id},#{sectionOfDay},#{startTime},#{endTime},#{createDate},#{modiyDate})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="CourseScheduletime">
+		update course_schedule_time
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="sectionOfDay != null">
+				section_of_day = #{sectionOfDay},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate},
+			</if>
+			<if test="modiyDate != null">
+				modiy_date = #{modiyDate}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<update id="updateByPrimaryKey" parameterType="CourseScheduletime">
+		update course_schedule_time
+		set
+		id = #{id},
+		section_of_day = #{sectionOfDay},
+		start_time = #{startTime},
+		end_time = #{endTime},
+		create_date = #{createDate},
+		modiy_date = #{modiyDate}
+		where id = #{id}
+	</update>
+
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="sectionOfDay != null">
+				and section_of_day = #{sectionOfDay}
+			</if>
+			<if test="startTime != null">
+				and start_time = #{startTime}
+			</if>
+			<if test="endTime != null">
+				and end_time = #{endTime}
+			</if>
+			<if test="createDate != null">
+				and create_date = #{createDate}
+			</if>
+			<if test="modiyDate != null">
+				and modiy_date = #{modiyDate}
+			</if>
+			
+			<!-- 20190307-zjc add start; -->
+			<if test="startTimeStr != null">
+				and TIME_FORMAT(start_time,'%T') = #{startTimeStr}
+			</if>
+			<if test="endTimeStr != null">
+				and TIME_FORMAT(end_time,'%T') = #{endTimeStr}
+			</if>
+			<!-- 20190307-zjc add end; -->
+			
+		</where>
+		ORDER BY section_of_day
+	</sql>
+	
+	<!-- 20190308-zjc add; -->
+	<sql id="Dynamic_Conditions_1">
+		<where>
+			1=1
+			<if test="sectionOfDay != null">
+				and section_of_day = #{sectionOfDay}
+			</if>
+			<if test="startTimeStr != null">
+				and (
+					TIME_FORMAT(start_time,'%T') &lt;= #{startTimeStr}
+				 and TIME_FORMAT(end_time,'%T') &gt;= #{startTimeStr}
+				)
+			</if>
+		</where>
+		ORDER BY section_of_day
+	</sql>
+
+
+	<select id="findSelective" parameterType="CourseScheduletime" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from course_schedule_time
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<select id="findPageSelective" parameterType="CourseScheduletime" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from course_schedule_time
+		<include refid="Dynamic_Conditions" />
+	</select>
+	
+	<!-- 20190228-zjc add;获取所有课程安排的开始与结束时间列表 -->
+	<select id="geCourseStartEndTimeList" resultType="java.util.HashMap">
+		select distinct start_time, end_time from course_schedule_time
+		order by start_time asc
+	</select>
+	
+	<!-- 20190308-zjc add;通过“一天中的第几节”【section_of_day】和所给的时间是否落在开始、结束时间的区间内来获取上课节次时间信息-->
+	<select id="getCourseScheduleTimeByConditions" parameterType="CourseScheduletime" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from course_schedule_time
+		<include refid="Dynamic_Conditions_1" />
+	</select>
+
+
+</mapper>

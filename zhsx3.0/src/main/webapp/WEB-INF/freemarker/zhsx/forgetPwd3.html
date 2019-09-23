@@ -1,0 +1,18 @@
+<dl>
+	<dt><span class="colorRed"></span>新密码：</dt>
+	<dd>
+		<input type="password"  id="newPasseord"  name="newPasseord" title="密码" onblur="checkOk(this,checkString(this)&&checkDigit1(this))"/>
+		<span id="newPasseord_msg" class="msg" style="color:#F7B824;margin-left:20px;">*&nbsp;&nbsp;6到16位任意字符</span>
+	</dd>
+	<div class="clears"></div>
+</dl>
+<dl>
+	<dt><span class="colorRed"></span>确认密码：</dt>
+	<dd>
+		<input type="password" id="affirmPasseord"/>
+		<span id="affirmPasseord_msg" class="msg" style="color:#F7B824;margin-left:20px;">*</span>
+	</dd>
+	<div class="clears"></div>
+</dl>
+<div class="subtijiao"><input type="button" value="提交" onclick="resetPassword();"/></div>
+

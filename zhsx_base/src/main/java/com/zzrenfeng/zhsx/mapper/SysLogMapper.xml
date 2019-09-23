@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysLogMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysLog" >
+		<result column="id" property="id" />
+		<result column="operationname" property="operationname" />
+		<result column="operationmehtod" property="operationmehtod" />
+		<result column="issuccess" property="issuccess" />
+		<result column="reason" property="reason" />
+		<result column="operationdate" property="operationdate" />
+		<result column="content" property="content" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,operationname,operationmehtod,issuccess,reason,operationdate,content
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from sys_log
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_log
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="SysLog" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_log (id,operationname,operationmehtod,issuccess,reason,operationdate,content)
+		values (#{id},#{operationname},#{operationmehtod},#{issuccess},#{reason},#{operationdate},#{content})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysLog" >
+		update sys_log
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="operationname != null" >
+				operationname = #{operationname},
+			</if>
+			<if test="operationmehtod != null" >
+				operationmehtod = #{operationmehtod},
+			</if>
+			<if test="issuccess != null" >
+				issuccess = #{issuccess},
+			</if>
+			<if test="reason != null" >
+				reason = #{reason},
+			</if>
+			<if test="operationdate != null" >
+				operationdate = #{operationdate},
+			</if>
+			<if test="content != null" >
+				content = #{content}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysLog" >
+		update sys_log
+		set 
+		id = #{id},
+		operationname = #{operationname},
+		operationmehtod = #{operationmehtod},
+		issuccess = #{issuccess},
+		reason = #{reason},
+		operationdate = #{operationdate},
+		content = #{content}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="operationname != null" >
+				and operationname = #{operationname}
+			</if>
+			<if test="operationmehtod != null" >
+				and operationmehtod = #{operationmehtod}
+			</if>
+			<if test="issuccess != null" >
+				and issuccess = #{issuccess}
+			</if>
+			<if test="reason != null" >
+				and reason = #{reason}
+			</if>
+			<if test="operationdate != null" >
+				and operationdate = #{operationdate}
+			</if>
+			<if test="content != null" >
+				and content = #{content}
+			</if>
+			<if test="search != null">
+				and (operationname like '%${search}%' or operationmehtod like '%${search}%'  or  issuccess like '%${search}%')
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysLog" resultType="SysLog">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_log
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="SysLog" resultType="SysLog">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_log
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<delete id="emptyLog">
+		delete from sys_log
+	</delete>
+	
+	<delete id="delBatchLog" parameterType="java.util.List">
+		delete from sys_log where id in
+		<foreach collection="list" open="(" close=")" separator="," item="id">#{id}</foreach>
+	</delete>
+	
+</mapper>

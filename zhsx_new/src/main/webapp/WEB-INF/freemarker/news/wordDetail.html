@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>综合视讯</title>
+		<!--公共样式表-->
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/xinwen_moban.css" />
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a href="${ctx}/new/xinwen">新闻中心</a>
+  					<a><cite>新闻详情</cite></a>
+				</span>
+			</div>
+			<div class="xinwen_moban">
+				<!--新闻详情页     start-->
+				<div class="main_wrap_new clear">
+					<div id="main_news_Right" class="FL clear">
+
+						<div id="main_T">
+						
+							<h2>${webNews.title!''}</h2>
+							<p class="main_p">
+								<span>发布时间：${webNews.addtime?string('yyyy-MM-dd HH:mm')}</span>
+								<span>作者：${webNews.author!''}</span>
+								<span>来源：${webNews.source!''}</span>
+								<span>浏览次数:${webNews.view}<span id="views"></span></span>
+							</p>
+						</div>
+
+						<div id="main_TEXT" style="word-wrap:break-word;word-break:break-all; ">
+							
+							${webNews.bak1!''}
+							
+						</div>
+					</div>
+					<div class="main_aside FL">
+						<div class="news_right FL Margin_bot">
+							<h2 class="title clear">新闻排行</h2>
+							<p class="list tiji">
+								
+							</p>
+						</div>
+					</div>
+				</div>
+				<!--新闻详情页  End-->
+			</div>
+
+		</div>
+		<!--内容end-->
+
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/> 
+		<!--底部 end-->
+	</body>
+		<#include "/commons/comWebjs.html" encoding="utf-8"/>
+		<script type="text/javascript">
+
+		   $(function(){
+			   $("#xinwenTop").attr("class","has-sub active");
+			   
+				 $.ajax({
+					type: "post",
+					url: "${ctx}/new/getTop",
+					 success: function(msg){
+					   	$(".list").html(msg);
+					   }
+				}); 
+		   });
+		   
+		   
+		   function findOne(id){
+				location.href="${ctx}/new/findOne?id="+id;				 
+			 }
+		</script>
+</html>

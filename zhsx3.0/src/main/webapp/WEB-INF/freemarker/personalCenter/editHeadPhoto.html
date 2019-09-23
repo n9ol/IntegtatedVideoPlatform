@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>编辑用户头像</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/common/webuploader/webuploader.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/personalCenter/editHeadPhoto.css">
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="larry-personal-body clearfix">
+				<form id="form" class="layui-form">
+					<input type="hidden" name="filePath">
+					<div class="row">
+						<div class="layui-form-item">
+							<p class="useNow">目前您正在使用的头像：</p>
+						</div>
+						<div class="layui-tab">
+						  <ul class="layui-tab-title">
+						    <li class="layui-this">本地上传</li>
+						    <li>系统上传</li>
+						  </ul>
+						  <div class="layui-tab-content">
+						    <div class="layui-tab-item layui-show" style="padding-bottom:30px;">
+						    	<p class="imgPrompt">*提示：支持JPG、GIF、PNG图片文件。</p>
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/${principal.filePath!''}" onerror="this.src='${ctx}/img/user172.jpg'" id="userHeadPhoto">
+								
+								<div class="clear">
+									<div class="submitNow" onclick="javascript:submitForm();">立即提交</div>
+									<div class="box_nav_chuan">+ 选择图片</div>
+								 </div>
+							</div>
+							
+						    <div class="layui-tab-item" style="padding-bottom:30px;">
+								<img class="uploadImg checkeddd" src="${fileWebPath}/userheadPortrait/default9.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default9.jpg" >
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default7.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default7.jpg" >					    	
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default8.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default8.jpg" >					    	
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default4.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default4.jpg" >					    	
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default5.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default5.jpg" >					    	
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default6.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default6.jpg" >					    	
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default1.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default1.jpg" >
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default2.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default2.jpg" >					    	
+								<img class="uploadImg" src="${fileWebPath}/userheadPortrait/default3.jpg" onerror="this.src='${ctx}/img/user172.jpg'" id="default3.jpg" >					    	
+						    	<div class="clear">
+									<div class="submitNow" onclick="javascript:submitForm();">立即提交</div>
+								</div>
+						    </div>
+						  </div>
+						</div>
+						
+						<!-- <div class="clear">
+							<div class="submitNow" onclick="javascript:submitForm();">立即提交</div>
+							<div class="box_nav_chuan">+ 选择图片</div>
+						 </div> -->
+<!-- 						<div class="layui-tab-item layui-show"> -->
+<!-- 							<div class="uploadBox"> -->
+<!-- 								<div class="localUpload">本地上传</div> -->
+<!-- 								<div class="layui-form-item"> -->
+<!-- 									<p class="imgPrompt">*提示：支持JPG、GIF、PNG图片文件。</p> -->
+<!-- 									<img class="uploadImg" src="${fileWebPath}/userheadPortrait/${principal.filePath!''}" onerror="this.src='${ctx}/img/user172.jpg'" id="userHeadPhoto"> -->
+<!-- 								</div> -->
+<!-- 								<div class="layui-form-item"> -->
+<!-- 									<div class="clear"> -->
+<!-- 										<div class="submitNow" onclick="javascript:submitForm();">立即提交</div> -->
+<!-- 										<div class="box_nav_chuan">+ 选择图片</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+							
+<!-- 						</div> -->
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</body>
+<script type="text/javascript" src="${ctx}/js/check.js"></script>
+<script type="text/javascript" src="${ctx}/common/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="${ctx}/js/personalCenter/editHeadPhoto.js"></script>
+</html>

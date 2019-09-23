@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebQuestionnaireMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebQuestionnaire" >
+		<result column="id" property="id" />
+		<result column="title" property="title" />
+		<result column="createId" property="createId" />
+		<result column="modiyId" property="modiyId" />
+		<result column="createTime" property="createTime" />
+		<result column="modiyTime" property="modiyTime" />
+		<result column="isShown" property="isShown" />
+		<result column="remarks" property="remarks" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,title,createId,modiyId,createTime,modiyTime,isShown,remarks 
+	</sql>
+		<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="title != null" >
+				and title like  CONCAT('%','${title}','%' )  
+			</if>
+			<if test="isShown != null" >
+				and isShown = #{isShown}
+			</if>
+			<if test="remarks != null" >
+				and remarks = #{remarks}
+			</if>
+			
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+	 
+		from web_questionnaire  t
+		where t.id = #{id}
+	</select>
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_questionnaire 
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebQuestionnaire" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_questionnaire  (id,title,createId,modiyId,createTime,modiyTime,isShown,remarks )
+		values (#{id},#{title},#{createId},#{modiyId},#{createTime},#{modiyTime},#{isShown},#{remarks})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebQuestionnaire" >
+		update web_questionnaire
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="title != null" >
+				title = #{title},
+			</if>
+			<if test="createId != null" >
+				createId = #{createId},
+			</if>
+			<if test="modiyId != null" >
+				modiyId = #{modiyId},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="modiyTime != null" >
+				modiyTime = #{modiyTime},
+			</if>
+			<if test="isShown != null" >
+				isShown = #{isShown},
+			</if>
+			 <if test="remarks != null" >
+				remarks = #{remarks}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateState" parameterType="WebQuestionnaire" >
+		update web_questionnaire set isShown='N'
+			 where  id !=#{id}
+	</update>
+	
+	<select id="findPageSelective" parameterType="WebQuestionnaire" resultType="WebQuestionnaire">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.createId) as nickName
+		from web_questionnaire t 
+		<include refid="Dynamic_Conditions"/>
+		and  (SELECT nickName FROM `user` u WHERE u.id=t.createId)  like  CONCAT('%','${nickName}','%' ) 
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="WebQuestionnaire" >
+		update web_questionnaire
+		set 
+		id = #{id} 
+		where id = #{id}
+	</update>
+	
+ 
+</mapper>

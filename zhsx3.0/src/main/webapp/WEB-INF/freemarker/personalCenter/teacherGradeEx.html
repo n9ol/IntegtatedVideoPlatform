@@ -1,0 +1,107 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<div class="layui-tap-item-top">
+	<div class="layui_top_top clear">
+		<div class="top2 clear">
+			<span class="top2-span top2Name">${user.nickName!''}</span>
+			<span class="top2-span grade grade1 top2Grade">Lv${user.userGrade!'0'}</span>
+			<span class="top2-span top2Name">(当前经验值${currExp!'0'},升级还需<span>${(nextgExp-currExp)!'0'}</span>经验值)</span>
+			<div class="jindutiao top2-span">
+				<div class="bigJindu">
+					<div class="bgJindu" style="width:${((currExp-currgExp)/(nextgExp-currgExp))*100}%">${((currExp-currgExp)/(nextgExp-currgExp))*100}%</div>
+				</div>
+			</div>
+		</div>
+		<div class="top2 clear">
+			<span class="top2-span"></span>
+			<span class="top2-span"><a href="javascript:;" style="color: orangered;"></a></span>
+		</div>
+		<div class="top3" onclick="viewRank();">
+			查看排行
+		</div>
+	</div>
+	
+</div>
+<div class="layui-tap-item-left" id="divHeightLeft">
+	<div><span class="task">成长任务</span></div>
+	<div>
+		<#if principal?? && (principal.filePath)?? >
+			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span>上传头像，奖励 20 经验值</span>
+		<#else>
+			<span><img src="${ctx}/img/yes.png"/></span>
+			<span>上传头像，奖励 20 经验值</span>
+			<span class="over" onclick="uploadHeadPhoto()">上传头像</span>
+		</#if>
+	</div>
+	<div>
+		<#if isuf == 0 >
+			<span><img src="${ctx}/img/yes.png"/></span>
+			<span>完成基本资料，奖励 60 经验值</span>
+			<span class="over" onclick="perfectInfo()">完善资料</span>
+		<#else>
+			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span>完成基本资料，奖励 60 经验值</span>
+		</#if>
+	</div>
+	<div>
+		<span><img src="${ctx}/img/yes.png"/></span>
+		<span>回答一个问题 , 奖励 10 经验 </span>
+		<span class="over" onclick="answerQuestion()">去完成</span>
+	</div>
+	<div>
+		<span><img src="${ctx}/img/yes.png"/></span>
+		<span>发布一个点播视频,奖励 20 经验</span>
+		<span class="over" onclick="issueVideo()">去完成</span>
+	</div>
+	<div>
+		<#if isufR == 0 >
+			<span><img src="${ctx}/img/yes.png"/></span>
+			<span>发布一个课件, 奖励 10  经验 (每天上限 100 经验)</span>
+			<span class="over" onclick="issueCourRes()">去完成</span>
+		<#else>
+			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span>发布一个课件, 奖励 10  经验 (每天上限 100 经验)</span>
+		</#if>
+	</div>
+	<div>
+		<#if isufT == 0 >
+			<span><img src="${ctx}/img/yes.png"/></span>
+			<span>发布一套试卷, 奖励 20 经验 (每天上限 100 经验)</span>
+			<span class="over" onclick="issueTestPaper()">去完成</span>
+		<#else>
+			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span>发布一套试卷, 奖励 20 经验 (每天上限 100 经验)</span>
+		</#if>
+	</div>
+</div>
+<div class="layui-tap-item-right" id="divHeightRight">
+	<div>今日完成任务</div>
+	<div class="clear">
+		<#if syshList?? && (syshList?size>0)><#list syshList as l>
+			<#if l.bak1??>
+			<span><img src="${ctx}/img/orangeYes.png"/></span>
+			<span>${l.bak1!''}</span><br>
+			</#if>
+		</#list></#if>
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	PkHeight();
+});
+
+function PkHeight(){
+	var leftHeight = $("#divHeightLeft").height();
+	var rightHeight = $("#divHeightRight").height();
+	var cha = leftHeight - rightHeight;
+	if(cha>=0){
+		$("#divHeightRight").height(leftHeight);
+	}else{
+		$("#divHeightLeft").height(rightHeight);
+	}
+}
+
+function uploadHeadPhoto(){
+	location.href = "${ctx}/personalCenterUser/editHeadPhoto";
+}
+</script>

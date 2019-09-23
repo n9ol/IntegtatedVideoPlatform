@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebPjinfoMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebPjinfo" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="pgId" property="pgId" />
+		<result column="pgPjInfoId" property="pgPjInfoId" />
+		<result column="onOff" property="onOff" />
+		<result column="title" property="title" />
+		<result column="weight" property="weight" />
+		<result column="total" property="total" />
+		<result column="content" property="content" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,pgId,pgPjInfoId,onOff,title,weight,total,content,bak,bak1,bak2
+	</sql>
+
+
+	<insert id="insert" parameterType="WebPjinfo" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_pjinfo (id,userId,pgId,pgPjInfoId,onOff,title,weight,total,content,bak,bak1,bak2)
+		values (#{id},#{userId},#{pgId},#{pgPjInfoId},#{onOff},#{title},#{weight},#{total},#{content},#{bak},#{bak1},#{bak2})
+	</insert>
+	
+	<insert id="insertInitializeWebPjinfo" parameterType="WebPjinfo">
+		insert into web_pjinfo (id,userId,pgId,pgPjInfoId,onOff,title,weight,bak,bak1,bak2)
+		(SELECT (SELECT UUID()),#{userId},#{pgId},id AS pgPjInfoId,#{onOff},title,weight,bak,type,#{bak2} FROM pg_pjinfo WHERE type = #{bak1});
+	</insert>
+	
+	<insert id="insertorupdata" parameterType="WebPjinfo">
+		insert into web_pjinfo (id,userId,pgId,pgPjInfoId,onOff,title,weight,total,bak,bak1)
+		(SELECT (SELECT UUID()),#{userId},#{pgId},id AS pgPjInfoId,#{onOff},title,weight,#{total},bak,type FROM pg_pjinfo WHERE id = #{pgPjInfoId})
+		ON DUPLICATE KEY UPDATE total = #{total}
+	</insert>
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_pjinfo
+		where id = #{id}
+	</delete>
+	
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebPjinfo" >
+		update web_pjinfo
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="pgId != null" >
+				pgId = #{pgId},
+			</if>
+			<if test="pgPjInfoId != null" >
+				pgPjInfoId = #{pgPjInfoId},
+			</if>
+			<if test="onOff != null" >
+				onOff = #{onOff},
+			</if>
+			<if test="title != null" >
+				title = #{title},
+			</if>
+			<if test="weight != null" >
+				weight = #{weight},
+			</if>
+			<if test="total != null" >
+				total = #{total},
+			</if>
+			<if test="content != null" >
+				content = #{content},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebPjinfo" >
+		update web_pjinfo
+		set 
+		id = #{id},
+		userId = #{userId},
+		pgId = #{pgId},
+		pgPjInfoId = #{pgPjInfoId},
+		onOff = #{onOff},
+		title = #{title},
+		weight = #{weight},
+		total = #{total},
+		content = #{content},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="pgId != null" >
+				and pgId = #{pgId}
+			</if>
+			<if test="pgPjInfoId != null" >
+				and pgPjInfoId = #{pgPjInfoId}
+			</if>
+			<if test="onOff != null" >
+				and onOff = #{onOff}
+			</if>
+			<if test="title != null" >
+				and title = #{title}
+			</if>
+			<if test="weight != null" >
+				and weight = #{weight}
+			</if>
+			<if test="total != null" >
+				and total = #{total}
+			</if>
+			<if test="content != null" >
+				and content = #{content}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="userIds != null and userIds.size > 0">
+				and userId in <foreach collection="userIds" open="(" close=")" item="id" separator=",">#{id}</foreach>			
+			</if>
+			<if test="webPjIds != null and webPjIds.size > 0">
+				and bak2 in <foreach collection="webPjIds" open="(" close=")" item="webPjId" separator=",">#{webPjId}</foreach>
+			</if>
+		</where>
+		ORDER BY bak1,bak
+	</sql>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_pjinfo
+		where id = #{id}
+	</select>
+	
+	<select id="findSelective" parameterType="WebPjinfo" resultType="WebPjinfo">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pjinfo
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebPjinfo" resultType="WebPjinfo">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pjinfo
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	
+	<select id="getPgAverageDraw" parameterType="java.lang.String" resultType="WebPjinfo">
+		SELECT  
+			ROUND(AVG(total),2) as pjinfoavg,title FROM web_pjinfo 
+		WHERE 
+			pgId = #{pgId} AND userId IN (SELECT userId FROM web_pj WHERE pgId = #{pgId} AND ispj = 1)		
+		GROUP BY pgPjInfoId ORDER BY bak
+	</select>
+	
+	<select id="listWebPjinfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pjinfo
+		where bak2 = #{bak2}
+	</select>
+	
+
+	
+
+</mapper>

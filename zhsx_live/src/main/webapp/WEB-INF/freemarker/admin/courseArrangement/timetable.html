@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>仁峰后台管理系统</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/css/admin/courseArrangement/timetable.css" media="all">
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="layui-tab">
+				<blockquote class="layui-elem-quote mylog-info-tit">
+					<ul class="pull-right">
+						<li>
+							<a class="layui-btn refresh_btn" style="margin: 0 30px 0 30px;" href="${ctx}/adminCourseArrangement/timetable">
+							<i class="iconfont icon-shuaxin"></i>
+							</a>
+						</li>
+					</ul>
+					<ul class="pull-right">
+						<li>
+							<div class="layui-input-inline pull-left">
+								<input id="searchval" name="searchval" type="search" class="layui-input" placeholder="学校名称"/>
+							</div> 
+							<a id="searchSchool" class="layui-btn search-btn01 pull-left" href="javascript:void(0);"><i class="layui-icon">&#xe615;</i></a>
+						</li>
+					</ul>
+				</blockquote>
+				<div class="larry-separate"></div>
+				<div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+					<div class="layui-tab-item layui-field-box layui-show aa">
+						<div id="demo" ></div>
+					</div>
+					<div>
+						<span id="scName"></span>&nbsp;>&nbsp;<span id="claName">请选择教室</span>
+					</div>
+					<br>
+					<div class="zong">
+						<table class="layui-table table-time">
+							<thead>
+								<tr>
+									<td>节次</td>
+									<td>星期日<br>
+									</td>
+									<td>星期一<br>
+									</td>
+									<td>星期二<br>
+									</td>
+									<td>星期三<br>
+									</td>
+									<td>星期四<br>
+									</td>
+									<td>星期五<br>
+									</td>
+									<td>星期六<br>
+									</td>
+								</tr>
+							</thead>
+						 </table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<input type="hidden" id="search">
+			<input type="hidden" id="pageNum">
+			<input type="hidden" id="pages">
+		</div>
+		<div>
+			<form id="myForm">
+				<input type="hidden" id="schoolId" name="schoolId">
+				<input type="hidden" id="classId" name="classId">
+				<input type="hidden" id="weeks" name="weeks">
+				<input type="hidden" id="MondayDate" name="MondayDate">
+				<input type="hidden" id="lastandnext" name="lastandnext">
+			</form>
+		</div>
+	</section>
+	<script type="text/javascript">
+		var layer;
+		layui.use([ 'layer', 'laydate','tree' ], function() {
+			layer = layui.layer;
+			var laydate = layui.laydate;
+			
+			layui.tree({
+				 elem: '#demo' //传入元素选择器
+				,nodes: [ ${treeString!''} ]
+			  	,click: function(node){
+				    if(node.id){
+				    	getschedule(node.id, node.schoolId, node.name, node.schoolName);
+				    }
+				 }  
+			});
+			
+		});
+		
+		//搜索框键盘enter事件
+		$("#searchval").keyup(function(){
+			if(event.keyCode == 13){
+				var search = $("#searchval").val();
+				location.href = "${ctx}/adminCourseArrangement/timetable?search="+search;
+			} 
+		});
+
+		
+		$("#searchSchool").click(function(){
+			var search = $("#searchval").val();
+			location.href = "${ctx}/adminCourseArrangement/timetable?search="+search;
+		});
+		
+		function getschedule(classId,schoolId,className,schoolName){
+			$("#classId").val(classId);
+			$("#schoolId").val(schoolId);
+			$("#scName").text(schoolName);
+			$("#claName").text(className);
+			ajaxsubmit();
+		}
+		
+		function ajaxsubmit(){
+			$(".zong").empty();
+			$.ajax({
+				   type: "POST",
+				   url: "${ctx}/adminCourseArrangement/getschedule",
+				   data: $("#myForm").serialize(),
+				   success: function(msg){
+				     $(".zong").html(msg);
+				   }
+				});
+		}
+		
+		function refreshPage(data){
+			if(data == "操作成功"){
+				layer.msg(data,{time:2000},function(){ajaxsubmit();});
+			}else{
+				layer.msg(data,{time:3000});
+			}
+		}
+	</script>
+</body>
+</html>

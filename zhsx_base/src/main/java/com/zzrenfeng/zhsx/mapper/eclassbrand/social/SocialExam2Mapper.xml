@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.eclassbrand.social.SocialExam2Mapper">
+
+	<resultMap id="BaseResultMap" type="com.zzrenfeng.zhsx.model.eclassbrand.social.SocialExam2">
+		<result column="id" property="id" />
+		<result column="classroom_id" property="classroomId" />
+		<result column="classroom_name" property="classroomName" />
+		<result column="exam_date" property="examDate" />
+		<result column="start_time" property="startTime" />
+		<result column="end_time" property="endTime" />
+		<result column="first_line_info" property="firstLineInfo" />
+		<result column="first_line_color" property="firstLineColor" />
+		<result column="first_line_fontsize" property="firstLineFontsize" />
+		<result column="first_line_bold" property="firstLineBold" />
+		<result column="first_line_alignment" property="firstLineAlignment" />
+		<result column="second_line_info" property="secondLineInfo" />
+		<result column="second_line_color" property="secondLineColor" />
+		<result column="second_line_fontsize" property="secondLineFontsize" />
+		<result column="second_line_bold" property="secondLineBold" />
+		<result column="second_line_alignment" property="secondLineAlignment" />
+		<result column="third_line_info" property="thirdLineInfo" />
+		<result column="third_line_color" property="thirdLineColor" />
+		<result column="third_line_fontsize" property="thirdLineFontsize" />
+		<result column="third_line_bold" property="thirdLineBold" />
+		<result column="third_line_alignment" property="thirdLineAlignment" />
+		<result column="fourth_line_info" property="fourthLineInfo" />
+		<result column="fourth_line_color" property="fourthLineColor" />
+		<result column="fourth_line_fontsize" property="fourthLineFontsize" />
+		<result column="fourth_line_bold" property="fourthLineBold" />
+		<result column="fourth_line_alignment" property="fourthLineAlignment" />
+		<result column="fifth_line_info" property="fifthLineInfo" />
+		<result column="fifth_line_color" property="fifthLineColor" />
+		<result column="fifth_line_fontsize" property="fifthLineFontsize" />
+		<result column="fifth_line_bold" property="fifthLineBold" />
+		<result column="fifth_line_alignment" property="fifthLineAlignment" />
+		<result column="info_type" property="infoType" />
+		<result column="create_date" property="createDate" />
+		<result column="modiy_date" property="modiyDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,classroom_id,classroom_name,exam_date,start_time,end_time,first_line_info,first_line_color,first_line_fontsize,first_line_bold,first_line_alignment,second_line_info,second_line_color,second_line_fontsize,second_line_bold,second_line_alignment,third_line_info,third_line_color,third_line_fontsize,third_line_bold,third_line_alignment,fourth_line_info,fourth_line_color,fourth_line_fontsize,fourth_line_bold,fourth_line_alignment,fifth_line_info,fifth_line_color,fifth_line_fontsize,fifth_line_bold,fifth_line_alignment,info_type,create_date,modiy_date
+	</sql>
+
+
+	<insert id="insert" parameterType="SocialExam2">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into social_exam2
+		(id,classroom_id,classroom_name,exam_date,start_time,end_time,first_line_info,first_line_color,first_line_fontsize,first_line_bold,first_line_alignment,second_line_info,second_line_color,second_line_fontsize,second_line_bold,second_line_alignment,third_line_info,third_line_color,third_line_fontsize,third_line_bold,third_line_alignment,fourth_line_info,fourth_line_color,fourth_line_fontsize,fourth_line_bold,fourth_line_alignment,fifth_line_info,fifth_line_color,fifth_line_fontsize,fifth_line_bold,fifth_line_alignment,info_type,create_date,modiy_date)
+		values
+		(#{id},#{classroomId},#{classroomName},#{examDate},#{startTime},#{endTime},#{firstLineInfo},#{firstLineColor},#{firstLineFontsize},#{firstLineBold},#{firstLineAlignment},#{secondLineInfo},#{secondLineColor},#{secondLineFontsize},#{secondLineBold},#{secondLineAlignment},#{thirdLineInfo},#{thirdLineColor},#{thirdLineFontsize},#{thirdLineBold},#{thirdLineAlignment},#{fourthLineInfo},#{fourthLineColor},#{fourthLineFontsize},#{fourthLineBold},#{fourthLineAlignment},#{fifthLineInfo},#{fifthLineColor},#{fifthLineFontsize},#{fifthLineBold},#{fifthLineAlignment},#{infoType},#{createDate},#{modiyDate})
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into social_exam2
+		(id,classroom_id,classroom_name,exam_date,start_time,end_time,first_line_info,first_line_color,first_line_fontsize,first_line_bold,first_line_alignment,second_line_info,second_line_color,second_line_fontsize,second_line_bold,second_line_alignment,third_line_info,third_line_color,third_line_fontsize,third_line_bold,third_line_alignment,fourth_line_info,fourth_line_color,fourth_line_fontsize,fourth_line_bold,fourth_line_alignment,fifth_line_info,fifth_line_color,fifth_line_fontsize,fifth_line_bold,fifth_line_alignment,info_type,create_date,modiy_date)
+		values
+		<foreach collection="list" item="l" separator=",">
+			((select
+			uuid()),#{l.classroomId},#{l.classroomName},#{l.examDate},#{l.startTime},#{l.endTime},#{l.firstLineInfo},#{l.firstLineColor},#{l.firstLineFontsize},#{l.firstLineBold},#{l.firstLineAlignment},#{l.secondLineInfo},#{l.secondLineColor},#{l.secondLineFontsize},#{l.secondLineBold},#{l.secondLineAlignment},#{l.thirdLineInfo},#{l.thirdLineColor},#{l.thirdLineFontsize},#{l.thirdLineBold},#{l.thirdLineAlignment},#{l.fourthLineInfo},#{l.fourthLineColor},#{l.fourthLineFontsize},#{l.fourthLineBold},#{l.fourthLineAlignment},#{l.fifthLineInfo},#{l.fifthLineColor},#{l.fifthLineFontsize},#{l.fifthLineBold},#{l.fifthLineAlignment},#{l.infoType},#{l.createDate},#{l.modiyDate})
+		</foreach>
+	</insert>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from social_exam2
+		where id = #{id}
+	</delete>
+
+	<delete id="deleteBatchSocialExam">
+		delete from social_exam2
+		<where>
+			id
+			<foreach collection="array" open="in (" item="id" close=")" separator=",">
+				#{id}
+			</foreach>
+		</where>
+	</delete>
+
+	<delete id="deleteAllSocialExamByInfoType" parameterType="java.lang.String">
+		delete from social_exam2 where info_type = #{infoType}
+	</delete>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SocialExam2">
+		update social_exam2
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="classroomId != null">
+				classroom_id = #{classroomId},
+			</if>
+			<if test="classroomName != null">
+				classroom_name = #{classroomName},
+			</if>
+			<if test="examDate != null">
+				exam_date = #{examDate},
+			</if>
+			<if test="startTime != null">
+				start_time = #{startTime},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime},
+			</if>
+			first_line_info = #{firstLineInfo},
+			first_line_color = #{firstLineColor},
+			first_line_fontsize = #{firstLineFontsize},
+			first_line_bold =
+			#{firstLineBold},
+			first_line_alignment = #{firstLineAlignment},
+			second_line_info = #{secondLineInfo},
+			second_line_color = #{secondLineColor},
+			second_line_fontsize = #{secondLineFontsize},
+			second_line_bold = #{secondLineBold},
+			second_line_alignment = #{secondLineAlignment},
+			third_line_info =
+			#{thirdLineInfo},
+			third_line_color = #{thirdLineColor},
+			third_line_fontsize = #{thirdLineFontsize},
+			third_line_bold = #{thirdLineBold},
+			third_line_alignment = #{thirdLineAlignment},
+			fourth_line_info = #{fourthLineInfo},
+			fourth_line_color = #{fourthLineColor},
+			fourth_line_fontsize =
+			#{fourthLineFontsize},
+			fourth_line_bold = #{fourthLineBold},
+			fourth_line_alignment = #{fourthLineAlignment},
+			fifth_line_info = #{fifthLineInfo},
+			fifth_line_color = #{fifthLineColor},
+			fifth_line_fontsize = #{fifthLineFontsize},
+			fifth_line_bold = #{fifthLineBold},
+			fifth_line_alignment =
+			#{fifthLineAlignment},
+			<if test="infoType != null">
+				info_type = #{infoType},
+			</if>
+			<if test="createDate != null">
+				create_date = #{createDate},
+			</if>
+			<if test="modiyDate != null">
+				modiy_date = #{modiyDate}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="SocialExam2">
+		update social_exam2
+		set
+		id = #{id},
+		classroom_id = #{classroomId},
+		classroom_name = #{classroomName},
+		exam_date = #{examDate},
+		start_time = #{startTime},
+		end_time = #{endTime},
+		first_line_info = #{firstLineInfo},
+		first_line_color = #{firstLineColor},
+		first_line_fontsize = #{firstLineFontsize},
+		first_line_bold =
+		#{firstLineBold},
+		first_line_alignment = #{firstLineAlignment},
+		second_line_info = #{secondLineInfo},
+		second_line_color = #{secondLineColor},
+		second_line_fontsize = #{secondLineFontsize},
+		second_line_bold = #{secondLineBold},
+		second_line_alignment = #{secondLineAlignment},
+		third_line_info =
+		#{thirdLineInfo},
+		third_line_color = #{thirdLineColor},
+		third_line_fontsize = #{thirdLineFontsize},
+		third_line_bold = #{thirdLineBold},
+		third_line_alignment = #{thirdLineAlignment},
+		fourth_line_info = #{fourthLineInfo},
+		fourth_line_color = #{fourthLineColor},
+		fourth_line_fontsize =
+		#{fourthLineFontsize},
+		fourth_line_bold = #{fourthLineBold},
+		fourth_line_alignment = #{fourthLineAlignment},
+		fifth_line_info = #{fifthLineInfo},
+		fifth_line_color = #{fifthLineColor},
+		fifth_line_fontsize = #{fifthLineFontsize},
+		fifth_line_bold = #{fifthLineBold},
+		fifth_line_alignment =
+		#{fifthLineAlignment},
+		info_type = #{infoType},
+		create_date = #{createDate},
+		modiy_date = #{modiyDate}
+		where id = #{id}
+	</update>
+	
+	<update id="updateClassroomNameByClassroomId" parameterType="SocialExam2">
+		update social_exam2
+		set
+		classroom_name = #{classroomName}
+		where classroom_id = #{classroomId}
+	</update>
+	
+
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="classroomId != null">
+				and classroom_id = #{classroomId}
+			</if>
+			<if test="classroomName != null">
+				and classroom_name = #{classroomName}
+			</if>
+			<if test="examDate != null">
+				and exam_date = #{examDate}
+			</if>
+			<if test="startTime != null">
+				and start_time = #{startTime}
+			</if>
+			<if test="endTime != null">
+				and end_time = #{endTime}
+			</if>
+			<if test="firstLineInfo != null">
+				and first_line_info = #{firstLineInfo}
+			</if>
+			<if test="firstLineColor != null">
+				and first_line_color = #{firstLineColor}
+			</if>
+			<if test="firstLineFontsize != null">
+				and first_line_fontsize = #{firstLineFontsize}
+			</if>
+			<if test="firstLineBold != null">
+				and first_line_bold = #{firstLineBold}
+			</if>
+			<if test="firstLineAlignment != null">
+				and first_line_alignment = #{firstLineAlignment}
+			</if>
+			<if test="secondLineInfo != null">
+				and second_line_info = #{secondLineInfo}
+			</if>
+			<if test="secondLineColor != null">
+				and second_line_color = #{secondLineColor}
+			</if>
+			<if test="secondLineFontsize != null">
+				and second_line_fontsize = #{secondLineFontsize}
+			</if>
+			<if test="secondLineBold != null">
+				and second_line_bold = #{secondLineBold}
+			</if>
+			<if test="secondLineAlignment != null">
+				and second_line_alignment = #{secondLineAlignment}
+			</if>
+			<if test="thirdLineInfo != null">
+				and third_line_info = #{thirdLineInfo}
+			</if>
+			<if test="thirdLineColor != null">
+				and third_line_color = #{thirdLineColor}
+			</if>
+			<if test="thirdLineFontsize != null">
+				and third_line_fontsize = #{thirdLineFontsize}
+			</if>
+			<if test="thirdLineBold != null">
+				and third_line_bold = #{thirdLineBold}
+			</if>
+			<if test="thirdLineAlignment != null">
+				and third_line_alignment = #{thirdLineAlignment}
+			</if>
+			<if test="fourthLineInfo != null">
+				and fourth_line_info = #{fourthLineInfo}
+			</if>
+			<if test="fourthLineColor != null">
+				and fourth_line_color = #{fourthLineColor}
+			</if>
+			<if test="fourthLineFontsize != null">
+				and fourth_line_fontsize = #{fourthLineFontsize}
+			</if>
+			<if test="fourthLineBold != null">
+				and fourth_line_bold = #{fourthLineBold}
+			</if>
+			<if test="fourthLineAlignment != null">
+				and fourth_line_alignment = #{fourthLineAlignment}
+			</if>
+			<if test="fifthLineInfo != null">
+				and fifth_line_info = #{fifthLineInfo}
+			</if>
+			<if test="fifthLineColor != null">
+				and fifth_line_color = #{fifthLineColor}
+			</if>
+			<if test="fifthLineFontsize != null">
+				and fifth_line_fontsize = #{fifthLineFontsize}
+			</if>
+			<if test="fifthLineBold != null">
+				and fifth_line_bold = #{fifthLineBold}
+			</if>
+			<if test="fifthLineAlignment != null">
+				and fifth_line_alignment = #{fifthLineAlignment}
+			</if>
+			<if test="infoType != null">
+				and info_type = #{infoType}
+			</if>
+			<if test="createDate != null">
+				and create_date = #{createDate}
+			</if>
+			<if test="modiyDate != null">
+				and modiy_date = #{modiyDate}
+			</if>
+			<if test="search != null">
+				<bind name="pattern" value="'%' + search + '%'" />
+				and classroom_name like #{pattern}
+			</if>
+			<if test="currTime != null">
+				and date_format(#{currTime},'%T') between DATE_FORMAT(start_time,'%T') and end_time
+			</if>
+		</where>
+		ORDER BY classroom_name , exam_date , start_time
+	</sql>
+
+	<select id="getSocialExam2" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from social_exam2
+		where id = #{id}
+	</select>
+
+	<select id="listAllSocialExam2" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from social_exam2
+	</select>
+
+
+	<select id="listSocialExam2" parameterType="SocialExam2" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from social_exam2
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<select id="getPageSelective" parameterType="SocialExam2" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from social_exam2
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+	<select id="getCountByDateTimeAndClassroomId" parameterType="SocialExam2" resultType="java.lang.Integer">
+		SELECT SUM(a.c + b.d) FROM
+		( SELECT COUNT(*) AS c FROM
+		social_exam2
+		WHERE classroom_id = #{classroomId}
+		AND info_type = #{infoType}
+		AND exam_date = #{examDate}
+		AND (DATE_FORMAT(#{startTime},'%T') BETWEEN
+		DATE_FORMAT(start_time,'%T')
+		AND end_time)
+		) AS a,
+		( SELECT COUNT(*) AS d FROM
+		social_exam2
+		WHERE classroom_id = #{classroomId}
+		AND info_type = #{infoType}
+		AND exam_date = #{examDate}
+		AND
+		(DATE_FORMAT(#{endTime},'%T') BETWEEN DATE_FORMAT(start_time,'%T') AND end_time)
+		) AS b
+	</select>
+
+
+	<select id="getCurrTimeSocialExamByClassroomId" parameterType="SocialExam2" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from social_exam2
+		where classroom_id = #{classroomId} and info_type = #{infoType} and exam_date = curdate() and end_time > curtime()
+		order by
+		start_time
+		limit 1
+	</select>
+
+</mapper>

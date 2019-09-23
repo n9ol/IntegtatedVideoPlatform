@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a><cite>个人中心</cite></a>
+				</span>
+			</div>
+			<#if principal??>
+			<div class="zhongxin clear">
+				<div class="zhong_left">
+					<div class="touxiang">
+						<div class="avatarFather">
+							<img id="headPortrait" src="${fileWebPath}/userheadPortrait${principal.filePath!''}" onerror="this.src='${ctx}/img/user80.jpg'"/>
+							<p class="changeAvatar" onclick="editHeadPhoto();">编辑头像</p>
+						</div>
+						<p class="pp">
+							<span>
+								<#if principal.userType=='L'>领导</#if>
+								<#if principal.userType=='R'>教研员 </#if>
+								<#if principal.userType=='T'>教师 </#if>
+								<#if principal.userType=='S'>学生 </#if>	
+							</span>
+						</p>
+					</div>
+					<ul class="biaoshi">
+						<li class="qing" data_url="${ctx}/personalCenterUser/geren_jibenxinxi">我的基本信息</li>
+						<#if principal.userType != 'S'>
+						    <li data_url="${ctx}/personalCenter/geren_kechengbiao">我的课程表</li>
+						    <li id="iVideoRes" data_url="${ctx}/adminOffLine/videoRes">我的点播资源</li>
+						   	<#if isAutomaticRecording?? && isAutomaticRecording == 'Y'>
+						    	<li id="recordVideo" data_url="${ctx}/adminOffLine/recordVideoRes">本校评估录制资源</li>
+						    </#if>
+						    <li id="iCourRes" data_url="${ctx}/adminCourRes/courRes">我的课件资源</li>
+							<li class="myPingGu">我的评估</li>
+							<div class="pingGu" style="display: none;">
+								<!-- <div  data_url="${ctx}/personalCenter/myPgLoSchedule" >· 评估通知</div> -->
+								<div  data_url="${ctx}/personalCenter/geren_pingkejilu">· 评估记录</div>
+							</div>
+						</#if> 
+						<li id="watchRecord" data_url="${ctx}/personalCenter/geren_guankanjilu">我的观看记录</li>
+						<li class="geren_shoucang" >我的收藏</li>
+						<div class="shoucang" style="display: none;" >
+							<div  data_url="${ctx}/personalCenter/geren_shoucangjilu?searchType=R" >· 课件资源收藏记录</div>
+							<div  data_url="${ctx}/personalCenter/geren_shoucangjilu?searchType=V">· 点播收藏记录</div>
+							<div  data_url="${ctx}/personalCenter/geren_shoucangjilu?searchType=T">· 教师关注记录</div>
+							<div  data_url="${ctx}/personalCenter/geren_shoucangjilu?searchType=E">· 试卷收藏记录</div>
+							<#if principal.userType == "S">
+							<div  data_url="${ctx}/personalCenter/geren_shoucangjilu?searchType=Q">· 试题收藏记录</div>
+							</#if>
+						</div>
+						<li id="iKaopingCenter" class="kaopingCenter">考评中心</li>
+						<div class="kaoping" style="display: none;">
+						<#if principal.userType != "S">
+							<div data_url="${ctx}/testwebstutest/list">·我的学员考卷管理</div>
+							<div data_url="${ctx}/test/paperlist?memberId=${principal.id!''}">· 我的试卷库</div>
+							<div data_url="${ctx}/testwebquestion/findQuestionByUid">·我的题库</div>
+							<div data_url="${ctx}/testOffLine/managerOffLine?memberId=${principal.id!''}">·离线考试</div>
+						<#else>
+							<div  data_url="${ctx}/testwebstutest/findStuTest" >· 我的考卷管理</div>
+							<div  data_url="${ctx}/testwebstutestquestionanswer/findMyErrors" >· 我的错题库</div>
+							<div  data_url="${ctx}/testwebstutest/histogram">· 考评分析</div>
+						</#if>
+						</div>
+						<li id="modifyPassword" data_url="${ctx}/personalCenterUser/modifyPassword">修改密码</li>
+					</ul>
+					<div class="renxiang">
+						<img src="${ctx}/img/renxiang.png" />
+					</div>
+				</div>
+				<div class="zhong_right">
+				 	<iframe id="parentIframe" src="${ctx}/personalCenterUser/geren_jibenxinxi" style=";width: 100%;border: none;overflow: initial;"></iframe> 
+				</div>
+			</div>
+			</#if> 
+		</div>
+		<!--内容end-->
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<!--底部 end-->
+	</body>
+	<!--公共js-->
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<!--单独的js-->
+	<script type="text/javascript">var rapidTAG = "${rapidTAG!''}";</script>
+	<script src="${ctx}/js/web/mstd_geren.js" type="text/javascript" charset="utf-8"></script>
+</html>

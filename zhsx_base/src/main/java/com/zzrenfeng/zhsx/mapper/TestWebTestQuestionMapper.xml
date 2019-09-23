@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TestWebTestQuestionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TestWebTestQuestion" >
+		<result column="id" property="id" />
+		<result column="testId" property="testId" />
+		<result column="questionId" property="questionId" />
+		<result column="scores" property="scores" />
+		<result column="sortCode" property="sortCode" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,testId,questionId,scores,sortCode,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_test_question
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from test_web_test_question
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TestWebTestQuestion" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into test_web_test_question (id,testId,questionId,scores,sortCode,bak1,bak2,bak3)
+		values (#{id},#{testId},#{questionId},#{scores},#{sortCode},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TestWebTestQuestion" >
+		update test_web_test_question
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="testId != null" >
+				testId = #{testId},
+			</if>
+			<if test="questionId != null" >
+				questionId = #{questionId},
+			</if>
+			<if test="scores != null" >
+				scores = #{scores},
+			</if>
+			<if test="sortCode != null" >
+				sortCode = #{sortCode},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TestWebTestQuestion" >
+		update test_web_test_question
+		set 
+		id = #{id},
+		testId = #{testId},
+		questionId = #{questionId},
+		scores = #{scores},
+		sortCode = #{sortCode},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="testId != null" >
+				and testId = #{testId}
+			</if>
+			<if test="questionId != null" >
+				and questionId = #{questionId}
+			</if>
+			<if test="scores != null" >
+				and scores = #{scores}
+			</if>
+			<if test="sortCode != null" >
+				and sortCode = #{sortCode}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TestWebTestQuestion" resultType="TestWebTestQuestion">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT questionText FROM `test_web_question` q where q.id= t.questionId) as questionTitle,
+		(SELECT questionType FROM `test_web_question` q where q.id= t.questionId) as questionType
+		from test_web_test_question t
+		<include refid="Dynamic_Conditions"/>
+		order by sortCode
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TestWebTestQuestion" resultType="TestWebTestQuestion">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT questionText FROM `test_web_question` q where q.id= t.questionId) as questionTitle,
+		(SELECT questionType FROM `test_web_question` q where q.id= t.questionId) as questionType,
+		(SELECT gradeName FROM `test_web_question` q where q.id= t.questionId) as gradeName,
+		(SELECT subjectName FROM `test_web_question` q where q.id= t.questionId) as subjectName
+		from test_web_test_question t
+		<include refid="Dynamic_Conditions"/>
+		order by t.sortCode
+	</select>
+	
+	<select id="getTestpaper" parameterType="TestWebTestQuestion" resultType="TestWebTestQuestion">
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_test_question
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<insert id="batchAdd" parameterType="java.util.List">
+		insert into test_web_test_question (id,testId,questionId,scores,sortCode,bak1,bak2,bak3)
+		values
+		<foreach collection="list" item="testWebTestQuestion"  separator=",">
+		((select uuid()),#{testWebTestQuestion.testId},#{testWebTestQuestion.questionId},#{testWebTestQuestion.scores},#{testWebTestQuestion.sortCode},#{testWebTestQuestion.bak1},#{testWebTestQuestion.bak2},#{testWebTestQuestion.bak3})
+		</foreach>
+	</insert>
+
+</mapper>

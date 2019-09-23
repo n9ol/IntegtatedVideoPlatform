@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>综合视讯</title> <#include "/commons/comWeb.html" encoding="utf-8"/>
+<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/play.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+<style type="text/css">
+.swiper-container {
+	height: 370px;
+}
+</style>
+</head>
+<body onbeforeunload="return myFunction()">
+	<!--头部start-->
+	<#include "/zhsx/t/head.html" encoding="utf-8"/>
+	<!--内容start-->
+	<div class="con">
+		<!--路径导航-->
+		<div class="mianbaoxue">
+			<span class="layui-breadcrumb"> <a href="${ctx}/index">首页</a>
+				<a href="${ctx}/online/zb_online?type=A">质量评估</a> <a><cite>评课记录</cite></a>
+			</span>
+		</div>
+
+		<div class="jilu">
+			<div class="jilu_top">
+				<div class="layui-tab layui-tab-card iii">
+					<ul class="layui-tab-title uuu" style="background-color: #4596E5;">
+					<#if principal?? && principal.userType != 'S'>
+						<li>课前备课</li>
+						<li class="layui-this kkk">课中评课</li>
+						<li>查看结果</li>
+					</#if>
+						<li>点评信息</li>
+					<#if duke?? && duke == 'D'>
+						<li>课后督课</li>
+					</#if>
+					</ul>
+				</div>
+			</div>
+			<div class="tap00" style="display:none;"></div>
+			<div class="tap11"></div>
+			<div class="tap22" style="display:none;"></div>
+			<div class="tap33" style="display:none;"></div>
+			<div class="tap44" style="display:none;"></div>
+		</div>
+	</div>
+	<!--内容end-->
+	<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+</body>
+<!--公共js-->
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var userType = "${principal.userType!''}";
+	var receive = {};
+	receive.id = "${id!''}";
+	var duke = "${duke!''}";
+	var isPgAuthority = "${isPgAuthority!''}"
+</script>
+<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+<script type="text/javascript" src="${ctx}/js/web/online/qualityPlay.js"></script>
+<script type="text/javascript" src="${ctx}/Inc/swfobject.js"></script>
+<script type="text/javascript">
+	// For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. 
+	var swfVersionStr = "11.1.0";
+	// To use express install, set to playerProductInstall.swf, otherwise the empty string. 
+	var xiSwfUrlStr = "${ctx}/Inc/playerProductInstall.swf";
+	var flashvars = {};
+	flashvars.code = "${classCode!''}";
+	flashvars.httpUrl = "${rtmpUrl!''}";
+	flashvars.cip = "${cip!''}";
+	flashvars.ciptype = "${ciptype!''}";
+	var params = {};
+	params.quality = "high";
+	params.bgcolor = "#ffffff";
+	params.allowscriptaccess = "sameDomain";
+	params.allowfullscreen = "true";
+	var attributes = {};
+	attributes.id = "RFLVideo";
+	attributes.name = "RFLVideo";
+	attributes.align = "middle";
+	swfobject.embedSWF("${ctx}/Inc/RFLVideo.swf", "flashContent",
+			"${width!'885px'}", "${height!'530px'}", swfVersionStr,
+			xiSwfUrlStr, flashvars, params, attributes);
+	// JavaScript enabled so display the flashContent div in case it is not replaced with a swf object.
+	swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+</script>
+<script type="text/javascript">
+$(document).ready(function() { 
+	$(document).bind("keydown",function(e){ 
+		e=window.event||e; 
+		if(e.keyCode==116){ 
+			e.keyCode = 0; 
+			return false; 
+		} 
+	}); 
+}); 
+function myFunction(){
+	return false; 
+}
+</script>
+</html>

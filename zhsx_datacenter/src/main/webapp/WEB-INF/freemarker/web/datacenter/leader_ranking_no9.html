@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<!--历年使用平台学校的变化-->
+		<div class="nr1">
+			<p class="tittle">今年教师使用平台人数</p>
+			<div id="main3"></div>
+		</div>
+	</body>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	<script src="${ctx}/js/web/henan.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeRanking'));
+			iframe.height(body.height()+20);
+		}
+		
+		//数据
+		var datas=[];
+		<#if resultMapList?exists && resultMapList?size != 0 >
+		 	<#list resultMapList as l>
+			 	var temp = {};	
+	          	temp.value="${l.cityNum!''}";
+		      	temp.name="${l.cityName!''}";
+		      	datas.push(temp);
+		 	</#list>
+		</#if>
+		//地图
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var myChart3 = echarts.init(document.getElementById("main3"));
+		var option3 = {
+			backgroundColor: "#4596e5",
+			series: [{
+				type: 'map',
+				map: 'henan',
+				label: {
+					normal: {
+						show: true
+					},
+					emphasis: {
+						show: true
+					}
+				},
+				data: datas
+			}],
+			tooltip: {}
+		}
+		myChart3.setOption(option3);
+	</script>
+
+</html>

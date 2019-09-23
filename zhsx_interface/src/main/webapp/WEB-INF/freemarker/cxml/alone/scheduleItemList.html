@@ -1,0 +1,21 @@
+<?xml version="1.0"	encoding="UTF-8"?>
+<onlinevideolist>
+	<#assign seq = [0, 1, 2, 3, 4, 5, 6]>
+	<#if psslist?? && (psslist?size>0)><#list psslist as l>
+    <schedule>
+	    <item1>第${(l.oddSectionOfDay)!''}-${(l.evenSectionOfDay)!''}节</item1>
+	    <#list seq as i>
+       		<#if psilist?? && (psilist?size>0)>
+				<#list psilist as ll>
+		             <#if (ll.bigSectionOfDay == l.bigSectionOfDayString) && (ll.dayOfWeek)==i>
+						<item${i+2}>
+							${ll.subjectName!''}(${ll.teacherName!''})
+						</item${i+2}>
+						<#break>
+					</#if>
+				</#list>
+			</#if>
+		</#list>
+    </schedule>
+    </#list></#if>
+</onlinevideolist>

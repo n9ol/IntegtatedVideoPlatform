@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebPgwatchMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebPgwatch" >
+		<result column="id" property="id" />
+		<result column="pjCode" property="pjCode" />
+		<result column="tsTime" property="tsTime" />
+		<result column="ssTime" property="ssTime" />
+		<result column="hjTime" property="hjTime" />
+		<result column="fyTime" property="fyTime" />
+		<result column="comrate" property="comrate" />
+		<result column="accuracy" property="accuracy" />
+		<result column="addtime" property="addtime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,pjCode,tsTime,ssTime,hjTime,fyTime,comrate,accuracy,addtime,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_pgwatch
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_pgwatch
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebPgwatch" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_pgwatch (id,pjCode,tsTime,ssTime,hjTime,fyTime,comrate,accuracy,addtime,bak,bak1,bak2)
+		values (#{id},#{pjCode},#{tsTime},#{ssTime},#{hjTime},#{fyTime},#{comrate},#{accuracy},#{addtime},#{bak},#{bak1},#{bak2})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebPgwatch" >
+		update web_pgwatch
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="pjCode != null" >
+				pjCode = #{pjCode},
+			</if>
+			<if test="tsTime != null" >
+				tsTime = #{tsTime},
+			</if>
+			<if test="ssTime != null" >
+				ssTime = #{ssTime},
+			</if>
+			<if test="hjTime != null" >
+				hjTime = #{hjTime},
+			</if>
+			<if test="fyTime != null" >
+				fyTime = #{fyTime},
+			</if>
+			<if test="comrate != null" >
+				comrate = #{comrate},
+			</if>
+			<if test="accuracy != null" >
+				accuracy = #{accuracy},
+			</if>
+			<if test="addtime != null" >
+				addtime = #{addtime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebPgwatch" >
+		update web_pgwatch
+		set 
+		id = #{id},
+		pjCode = #{pjCode},
+		tsTime = #{tsTime},
+		ssTime = #{ssTime},
+		hjTime = #{hjTime},
+		fyTime = #{fyTime},
+		comrate = #{comrate},
+		accuracy = #{accuracy},
+		addtime = #{addtime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="pjCode != null" >
+				and pjCode = #{pjCode}
+			</if>
+			<if test="tsTime != null" >
+				and tsTime = #{tsTime}
+			</if>
+			<if test="ssTime != null" >
+				and ssTime = #{ssTime}
+			</if>
+			<if test="hjTime != null" >
+				and hjTime = #{hjTime}
+			</if>
+			<if test="fyTime != null" >
+				and fyTime = #{fyTime}
+			</if>
+			<if test="comrate != null" >
+				and comrate = #{comrate}
+			</if>
+			<if test="accuracy != null" >
+				and accuracy = #{accuracy}
+			</if>
+			<if test="addtime != null" >
+				and addtime = #{addtime}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebPgwatch" resultType="WebPgwatch">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pgwatch
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebPgwatch" resultType="WebPgwatch">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pgwatch
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

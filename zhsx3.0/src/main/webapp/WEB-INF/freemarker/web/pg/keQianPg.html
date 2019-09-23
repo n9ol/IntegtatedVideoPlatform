@@ -1,0 +1,100 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<div class="xiangqing">
+	<div class="xiangqing_top">文件详细列表</div>
+	<form id="myFormKq">
+		<ul class="xiangqing_ul">
+			<li>
+				<span>序号</span>
+				<span>评估项(权重)</span>
+				<span>文件名</span>
+				<span>操作</span>
+				<span>打分（百分制）</span>
+			</li>
+			<#if lopgcourList?? && (lopgcourList?size>0)> <#list lopgcourList as l>
+			<li>
+				<span>${l_index+1}</span>
+				<span>${l.pjInfoName!''}(${l.pjInfoWeight!''})</span>
+				<input type="hidden" name="weights[${l_index}]" value="${l.pjInfoWeight!''}">
+				<span class="ellipsesSpan">${l.courName!''}</span>
+				<span>
+					<a style="color: orange;" href="${ctx}/courRes/watchCour?id=${l.courId!''}" target="_blank">查看</a>
+					<a style="color: orange;" href="${ctx}/adminCourRes/downloadCourRes?id=${l.courId!''}">下载</a>
+				</span>
+				<span>
+					<input name="totals[${l_index}]" style="width: 50px; text-align: center;" maxlength="3" type="text" value="${l.total!'0'}" onblur="updataScore('${l.loScheduleId}','${l.pjInfoId}',this)" />
+				</span>
+			</li>
+			</#list> <#else>
+			<li>
+				<span>暂无课前评估资源</span>
+			</li>
+			</#if>
+		</ul>
+	</form>
+	<#if lopgcourList?? && (lopgcourList?size>0)>
+	<div class="pinggu clear">
+		<input type="button" class="layui-btn layui-btn-mini pinggu3" value="提交" onclick="submitkq();">
+	</div>
+	</#if>
+</div>
+<#if lopgcourList?? && (lopgcourList?size>0)>
+<div id="yuantu" style="height: 380px; width: 1178px;"></div>
+</#if>
+<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById("yuantu"));
+		var colors = ["#4596e5", "#b6a2de", "#2ec7c9"];
+		var option = {
+			color: colors,
+			title: {
+				text: '课前备课构成图',
+				x: 'center'
+			},
+			tooltip: {
+				trigger: 'item',
+				formatter: "{b} : {d}%"
+			},
+			legend: {
+				orient: 'vertical',
+				left: 'left',
+				data: [ ${legendData!''} ]
+			},
+			series: [{
+				type: 'pie',
+				radius: '55%',
+				center: ['50%', '60%'],
+				data: [ ${seriesData!''} ],
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			}]
+		};
+		myChart.setOption(option);
+
+		//更新评分
+		function updataScore(zid,pjInfoId,src){
+			var score = src.value;
+			if(!$.isNumeric(score) ||  score > 100 || score < 0){
+				layer.msg("分值必须在0到100之间");
+				$(src).val(0);
+			}else{
+				$.getJSON(ctx+"/pgInfo/updataScore", { pgId: zid,pgPjInfoId:pjInfoId,score: score });
+			}
+		}
+		
+		//提交继续总分
+		function submitkq(){
+			var webPjInfoId = $("input[name='webPjInfoId']").val();
+			$.ajax({
+				type : "POST",
+				url : ctx+"/pgInfo/updataWebPjKq?webPjInfoId="+webPjInfoId,
+				data : $("#myFormKq").serialize(),
+				success : function(data) {
+					layer.msg(data);
+				}
+			});
+		}
+	</script>

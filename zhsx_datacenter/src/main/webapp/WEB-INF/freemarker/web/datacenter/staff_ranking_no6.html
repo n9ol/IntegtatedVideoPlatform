@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<div class="nr1">
+			<p class="tittle">本教研员所评 -- 课前备课平均评估得分 / 学校（不同学校）</p>
+			<div id="main15">
+
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/echarts.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeRanking'));
+			iframe.height(body.height()+20);
+		}
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var myChart15 = echarts.init(document.getElementById("main15"));
+		//不同学校在前一周课前备课评估得分图
+		var option15 = {
+			color: color3,
+			tooltip: {
+				trigger: 'axis'
+			},
+			legend: {
+				data: ['实验一中', '实验二中', '实验三中', '实验四中', '实验五中']
+			},
+			calculable: true,
+			xAxis: [{
+				type: 'category',
+				boundaryGap: false,
+				data: ['周一', '周二', '周三', '周四', '周五']
+			}],
+			yAxis: [{
+				type: 'value'
+			}],
+			series: [{
+				name: '实验一中',
+				type: 'line',
+				stack: '总量',
+				data: [120, 132, 101, 134, 90]
+			}, {
+				name: '实验二中',
+				type: 'line',
+				stack: '总量',
+				data: [220, 182, 191, 234, 290]
+			}, {
+				name: '实验三中',
+				type: 'line',
+				stack: '总量',
+				data: [150, 232, 201, 154, 190]
+			}, {
+				name: '实验四中',
+				type: 'line',
+				stack: '总量',
+				data: [320, 332, 301, 334, 390]
+			}, {
+				name: '实验五中',
+				type: 'line',
+				stack: '总量',
+				data: [820, 932, 901, 934, 1290]
+			}]
+		};
+		myChart15.setOption(option15);
+	</script>
+
+</html>

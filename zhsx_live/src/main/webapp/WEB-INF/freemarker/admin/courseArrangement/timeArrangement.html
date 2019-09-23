@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <title>仁峰后台管理系统</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<style type="text/css">
+			.table-hover{
+				width: 150px;
+			}
+			.table-time{
+				width: 800px;
+				float:left;
+				margin-left:30px;
+				margin-top:20px;
+			}
+			.aa{
+				float:left;
+			}
+			.layui-elem-quote{
+			 	height:65px;
+			}
+			#searchval{
+				width: 180px;			
+			}
+		</style>
+    </head>
+<body>
+<section class="layui-larry-box">
+	<div class="larry-personal">
+	    <div class="layui-tab">
+    		<blockquote class="layui-elem-quote mylog-info-tit">
+				<ul class="pull-right">
+					<li>
+						<a class="layui-btn refresh_btn" style="margin: 0 30px 0 30px;" href="${ctx}/adminCourseArrangement/timeArrangement">
+						<i class="iconfont icon-shuaxin"></i>
+						</a>
+					</li>
+				</ul>
+				<ul class="pull-right">
+					<li>
+						<div class="layui-input-inline pull-left">
+							<input id="searchval" name="searchval" type="search" class="layui-input" placeholder="学校名称"/>
+						</div> 
+						<a id="searchSchool" class="layui-btn search-btn01 pull-left" href="javascript:void(0);"><i class="layui-icon">&#xe615;</i></a>
+					</li>
+				</ul>
+			</blockquote>
+            <div class="larry-separate"></div>
+		    <div class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+                <div class="layui-tab-item layui-field-box layui-show aa">
+                     <table class="layui-table table-hover" lay-even>
+                         <tbody class="school"></tbody>
+                          <tbody>
+                              <tr>
+                                <td> 
+                                	<button id="syy" class="layui-btn  layui-btn-small layui-btn-normal layui-btn-disabled" onclick="onpage()" style="width:75px;">上一页</button>
+                                </td>
+								<td>
+									<button id="xyy" class="layui-btn  layui-btn-small layui-btn-normal" onclick="underpage()" style="width:75px;">下一页</button>
+								</td>
+                              </tr>
+                          </tbody>
+                     </table>
+			    </div>
+			  <table class="layui-table table-time">
+			  	  <thead>
+			  	  	<tr>
+			  	  		<td>学校</td><td id="schoolName" colspan="3" style="color:#009688;">请先选择学校</td>
+			  	  	</tr>
+			  	  </thead>
+				  <tbody>
+				    <tr>
+				      <td>学期时间</td>
+				      <td colspan="2">
+				      	  <div class="layui-inline">
+						    <div class="layui-input-inline" style="width:150px;">
+						      <input  id="firstDay" class="layui-input"  onclick="layui.laydate({elem: this, format: 'YYYY-MM-DD'})" readonly>
+						    </div>
+						    <span>-</span>
+						    <div class="layui-input-inline" style="width:150px;">
+						     <input  id="lastDay" class="layui-input"  onclick="layui.laydate({elem: this,  format: 'YYYY-MM-DD',min: laydate.now(+1)})" readonly>
+						    </div>
+						  </div>
+				      </td>
+				      <td>
+				      	<a id="uTT" href="javascript:;" onclick="updateTermTime()" style="display:none;">保存</a>
+				      	<a id="iTT" href="javascript:;" onclick="insterTermTime()">保存</a>
+				      </td>
+				    </tr>
+				    <tr>
+				    	<th colspan="4"></th>
+				    </tr>
+				    <tr style="background-color: #f8f8f8;">
+				      <td>上课时间</td>
+				      <td colspan="3">
+				      	<button style="width:50px;float: left;margin-left:30px;" onclick="addClassTime()">添加</button>
+				      </td>
+				    </tr>
+				    <tr>
+				    	<th>课程节次</th>
+				    	<th>开始时间</th>
+				    	<th>结束时间</th>
+				    	<th>操作</th>
+				    </tr>
+				  </tbody>
+				  <tbody class="classTime">
+				  		
+				  </tbody>
+			  </table>
+		    </div>
+		</div>
+		<div>
+			<input type="hidden" id="pageNum" value="1">
+			<input type="hidden" id="termTimeId">
+			<input type="hidden" id="schoolId">
+			<input type="hidden" id="search">
+			<input type="hidden" id="pages">
+		</div>
+<!-- 		<span style="margin-left: 50px;color: red;">注: 学期开始时间,系统会自动更新为选择时间所在周的星期一的时间</span> -->
+	</div>
+</section>
+<script type="text/javascript" src="${ctx}/js/admin/courseArrangement/timeArrangement.js"></script>
+</body>
+</html>

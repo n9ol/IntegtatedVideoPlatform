@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebCommentsMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebComments" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="contextType" property="contextType" />
+		<result column="contextId" property="contextId" />
+		<result column="context" property="context" />
+		<result column="contextMo" property="contextMo" />
+		<result column="isShown" property="isShown" />
+		<result column="thumbsUp" property="thumbsUp" />
+		<result column="thumbsDown" property="thumbsDown" />
+		<result column="createTime" property="createTime" />
+		<result column="modiyTime" property="modiyTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,contextType,contextId,context,contextMo,isShown,thumbsUp,thumbsDown,createTime,modiyTime
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_comments
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_comments
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebComments" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_comments (id,userId,contextType,contextId,context,contextMo,isShown,thumbsUp,thumbsDown,createTime,modiyTime)
+		values (#{id},#{userId},#{contextType},#{contextId},#{context},#{contextMo},#{isShown},#{thumbsUp},#{thumbsDown},#{createTime},#{modiyTime})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebComments" >
+		update web_comments
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="contextType != null" >
+				contextType = #{contextType},
+			</if>
+			<if test="contextId != null" >
+				contextId = #{contextId},
+			</if>
+			<if test="context != null" >
+				context = #{context},
+			</if>
+			<if test="contextMo != null" >
+				contextMo = #{contextMo},
+			</if>
+			<if test="isShown != null" >
+				isShown = #{isShown},
+			</if>
+			<if test="thumbsUp != null" >
+				thumbsUp = #{thumbsUp},
+			</if>
+			<if test="thumbsDown != null" >
+				thumbsDown = #{thumbsDown},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="modiyTime != null" >
+				modiyTime = #{modiyTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebComments" >
+		update web_comments
+		set 
+		id = #{id},
+		userId = #{userId},
+		contextType = #{contextType},
+		contextId = #{contextId},
+		context = #{context},
+		contextMo = #{contextMo},
+		isShown = #{isShown},
+		thumbsUp = #{thumbsUp},
+		thumbsDown = #{thumbsDown},
+		createTime = #{createTime},
+		modiyTime = #{modiyTime}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="contextType != null" >
+				and contextType = #{contextType}
+			</if>
+			<if test="contextId != null" >
+				and contextId = #{contextId}
+			</if>
+			<if test="context != null" >
+				and context = #{context}
+			</if>
+			<if test="contextMo != null" >
+				and contextMo = #{contextMo}
+			</if>
+			<if test="isShown != null" >
+				and isShown = #{isShown}
+			</if>
+			<if test="thumbsUp != null" >
+				and thumbsUp = #{thumbsUp}
+			</if>
+			<if test="thumbsDown != null" >
+				and thumbsDown = #{thumbsDown}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="modiyTime != null" >
+				and modiyTime = #{modiyTime}
+			</if>
+			<if test="search != null">
+				and userId in (SELECT id FROM `user` WHERE nickName LIKE '%${search}%')
+			</if>
+		</where>
+		ORDER BY createTime DESC
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebComments" resultType="WebComments">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=c.userId) as userName
+		from web_comments c
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebComments" resultType="WebComments">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=c.userId) as userName,
+		(SELECT filePath FROM `user` u WHERE u.id=c.userId) as userPic
+		from web_comments c
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<update id="updateBatch" parameterType="java.util.Map">
+		update web_comments
+		set 
+		isShown = #{isShown}
+		where id in 
+		<foreach collection="ids" open="(" close=")" separator="," item="id">
+			#{id}
+		</foreach>
+	</update>
+	
+	<delete id="deleteBatch" parameterType="java.util.List">
+		delete from web_comments
+		where id in
+		<foreach collection="list" open="(" close=")" item="id" separator=","> 
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<title>仁峰后台管理系统</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/admin/area.css" >
+		<style type="text/css">
+/* 			.subject{display:none;} */
+			#imp{display:inline-block;float:right;}
+		</style>
+	</head>
+
+	<body>
+		<div class="diqu">
+			<span class="map"><span class="logos">◇</span>专业科目</span> <span> — </span> <span>专业科目信息列表</span>
+		</div>
+		<div class="des">
+			<span>请根据专业选择专业下面的科目信息，点击科目对科目信息进行管理。</span> <span class="fenge2">|</span><span class="guanli"> <a href="${ctx}/adminBaseData/gradeSubjects">刷新</a>  </span><span class="fenge2">|</span>
+		</div>
+
+		<div class="sheng">
+			<div class="nav">
+				<span class="sheng_nav"><span class="logo">◇</span>专业导航</span> <span class="tishi" id="ptext">(点击专业名称显示科目名称)</span>
+				<div id="mp" style="display: none;">
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="quitManageP();"> 退出管理  </span>
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="addGrade();"> 添加专业</span>
+					<span class="fenge">|</span>
+				</div>
+				<div id="imp">
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="manageP();">专业管理  </span>
+					<span class="fenge">|</span>
+				</div>
+			</div>
+			<ul class="sheng_ul">
+				<li>
+				    <#assign onc="a"> <#if state==1><#assign onc="e"> </#if>
+					<#if sysDicts?? && (sysDicts?size>0)>
+					<#list sysDicts as l>
+						 <span id="span${l_index}" class="${l.id!''}" onclick="${onc}gradeSubject('${l.id!''}','${l.keyname!''}',this)">${l.value!''}(${l.sort!''})</span>
+					</#list>
+					</#if>
+				</li>
+			</ul>
+		</div>
+		<div class="sheng subject">
+			<div class="nav">
+				<span class="sheng_nav"><span class="logo">◇</span>科目导航</span> <span class="tishi">(点击科目名称可以对科目信息进行修改、删除操作)</span> 
+				<span class="fenge">|</span>
+				<span class="guanli" onclick="addSubject();"> 添加科目</span>
+				<span class="fenge">|</span>
+			</div>
+			<ul class="sheng_ul" id="subject">
+				<li></li>
+			</ul>
+		</div>
+	</body>
+	<div>
+		<input type="hidden" id="gradeId">
+		<input type="hidden" id="state" value="G">
+	</div>
+<script type="text/javascript">
+	var layer;
+	layui.use(['layer'],function(){
+		layer=layui.layer;
+	});
+	
+	//获得科目
+	function agradeSubject(id,keyName,src){
+		//高亮
+		$(".sheng_ul li span").css("color","#0066cc");
+		$(src).css({ color: "#5FB878"});
+		
+		$("#state").val("S");
+		$("#gradeId").val(id);
+		$("#subject li").empty();
+		
+		$.ajax({
+		   type: "POST",
+		   url: "${ctx}/adminBaseData/getSubjects",
+		   data: { gradeId: id},
+		   dataType: "json",
+		   success: function(json){
+	 			for (var int = 0; int < json.length; int++) {
+					var arrayJson=json[int];
+					$("#subject").find("li").append("<span onclick=egradeSubject('"+arrayJson.id+"','"+arrayJson.keyname+"')>"+arrayJson.value+"("+arrayJson.sort+")</span>");
+				} 
+		   }
+		});
+		
+	}
+	
+	//进入专业管理
+	function manageP(){
+		$("#state").val("G");
+		location.href="${ctx}/adminBaseData/gradeSubjects?state=1";
+	}
+	
+	//退出专业管理
+	function quitManageP(){
+		$("#state").val("S");
+		location.href="${ctx}/adminBaseData/gradeSubjects";
+	}
+	
+	$(function(){
+ 		var st=${state};
+ 		if(st === 1){
+			$("#ptext").text("(点击专业名称可以对专业信息进行修改、删除操作)");
+			$("#mp").css("display","inline");
+			$("#imp").css("display","none");
+ 		}else{
+ 	 		var span0 = document.getElementById("span0");
+ 	 		var id = $(span0).attr("class");
+ 	 		agradeSubject(id, "", span0);
+ 		}
+	});
+	
+	//添加专业
+	function addGrade(){
+		LayerOpen('添加专业', '450px', '250px', '${ctx}/adminBaseData/addGradeSubject?keyName=G');
+	}
+	
+	//添加科目
+	function addSubject(){
+		var pid = $("#gradeId").val();
+		LayerOpen('添加科目', '450px', '250px', '${ctx}/adminBaseData/addGradeSubject?keyName=S&pid='+pid);
+	}
+	
+	//编辑专业科目
+	function egradeSubject(id,keyName){
+ 		layer.confirm('您是修改还是删除？', {
+			  shade: 0, 
+			  btn: ['修改','删除'] 
+			}, function(index){
+				LayerOpen('编辑', '450px', '250px', '${ctx}/adminBaseData/editGradeSubject?id='+id);
+				layer.close(index);
+			}, function(){
+				$.get("${ctx}/adminBaseData/delGradeSubject", { id: id ,keyName:keyName}, function(data){
+					refreshPage(data);
+				 }); 
+			});	
+	}
+	
+	//刷新页面
+	function refreshPage(data){
+		layer.msg(data,{time:500},function(){
+	 		var state=$("#state").val();
+	 		if(state=="G"){
+				location.reload(); 
+			}
+ 			if(state=="S"){
+				var id = $("#gradeId").val();
+				agradeSubject(id);
+			}
+		});
+	}
+</script>
+</html>

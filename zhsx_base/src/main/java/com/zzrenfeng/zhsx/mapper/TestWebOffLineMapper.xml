@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TestWebOffLineMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TestWebOffLine" >
+		<result column="id" property="id" />
+		<result column="memberId" property="memberId" />
+		<result column="title" property="title" />
+		<result column="schoolId" property="schoolId" />
+		<result column="classId" property="classId" />
+		<result column="gradeId" property="gradeId" />
+		<result column="subjectId" property="subjectId" />
+		<result column="volume" property="volume" />
+		<result column="version" property="version" />
+		<result column="score" property="score" />
+		<result column="averScore" property="averScore" />
+		<result column="sum" property="sum" />
+		<result column="failNum" property="failNum" />
+		<result column="passNum" property="passNum" />
+		<result column="addTime" property="addTime" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,memberId,title,schoolId,classId,gradeId,subjectId,volume,version,score,averScore,sum,failNum,passNum,addTime,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_offLine
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from test_web_offLine
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TestWebOffLine" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into test_web_offLine (id,memberId,title,schoolId,classId,gradeId,subjectId,volume,version,score,averScore,sum,failNum,passNum,addTime,bak1,bak2,bak3)
+		values (#{id},#{memberId},#{title},#{schoolId},#{classId},#{gradeId},#{subjectId},#{volume},#{version},#{score},#{averScore},#{sum},#{failNum},#{passNum},#{addTime},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TestWebOffLine" >
+		update test_web_offLine
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="memberId != null" >
+				memberId = #{memberId},
+			</if>
+			<if test="title != null" >
+				title = #{title},
+			</if>
+			<if test="schoolId != null" >
+				schoolId = #{schoolId},
+			</if>
+			<if test="classId != null" >
+				classId = #{classId},
+			</if>
+			<if test="gradeId != null" >
+				gradeId = #{gradeId},
+			</if>
+			<if test="subjectId != null" >
+				subjectId = #{subjectId},
+			</if>
+			<if test="volume != null" >
+				volume = #{volume},
+			</if>
+			<if test="version != null" >
+				version = #{version},
+			</if>
+			<if test="score != null" >
+				score = #{score},
+			</if>
+			<if test="averScore != null" >
+				averScore = #{averScore},
+			</if>
+			<if test="sum != null" >
+				sum = #{sum},
+			</if>
+			<if test="failNum != null" >
+				failNum = #{failNum},
+			</if>
+			<if test="passNum != null" >
+				passNum = #{passNum},
+			</if>
+			
+			<if test="addTime != null" >
+				addTime = #{addTime},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TestWebOffLine" >
+		update test_web_offLine
+		set 
+		id = #{id},
+		memberId = #{memberId},
+		title = #{title},
+		schoolId = #{schoolId},
+		classId = #{classId},
+		gradeId = #{gradeId},
+		subjectId = #{subjectId},
+		volume = #{volume},
+		version = #{version},
+		score = #{score},
+		averScore = #{averScore},
+		sum = #{sum},
+		failNum = #{failNum},
+		passNum = #{passNum},
+		addTime = #{addTime},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="memberId != null" >
+				and memberId = #{memberId}
+			</if>
+			<if test="title != null" >
+				and title = #{title}
+			</if>
+			<if test="schoolId != null" >
+				and schoolId = #{schoolId}
+			</if>
+			<if test="classId != null" >
+				and classId = #{classId}
+			</if>
+			<if test="gradeId != null" >
+				and gradeId = #{gradeId}
+			</if>
+			<if test="subjectId != null" >
+				and subjectId = #{subjectId} or subjectId in (select id from sys_dict where value=#{subjectId})
+			</if>
+			<if test="volume != null" >
+				and volume = #{volume}
+			</if>
+			<if test="version != null" >
+				and version = #{version}
+			</if>
+			<if test="score != null" >
+				and score = #{score}
+			</if>
+			<if test="averScore != null" >
+				and averScore = #{averScore}
+			</if>
+			<if test="sum != null" >
+				and sum = #{sum}
+			</if>
+			<if test="failNum != null" >
+				and failNum = #{failNum}
+			</if>
+			<if test="passNum != null" >
+				and passNum = #{passNum}
+			</if>
+			<if test="addTime != null" >
+				and addTime = #{addTime}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+			<if test="search != null" >
+				and title LIKE '%${search}%'
+			</if>
+			<if test="area != null" >
+				and memberId in (SELECT id FROM `user` u WHERE u.schoolId IN (
+						SELECT id FROM sys_school s WHERE s.cityId IN(SELECT id FROM sys_dict d WHERE d.`value` LIKE '%${area}%')
+					))
+			</if>
+			<if test="searchTime !=null">
+				and DATE_FORMAT( addTime, '%Y%m' ) = DATE_FORMAT( CURDATE( ) , '%Y%m' )
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TestWebOffLine" resultType="TestWebOffLine">
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_offLine
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TestWebOffLine" resultType="TestWebOffLine">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT value FROM `sys_dict` g WHERE g.id=t.gradeId) as gradeName,
+		(SELECT value FROM `sys_dict` g WHERE g.id=t.subjectId) as subjectName
+		from test_web_offLine t
+ 		<include refid="Dynamic_Conditions"/>	
+	</select>
+	
+	
+	<select id="getAllBysubj"  parameterType="TestWebOffLine" resultType="TestWebOffLine">
+		select 
+		distinct(subjectId),schoolId,gradeId,
+		(SELECT value FROM `sys_dict` g WHERE g.id=t.subjectId) as subjectName
+		from test_web_offLine t
+ 		<include refid="Dynamic_Conditions"/>	
+ 		group by t.subjectId limit 7
+	</select>
+	
+	<select id="findClassRoom" parameterType="TestWebOffLine" resultType="TestWebOffLine">
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_offLine
+		<include refid="Dynamic_Conditions"/>
+		group by classId
+	
+	</select>
+	
+	<select id="getClassScore" parameterType="TestWebOffLine" resultType="TestWebOffLine">
+		select  IFNULL(avg(averScore),0) as sumAver
+		from test_web_offLine 
+		<include refid="Dynamic_Conditions"/>		
+	</select>
+	
+	<select id="getAvgByGrade"  parameterType="String" resultType="TestWebOffLine"  >
+		select avg(t.averScore) as sumAver,
+		(SELECT value FROM `sys_dict` g WHERE g.id=t.gradeId) as gradeName
+		from test_web_offLine t
+		where 1=1 
+		and t.schoolId =#{_parameter}
+		GROUP BY t.gradeId	
+	</select>
+	
+	<select id="getAvgBySchool" resultType="TestWebOffLine">
+		select avg(t.averScore) AS sumAver , 
+		round(1.0*SUM(passNum)/SUM(sum),2)*100 AS passRatio,
+		(SELECT schoolName FROM `sys_school` s WHERE s.id=t.schoolId) as schoolName
+		 from test_web_offLine t  GROUP BY t.schoolId limit 10
+	</select>
+	
+	<select id="getByMonth" parameterType="TestWebOffLine" resultType="TestWebOffLine">
+		SELECT IFNULL(a.avg,0) as sumAver from  
+			(select avg(averScore) as avg,classId,FROM_UNIXTIME( UNIX_TIMESTAMP(c.addTime),'%m' ) as mon 
+			from test_web_offLine c where  FROM_UNIXTIME( UNIX_TIMESTAMP(c.addTime),'%Y' ) = '2017' and classId=#{classId} and schoolId=#{schoolId} and gradeId=#{gradeId} group by mon,classId   ) a 
+			RIGHT JOIN (SELECT '01' as time2 from  DUAL UNION ALL  
+			SELECT '02' as time2 from  DUAL UNION ALL 
+			SELECT '03' as time2 from  DUAL UNION ALL 
+			SELECT '04' as time2 from  DUAL UNION ALL 
+			SELECT '05' as time2 from  DUAL UNION ALL 
+			SELECT '06' as time2 from  DUAL UNION ALL 
+			SELECT '07' as time2 from  DUAL UNION ALL 
+			SELECT '08' as time2 from  DUAL UNION ALL 
+			SELECT '09' as time2 from  DUAL UNION ALL 
+			SELECT '10' as time2 from  DUAL UNION ALL 
+			SELECT '11' as time2 from  DUAL UNION ALL 
+			SELECT '12' as time2 from  DUAL )b on a.mon = b.time2 
+	</select>
+	
+	<delete id="deleteBatch" parameterType="java.util.Map">
+		delete from test_web_offLine
+		where id in
+		<foreach collection="ids" open="(" close=")" separator="," item="id" > 
+			#{id}
+		</foreach>
+	</delete>
+	
+</mapper>

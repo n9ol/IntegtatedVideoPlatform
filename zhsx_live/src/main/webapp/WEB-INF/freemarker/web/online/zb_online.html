@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教育综合视讯管理平台</title>
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zb_zhiliangpinggu.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/imagehover.min.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
+</head>
+<body>
+	<!--头部start-->
+	<#include "/zhsx/t/head.html" encoding="utf-8"/>
+	<!--内容start-->
+	<div class="con">
+		<div class="mianbaoxue">
+			<span class="layui-breadcrumb">
+				<a href="${ctx}/index">首页</a>
+				<a href="${ctx}/online/zb_online">直播</a>
+				<#if type??>
+				<a>
+					<cite> <#if type == "G"> 专递课堂 <#elseif type == "A"> 在线评估 <#else> 直播课堂 </#if> </cite>
+				</a>
+				</#if>
+			</span>
+		</div>
+		<!--筛选区域-->
+		<div>
+			<ul class="filter1">
+				<li class="filter2 borderBottom clear">
+					<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+					<ul class="filter3 clear">
+						<li class="filterActive" onclick="selectGrade()">全部</li>
+						<#if grades?? && (grades?size>0)><#list grades as g>
+						<li onclick="selectGrade('${g.id}','${g.value}')">${g.value!''}</li>
+						</#list></#if>
+					</ul>
+					<span class="category2">
+						<button class="layui-btn layui-btn-small unfolded">
+							<strong>+</strong>
+							展开
+						</button>
+						<button class="layui-btn layui-btn-small putAway" style="display: none;">
+							<strong>-</strong>
+							收起
+						</button>
+					</span>
+				</li>
+				<li class="filter2  clear">
+					<span class="category1">科&nbsp;&nbsp;&nbsp;&nbsp;目 ></span>
+					<ul class="filter3 clear" id="hhh">
+						<li class="filterActive" onclick="selectSubjects()">全部</li>
+						<#if subjects?? && (subjects?size>0)><#list subjects as s>
+						<li onclick="selectSubjects('${s.value}',this)">${s.value!''}</li>
+						</#list></#if>
+					</ul>
+					<span class="category2">
+						<button class="layui-btn layui-btn-small unfolded">
+							<strong>+</strong>
+							展开
+						</button>
+						<button class="layui-btn layui-btn-small putAway" style="display: none;">
+							<strong>-</strong>
+							收起
+						</button>
+					</span>
+				</li>
+				<li class="filter2 clear isShow">
+					<span class="category1">状&nbsp;&nbsp;&nbsp;&nbsp;态 ></span>
+					<ul class="filter3 clear">
+						<li class="filterActive" onclick="timeSorting('Q',this);">全部</li>
+						<li onclick="timeSorting('Z',this);">正在直播</li>
+						<li onclick="timeSorting('J',this);">即将直播</li>
+					</ul>
+					<span class="category2">
+						<button class="layui-btn layui-btn-small unfolded">
+							<strong>+</strong>
+							展开
+						</button>
+						<button class="layui-btn layui-btn-small putAway" style="display: none;">
+							<strong>-</strong>
+							收起
+						</button>
+					</span>
+				</li>
+			</ul>
+			<div class="fitmore">
+				<div class="morediv">
+					<div class="text">
+						<a href="#" class="isShowBtu">显示更多选项</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="con_con clear">
+			<div class="con_left">
+				<div class="con_left_div clear">
+					<div class="zonghe"></div>
+					<div class="sousuo">
+						<input id="searchval" style="border: 1px solid gainsboro;padding-left:2px;" type="search" placeholder="教室名称/老师名称" />
+						<img src="${ctx}/img/sousuo.jpg" onclick="search();" />
+					</div>
+				</div>
+				<ul class="con_left_ul clear news">
+
+				</ul>
+				<div id="page">
+					<div class="pagers"></div>
+				</div>
+			</div>
+			<div class="con_right">
+				<p class="re">热门推荐</p>
+				<ul class="re_ul">
+					<#if recommendVideos?? && (recommendVideos?size>0)><#list recommendVideos as v>
+					<li class="clear" onclick="enterPlay('${v.type}','${v.id}','${v.isGoClass!''}')">
+						<div class="spanHidden">
+							<#if v.type?? && v.type=='G'>
+							<img src="${ctx}/images/zhuandi112.png" />
+							<span class="zdbHot bg5">专递课堂</span>
+							<#elseif v.type=='A'>
+							<img src="${ctx}/images/pinggu112.png" />
+							<span class="zdbHot" style="background-color: orange;">在线评估</span>
+							<#elseif v.type=='Z'>
+							<img src="${ctx}/images/pinggu112.png" />
+							<span class="zdbHot" style="background-color: #4596e5;">直播课堂</span>
+							</#if>
+						</div>
+						<div class="re_ul_div">
+							<p>
+								<span class="ellipsesSpan" style="width: 60px; float: left; color: orange;" title="${v.teacherName!''}">${v.teacherName!''}</span>
+								<span class="ellipsesSpan" style="width: 110px; float: left;" title="${v.classroomName!''}">${v.classroomName!''}</span>
+							</p>
+							<p>
+								<span class="school12 ellipsesSpan">${v.specialtyName!''}	${v.subjectName!''}</span>
+							</p>
+							<p>
+								<span class="timeB">
+									<#if v.isGoClass?? && v.isGoClass == 1> <span style="color: green;">正在直播 </span></#if>
+									<#if v.isGoClass?? && v.isGoClass == 2> <span style="color: red;">即将直播</span></#if>
+								</span>
+								<span class="timeB">${v.startTime?string('HH:mm')}-${v.endTime?string('HH:mm')} </span>
+							</p>
+						</div>
+					</li>
+					</#list></#if>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!--内容end-->
+	<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+	<!-- 表单 -->
+	<form id="myform">
+		<input type="hidden" name="p" value="${pageNum!''}">
+		<input type="hidden" name="type" value="${type!''}">
+		<input type="hidden" name="specialtyName">
+		<input type="hidden" name="subjectName">
+		<input type="hidden" name="search">
+		<input type="hidden" name="timeSorting">
+	</form>
+</body>
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var type = "${type!''}";
+</script>
+<script type="text/javascript" src="${ctx}/js/web/online/zb_online.js"></script>
+</html>

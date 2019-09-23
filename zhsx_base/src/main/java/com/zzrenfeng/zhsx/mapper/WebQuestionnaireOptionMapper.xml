@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebQuestionnaireOptionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebQuestionnaireOption" >
+		<result column="id" property="id" />
+		<result column="qid" property="qid" />
+		<result column="option" property="option" />
+		<result column="createId" property="createId" />
+		<result column="createTime" property="createTime" />
+		<result column="isShown" property="isShown" />
+			<result column="sort" property="sort" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,qid,`option`,createId,createTime,isShown,sort
+	</sql>
+		<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="qid != null" >
+				and qid = #{qid}
+			</if>
+			<if test="option != null" >
+				and `option` = #{option}
+			</if>
+			<if test="isShown != null" >
+				and isShown = #{isShown}
+			</if>
+				<if test="sort != null" >
+				and sort = #{sort}
+			</if>
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_questionnaire_option  t
+		where t.id = #{id}
+	</select>
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_questionnaire_option 
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebQuestionnaireOption" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_questionnaire_option  (id,qid,`option`,createId,createTime,isShown,sort)
+		values (#{id},#{qid},#{option},#{createId},#{createTime},#{isShown},#{sort})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebQuestionnaireOption" >
+		update web_questionnaire_option
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="qid != null" >
+				qid = #{qid},
+			</if>
+			<if test="createId != null" >
+				createId = #{createId},
+			</if>
+			<if test="option != null" >
+				`option` = #{option},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			
+			<if test="isShown != null" >
+				isShown = #{isShown},
+			</if>
+			<if test="sort != null" >
+				sort = #{sort}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+		<select id="findPageSelective" parameterType="WebQuestionnaireOption" resultType="WebQuestionnaireOption">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.createId) as nickName
+		from web_questionnaire_option t 
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="WebQuestionnaireOption" >
+		update web_questionnaire_option
+		set 
+		id = #{id} 
+		where id = #{id}
+	</update>
+	
+ 	<select id="findSelective" parameterType="WebQuestionnaireOption" resultType="WebQuestionnaireOption">
+		select 
+		<include refid="Base_Column_List" /> 
+		from web_questionnaire_option t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+</mapper>

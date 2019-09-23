@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.eclassbrand.sys.ESysRoleMapper">
+
+	<resultMap id="BaseResultMap" type="com.zzrenfeng.zhsx.model.eclassbrand.sys.ESysRole">
+		<result column="id" property="id" />
+		<result column="role" property="role" />
+		<result column="description" property="description" />
+		<result column="available" property="available" />
+		<result column="role_type" property="roleType" />
+		<result column="isHave" property="isHave" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,role,description,available,role_type
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from sys_role where id = #{id};
+	</delete>
+
+
+	<insert id="insert" parameterType="ESysRole">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+			select uuid()
+		</selectKey>
+		insert into sys_role (id,role,description,available,role_type)
+		values
+		(#{id},#{role},#{description},#{available},#{roleType})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="ESysRole">
+		update sys_role
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="role != null">
+				role = #{role},
+			</if>
+			<if test="description != null">
+				description = #{description},
+			</if>
+			<if test="available != null">
+				available = #{available},
+			</if>
+			<if test="roleType != null">
+				role_type = #{roleType}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+
+
+	<update id="updateByPrimaryKey" parameterType="ESysRole">
+		update
+		sys_role
+		set
+		id = #{id},
+		role = #{role},
+		description = #{description},
+		available = #{available},
+		role_type = #{roleType}
+		where id = #{id}
+	</update>
+
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null">
+				and id = #{id}
+			</if>
+			<if test="role != null">
+				and role = #{role}
+			</if>
+			<if test="description != null">
+				and description = #{description}
+			</if>
+			<if test="available != null">
+				and available = #{available}
+			</if>
+			<if test="roleType != null">
+				and role_type = #{roleType}
+			</if>
+			<if test="search != null">
+				and description like '%${search}%'
+			</if>
+		</where>
+	</sql>
+
+
+	<select id="findSelective" parameterType="ESysRole" resultType="ESysRole">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Dynamic_Conditions" />
+	</select>
+
+
+	<select id="findPageSelective" parameterType="ESysRole" resultType="ESysRole">
+		select
+		<include refid="Base_Column_List" />
+		,
+		(
+		SELECT GROUP_CONCAT(`name`) FROM sys_permission p WHERE p.id IN (
+		SELECT permissionId FROM sys_role_permission _rp WHERE _rp.roleId =
+		r.id
+		)
+		) as
+		permissions
+		from sys_role r
+		<include refid="Dynamic_Conditions" />
+		and description != '系统管理员'
+	</select>
+
+
+	<select id="getRolesByUserId" parameterType="java.lang.String" resultType="ESysRole">
+		select
+		<include refid="Base_Column_List" />
+		from sys_role
+		where available = 1 and id in (SELECT roleId FROM
+		sys_user_role WHERE uid = #{userId})
+	</select>
+
+
+	<select id="findAllAvailable" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />,
+		(SELECT COUNT(*) FROM sys_user_role WHERE roleId = r.id AND uid = #{userId}) as isHave
+		from sys_role r
+		WHERE available =1;
+	</select>
+
+
+</mapper>

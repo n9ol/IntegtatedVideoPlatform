@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>贡献榜</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+
+		<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<!--贡献榜-->
+		<div class="neirong">
+			<div class="nr1 clear">
+				<p class="tittle">评课情况统计</p>
+				<div id="main12"></div>
+				<div id="main122"></div>
+				<!-- <input type="text" id="stanndardDay" name="standardDay" value=""> -->
+			</div>
+			<div class="nr1 clear">
+				<div id="main13"></div>
+				<div id="main133"></div>
+
+			</div>
+			
+		</div>
+	</body>
+    <script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+      <script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/template.js"></script>
+	
+	<script type="text/javascript">
+		var standardDay = "${resultMap.standardDay!''}";
+		var standardWeek = "${resultMap.standardWeek!''}";
+		var standardMonth = "${resultMap.standardMonth!''}";
+		var standardSemester = "${resultMap.standardSemester!''}";
+		
+		var weekscount1 = "${resultMap.weekscount1!''}";
+		var weekscount2 = "${resultMap.weekscount2!''}";
+		var weekscount3 = "${resultMap.weekscount3!''}";
+		var weekscount4 = "${resultMap.weekscount4!''}";
+		var weekscount5 = "${resultMap.weekscount5!''}";
+		
+		var weekc1 = "${resultMap.weekc1!''}";
+		var weekc2 = "${resultMap.weekc2!''}";
+		var weekc3 = "${resultMap.weekc3!''}";
+		var weekc4 = "${resultMap.weekc4!''}";
+
+		var monthc1 = "${resultMap.monthc1!''}";
+		var monthc2 = "${resultMap.monthc2!''}";
+		var monthc3 = "${resultMap.monthc3!''}";
+		var monthc4 = "${resultMap.monthc4!''}";
+
+		var firstNum = "${resultMap.firstNum!''}";
+		var nextNum = "${resultMap.nextNum!''}";
+		
+		/*默认*/
+		setIframeH2();
+		function setIframeH2() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframesjzx'));
+			iframe.height(body.height()+100);
+		}
+	</script>
+	<!--单独的js-->
+	<script src="${ctx}/js/web/staff_contribution.js" type="text/javascript" charset="utf-8"></script>
+</html>

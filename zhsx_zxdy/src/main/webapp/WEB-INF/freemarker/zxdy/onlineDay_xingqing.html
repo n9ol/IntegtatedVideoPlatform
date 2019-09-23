@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>综合视讯</title>
+			<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/onlineDayi_xingqing.css" />
+	</head>
+
+	<body>
+		<!--头部end-->
+		<!--内容start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="index.html">首页</a>
+  					<a href="${ctx}/zxdy/online_dayi">在线答疑</a>
+  					<a><cite>在线解答</cite></a>
+				</span>
+			</div>
+			<div class="box clear">
+				<!--main 内容 start-->
+				<div class="di">
+					<!--问题详情-->
+					<div class="answer">
+						<!--问题的题目-->
+						<div class="topic">
+							<p style="margin: 10px 0;"> <span style="color: red;">【${question.grade!''}&nbsp${question.subject!''}】</span><strong>${question.title!''}</strong></p>
+							<p class="clear"><span style="color: darkgray;font-size: 12px;">时间：${(question.sendTime)?string('yyyy-MM-dd HH:mm')}</span> <span style="color: darkgray;font-size: 12px;margin-left: 20px;">发布人：${question.nickName!''}</span><span style="float: right;color: darkgray;font-size: 12px;margin-right: 10px;">问题分类：${question.grade!''}&nbsp${question.subject!''}<span style="margin-left: 10px;"></span></span>
+							</p>
+							<div class="main_TEXT" style="word-wrap:break-word;word-break:break-all; ">${question.contentTag!''}</div>
+						</div>
+
+						<div class="answer2">
+							<p class="huida">我要发布答案:</p>
+							<form class="layui-form" id="form"  >
+							<input type="hidden" name="qid" value="${question.id}">
+							<textarea id="demo"  name="contentTag"></textarea>
+							<input type="button" id="bt" class="layui-btn"   value="确认提交">
+							</form>
+						</div>
+						<div class="detail">
+							
+
+						</div>
+
+					</div>
+
+				</div>
+				<!--问题集排行榜-->
+				<!--问题集的排行-->
+				<div class="di_right">
+					<div class="tiwenhuanjie">
+						<a href="${ctx}/zxdy/tiwen"><img src="${ctx}/img/tiwen.png" /></a>
+					</div>
+					<div class="jingxun">精选问题集</div>
+
+					<ul class="tiji">
+
+					</ul>
+
+				</div>
+
+				<!--main内容  End-->
+			</div>
+
+		</div>
+		<!--内容end-->
+
+		<!--底部 start -->
+			
+		<form id="myform">
+			<input type="hidden" name="p" value="${pageNum!''}">
+		</form>	
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/> 
+	</body>
+	<!--单独的js -->
+	<script type="text/javascript">var principal = "${principal!''}";</script>
+	<script type="text/javascript">var xid = "${question.id!''}";</script>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<!--单独的js-->
+	<script src="${ctx}/js/web/onlineDayi_xiangqing.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	$(function(){
+		$("#dayiTop").attr("class","has-sub active");
+		
+		$.ajax({
+			type: "post",
+			url: "${ctx}/zxdy/getBest",
+			data: $("#myform").serialize(),
+			success: function(msg){
+			   	$(".tiji").html(msg);
+			}
+		});
+		
+		getByQid();
+		
+	});
+	
+	function getByQid(){
+		$.ajax({
+			type:"post",
+			url: "${ctx}/zxdy/getByQid",
+			data:{"qid":$("input[name='qid']").val(),"ifShow":1,"p":$("input[name='p']").val()},
+			success: function(msg){
+				$(".detail").html(msg);
+			}
+		});
+	}
+
+	var layer;
+	layui.use(['layedit','form','upload','jquery','layer'], function(){
+	 	var layedit = layui.layedit;
+	     layer = layui.layer;
+	  	
+		var form = layui.form;
+		var index = layedit.build('demo',{
+			tool: [
+					'strong' //加粗
+					, 'italic' //斜体
+					, 'underline' //下划线
+					, 'del' //删除线
+					, '|' //分割线
+					, 'left' //左对齐
+					, 'center' //居中对齐
+					, 'right' //右对齐
+					, 'face' //表情
+				]
+		}); //建立编辑器
+		
+		$('#bt').click(function(){
+			submitForm();
+		});
+		
+		//表单提交
+		function submitForm() {
+			var contentTag=layedit.getContent(index);
+			var content = layedit.getText(index);
+			if(principal!=""){
+				
+				$.ajax({
+					type : "POST",
+					url : "${ctx}/zxdy/insertAnwser",
+					data : {"qid":$("input[name='qid']").val(),"answerContentTag":contentTag,"answerContent":content},
+					success : function(data) {
+						 layer.msg(data,{time : 1200},function() {
+							if (data == "操作成功")
+								$("#myform1").submit();
+								window.location.reload();
+						}); 
+					}
+				});
+			}else{
+				layer.msg("请先登录!");
+			}
+			
+		}
+		
+	});
+	
+	function zuijia(id,qid,answerId){
+		layer.confirm('最佳答案只能有一个，是否确定设置？',{shade: [0.2, '#FFFFFF']},function(){
+			$.ajax({
+				type:"post",
+				url: "${ctx}/zxdy/setBest",
+				data:{"qid":qid,"id":id,"answerId":answerId},
+				success: function(data){
+					layer.msg(data,{time:2000},function(){
+						findOne(xid);
+						 window.location.reload();
+					});
+				}
+			});
+		});
+		
+	}
+	
+	
+	function findOne(id) {
+		location.href="${ctx}/zxdy/getById?id="+id;
+	}
+		
+	</script>
+</html>

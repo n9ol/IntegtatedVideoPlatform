@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/bbtIndex.css"/>
+	</head>
+
+	<body>
+		<div style="background-color:#fff;">
+			<!--头部start-->
+			<#include "/zhsx/t/head.html" encoding="utf-8"/>
+			<!--头部end-->
+		</div>
+		
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+		            <a href="../index.html">首页</a>
+		            <a><cite>班班通</cite></a>
+		        </span>
+			</div>
+
+			<div class="bbt_con">
+				<div class="bbt_table">
+					<div class="layui-form">
+						<table class="layui-table">
+							<thead>
+								<tr>
+									<th>总设备数：${(totalMap.totalCount)!'0'}</th>
+									<th>当前在线设备：${(totalMap.totalOnlineCount)!'0'}</th>
+									<th>总维修次数：${(totalMap.totalRepairCount)!'0'}</th>
+									<th>平均维修时长：${(totalMap.avgRepairLong)!'0.0'}H</th>
+									<th>正在维修设备：${(totalMap.onRepairDevice)!'0'}</th>
+								</tr>
+							</thead>
+
+						</table>
+					</div>
+				</div>
+
+				<div class="tableFilter clear">
+					<form id="myform" class="layui-form" action="" method="post">
+						<div class="layui-form-item" style="float: left;">
+							
+							<#if platformLevel?? && platformLevel != 'A'>
+								<#if platformLevel?? && platformLevel == 'N'>
+									<div class="layui-input-inline">
+			                           <select id="province" name="province" lay-filter="province" >
+			                          		<option value="">请选择省份</option>
+			                                <#if provinceList?exists && provinceList?size != 0 >
+			                                	<#list provinceList as province>
+			                                		 <#if (((province.id)!'') == ((provinceAgu)!''))>
+			                                		 	<option value="${(province.id)!''}" selected>${(province.value)!''}</option>
+			                                		 <#else>
+			                                		 	<option value="${(province.id)!''}" >${(province.value)!''}</option>
+			                                		 </#if>
+			                                	</#list>
+			                                </#if>
+			                           </select>
+			                        </div>
+		                        </#if>
+		                        
+		                      <#if platformLevel?? && (platformLevel == 'N' || platformLevel == 'P')>
+		                      <#assign marginLeftP = "">
+		                      <#if platformLevel == 'P'><#assign marginLeftP = "margin-left:20px;"></#if>
+		                        <div class="layui-input-inline">
+		                           <select id="city" name="city" lay-filter="city">
+		                           		<option value="">请选择市</option>
+		                           		<#if cityList?exists && cityList?size != 0 >
+		                                	<#list cityList as city>
+		                                		 <#if (((city.id)!'') == ((cityAgu)!''))>
+		                                		 	<option value="${(city.id)!''}" selected>${(city.value)!''}</option>
+		                                		 <#else>
+		                                		 	<option value="${(city.id)!''}" >${(city.value)!''}</option>
+		                                		 </#if>
+		                                	</#list>
+		                                </#if>
+		                           </select>
+		                        </div>
+		                      </#if>  
+		                        
+		                      <#if platformLevel?? && (platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C')>
+		                      <#assign marginLeftC = "">
+		                      <#if platformLevel == 'C'><#assign marginLeftC = "margin-left:20px;"></#if>
+		                        <div class="layui-input-inline">
+		                            <select id="area" name="area" lay-filter="area">
+		                            	<option value="">请选择县/区</option>
+		                            	<#if areaList?exists && areaList?size != 0 >
+		                                	<#list areaList as area>
+		                                		 <#if (((area.id)!'') == ((areaAgu)!''))>
+		                                		 	<option value="${(area.id)!''}" selected>${(area.value)!''}</option>
+		                                		 <#else>
+		                                		 	<option value="${(area.id)!''}" >${(area.value)!''}</option>
+		                                		 </#if>
+		                                	</#list>
+		                                </#if>
+		                            </select>
+		                        </div>
+		                      </#if>
+		                      
+		                    <#else>
+			             		<input type="hidden" id="countyId" name="countyId" value="${platformLevelId!''}">
+							</#if> 
+							
+						</div>
+						<div class="layui-form-pane" style="float: left;">
+							<div class="layui-form-item">
+								<label class="layui-form-label">时间范围</label>
+								<div class="layui-input-inline">
+									<input class="layui-input" placeholder="开始日" id="LAY_demorange_s" name="startTime" value="${startTimeAgu!''}">
+								</div>
+								<div class="layui-input-inline">
+									<input class="layui-input" placeholder="截止日" id="LAY_demorange_e" name="endTime" value="${endTimeAgu!''}">
+								</div>
+							</div>
+						</div>
+						<input class="layui-btn search-btn01 pull-left" style="background-color: #4596E5" type="button" onclick="search()" value="搜索">
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</form>
+
+					<!--<button class="layui-btn layui-btn-normal">搜索</button>
+					<button class="layui-btn">重置</button>-->
+				</div>
+				<div class="bbt_pic">
+					<div class="pic1 clear">
+						<div class="pic1_son1 fl ">
+							<div class="tableTile">每天设备上线数量</div>
+							<div class="pic1_son" id="pic1_son1">
+							</div>
+						</div>
+						<div class="pic1_son2 fl">
+							<div class="tableTile">当前时间在线设备数量</div>
+							<div class="pic1_son" id="pic1_son2"></div>
+						</div>
+						<div class="pic1_son3 fr">
+							<div class="tableTile">班班通使用率排行榜</div>
+							<div class="pic1_son" id="pic1_son3"></div>
+						</div>
+					</div>
+					<div class="pic2 clear">
+						<div class="pic2_son1 fl">
+							<div class="tableTile">累计设备维修数量变化曲线</div>
+							<div class="pic2_son" id="pic2_son4"></div>
+						</div>
+						<div class="pic2_son2 fr">
+							<div class="tableTile">接入班班通累计数量
+								<!-- <div class="layui-btn-group  termiinal-btnGroup">
+									<button class="layui-btn layui-btn-sm layui-btn-normal">市</button>
+									<button class="layui-btn layui-btn-primary">区县</button>
+									<button class="layui-btn layui-btn-primary">学校</button>
+								</div> -->
+							</div>
+							<div class="pic2_son" id="pic2_son5"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<!--内容end-->
+
+			<!--底部 start -->
+			<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+			<!--底部 end-->
+			<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	</body>
+	<!--导航js-->
+	<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
+	<script type="text/javascript">
+		var platformLevel = "${platformLevel}";
+		
+		layui.use(['jquery','form', 'laydate'], function() {
+			/* var form = layui.form; */
+			var form = layui.form;
+		    //借用地区插件
+	        form.on('select(province)', function(data){
+	    	   $("#city").empty();
+	    	   $("#cityId").append('<option value="">请选择市</option>');
+		   	   $("#area").empty();
+	    	   $("#area").append("<option value=''>请选择县/区</option>");
+		   	   
+	    	   $.ajax({
+		   			url:"${ctx}/adminBaseData/getCity?provinceId="+data.value,
+		   			type:'post',
+		   			success:function(datas){
+		   				var cityHtml = '<option value="">请选择市</option>';
+		   				for(var i = 0; i < datas.length; i++) {
+	  		                cityHtml += '<option value="' + datas[i].id + '">' +
+	  		              	datas[i].value + '</option>';
+	  		            }
+	  		            $("#city").html(cityHtml).parent().show();
+	  		            form.render();
+		   			}
+		   	   }); 
+	    	   return false;
+	   		}); 
+	        form.on('select(city)', function(data){
+		   	     $("#area").empty();
+	    	     $("#area").append("<option value=''>请选择县/区</option>");
+	        	 
+		       	 $.ajax({
+						url:"${ctx}/adminBaseData/getCounty?cityId="+data.value,
+						type:'post',
+						success:function(datas){
+							var areaHtml = '<option value=""></option>';
+				            for(var i = 0; i < datas.length; i++) {
+				                areaHtml += '<option value="' + datas[i].id + '">' +
+				                datas[i].value + '</option>';
+				             }
+				            $("#area").html(areaHtml).parent().show();
+				            form.render();
+						}
+				 });
+		       	 return false;
+	  		});  
+	        
+			var laydate = layui.laydate;
+			var start = {
+				/* min: laydate.now(), */
+				max: '2099-06-16 23:59:59',
+				istoday: false,
+				choose: function(datas) {
+					end.min = datas; //开始日选好后，重置结束日的最小日期
+					end.start = datas //将结束日的初始值设定为开始日
+				}
+			};
+
+			var end = {
+				/* min: laydate.now(), */
+				max: '2099-06-16 23:59:59',
+				istoday: false,
+				choose: function(datas) {
+					start.max = datas; //结束日选好后，重置开始日的最大日期
+				}
+			};
+
+			document.getElementById('LAY_demorange_s').onclick = function() {
+				start.elem = this;
+				laydate(start);
+			}
+			document.getElementById('LAY_demorange_e').onclick = function() {
+				end.elem = this
+				laydate(end);
+			}
+		});
+		
+		function search(){
+			//验证
+			var startTime = $("#LAY_demorange_s").val();
+			if(startTime == null || startTime.length == 0 ){
+            	alert('请选择开始时间');
+				return false;
+            }
+			
+			var endTime = $("#LAY_demorange_e").val();
+			if(endTime == null || endTime.length == 0 ){
+            	alert('请选择结束时间');
+				return false;
+            }
+			
+			
+			$("#myform").attr("action","${ctx}/webdevicemanage/index");
+			$("#myform").submit();  
+		}
+		
+		//在线数量   这个根据条件判断
+		var XData1=[];
+		var seriesData1=[];
+	    <#list resultMap1?keys as dateKey>
+	    	XData1.push("${dateKey!''}");
+	    	seriesData1.push("${(resultMap1[dateKey])?default(0)}");
+	    </#list>
+		
+		//每天设备上线数量
+		var myChart1 = echarts.init(document.getElementById("pic1_son1"));
+		var color1 = ['#91C7AE'];
+		var option1 = {
+			color:color1,
+			backgroundColor: '#ffffff',
+			textStyle: {
+				fontFamily: 'Microsoft YaHei'
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'line',
+					label: {
+						backgroundColor: '#6a7985'
+					}
+				}
+			},
+			legend: {
+				right: 'left',
+				itemGap: 8,
+				itemWidth: 16,
+				itemHeight: 9,
+				textStyle: {
+					color: '#999999',
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '13%',
+				containLabel: true
+			},
+			xAxis: [{
+				type: 'category',
+				boundaryGap: false,
+				data: XData1/* ,
+				//设置字体倾斜  
+                axisLabel:{  
+                    rotate:-45//倾斜度 -90 至 90 默认为0  
+                } */ 
+			}],
+			yAxis: [{
+				type: 'value'
+			}],
+			series: [{
+				name: '上线数量',
+				type: 'line',
+				//stack: '总量',
+				areaStyle: {
+					normal: {}
+				},
+				smooth: true,
+				data: seriesData1
+			}]
+		};
+		myChart1.setOption(option1);
+		
+		var totalCount = "${(totalOnlineCountMap.totalCountByContion)!'0'}" ;
+		var totalOnlineCount = "${(totalOnlineCountMap.totalOnlineCountByContion)!'0'}";
+		
+		//当前时间在线设备数量
+		var myChart2 = echarts.init(document.getElementById("pic1_son2"));
+		var option2 = {
+			tooltip: {
+				//formatter: "{a} <br/>{b} : {c}%"
+			},
+			series: [{
+				name: '数量',
+				type: 'gauge',
+				max: totalCount,
+				detail: {
+					//formatter: '{value}%'
+				},
+				data: [{
+					value: totalOnlineCount,
+					name: '数量'
+				}]
+			}]
+		};
+
+		myChart2.setOption(option2);
+		
+		
+		var schools = [];
+		var usageRateValue = [];
+		<#if usageRateRank?exists && usageRateRank?size != 0 >
+		 	<#list usageRateRank as l>
+		 		schools.push("${l.school_name!''}");
+		 		usageRateValue.push("${l.usageRate}");
+		 	</#list>
+		</#if>
+		
+		//班班通使用率排行榜		
+		var myChart3 = echarts.init(document.getElementById("pic1_son3"));
+		var option3 = {
+			color: ['#C23531'], //可选色：'#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: { // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: [{
+				type: 'value'
+
+			}],
+			yAxis: [{
+				type: 'category',
+				data: schools,//['一小', '二小', '三小', '四小', '五小', '六小']
+				axisTick: {
+					alignWithLabel: true
+				}
+			}],
+			series: [{
+				name: 'min',//
+				type: 'bar',
+				barWidth: '60%',
+				data: usageRateValue//[10, 2, 5, 6, 8, 9]
+			}]
+		};
+		myChart3.setOption(option3);
+		
+		
+		var XData3=[];
+		var seriesData3=[];
+	    <#list resultMap3?keys as dateKey3>
+	    	XData3.push("${dateKey3!''}");
+	    	seriesData3.push("${(resultMap3[dateKey3])?default(0)}");
+	    </#list>
+		//设备维修数量变化曲线
+		var myChart4 = echarts.init(document.getElementById("pic2_son4"));
+		var color4 = ['#C23531'];
+		var option4 = {
+			color:color4,
+			backgroundColor: '#ffffff',
+			textStyle: {
+				fontFamily: 'Microsoft YaHei'
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'line',
+					label: {
+						backgroundColor: '#aa7985'
+					}
+				}
+			},
+			legend: {
+				right: 'left',
+				itemGap: 8,
+				itemWidth: 16,
+				itemHeight: 9,
+				textStyle: {
+					color: '#999999',
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '13%',
+				containLabel: true
+			},
+			xAxis: [{
+				type: 'category',
+				boundaryGap: false,
+				data: XData3
+			}],
+			yAxis: [{
+				type: 'value'
+			}],
+			series: [{
+				name: '维修数',
+				type: 'line',
+				stack: '总量',
+				smooth: true,
+				areaStyle: {
+					normal: {}
+				},
+				data: seriesData3
+			}]
+		};
+		myChart4.setOption(option4);
+		
+		
+		var XData2=[];
+		var seriesData2=[];
+	    <#list resultMap2?keys as dateKey2>
+	    	XData2.push("${dateKey2!''}");
+	    	seriesData2.push("${(resultMap2[dateKey2])?default(0)}");
+	    </#list>
+		//接入班班通累计数量 
+		var myChart5 = echarts.init(document.getElementById("pic2_son5"));
+		var color2 = ['#63869E'];
+		var option5 = {
+			color:color2,
+			backgroundColor: '#ffffff',
+			textStyle: {
+				fontFamily: 'Microsoft YaHei'
+			},
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'line',
+					label: {
+						backgroundColor: '#aa7985'
+					}
+				}
+			},
+			legend: {
+				right: 'left',
+				itemGap: 8,
+				itemWidth: 16,
+				itemHeight: 9,
+				textStyle: {
+					color: '#999999',
+				}
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '13%',
+				containLabel: true
+			},
+			xAxis: [{
+				type: 'category',
+				boundaryGap: false,
+				data: XData2
+			}],
+			yAxis: [{
+				type: 'value'
+			}],
+			series: [{
+				name: '数量',
+				type: 'line',
+				//stack: '总量',
+				smooth: true,
+				areaStyle: {
+					normal: {}
+				},
+				data: seriesData2
+			}]
+		};
+		myChart5.setOption(option5);
+		
+	</script>
+	<!-- <script src="${ctx}/js/webdevice/bbtIndex.js" type="text/javascript" charset="utf-8"></script> -->
+</html>

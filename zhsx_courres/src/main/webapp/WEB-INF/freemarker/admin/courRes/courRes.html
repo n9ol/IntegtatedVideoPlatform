@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title></title>
+<!-- <#global ctx=rc.contextPath /> -->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/courRes.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/common/webuploader/webuploader.css">
+</head>
+<body>
+	<div class="box clear">
+		<div class="box_nav clear">
+			<div class="box_nav_bian bnp">
+				<img src="${ctx}/img/two_way_list.png" />
+			</div>
+			<div class="box_nav_pai bnp">
+				<a href="javascript:void(0);">
+					<i class="layui-icon" style="color: gray;">&#xe62f;</i>
+				</a>
+				<div class="sDwvAgb">
+					<span class="aaaa" id="name">文件名</span>
+					<span class="aaaa" id="size">大小</span>
+					<span class="aaaa" id="state">发布状态</span>
+					<span class="aaaa" id="time">上传时间</span>
+				</div>
+			</div>
+			<div class="box_nav_sou clear">
+				<input type="search" id="searchval" style="width: 210px; outline: none; border: none; background-color: #f1f2f4;" placeholder="文件名/专业/科目/版本/上下册" />
+				<i class="layui-icon" style="color: gray; line-height: 40px; float: right; margin-right: 20px; margin-top: 3px;" id="search">&#xe615;</i>
+			</div>
+			<div class="box_nav_bianji">
+				<div class="shangchuan">
+					<div class="box_nav_chuan btn">
+						<a class="btn_a" href="javascript:void(0);" title="点击选择文件">
+							<i class="layui-icon" style="color: #fff;">&#xe62f;</i>
+							<span style="color: white; margin-left: 10px;">上传</span>
+						</a>
+					</div>
+				</div>
+				<div class="box_nav_xbs btn">
+					<a href="javascript:void(0);" class="b_button" onclick="batchEdit();">
+						<i class="layui-icon" style="color: #4E97FF;">&#xe642;</i>
+						<span>编辑</span>
+					</a>
+					<a href="javascript:void(0);" class="b_button border_left" onclick="batchDel();">
+						<i class="layui-icon" style="color: #4E97FF;">&#xe640;</i>
+						<span>删除</span>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="box_con  clear">
+			<div class="con_span clear">
+				<span style="float: left;"></span>
+				<span style="float: right;">
+					已全部加载，共
+					<span id="total">0</span>
+					个文件
+				</span>
+			</div>
+			<div class="QxJxtg">
+				<div class="xGLMIab">
+					<ul class="QAfdwP clear">
+						<li class="name" style="width: 20%;">
+							<span class="span_input_all">
+								<input class="Oall" type="checkbox" id="" value="" />
+							</span>
+							<span class="text1">文件名</span>
+						</li>
+						<li class="size" style="width: 7%;">
+							<span class="text2">专业</span>
+						</li>
+						<li class="size" style="width: 7%;">
+							<span class="text2">科目</span>
+						</li>
+						<li class="size" style="width: 7%;">
+							<span class="text2">版本</span>
+						</li>
+						<li class="size" style="width: 7%;">
+							<span class="text2">上下册</span>
+						</li>
+						<li class="size" style="width: 8%;">
+							<span class="text2">文件大小</span>
+						</li>
+						<li class="size" style="width: 8%;">
+							<span class="text2">发布状态</span>
+						</li>
+						<li class="size" style="width: 8%;">
+							<span class="text2">审核状态</span>
+						</li>
+						<li class="time" style="width: 10%;">
+							<span class="text3">上传时间</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div id="resData"></div>
+		</div>
+		<div>
+			<div id="page"></div>
+		</div>
+		<div class="dialog dialog-web-uploader   dialog-blue h5-uploader" style="width: 633px; top: auto; bottom: 0px; left: auto; right: 0px; display: none; visibility: visible; z-index: 42;">
+			<div class="dialog-header">
+				<h3>
+					<span class="dialog-header-title">
+						<em class="select-text">文件上传</em>
+						<span style="font-size: 12px; color: #FF5722; margin-left: 150px;">文件上传过程中不可关闭当前页面</span>
+					</span>
+				</h3>
+				<div class="dialog-control">
+					<span class="dialog-icon dialog-close icon icon-close">
+						<span class="sicon">
+							<strong>×</strong>
+						</span>
+					</span>
+					<span class="dialog-icon dialog-min icon icon-minimize">
+						<span class="sicon">
+							<strong>-</strong>
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="dialog-min-header" style="display: none;">
+				<div class="header-progress" style="width: 100%;"></div>
+				<h3>
+					<span class="dialog-header-title">
+						<em class="select-text">文件上传</em>
+					</span>
+				</h3>
+				<div class="dialog-control">
+					<span class="dialog-icon dialog-close icon icon-close">
+						<span class="sicon">
+							<strong>×</strong>
+						</span>
+					</span>
+					<span class="dialog-icon dialog-back icon icon-maximizing">
+						<span class="sicon">
+							<strong>□</strong>
+						</span>
+					</span>
+				</div>
+			</div>
+			<div class="dialog-body">
+				<div class="uploader-list-wrapper">
+					<div class="uploader-list-header">
+						<div class="file-name">文件名</div>
+						<div class="file-size">大小</div>
+						<div class="file-status">状态</div>
+						<div class="file-operate">操作</div>
+					</div>
+					<div class="uploader-list"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input id="pageType" type="hidden" value="cross">
+</body>
+<script type="text/javascript">
+	var ctx = '${ctx}';
+	var fileWebPath = "${fileWebPath}";
+</script>
+<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+<script type="text/javascript" src="${ctx}/js/refresh.js"></script>
+<script type="text/javascript" src="${ctx}/common/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="${ctx}/js/admin/courRes/courRes.js"></script>
+<script type="text/javascript" src="${ctx}/js/admin/courRes/fileUpload.js"></script>
+</html>

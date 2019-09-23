@@ -1,0 +1,55 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<#if lists?? && (lists?size>0)>
+<ul class="lists news">
+ 	<#list lists as l>
+	<li class="xuBorder">
+		<div class="touxiang">
+			<#if l.courScheduleType?? && l.courScheduleType=='G'>
+			  <img src="${ctx}/images/zhuandi112.png" /> 
+			  <span class="zdbHot bg5">专递课堂</span>
+			<#else> 
+			   <img src="${ctx}/images/pinggu112.png" /> 
+			   <span class="zdbHot" style="background-color: orange;">在线评估</span> 
+			 </#if>
+		</div>
+		<div class="zhengwen">
+			<div class="biaoti ellipsisDiv">${l.courScheduleTeacherName!''}(${l.courScheduleClassroomName!''})</div>
+			<div class="clear">
+				<#if l.courScheduleSpecialtyName??>
+				<div class="leibie">
+					<div class="fl">专业：</div>
+					<span class="orangeSpan fl ellipsisSpan">${l.courScheduleSpecialtyName!''}</span>
+				</div>
+				</#if>
+				<div class="leibie">
+					<span class="fl"> 科目：</span>
+					<span class="orangeSpan fl ellipsisSpan">${l.courScheduleSubjectName!''}</span>
+				</div>
+				<div class="xijie leibie">
+						<span>直播时间：${l.addTime?string('yyyy-MM-dd')} &nbsp;&nbsp; ${l.courScheduleStartTime?string('HH:mm:ss')}-${l.courScheduleEndTime?string('HH:mm:ss')}</span>
+				</div>
+			</div>
+		</div>
+		<div class="lianjie">
+			<div class="layui-btn layui-btn-primary download" onclick="lookPgResult('${l.pgId}','${l.addTime?string('yyyy-MM-dd')}');">
+				<i class="layui-icon"><img src="${ctx}/img/eye2.png"></i>
+				<a href="javascript:;">查看</a>
+			</div>
+		</div>
+	</li>
+	</#list>
+</ul>
+<!--底部分页部分-->
+<div id="page"></div>
+<#else>
+	<ul class="lists news">
+		<li style="text-align: center;width: 100%;">暂无数据</li>
+	</ul>
+</#if>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getPgResultData();
+	}
+</script>

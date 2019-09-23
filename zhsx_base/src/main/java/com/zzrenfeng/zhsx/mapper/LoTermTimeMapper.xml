@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoTermTimeMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoTermTime" >
+		<result column="id" property="id" />
+		<result column="schoolId" property="schoolId" />
+		<result column="firstDay" property="firstDay" />
+		<result column="lastDay" property="lastDay" />
+		<result column="totalWeeks" property="totalWeeks" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,schoolId,firstDay,lastDay,totalWeeks
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_termTime
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_termTime
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="LoTermTime" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_termTime (id,schoolId,firstDay,lastDay,totalWeeks)
+		values (#{id},#{schoolId},#{firstDay},#{lastDay},#{totalWeeks})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoTermTime" >
+		update lo_termTime
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="schoolId != null" >
+				schoolId = #{schoolId},
+			</if>
+			<if test="firstDay != null" >
+				firstDay = #{firstDay},
+			</if>
+			<if test="lastDay != null" >
+				lastDay = #{lastDay},
+			</if>
+			<if test="totalWeeks != null" >
+				totalWeeks = #{totalWeeks}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoTermTime" >
+		update lo_termTime
+		set 
+		id = #{id},
+		schoolId = #{schoolId},
+		firstDay = #{firstDay},
+		lastDay = #{lastDay},
+		totalWeeks = #{totalWeeks}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="schoolId != null" >
+				and schoolId = #{schoolId}
+			</if>
+			<if test="firstDay != null" >
+				and firstDay = #{firstDay}
+			</if>
+			<if test="lastDay != null" >
+				and lastDay = #{lastDay}
+			</if>
+			<if test="totalWeeks != null" >
+				and totalWeeks = #{totalWeeks}
+			</if>
+			<if test="currTime != null">
+<!-- 				and  firstDay &lt;= #{currTime} -->
+				and  lastDay &gt;= #{currTime}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="LoTermTime" resultType="LoTermTime">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_termTime
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoTermTime" resultType="LoTermTime">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_termTime
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

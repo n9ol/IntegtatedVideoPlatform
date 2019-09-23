@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TestWebQuestionMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TestWebQuestion" >
+		<result column="id" property="id" />
+		<result column="memberId" property="memberId" />
+		<result column="questionCode" property="questionCode" />
+		<result column="questionType" property="questionType" />
+		<result column="stuType" property="stuType" />
+		<result column="gradeName" property="gradeName" />
+		<result column="subjectName" property="subjectName" />
+		<result column="volume" property="volume" />
+		<result column="version" property="version" />
+		<result column="knowledges" property="knowledges" />
+		<result column="difficulty" property="difficulty" />
+		<result column="questionText" property="questionText" />
+		<result column="questionMemo" property="questionMemo" />
+		<result column="isShare" property="isShare" />
+		<result column="isDrop" property="isDrop" />
+		<result column="addTime" property="addTime" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,memberId,questionCode,questionType,stuType,gradeName,subjectName,volume,version,knowledges,difficulty,questionText,questionMemo,isShare,isDrop,addTime,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+	
+		from test_web_question t
+		where t.id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from test_web_question
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TestWebQuestion" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into test_web_question (id,memberId,questionCode,questionType,stuType,gradeName,subjectName,volume,version,knowledges,difficulty,questionText,questionMemo,isShare,isDrop,addTime,bak1,bak2,bak3)
+		values (#{id},#{memberId},#{questionCode},#{questionType},#{stuType},#{gradeName},#{subjectName},#{volume},#{version},#{knowledges},#{difficulty},#{questionText},#{questionMemo},#{isShare},#{isDrop},#{addTime},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TestWebQuestion" >
+		update test_web_question
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="memberId != null" >
+				memberId = #{memberId},
+			</if>
+			<if test="questionCode != null" >
+				questionCode = #{questionCode},
+			</if>
+			<if test="questionType != null" >
+				questionType = #{questionType},
+			</if>
+			<if test="stuType != null" >
+				stuType = #{stuType},
+			</if>
+			<if test="gradeName != null" >
+				gradeName = #{gradeName},
+			</if>
+			<if test="subjectName != null" >
+				subjectName = #{subjectName},
+			</if>
+			<if test="volume != null" >
+				volume = #{volume},
+			</if>
+			<if test="version != null" >
+				version = #{version},
+			</if>
+			<if test="knowledges != null" >
+				knowledges = #{knowledges},
+			</if>
+			<if test="difficulty != null" >
+				difficulty = #{difficulty},
+			</if>
+			<if test="questionText != null" >
+				questionText = #{questionText},
+			</if>
+			<if test="questionMemo != null" >
+				questionMemo = #{questionMemo},
+			</if>
+			<if test="isShare != null" >
+				isShare = #{isShare},
+			</if>
+			<if test="isDrop != null" >
+				isDrop = #{isDrop},
+			</if>
+			<if test="addTime != null" >
+				addTime = #{addTime},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TestWebQuestion" >
+		update test_web_question
+		set 
+		id = #{id},
+		memberId = #{memberId},
+		questionCode = #{questionCode},
+		questionType = #{questionType},
+		stuType = #{stuType},
+		gradeName = #{gradeName},
+		subjectName = #{subjectName},
+		volume = #{volume},
+		version = #{version},
+		knowledges = #{knowledges},
+		difficulty = #{difficulty},
+		questionText = #{questionText},
+		questionMemo = #{questionMemo},
+		isShare = #{isShare},
+		isDrop = #{isDrop},
+		addTime = #{addTime},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="memberId != null" >
+				and memberId = #{memberId}
+			</if>
+			<if test="questionCode != null" >
+				and questionCode = #{questionCode}
+			</if>
+			<if test="questionType != null" >
+				and questionType = #{questionType}
+			</if>
+			<if test="stuType != null" >
+				and stuType = #{stuType}
+			</if>
+			<if test="gradeName != null" >
+				and gradeName = #{gradeName}
+			</if>
+			<if test="subjectName != null" >
+				and subjectName = #{subjectName}
+			</if>
+			<if test="volume != null" >
+				and volume = #{volume}
+			</if>
+			<if test="version != null" >
+				and version = #{version}
+			</if>
+			<if test="knowledges != null" >
+				and knowledges = #{knowledges}
+			</if>
+			<if test="difficulty != null" >
+				and difficulty = #{difficulty}
+			</if>
+			<if test="questionText != null" >
+				and questionText = #{questionText}
+			</if>
+			<if test="questionMemo != null" >
+				and questionMemo = #{questionMemo}
+			</if>
+			<if test="isShare != null" >
+				and isShare = #{isShare}
+			</if>
+			<if test="isDrop != null" >
+				and isDrop = #{isDrop}
+			</if>
+			<if test="addTime != null" >
+				and addTime = #{addTime}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+			<if test="search != null">
+				and questionText LIKE '%${search}%'
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TestWebQuestion" resultType="TestWebQuestion">
+		select 
+		<include refid="Base_Column_List" />
+		
+		from test_web_question  t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TestWebQuestion" resultType="TestWebQuestion">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.memberId) as userName
+		
+		from test_web_question t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<delete id="delBatchQuestion" parameterType="java.util.Map">
+		delete from test_web_question
+		where id in
+		<foreach collection="ids" open="(" close=")" separator="," item="id" > 
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="findTestQuestion" parameterType="TestWebQuestion" resultType="TestWebQuestion">
+		select 
+		t.id,t.questionType,t.gradeName,t.subjectName,t.questionText,a.scores,a.sortCode
+		from test_web_question t 
+		left join test_web_test_question a
+		on t.id=a.questionId
+		where a.testId=#{testId}
+		order by a.sortCode 
+	</select>
+	
+	<select id="findRandom" parameterType="TestWebQuestion" resultType="TestWebQuestion">
+		select 
+		<include refid="Base_Column_List" />,
+		from test_web_question 
+		<include refid="Dynamic_Conditions"/>
+		Order By rand() Limit ${questions} 
+	</select>
+</mapper>

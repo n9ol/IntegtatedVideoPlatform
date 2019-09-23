@@ -1,0 +1,107 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
+		http://www.springframework.org/schema/mvc 
+		http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx-3.2.xsd ">
+
+
+	<!--配置 Handler -->
+	<context:component-scan base-package="com.zzrenfeng.zhsx.controller" />
+	<context:component-scan base-package="com.zzrenfeng.zhsx.websocket" />
+
+	<!-- 开启controller类aop支持 -->
+	<aop:config proxy-target-class="true"></aop:config>
+
+
+	<!-- 开启shiro注解开发支持 -->
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<!-- 通过annotation-driven可以替代下边的处理器映射器和适配器 -->
+	<mvc:annotation-driven conversion-service="conversionService"
+		validator="validator"></mvc:annotation-driven>
+
+
+	<!-- 针对freemarker的视图配置 -->
+	<bean id="freemarkerConfiguration"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="location" value="classpath:freemarker.properties" />
+	</bean>
+	<bean id="freeMarkerConfigurer"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/freemarker/" />
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="freemarkerSettings" ref="freemarkerConfiguration" />
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="order" value="0" />
+		<property name="suffix" value=".html" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="requestContextAttribute" value="rc"></property>
+	</bean>
+
+
+
+	<!-- 静态文件过滤 -->
+	<mvc:default-servlet-handler />
+
+
+
+
+	<!-- 转换器 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.zzrenfeng.zhsx.base.CustomDateConverter" />
+				<bean class="com.zzrenfeng.zhsx.base.StringTrimConverter" />
+			</list>
+		</property>
+	</bean>
+
+	<!-- 校验器 providerClass 注入校验器 validationMessageSource 注入校验配置 - 指定校验使用的资源文件, 
+		如果不指定则默认使用classpath下的ValidationMessages.properties -->
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+		<property name="providerClass" value="org.hibernate.validator.HibernateValidator" />
+		<property name="validationMessageSource" ref="messageSource" />
+	</bean>
+
+	<!-- 校验配置 属性 basenames 校验时 使用的资源文件 :校验错误信息配置 fileEncodings 资源文件编码格式 cacheSeconds 
+		对资源文件内容缓存时间，单位秒 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>classpath:ValidationMessages</value>
+			</list>
+		</property>
+		<property name="fileEncodings" value="utf-8" />
+		<property name="cacheSeconds" value="120" />
+	</bean>
+
+	<!-- 文件上传 上传文件默认编码 设置文件上传的最大值 1G -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="1073741824" />
+	</bean>
+
+
+	<!-- 定义统一异常处理器 -->
+	<bean class="com.zzrenfeng.zhsx.base.ExceptionResolver" />
+
+
+</beans>

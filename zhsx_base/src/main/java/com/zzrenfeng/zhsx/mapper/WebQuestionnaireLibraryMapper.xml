@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebQuestionnaireLibraryMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebQuestionnaireLibrary" >
+		<result column="id" property="id" />
+		<result column="question" property="question" />
+		<result column="type" property="type" />
+		<result column="createId" property="createId" />
+		<result column="createTime" property="createTime" />
+		<result column="isShown" property="isShown" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,question,type,createId,createTime,isShown 
+	</sql>
+		<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="question != null" >
+				and question like  CONCAT('%','${question}','%' ) 
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="isShown != null" >
+				and isShown = #{isShown}
+			</if>
+			
+		</where>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_questionnaire_library  t
+		where t.id = #{id}
+	</select>
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_questionnaire_library 
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebQuestionnaireLibrary" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_questionnaire_library  (id,question,type,createId,createTime,isShown  )
+		values (#{id},#{question},#{type},#{createId},#{createTime},#{isShown})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebQuestionnaireLibrary" >
+		update web_questionnaire_library
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="question != null" >
+				question = #{question},
+			</if>
+			<if test="createId != null" >
+				createId = #{createId},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			
+			<if test="isShown != null" >
+				isShown = #{isShown}
+			</if>
+			 
+		</set>
+		where id = #{id}
+	</update>
+		<select id="findPageSelective" parameterType="WebQuestionnaireLibrary" resultType="WebQuestionnaireLibrary">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id=t.createId) as nickName
+		from web_questionnaire_library t 
+		<include refid="Dynamic_Conditions"/>
+			<if test="nickName != null" >
+				and (SELECT nickName FROM `user` u WHERE u.id=t.createId) like  CONCAT('%','${nickName}','%' ) 
+			</if>
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="WebQuestionnaireLibrary" >
+		update web_questionnaire_library
+		set 
+		id = #{id} 
+		where id = #{id}
+	</update>
+	
+ 	<delete id="delBatchLibrary" parameterType="java.util.Map">
+		delete from web_questionnaire_library
+		where id in
+		<foreach collection="ids" open="(" close=")" separator="," item="id" > 
+			#{id}
+		</foreach>
+	</delete>
+</mapper>

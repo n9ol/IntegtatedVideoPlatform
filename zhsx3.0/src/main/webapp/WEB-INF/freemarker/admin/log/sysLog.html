@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>仁峰后台管理系统</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<style type="text/css">
+.layui-elem-quote {
+	height: 70px;
+	overfllow:hidden;
+}
+.search-btn01 {
+	height: 38px;
+	width: 57px;
+}
+#searchval {
+	width: 180px;
+}
+</style>
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="layui-tab">
+				<blockquote class="layui-elem-quote mylog-info-tit">
+					<ul class="layui-tab-title" style = "display:inline-block;">
+						<li class="layui-btn layui-this" onclick="emptyLog();">清空日志</li>
+					</ul>
+					<ul class="pull-right">
+						<li>
+							<a class="layui-btn refresh_btn" style="margin: 0 30px 0 30px;" href="javascript:;" onclick="refreshPage()">
+							<i class="iconfont icon-shuaxin"></i>
+							</a>
+						</li>
+					</ul>
+					<ul class="pull-right">
+						<li>
+							<div class="layui-input-inline pull-left">
+								<input id="searchval" name="searchval" type="search" class="layui-input" placeholder="操作人/操作方法/是否成功" value="${search!''}" />
+							</div> 
+							<a class="layui-btn search-btn01 pull-left" onclick="searchLog();" href="javascript:;"><i class="layui-icon">&#xe615;</i></a>
+						</li>
+					</ul>
+				</blockquote>
+				<div class="larry-separate"></div>
+				<div
+					class="layui-tab-content larry-personal-body clearfix mylog-info-box">
+					<div class="layui-tab-item layui-field-box layui-show">
+						<form id="myform">
+							<table class="layui-table table-hover" lay-even="" lay-skin="nob">
+								<thead>
+									<tr>
+										<th><input type="checkbox" id="selected-all-operation"></th>
+										<th>NO</th>
+										<th style="white-space:nowrap;">操作人</th>
+										<th style="white-space:nowrap;">操作方法</th>
+										<th style="white-space:nowrap;">是否成功</th>
+										<th style="white-space:nowrap;">操作内容</th>
+										<th style="white-space:nowrap;">失败原因</th>
+										<th style="width:200px;">操作时间</th>
+									</tr>
+								</thead>
+								<tbody>
+									<#if lists?? && (lists?size>0)> <#list lists as l>
+									<tr>
+										<td><input type="checkbox" name="del_id" value="${l.id!''}"></td>
+										<td>${l_index+1}</td>
+										<td>${l.operationname!''}</td>
+										<td>${l.operationmehtod!''}</td>
+										<td>${l.issuccess!''}</td>
+										<td>${l.content!''}</td>
+										<td>${l.reason!''}</td>
+										<td>${(l.operationdate)?string('yyyy-MM-dd HH:mm:ss')}</td>
+									</tr>
+									</#list> </#if>
+								</tbody>
+							</table>
+						</form>
+						<div class="larry-table-page clearfix">
+							<a href="javascript:;" class="layui-btn layui-btn-small" onclick="batchDel();"><i class="iconfont icon-shanchu1"></i>删除</a>
+							<div id="page" class="page"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<form id="myform1" action="${ctx}/log/sysLog" method="post">
+				<input type="hidden" name="p" value="${pageNum!'1'}"> 
+				<input type="hidden" name="search" value="${search!''}">
+			</form>
+		</div>
+	</section>
+	<script type="text/javascript" src="${ctx}/js/admin/log/sysLog.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			$("#myform1").submit();
+		}
+	</script>
+</body>
+</html>

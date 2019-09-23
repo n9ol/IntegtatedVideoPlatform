@@ -1,0 +1,16 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<#if pgUserList?? && (pgUserList?size>0)><#list pgUserList as p>
+<tr>
+	<td>
+		<input type="checkbox" name="pgUserIds" value="${p.id!''}">
+	</td>
+	<td>${p_index+1}</td>
+	<td>${p.nickName!''}</td>
+	<td>
+		<#if p.userType=='L'>领导</#if>
+		<#if p.userType=='R'>教研员 </#if>
+		<#if p.userType=='T'>教师 </#if>
+	</td>
+	<td>${p.schoolName!'-----'}</td>
+</tr>
+</#list></#if>

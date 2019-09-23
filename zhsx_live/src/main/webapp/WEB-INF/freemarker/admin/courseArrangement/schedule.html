@@ -1,0 +1,219 @@
+<#global ctx=rc.contextPath /> 
+<#if state==1>
+<div class="msg">
+	<a href="javascript:;" class="layui-btn  layui-btn-small" onclick="batchAdd();">批量添加</a>
+	<!-- <a href="http://www.layui.com" class="layui-btn  layui-btn-small">批量删除</a> -->
+	<a href="javascript:;" class="layui-btn  layui-btn-small" onclick="resetweek();">重置本周</a>
+	<a href="javascript:;" class="layui-btn  layui-btn-small" onclick="resetclass();">重置本教室</a>
+	<div class = "b_right">
+	<a id="lw" href="javascript:;" class="layui-btn  layui-btn-small" onclick="lastweek()">上一周</a>
+	<button class="layui-btn layui-btn-small layui-btn-disabled layui-btn-radius">周次:${weeks!'1'}</button>
+	<a id="nw" href="javascript:;" class="layui-btn  layui-btn-small" onclick="nextWeek()">下一周</a></div>
+</div>
+<table class="layui-table table-time">
+	<thead>
+		<tr>
+			<td>节次</td>
+			<td>星期日<br><span id="sund">${hm.SundayDate!''}</span></td>
+			<td>星期一<br><span id="md">${hm.MondayDate!''}</span></td>
+			<td>星期二<br><span id="td">${hm.TuesdayDate!''}</span></td>
+			<td>星期三<br><span id="wd">${hm.WednesdayDate!''}</span></td>
+			<td>星期四<br><span id="thd">${hm.ThursdayDate!''}</span></td>
+			<td>星期五<br><span id="fd">${hm.FridayDate!''}</span></td>
+			<td>星期六<br><span id="sd">${hm.SaturdayDate!''}</span></td>
+		</tr>
+	</thead>
+	<tbody>
+		<#assign seq = [0,1,2,3,4,5,6]>
+		<#if classTimes?? &&(classTimes?size>0)><#list classTimes as c>
+		<tr>
+			<td title="${(c.starttime)?string('HH:mm')} - ${(c.endtime)?string('HH:mm')}">
+				第${c.sectionofDay!''}节
+			</td>
+			<#list seq as l>
+				<td>
+				<#if loSchedules?? && (loSchedules?size>0)>
+					<#assign i=0>
+					<#list loSchedules as lo>
+							<#if (lo.sectionofday==c.sectionofDay) && (lo.dayofweek)==l>
+								 <#assign col="style='color:orange'">
+								 <#if lo.type=='G'><#assign col="style='color:red'"></#if>
+								 <#if lo.type=='A'><#assign col="style='color:orange'"></#if>
+								 <#if lo.type=='Z'><#assign col="style='color:#4596e5'"></#if>
+								 <a href="javascript:;" onclick="editSchedule('${lo.id}','${lo.type}')" ${col}>${lo.userName!''}<br>${lo.gradeId!''}(${lo.subjectId!''})</a>
+								<#assign i=1>
+							</#if>
+					</#list>
+					<#if i=0>
+						<a href="javascript:;" onclick="addZ('${c.id}','${c.sectionofDay}','${l}')" style="color:blue;">添加</a>
+					</#if>
+				<#else>
+					<a href="javascript:;" onclick="addZ('${c.id}','${c.sectionofDay}','${l}')" style="color:blue;">添加</a>
+				</#if>
+				</td>
+			</#list> 
+		</tr>
+		</#list></#if>	
+	</tbody>
+</table>
+<br><br>
+<div style ="margin-left:20px;">
+		<span style="color:red;">提示：</span> 
+		<span style ="color:#4596e5;">浅蓝色</span>--表示直播课堂    &nbsp;&nbsp;&nbsp;&nbsp;  
+		<span style ="color:orange;">橙色</span>--表示质量评估    &nbsp;&nbsp;&nbsp;&nbsp;  
+		<span style ="color:red;">红色</span>--表示专递课堂<br>   
+		<span style="color:red;">注意：</span> 重置课程后将永久删除,不可恢复&nbsp;&nbsp;批量添加课程时,如果同一时间点已有课程,将会被删除,以新添加的课程为准
+</div>
+</#if>
+<#if state==0>
+	<div class="msg">
+		<h2>请先对该学校进行时间安排!</h2>
+	</div>
+</#if>
+<script type="text/javascript">
+	$(function(){
+		var weeks=${weeks!''};
+		var totalWeeks=${totalWeeks!''};
+		if(weeks==1)
+			$("#lw").attr("class","layui-btn  layui-btn-small layui-btn-disabled");
+		if(totalWeeks<=weeks)
+			$("#nw").attr("class","layui-btn  layui-btn-small layui-btn-disabled");
+	});
+	function lastweek(){
+		var weeks=${weeks!''};
+		if(weeks>1){
+			var MondayDate=$("#md").text();
+			$("#lastandnext").val(-1);
+			$("#weeks").val(Number(weeks)-1);
+			$("#MondayDate").val(MondayDate);
+			ajaxsubmit();
+		}
+	}
+	function nextWeek(){
+		var weeks=${weeks!''};
+		var totalWeeks=${totalWeeks!''};
+		 if(totalWeeks>weeks){
+			 var MondayDate=$("#md").text();
+			$("#lastandnext").val(1);
+			$("#weeks").val(Number(weeks)+1);
+			$("#MondayDate").val(MondayDate);
+			ajaxsubmit();
+		 }
+	}
+	
+	function getZdate(dayofweek){
+		var zDate=null;
+		switch (dayofweek) {
+		case '0':
+			zDate=$("#sund").text();
+			break;
+		case '1':
+			zDate=$("#md").text();
+			break;
+		case '2':
+			zDate=$("#td").text();
+			break;
+		case '3':
+			zDate=$("#wd").text();
+			break;
+		case '4':
+			zDate=$("#thd").text();
+			break;
+		case '5':
+			zDate=$("#fd").text();
+			break;
+		case '6':
+			zDate=$("#sd").text();
+			break;
+		}
+		return zDate;
+	}
+	
+	//添加课程
+	function addZ(classTimeId,sectionofday,dayofweek){
+		var classId=$("#classId").val();
+		var schoolId=$("#schoolId").val();
+		var z_date=getZdate(dayofweek);
+		var weeks="${weeks!''}";
+		var termTimeId="${termTimeId!''}";
+		LayerOpen('添加课程', '875px', '700px', '${ctx}/adminCourseArrangement/addSchedule?classId='+classId+'&schoolId='+schoolId+'&dayofweek='+dayofweek+'&sectionofday='+sectionofday+'&z_date='+z_date+'&weeks='+weeks+'&classTimeId='+classTimeId+'&termTimeId='+termTimeId);		
+	}
+	
+	
+	//编辑课程
+	function editSchedule(id,type){
+		layer.confirm('修改还是删除', {
+		  icon: 3, 
+		  title:'提示',
+		  btn: ['修改', '删除'] 
+		}, function(index, layero){
+			LayerOpen('修改课程信息', '875px', '700px', '${ctx}/adminCourseArrangement/editSchedule?id='+id+'&type='+type);			
+			layer.close(index);
+		}, function(index){
+			$.ajax({
+				   type: "POST",
+				   url: "${ctx}/adminCourseArrangement/delSchedule",
+				   data: "id="+id+"&type="+type,
+				   success: function(msg){
+					   refreshPage(msg);
+				   }
+				});
+		});
+	}
+	
+	//重置本周课程
+	function resetweek(){
+		layer.confirm('确定要重置本周课程么', {
+			  icon: 3, 
+			  title:'提示'
+			}, function(index, layero){
+// 				var weeks="${weeks!''}";
+				var startDate = "${hm.SundayDate!''}";
+				var endDate = "${hm.SaturdayDate!''}";
+				var classId=$("#classId").val();
+				var schoolId=$("#schoolId").val();
+				var termTimeId="${termTimeId!''}";
+				$.ajax({
+					   type: "POST",
+					   url: "${ctx}/adminCourseArrangement/delScheduleBatch",
+					   data: {classId:classId,schoolId:schoolId,bak1:termTimeId,startDate:startDate,endDate:endDate},
+					   success: function(msg){
+						   refreshPage(msg);
+					   }
+					});
+				layer.close(index);
+			});
+	}
+	
+	//重置本教室课程
+	function resetclass(){
+		layer.confirm('确定要重置本教室课程么', {
+			  icon: 3, 
+			  title:'提示'
+			}, function(index, layero){
+				var classId=$("#classId").val();
+				var schoolId=$("#schoolId").val();
+				var termTimeId="${termTimeId!''}";
+				$.ajax({
+					   type: "POST",
+					   url: "${ctx}/adminCourseArrangement/delScheduleBatch",
+					   data: {classId:classId,schoolId:schoolId,bak1:termTimeId},
+					   success: function(msg){
+						   refreshPage(msg);
+					   }
+					});
+				layer.close(index);
+			});
+	}
+	
+	//进入批量添加页面
+	function batchAdd(){
+		var classId=$("#classId").val();
+		var schoolId=$("#schoolId").val();
+		var termTimeId="${termTimeId!''}";
+		var totalWeeks="${totalWeeks!''}";
+		LayerOpen('添加课程', '800px', '850px', '${ctx}/adminCourseArrangement/batchAddSchedule?classId='+classId+'&schoolId='+schoolId+'&termTimeId='+termTimeId+'&totalWeeks='+totalWeeks);		
+	}
+	
+</script>
+

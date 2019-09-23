@@ -1,0 +1,107 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<form id="myform">
+<#if lists?? && (lists?size>0)> <#list lists as l>
+<div class="clear zongTiao1 yiru">
+	<div class="cEefyz1 videoName">
+		<span class="span_input">
+			<input type="checkbox" name="del_id" value="${l.id!''}"/>
+		</span>
+		<div class="emhb27mw1">
+			<img src="${ctx}/img/Video_54_7880c8d.png" />
+		</div>
+		<div class="file-name1">
+			<a href="${ctx}/offLine/videoPlayback?id=${l.id!''}&type=${l.type!''}" class="wuw5MA" target="_blank"> 
+				<#assign col= "">
+				<#if l.releaseState == "Y"> <#assign col= "color:#5FB878;"> </#if>
+				<#if l.releaseState == "N"> <#assign col= "color:#FF5722;"> </#if>
+				<span class="fileName" style="${col}" title="${l.title!''}">${l.title!''}</span>
+			</a>
+		</div>
+		<span class="EOGexf1">
+			<img/>
+		</span>
+	</div>
+	<div class="rkwXRO ellipsisDiv" style="width: 6%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.gradeName!''}</span>
+	</div>
+	<div class="rkwXRO ellipsisDiv" style="width: 6%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.subjectName!''}</span>
+	</div>
+	<div class="rkwXRO ellipsisDiv" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.teacherName!''}</span>
+	</div>
+	<div class="rkwXRO" style="width: 8%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<#if l.type?? && l.type='P'><span>离线评估</span></#if>
+		<#if l.type?? && l.type='B'><span>课堂回放</span></#if>
+		<#if l.type?? && l.type='S'><span>精品微课</span></#if>
+		<#if l.type?? && l.type='H'><span>优质课程</span></#if>
+	</div>
+	<div class="rkwXRO progressbar" style="width: 11%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;" id="${l.id!''}">
+		<input type="hidden" id="transcodingState" value="${l.transcodingState!''}">
+		<div class="bgBorder">
+			<div class="bgBg" style="width:${l.progress!'0'}%"></div>
+			<#if l.transcodingState?? && l.transcodingState='U'> <span class="progerss">等待转码	${l.progress!'0'}%</span> </#if>
+			<#if l.transcodingState?? && l.transcodingState='C'> <span class="progerss">正在转码	${l.progress!'0'}%</span> </#if>
+			<#if l.transcodingState?? && l.transcodingState='O'> <span class="progerss">转码完成	${l.progress!'0'}%</span> </#if>
+		</div>
+	</div>
+	<div class="rkwXRO" style="width: 5%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;text-indent:1.3em;">
+		<span>${l.pageView!'0'}</span>
+	</div>
+	<div class="rkwXRO" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;text-align:center;">
+		<#if l.releaseState == "Y"><span style="color:#5FB878;" >已发布</span> </#if>
+		<#if l.releaseState == "N"><span style="color:#FF5722;" >未发布</span> </#if>
+	</div>
+	<div class="rkwXRO" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;text-align:center;">
+		<#if l.uploadName == "Y"><span style="color:#5FB878;" >允许</span> </#if>
+		<#if l.uploadName == "N"><span style="color:#FF5722;" >未允许</span> </#if>
+	</div>
+	<#assign msgt="">
+	<#if l.isShow == "Y"><#assign msgt="通过"></#if>
+	<#if l.isShow == "N"><#assign msgt="驳回,${l.bak!''}"></#if>
+	<div class="rkwXRO" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;text-align:center;" title="${msgt!''}">
+		<#if l.isShow == "Y"><span style="color:#5FB878;" >通过</span> </#if>
+		<#if l.isShow == "N"><span style="color:#FF5722;" class="ellipsesSpan1">驳回,${l.bak!''}</span></#if>
+	</div>
+	<div class="nq8L3J" style="width: 17%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.createTime?string('yyyy-MM-dd')}</span>
+		<ul class="showBianji">
+			<li>
+				<a href="javascript:void(0);" title="下载" onclick="downloadRes('${l.id}','${l.title!''}');">
+					<i class="layui-icon" style="color: #4E97FF;">&#xe601;</i>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:void(0);" title="编辑" onclick="edit('${l.id}');">
+					<i class="layui-icon" style="color: #4E97FF;">&#xe642;</i>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:void(0);"  title="删除" onclick="del('${l.id}');">
+					<i class="layui-icon" style="color: #4E97FF;">&#xe640;</i>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+</#list></#if>
+</form>
+<form id="myform1">
+	<input type="hidden" name="p" value="${pageNum!''}">
+	<input type="hidden" name="search" value="${search!''}">
+	<input type="hidden" name="sortord" value="${sortord!''}">
+</form>
+<script type="text/javascript" src="${ctx}/js/admin/res/resData.js"></script>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getVideoResData();
+	}
+</script>
+<script type="text/javascript">
+	$(function(){
+		var total = "${total!'0'}";
+		$("#total").text(total);
+	});
+</script>

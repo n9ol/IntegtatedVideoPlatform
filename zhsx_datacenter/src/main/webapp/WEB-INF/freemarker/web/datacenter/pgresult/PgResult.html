@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>综合视讯</title> 
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/play.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+<style type="text/css">
+.swiper-container {
+	height: 370px;
+}
+.returns{
+	position:relative;
+	width:1200px;
+	margin:0 auto;
+}
+.returns img{
+	position: absolute;
+    right: 22px;
+    top: 63px;
+    cursor:pointer;
+}
+.shuaxin img {
+    margin: 20px 82px 0 0;
+}
+</style>
+</head>
+<body>
+	<!--内容start-->
+	<div class="con">
+		<#if isNotGoBack?? && isNotGoBack == 'Y'>
+		<#else>
+			<div class="returns" onclick="returns();">
+				<i><img alt="" src="${ctx}/img/return.png" title="返回"></i>
+			</div>
+		</#if>
+		<div class="jilu">
+			<div class="jilu_top">
+				<div class="layui-tab layui-tab-card iii">
+					<ul class="layui-tab-title uuu" style="background-color: #4596E5;">
+					<#if principal?? && principal.userType != 'S'>
+						<li class="layui-this kkk">评估结果</li>
+					</#if>
+					</ul>
+				</div>
+			</div>
+			<div class="tap22"></div>
+			<div class="tap44" style="display:none;"></div>
+		</div>
+	</div>
+</body>
+<!--公共js-->
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var userType = "${principal.userType!''}";
+	var receive = {};
+	receive.id = "${id!''}";
+	var p = "${p!''}";
+	var gradeId = "${gradeId!''}";
+	var subjectId = "${subjectId!''}";
+	var search = "${search!''}";
+	var addTime = "${addTime?string('yyyy-MM-dd')}";
+</script>
+<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+<script type="text/javascript" src="${ctx}/js/web/datacenter/pgresult/PgResult.js"></script>
+</html>

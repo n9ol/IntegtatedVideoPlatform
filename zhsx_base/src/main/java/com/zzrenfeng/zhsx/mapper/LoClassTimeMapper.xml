@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoClassTimeMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoClassTime" >
+		<result column="id" property="id" />
+		<result column="termTimeId" property="termTimeId" />
+		<result column="sectionofDay" property="sectionofDay" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,termTimeId,sectionofDay,starttime,endtime
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_classTime
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_classTime
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="LoClassTime" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_classTime (id,termTimeId,sectionofDay,starttime,endtime)
+		values (#{id},#{termTimeId},#{sectionofDay},#{starttime},#{endtime})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoClassTime" >
+		update lo_classTime
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="termTimeId != null" >
+				termTimeId = #{termTimeId},
+			</if>
+			<if test="sectionofDay != null" >
+				sectionofDay = #{sectionofDay},
+			</if>
+			<if test="starttime != null" >
+				starttime = #{starttime},
+			</if>
+			<if test="endtime != null" >
+				endtime = #{endtime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoClassTime" >
+		update lo_classTime
+		set 
+		id = #{id},
+		termTimeId = #{termTimeId},
+		sectionofDay = #{sectionofDay},
+		starttime = #{starttime},
+		endtime = #{endtime}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="termTimeId != null" >
+				and termTimeId = #{termTimeId}
+			</if>
+			<if test="sectionofDay != null" >
+				and sectionofDay = #{sectionofDay}
+			</if>
+			<if test="starttime != null" >
+				and starttime = #{starttime}
+			</if>
+			<if test="endtime != null" >
+				and endtime = #{endtime}
+			</if>
+		</where>
+		ORDER BY sectionofDay 
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="LoClassTime" resultType="LoClassTime">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_classTime
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoClassTime" resultType="LoClassTime">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_classTime
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	
+	
+	<insert id="insertBatch" parameterType="java.util.List" >
+		<foreach collection="list" separator=";" item="s">
+			insert into lo_classTime (id,termTimeId,sectionofDay,starttime,endtime)
+			values
+				((select uuid()),#{s.termTimeId},#{s.sectionofDay},#{s.starttime},#{s.endtime})
+			ON DUPLICATE KEY UPDATE starttime = #{s.starttime}, endtime = #{s.endtime}
+		</foreach>
+	</insert>
+	
+	<delete id="deleteByTermTimeId" parameterType="java.lang.String" >
+		delete from lo_classTime where termTimeId = #{termTimeId}
+	</delete>
+	
+
+</mapper>

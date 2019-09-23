@@ -1,0 +1,9 @@
+<button class="layui-btn layui-btn-mini" onclick="selectDh('');">全部</button>
+<#if schoolDh?? && (schoolDh?size>0)>
+	<#list schoolDh as l>
+		<button class="layui-btn layui-btn-mini"  onclick="selectDh('${l.id!''}');">${l.dhname!''}</button>
+	</#list>
+<#else>
+	该校暂无区域监控
+</#if>
+<button class="layui-btn layui-btn-normal chajian" onclick="downloadPlugIn();">下载插件</button>

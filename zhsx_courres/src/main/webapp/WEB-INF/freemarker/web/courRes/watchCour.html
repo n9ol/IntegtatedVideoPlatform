@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/FilePlay.css"/>
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a href="${ctx}/courRes/ziyuan">课件资源</a>
+  					<a><cite>在线浏览</cite></a>
+				</span>
+			</div>
+			<div class="tittleFilePlay">
+				<div class="tittleFilePlaySon">
+					<div class="bt">
+						<#if courRes.type == 'ppt' || courRes.type == 'pptx'><img src="${ctx}/img/Ppt_54_6165188.png" /></#if>
+						<#if courRes.type == 'doc' || courRes.type == 'docx'><img src="${ctx}/img/Word_54_6167687.png" /></#if>
+						<#if courRes.type == 'xls' || courRes.type == 'xlsx'><img src="${ctx}/img/Excel_54_7880c8c.png" /></#if>
+						<#if courRes.type == 'pdf'><img src="${ctx}/img/PDF_54_ae4e37a.png" /></#if>
+						<#if courRes.type == 'txt'><img src="${ctx}/img/Txt_54_1885188.png" /></#if>
+						<span>${courRes.name!''}</span>
+					</div>
+					<div class="btUl">
+						<ul>
+							<li>发布人 (${courRes.uploadPersonName!''})</li>
+							<li>下载量 (${courRes.downloadNum!'0'})</li>
+							<li>收藏量 (${courRes.collectionNum!'0'})</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="iframePlay">
+				<div id="1111">
+					<iframe src="${ctx}/generic/web/viewer.html?file=${ctx}/courRes/receivePdfStream/${courRes.id!''}" width="964" height="830" style="border: none;"></iframe>
+				</div>
+				<!--列表区-->
+				<div class="bang">
+					<h4><strong>相关文档推荐</strong></h4>
+					<ul class="bangUl">
+						<#if courResList?? && (courResList?size>0)><#list courResList as l>
+						<li class="bangLi">
+							<div>
+								<a href="${ctx}/courRes/watchCour?id=${l.id!''}">
+									<div class="lXeEpq">
+										<h1 class="clear">
+											<#if l.type == 'ppt' || l.type == 'pptx'><img class="HMDKih" src="${ctx}/img/Ppt_54_6165188.png" /></#if>
+											<#if l.type == 'doc' || l.type == 'docx'><img class="HMDKih" src="${ctx}/img/Word_54_6167687.png" /></#if>
+											<#if l.type == 'xls' || l.type == 'xlsx'><img class="HMDKih" src="${ctx}/img/Excel_54_7880c8c.png" /></#if>
+											<#if l.type == 'pdf'><img class="HMDKih" src="${ctx}/img/PDF_54_ae4e37a.png" /></#if>
+											<#if l.type == 'txt'><img class="HMDKih" src="${ctx}/img/Txt_54_1885188.png" /></#if>
+											<span class="nmIkct ellipsisSpan">${l.name!''}</span>
+										</h1>
+										<p class="bangP clear">
+											<span class="Quozsk">发布人： ${l.uploadPersonName!''}</span>
+										</p>
+									</div>
+								</a>
+							</div>
+						</li>
+						</#list></#if>
+					</ul>
+				</div>
+			</div>
+			<div class="CommentArea clear">
+				<div class="sanCA"></div>
+			</div>
+		</div>
+		<!--内容end-->
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+	</body>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		var receive = {};
+		receive.id = "${courRes.id!''}";
+	</script>
+	<script type="text/javascript" src="${ctx}/js/web/courRes/watchCour.js"></script>
+</html>

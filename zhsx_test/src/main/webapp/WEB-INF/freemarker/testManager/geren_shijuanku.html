@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!-- <#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+
+	<body>
+		<div class="kao_right">
+			<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 我的试卷库</p>
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this">我的试卷</li>
+				</ul>
+				<div class="tianjia" ><a href="#" style="color: white;">添加新试卷</a></div>
+
+			</div>
+			<div class="guanjian clear">
+				<span>筛选：</span>
+				<span>
+						<select name="gradeName" id="gradeName" onchange="getSubject();">
+       							<option value="">选择专业</option>
+       						<#if grades??&&(grades?size>0)><#list grades as g>
+       							<option  name="${g.id}"  value="${g.value}">${g.value}</option>
+       						</#list></#if>
+      					</select>
+				</span>
+				<span>
+					<select name="subjectName" class="subjectName" id="subjectName">
+        						<option  value="">选择科目</option>
+      				</select>
+				</span>
+				<span>
+					<select name="status" class="status" id="status">
+        						<option  value="">选择状态</option>
+        						<option  value="Y">已发布</option>
+        						<option  value="N">已过期</option>
+        						<option  value="C">草稿</option>
+      				</select>
+				</span>
+				
+				<span>
+					<input   name="addTime1" placeholder="添加日期"  id="addTime1" value="${addTim!''}" onclick="layui.laydate({elem: this, festival: true})"style="width: 100px;height: 24px;margin-left:1px;border:1px solid rgb(170,170,170);text-indent: 1em;" >
+				</span>
+				<img  onclick="searchSchool();" style="margin-top:12px;" alt="搜索" src="${ctx}/img/sousuo.jpg">
+				<span style="float:right;">
+					<input type="text" placeholder="标题/发布人" name="search1" id="search1" value="${search!''}" style="width: 100px;height: 23px;" />
+				</span>
+			</div>
+			<table class="layui-table table">
+
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>专业</th>
+						<th>科目</th>
+						<th>考试标题</th>
+						<th>总分</th>
+						<th>添加时间</th>
+						<th>到期时间</th>
+						<th>状态</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<#if lists?? && (lists?size>0)><#list lists as l>
+					<tr>
+						<td>${l_index+1}</td>
+						<td>${l.gradeName!''}</td>
+						<td>${l.subiectName!''}</td>
+						<td><a href="javascript:;" onclick="findOne('${l.id!''}')" style="color:blue;">${l.testTitle!''}</a></td>
+						<td>${l.totalScore!''}</td>
+						<td>${(l.addTime)?string('yyyy-MM-dd')}</td>
+						<td>${((l.lockTime)?string('yyyy-MM-dd'))!''}</td>
+						<td>
+						<#if l.lock=='Y'>
+							<font color='red '>已过期</font>
+						<#else>
+							<#if l.publicType=="Y">
+								<font color='#00AA55'>已发布</font>
+							<#else>
+								<font color='#BB5500 '>草稿</font>
+							</#if>
+						</#if>		
+						</td>
+						<td><a href="javascript:edit('${l.id}');">编辑</a>&nbsp/&nbsp<a href="javascript:delTest('${l.id}');">删除</a></td>
+					</tr>
+				</#list></#if>	
+				</tbody>
+			</table>
+			<form id="form" action="${ctx}/test/paperlist" method="post">
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="search" value="${search!''}">
+			<input type="hidden" name="memberId" value="${memberId!''}">
+			<input type="hidden" name="gradeName" value="${gradeName!''}">
+			<input type="hidden" name="subjectName" value="${subjectName!''}">
+			<input type="hidden" name="status" value="${status!''}">
+			<input type="hidden" name="addTim" value="${addTim!''}">
+		</form>
+			<div id="page" style="text-align: center;"></div>
+		</div>
+	</body>	
+	<script type="text/javascript">var memberId = ${principal.id!''}</script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+		}
+	</script>
+	
+	<script type="text/javascript">
+	function setIframeH() {
+		var body = $(document.body);
+		var iframe = $(parent.document.getElementById('parentIframe'));
+		iframe.height(body.height());
+	} 
+		
+		
+	
+		var layer;
+		layui.use(['layer', 'form', 'element','laydate'], function() {
+			 layer = layui.layer,
+				form = layui.form,
+				element = layui.element;
+			 var laydate = layui.laydate;
+		});
+	//获得学科
+		function getSubject(){
+			var  gradeId=$("#gradeName").find("option:selected").attr("name");
+			$(".subjectName").empty();
+			$(".subjectName").append('<option value="">请选择科目</option>');
+			$.getJSON("${ctx}/adminBaseData/getSubjects", { gradeId: gradeId}, function(json){
+	 			for (var int = 0; int < json.length; int++) {
+					var arrayJson=json[int];
+					$(".subjectName").append('<option  value="'+arrayJson.value+'">'+arrayJson.value+'</option>');
+	 			}
+			}); 
+	    }
+	
+	
+		 function searchSchool() {
+			 var  gradeName=$("#gradeName").find("option:selected").val();
+				var  subjectName=$(".subjectName").find("option:selected").val();
+				var  status=$(".status").find("option:selected").val();
+				var search = $("input[name='search1']").val();
+				var addTime1 = $("input[name='addTime1']").val();
+				 $("input[name='search']").val(search);
+				 $("input[name='addTim']").val(addTime1);
+				 $("input[name='gradeName']").val(gradeName);
+				$("input[name='subjectName']").val(subjectName);
+				$("input[name='status']").val(status);
+				 refreshPage();
+			} 
+		
+		
+		 function delTest(id){
+			 layer.confirm('你确定要删除？',{shade: [0.2, '#FFFFFF']},function(){
+				$.ajax({
+					type:"post",
+					url:"${ctx}/test/del",
+					data:{"id":id},
+					success: function(msg){
+						 parent.$(".zhong_right iframe").attr("src", "${ctx}/test/paperlist?memberId="+memberId);
+					}
+					
+				});
+			 });
+			} 
+		
+		 function refreshPage(){
+			 
+				$("#form").submit();
+			}
+		
+		 $(".tianjia").click(function() {
+				parent.$(".zhong_right iframe").attr("src", "${ctx}/test/addTest");
+		 });
+		
+		 
+		 function edit(id){
+			 location.href="${ctx}/test/editTest?id="+id;
+		 }
+		 
+		 function findOne(id){
+			 parent.$(".zhong_right iframe").attr("src", "${ctx}/test/findOne?testId="+id);
+		 }
+		
+	</script>
+</html>

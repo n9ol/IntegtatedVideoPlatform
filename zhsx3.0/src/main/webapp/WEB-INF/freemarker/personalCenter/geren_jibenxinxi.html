@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!--公共样式表-->
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/personalCenter/geren_jibenxinxi.css" />
+	</head>
+	<body>
+		<div class="biaodanji">
+			<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+				<ul class="layui-tab-title">
+					<#if principal?? && principal.userType=="T">
+						<li class="layui-this">基本属性</li>
+						<li>基本信息</li>
+						<li>等级说明</li>
+						<li>排行榜</li>
+					</#if>
+				</ul>
+				<div class="layui-tab-content">
+					<div class="layui-tab-item layui-show clear" id="teacherGradeEx"></div>
+					<div class="layui-tab-item" id="userInfo"></div>
+					<div class="layui-tab-item" id="gradeSystem"></div>
+					<div class="layui-tab-item" id="teacherGradeRank"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<!--公共js-->
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript"> 
+		var userType = "${principal.userType!''}";
+		var principalId = "${principal.id!''}";
+	</script>
+	<script type="text/javascript" src="${ctx}/js/check.js"></script>
+	<script src="${ctx}/js/personalCenter/geren_jibenxinxi.js" type="text/javascript" charset="utf-8"></script>
+</html>

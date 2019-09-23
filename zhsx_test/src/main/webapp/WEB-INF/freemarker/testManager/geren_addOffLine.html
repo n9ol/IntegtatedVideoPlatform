@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+	<meta charset="utf-8">
+	<title>添加离线考试数据</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<#include "/commons/comAdmin.html" encoding="utf-8"/>
+	<style type="text/css">
+	body{
+		background-color: #ffffff;
+	}
+	.layui-larry-box {
+		padding: 0;
+		margin-top: 50px;
+	}
+	#jj {
+		text-align:right;
+		width: 80px;
+		float:left;
+	}
+	.layui-input-block{
+		margin-right:240px;
+		margin-left: 100px;
+	}
+	.msg{
+		float:right;
+		margin-top:-25px;
+		width:220px;
+	}
+	.msg1{
+		float:right;
+		margin-top:13px;
+		width:220px;
+	}
+	</style>
+	</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="larry-personal-body clearfix">
+				<form id="form" class="layui-form">
+					<input type="hidden" name="schoolId" value="${schoolId!''}">
+					<div class="row">
+					
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">考试名称：</label>
+							<div class="layui-input-block">
+								<input type="text" id="title" name="title" class="layui-input" title="" onblur="checkOk(this,checkString(this))">
+							</div>
+							<span id="title_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>
+						</div>
+						<div class="layui-form-item">
+							  <label class="layui-form-label" id="jj">考试专业：</label>
+							 <div class="layui-input-block">
+				                           <select name="gradeId" lay-filter="gradeId" id="gradeId" lay-search>
+				                              <option value="">请选择专业</option>
+											  <#if grades??&&(grades?size>0)><#list grades as g>
+											　　<option  name="${g.id}"  value="${g.id}">${g.value}</option>
+	       									  </#list></#if>
+				                          </select>
+				                           <span id="gradeId_msg" class="msg" style="color:red;">*</span>
+				              </div>
+			             </div>
+			             
+			             <div class="layui-form-item"> 
+				              <label class="layui-form-label" id="jj">考试科目：</label>
+							  <div class="layui-input-block">
+				                          <select name="subjectId"  id="subjectId">
+	        									<option  value="">请选择科目</option>
+	      								  </select>
+	      								  <span id="subjectId_msg" class="msg" style="color:red;">*</span>
+				              </div>
+			              </div>
+			              <div class="layui-form-item">
+			              <label class="layui-form-label" id="jj">考试版本：</label>
+				              <div class="layui-input-block">
+				                          <select type="text" id="version" name="version" title="试卷版本">
+											<#if version?? && (version?size>0)><#list version as v>
+											<option value="${v.value!''}"  >${v.value!''}</option>
+											</#list></#if>	
+											
+										</select>
+				                           <span id="version_msg" class="msg" style="color:red;">*</span>
+				              </div>
+			              </div>
+			               <div class="layui-form-item">
+						 	<label class="layui-form-label" id="jj">册次：</label>
+						    <div class="layui-input-block">
+						      <input type="radio" name="volume" value="0" title="全册"  checked>
+						      <input type="radio" name="volume" value="1" title="上册" >
+						      <input type="radio" name="volume" value="2" title="下册" >
+						    </div>
+						 </div> 
+						<div class="layui-form-item">
+								<label class="layui-form-label" id="jj">考试班级：</label>
+								<div class="layui-input-block">
+									<input type="text" id="classId" name="classId" class="layui-input" title="班级" onblur="checkOk(this,checkString(this))">
+								</div>
+								<span id="classId_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填（如：一班）</span>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">参考人数：</label>
+							<div class="layui-input-block">
+								<input type="text" id="sum" name="sum" class="layui-input"  title="参考人数" onblur="checkOk(this,checkString(this)&&checkNum(this))">
+							</div>
+							<span id="sum_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">及格人数：</label>
+							<div class="layui-input-block">
+								<input type="text" id="passNum" name="passNum" class="layui-input"  title="及格人数" onblur="checkOk(this,checkString(this)&&checkNum(this))">
+							</div>
+							<span id="passNum_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>
+						</div>
+						
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">不及格人数：</label>
+							<div class="layui-input-block">
+								<input type="text" id="failNum" name="failNum" class="layui-input"  title="不及格人数" onblur="checkOk(this,checkString(this)&&checkNum(this))">
+							</div>
+							<span id="failNum_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>
+						</div>
+						
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">本次考试平均分：</label>
+							<div class="layui-input-block">
+								<input type="text" id="averScore" name="averScore" class="layui-input"  title="平均分" onblur="checkOk(this,checkString(this)&&checkNum(this))">
+							</div>
+							<span id="averScore_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>
+						</div>
+						
+						<div class="layui-form-item">
+							<label class="layui-form-label" id="jj">试卷总分：</label>
+							<div class="layui-input-block">
+								<input type="text" id="score" name="score" class="layui-input"  title="试卷总分" onblur="checkOk(this,checkString(this)&&checkNum(this))">
+							</div>
+							<span id="score_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>
+						</div>
+						
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="button" class="layui-btn  layui-btn-normal" onclick="javascript:submitForm();" value="立即提交">
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+</body>
+<script type="text/javascript">
+	var ctx = "${ctx!''}";
+	var uid = "${principal.id!''}";
+</script>
+<script type="text/javascript" src="${ctx}/js/check.js"></script>
+<script type="text/javascript" src="${ctx}/js/web/testOffLine.js"></script>
+</html>

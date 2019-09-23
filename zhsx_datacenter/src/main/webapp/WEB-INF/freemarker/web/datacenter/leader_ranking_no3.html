@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<div class="nr1">
+			<p class="tittle">不同等级教师的课中评估平均得分</p>
+			<div id="main11">
+
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	<script type="text/javascript">
+		setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeRanking'));
+			iframe.height(body.height()+20);
+		}
+		
+		/*本教研员所评 -- 不同等级教师的课前备课评估平均得分 */
+		var teachers1=[];
+		var teachers2=[];
+		var teachers3=[];
+		var teachers4=[];
+		var teachers5=[];
+		var teachers6=[];
+		
+    	<#assign item1 = resultMap.teacher1>   
+    	<#list item1 as itemValue>
+    		teachers1.push("${itemValue}");
+     	</#list>
+    	<#assign item2 = resultMap.teacher2>   
+    	<#list item2 as itemValue>
+    		teachers2.push("${itemValue}");
+     	</#list>
+    	<#assign item3 = resultMap.teacher3>   
+    	<#list item3 as itemValue>
+    		teachers3.push("${itemValue}");
+     	</#list>
+    	<#assign item4 = resultMap.teacher4>   
+    	<#list item4 as itemValue>
+    		teachers4.push("${itemValue}");
+     	</#list>
+    	<#assign item5 = resultMap.teacher5>   
+    	<#list item5 as itemValue>
+    		teachers5.push("${itemValue}");
+     	</#list>
+    	<#assign item6 = resultMap.teacher6>   
+    	<#list item6 as itemValue>
+    		teachers6.push("${itemValue}");
+     	</#list>
+		
+     	var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var myChart11 = echarts.init(document.getElementById("main11"));
+		var option11 = {
+			color: color3,
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: { // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				}
+			},
+			legend: {
+				data: ['初级教师', '三级教师', '二级教师', '一级教师', '高级教师', '特级教师']
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: {
+				type: 'value'
+			},
+			yAxis: {
+				type: 'category',
+				data: ['周一', '周二', '周三', '周四', '周五']
+			},
+			series: [{
+				name: '初级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers1
+			}, {
+				name: '三级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers2
+			}, {
+				name: '二级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers3
+			}, {
+				name: '一级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers4
+			}, {
+				name: '高级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers5
+			}, {
+				name: '特级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers6
+			}]
+		};
+		myChart11.setOption(option11);
+		
+	</script>
+
+</html>

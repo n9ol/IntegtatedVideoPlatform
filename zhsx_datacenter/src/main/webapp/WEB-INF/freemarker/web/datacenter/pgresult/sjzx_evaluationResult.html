@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教育综合视讯管理平台</title> 
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<link rel="stylesheet" href="${ctx}/css/web/sjzx_evaluationResult.css">
+</head>
+<body>
+	<div class="con">
+		<!--筛选区域-->
+		<div>
+			<ul class="filter1">
+				<li class="filter2 borderBottom clear">
+					<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+					<ul class="filter3 clear">
+						<li class="filterActive" onclick="selectGrade()">全部</li>
+						<#if grades?? && (grades?size>0)><#list grades as g>
+							<li onclick="selectGrade('${g.id}','${g.value}')">${g.value!''}</li>
+						</#list></#if>
+					</ul>
+					<span class="category2">
+						<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+						<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+					</span>
+				</li>
+				<li class="filter2 clear">
+					<span class="category1">科&nbsp;&nbsp;&nbsp;&nbsp;目 ></span>
+					<ul class="filter3 clear" id="hhh">
+						<li class="filterActive" onclick="selectSubjects()">全部</li>
+						<#if subjects?? && (subjects?size>0)><#list subjects as s>
+							<li onclick="selectSubjects('${s.value}',this)">${s.value!''}</li>
+						</#list></#if>
+					</ul>
+					<span class="category2">
+						<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+						<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+					</span>
+				</li>
+			</ul>
+		</div>
+		<div class="zonghe">
+			<div class="sousuo">
+				<input style="border: 1px solid gainsboro;padding-left:2px;" type="search" placeholder="老师/教室" id="seatchval" value="${search!''}"/>
+				<img src="/zhsx/img/sousuo.jpg"  onclick="search();"/>
+			</div>
+		</div>
+		<div class="ziyuan_zhong">
+		
+		</div>
+	</div>
+
+
+	<form id="myform">
+		<input type="hidden" name="p"         value="${p!''}">
+		<input type="hidden" name="gradeId"   value="${gradeId!''}">
+		<input type="hidden" name="subjectId" value="${subjectId!''}">
+		<input type="hidden" name="search"    value="${search!''}">	
+	</form>
+</body>
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript" src="${ctx}/js/web/datacenter/pgresult/sjzx_evaluationResult.js"></script>
+</html>

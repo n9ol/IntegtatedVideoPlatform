@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysDictMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysDict" >
+		<result column="id" property="id" />
+		<result column="pid" property="pid" />
+		<result column="keyname" property="keyname" />
+		<result column="value" property="value" />
+		<result column="posx" property="posx" />
+		<result column="posy" property="posy" />
+		<result column="sort" property="sort" />
+		<result column="createTime" property="createTime" />
+		<result column="modiyTime" property="modiyTime" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,pid,keyname,value,posx,posy,sort,createTime,modiyTime
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from sys_dict
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_dict
+		where id = #{id}
+	</delete>
+
+	
+	
+	<insert id="insert" parameterType="SysDict" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_dict (id,pid,keyname,value,posx,posy,sort,createTime,modiyTime)
+		values (#{id},#{pid},#{keyname},#{value},#{posx},#{posy},#{sort},#{createTime},#{modiyTime})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysDict" >
+		update sys_dict
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="pid != null" >
+				pid = #{pid},
+			</if>
+			<if test="keyname != null" >
+				keyname = #{keyname},
+			</if>
+			<if test="value != null" >
+				value = #{value},
+			</if>
+			<if test="posx != null" >
+				posx = #{posx},
+			</if>
+			<if test="posy != null" >
+				posy = #{posy},
+			</if>
+			<if test="sort != null" >
+				sort = #{sort},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="modiyTime != null" >
+				modiyTime = #{modiyTime}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysDict" >
+		update sys_dict
+		set 
+		id = #{id},
+		pid = #{pid},
+		keyname = #{keyname},
+		value = #{value},
+		posx = #{posx},
+		posy = #{posy},
+		sort = #{sort},
+		createTime = #{createTime},
+		modiyTime = #{modiyTime}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="pid != null" >
+				and pid = #{pid}
+			</if>
+			<if test="keyname != null" >
+				and keyname = #{keyname}
+			</if>
+			<if test="value != null" >
+				and value = #{value}
+			</if>
+			<if test="posx != null" >
+				and posx = #{posx}
+			</if>
+			<if test="posy != null" >
+				and posy = #{posy}
+			</if>
+			<if test="sort != null" >
+				and sort = #{sort}
+			</if>
+			<if test="createTime != null" >
+				and createTime = #{createTime}
+			</if>
+			<if test="modiyTime != null" >
+				and modiyTime = #{modiyTime}
+			</if>
+		</where>
+		ORDER BY sort
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysDict" resultType="SysDict">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_dict
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<select id="findAreaByProvince" parameterType="SysDict" resultType="SysDict">
+		SELECT
+			sd2.*
+		FROM
+			sys_dict sd1
+		LEFT JOIN sys_dict sd2 ON sd1.id = sd2.pid
+		WHERE
+			sd1.pid = #{id}
+		AND sd2.keyname = #{keyname}
+	</select>
+
+	<select id="findPageSelective" parameterType="SysDict" resultType="SysDict">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_dict
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	
+	
+	<delete id="deleteLevel3Data" parameterType="java.lang.String">
+		delete from sys_dict where id in (select t.id from (select id from sys_dict  where pid in ( select id from sys_dict where pid = #{id})) t);
+		delete from sys_dict where pid=#{id};
+		delete from sys_dict where id=#{id};
+	</delete>
+	
+	<delete id="deleteLevel2Data" parameterType="java.lang.String">
+		delete from sys_dict where pid=#{id};
+		delete from sys_dict where id=#{id};
+	</delete>
+	
+	
+	<delete id="batchDelVersion" parameterType="java.util.List">
+		delete from sys_dict where id IN 
+		<foreach collection="list" open="(" close=")" item="id" separator=",">#{id}</foreach>
+	</delete>
+	
+	
+
+</mapper>

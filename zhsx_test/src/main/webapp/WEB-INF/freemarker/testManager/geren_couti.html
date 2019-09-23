@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<style type="text/css">
+		.guanjian {
+			line-height: 23px;
+			float: right;
+			margin: 23px 0 10px 10px;
+		}
+		.examTitle {
+		    height: 70px;
+		    line-height:70px;
+		    margin-bottom:30px;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="kao_right">
+						<div class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 我的错题库
+							<div class="guanjian"> 
+								<img  onclick="searchSchool();" alt="搜索" src="${ctx}/img/sousuo.jpg">
+								<input type="search" name="search1" id="search1" value="${search!''}" style="width: 172px;height:27px;font-size:13px;float:right;"  placeholder="问题题目/专业/科目"/>
+							</div>
+						</div>
+						
+						<ul>
+						<#if lists??&&(lists?size>0)><#list lists as l>
+								<li>
+									<div class="cuo_top clear">
+										<span class="strong"><strong>第${l.questionNo!''}题、</strong></span><span class="strong">
+										<#if l.questionType==0>
+										<strong>是非题：</strong></span>
+										</#if>
+										<#if l.questionType==1>
+										<strong>单选题：</strong></span>
+										</#if>
+										<#if l.questionType==2>
+										<strong>多选题：</strong></span>
+										</#if>
+										<span style="float: right;">分值：${l.score!''}</span>
+									</div>
+									<div class="cuo_con">
+										<p class="cuo_con_ti">${l.questionText!''}</p>
+<!-- 										<p class="cuo_con_xuan">考生选择的答案：</p> -->
+													<form class="layui-form" action="">
+														<div class="layui-form-item">
+															<div class="layui-input-block" style="margin-left: 0px;">
+																	<#if l.questionType==2>
+																		<strong>多选题：</strong></span>
+																		<#if l.answer??&&(l.answer?size>0)><#list l.answer as an>
+																			<#assign chk = "">
+																			<#if l.stuAnswer?? && (l.stuAnswer?size>0)><#list l.stuAnswer as la>
+																				<#if la.answerId == an.id><#assign chk = "checked"></#if>
+																			</#list></#if>
+																			<input type="checkbox" title="${an.answerText!''}" lay-skin="primary"  ${chk}>
+																		</#list></#if>
+																	<#else> 
+																		<#if l.answer??&&(l.answer?size>0)><#list l.answer as an>
+																			<#assign chk = "">
+																			<#if l.stuAnswer?? && (l.stuAnswer?size>0)><#list l.stuAnswer as la>
+																				<#if la.answerId == an.id><#assign chk = "checked"></#if>
+																			</#list></#if>
+																			<input  type="radio" name="sex" title="${an.answerText!''}"  ${chk}>
+																		</#list></#if>
+																	</#if>
+															</div>
+														</div>
+													</form>
+																					
+											<div class="cankao">
+												<p class="cankao1">参考答案：</p>
+												<#if l.answer??&&(l.answer?size>0)><#list l.answer as an>
+													<#if an.questionType==0>
+														<#if (an.isRight!0)==1>
+															<p class="cankao2">${an.answerText!''} </p>
+														</#if>	
+													<#else>
+														<#if (an.isRight!0)==1>
+															<p class="cankao2">${an.answerText!''} </p>
+														</#if>
+													</#if>
+												</#list></#if>	
+											</div>
+									</div>
+								</li>
+								
+						</#list>
+						<#else>
+							没有符合条件的错题....
+						</#if>
+							
+						</ul>
+						<div id="page" style="text-align: center;"></div>
+					</div>
+				<form id="form" action="${ctx}/testwebstutestquestionanswer/findMyErrors" method="post" >
+					<input type="hidden" name="p" value="${pageNum!''}">
+					<input type="hidden" name="search" value="${search!''}">
+					<input type="hidden" name="memberId" value="${memberId!''}">
+				</form>
+				
+	</body>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+		}
+	</script>
+	<script type="text/javascript">
+		$(function(){
+			setIframeH();
+		});
+	
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height());
+		}
+	
+	
+		layui.use('form' , function() {
+			var form = layui.form;
+		});	
+		
+		//搜索框键盘enter事件
+		$("#search1").keyup(function(){
+			if(event.keyCode == 13){
+				searchSchool();
+			} 
+		});
+		function searchSchool() {
+			var search = $("input[name='search1']").val();
+			$("input[name='search']").val(search);
+			$("input[name='p']").val(null);
+			refreshPage();
+		} 
+		
+		function refreshPage(){
+			$("#form").submit();
+		}
+	</script>
+</html>

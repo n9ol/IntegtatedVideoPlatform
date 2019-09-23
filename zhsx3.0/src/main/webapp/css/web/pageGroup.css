@@ -1,0 +1,66 @@
+/* CSS Document */
+
+* {
+	padding: 0px;
+	margin: 0px;
+}
+
+
+
+li {
+	list-style: none;
+}
+
+
+#pageGro {
+	text-align: center;
+	width: 450px;
+	height: 25px;
+	margin: 0px auto;
+	margin-bottom: 0px;
+	
+	
+}
+
+#pageGro div,
+#pageGro div ul li {
+	
+	/*color: #999;*/
+	line-height: 23px;
+	float: left;
+	margin-left: 5px;
+}
+
+#pageGro div ul li {
+	width: 22px;
+	height: 23px;
+	text-align: center;
+	border: 1px solid #999;
+	cursor: pointer;
+}
+
+#pageGro div ul li.on {
+	color: #fff;
+	background: #4596e5;
+	border: 1px solid #3c90d9;
+}
+
+#pageGro .pageUp,
+#pageGro .pageDown,
+#pageGro .pagestart,
+#pageGro .pageend {
+	width: 63px;
+	border: 1px solid #999;
+	cursor: pointer;
+}
+
+/*#pageGro div:hover{
+	background-color: #4596E5;
+	color: white;
+}*/
+.pageList ul>li:hover{
+	background-color: #4596E5;
+	color: white;
+}
+
+

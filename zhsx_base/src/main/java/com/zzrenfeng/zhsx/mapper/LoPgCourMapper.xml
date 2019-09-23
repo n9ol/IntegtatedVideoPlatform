@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoPgCourMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoPgCour" >
+		<result column="id" property="id" />
+		<result column="loScheduleId" property="loScheduleId" />
+		<result column="pjInfoId" property="pjInfoId" />
+		<result column="courId" property="courId" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,loScheduleId,pjInfoId,courId,bak,bak1,bak2
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pg_cour
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_pg_cour
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="LoPgCour" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_pg_cour (id,loScheduleId,pjInfoId,courId,bak,bak1,bak2)
+		values (#{id},#{loScheduleId},#{pjInfoId},#{courId},#{bak},#{bak1},#{bak2})
+		ON DUPLICATE KEY UPDATE courId = #{courId}
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoPgCour" >
+		update lo_pg_cour
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="loScheduleId != null" >
+				loScheduleId = #{loScheduleId},
+			</if>
+			<if test="pjInfoId != null" >
+				pjInfoId = #{pjInfoId},
+			</if>
+			<if test="courId != null" >
+				courId = #{courId},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoPgCour" >
+		update lo_pg_cour
+		set 
+		id = #{id},
+		loScheduleId = #{loScheduleId},
+		pjInfoId = #{pjInfoId},
+		courId = #{courId},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="loScheduleId != null" >
+				and loScheduleId = #{loScheduleId}
+			</if>
+			<if test="pjInfoId != null" >
+				and pjInfoId = #{pjInfoId}
+			</if>
+			<if test="courId != null" >
+				and courId = #{courId}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="LoPgCour" resultType="LoPgCour">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT title FROM pg_pjinfo p WHERE p.type = 'F' and p.id = l.pjInfoId)  AS pjInfoName,
+		(SELECT weight FROM pg_pjinfo p WHERE p.type = 'F' and p.id = l.pjInfoId)  AS pjInfoWeight,
+		(SELECT `name` FROM cour_resource  c WHERE c.id = l.courId) as courName,
+		(SELECT total FROM web_pjinfo w WHERE w.pgId = l.loScheduleId AND w.pgPjInfoId = l.pjInfoId and userId = #{userId}) as total
+		from lo_pg_cour l
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoPgCour" resultType="LoPgCour">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pg_cour
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+
+</mapper>

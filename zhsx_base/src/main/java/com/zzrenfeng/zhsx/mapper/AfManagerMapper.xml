@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.AfManagerMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.AfManager" >
+		<result column="id" property="id" />
+		<result column="schoolid" property="schoolid" />
+		<result column="schoolarea" property="schoolarea" />
+		<result column="videopath" property="videopath" />
+		<result column="status" property="status" />
+		<result column="camearname" property="camearname" />
+		<result column="cameardesc" property="cameardesc" />
+		<result column="starttime" property="starttime" />
+		<result column="endtime" property="endtime" />
+		<result column="firepath" property="firepath" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,schoolid,schoolarea,videopath,status,camearname,cameardesc,starttime,endtime,firepath,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT schoolName FROM `sys_school` d where d.id=t.schoolid) as schoolName,
+		(SELECT dhname FROM af_dh s WHERE s.id=t.schoolarea) as dhname
+		from af_manager t
+		where t.id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from af_manager
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="AfManager" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into af_manager (id,schoolid,schoolarea,videopath,status,camearname,cameardesc,starttime,endtime,firepath,bak1,bak2,bak3)
+		values (#{id},#{schoolid},#{schoolarea},#{videopath},#{status},#{camearname},#{cameardesc},#{starttime},#{endtime},#{firepath},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="AfManager" >
+		update af_manager
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="schoolid != null" >
+				schoolid = #{schoolid},
+			</if>
+			<if test="schoolarea != null" >
+				schoolarea = #{schoolarea},
+			</if>
+			<if test="videopath != null" >
+				videopath = #{videopath},
+			</if>
+			<if test="status != null" >
+				status = #{status},
+			</if>
+			<if test="camearname != null" >
+				camearname = #{camearname},
+			</if>
+			<if test="cameardesc != null" >
+				cameardesc = #{cameardesc},
+			</if>
+			<if test="starttime != null" >
+				starttime = #{starttime},
+			</if>
+			<if test="endtime != null" >
+				endtime = #{endtime},
+			</if>
+			<if test="firepath != null" >
+				firepath = #{firepath},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="AfManager" >
+		update af_manager
+		set 
+		id = #{id},
+		schoolid = #{schoolid},
+		schoolarea = #{schoolarea},
+		videopath = #{videopath},
+		status = #{status},
+		camearname = #{camearname},
+		cameardesc = #{cameardesc},
+		starttime = #{starttime},
+		endtime = #{endtime},
+		firepath = #{firepath},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="schoolid != null" >
+				and schoolid = #{schoolid}
+			</if>
+			<if test="schoolarea != null" >
+				and schoolarea = #{schoolarea}
+			</if>
+			<if test="videopath != null" >
+				and videopath = #{videopath}
+			</if>
+			<if test="status != null" >
+				and status = #{status}
+			</if>
+			<if test="camearname != null" >
+				and camearname = #{camearname}
+			</if>
+			<if test="cameardesc != null" >
+				and cameardesc = #{cameardesc}
+			</if>
+			<if test="starttime != null" >
+				and starttime = #{starttime}
+			</if>
+			<if test="endtime != null" >
+				and endtime = #{endtime}
+			</if>
+			<if test="firepath != null" >
+				and firepath = #{firepath}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+			<if test="search != null" >
+				and schoolid in (select id from sys_school where schoolName like '%${search}%')
+			</if>
+			<if test="dhSearch != null">
+				and schoolarea = ${dhSearch}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="AfManager" resultType="AfManager">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT dhname FROM af_dh s WHERE s.id=t.schoolarea) as dhname
+		from af_manager t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="AfManager" resultType="AfManager">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT schoolName FROM sys_school s WHERE s.id=a.schoolid) as schoolName,
+		(SELECT dhname FROM af_dh m WHERE m.id=a.schoolarea) as dhname,
+		(SELECT address FROM sys_school s WHERE s.id=a.schoolid) as address
+		from af_manager a 
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<delete id="deleteBatch" parameterType="java.util.Map">
+		delete from af_manager
+		where id in
+		<foreach collection="ids" open="(" close=")" separator="," item="id" > 
+			#{id}
+		</foreach>
+	</delete>
+
+	<select id="findAfSchool" parameterType="AfManager" resultType="AfManager">
+		select a.schoolName,t.id,t.schoolid  from af_manager t left join sys_school a on t.schoolid=a.id where a.isaf='Y'   group by t.schoolid
+	</select>
+
+	<select id="findAfSchoolArea"  parameterType="AfManager" resultType="AfManager">
+		select 
+		distinct(t.schoolarea),
+		(SELECT dhname FROM af_dh s WHERE s.id=t.schoolarea) as dhname
+		 from af_manager t
+		 <include refid="Dynamic_Conditions"/>
+	</select>
+	
+	 <select id="findDefault"  parameterType="AfManager" resultType="AfManager">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT schoolName FROM `sys_school` d where d.id=t.schoolid) as schoolName,
+		(SELECT dhname FROM af_dh s WHERE s.id=t.schoolarea) as dhname
+		 from af_manager t
+		<where>
+			1=1
+			<if test="schoolid != null" >
+				and schoolid = #{schoolid}
+			</if>
+			and t.status='Y'
+		</where>
+	</select>
+	
+	<select id="finddhSelect"  parameterType="AfManager" resultType="AfManager">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT schoolName FROM `sys_school` d where d.id=t.schoolid) as schoolName,
+		(SELECT dhname FROM af_dh s WHERE s.id=t.schoolarea) as dhname
+		 from af_manager t
+		<where>
+			1=1
+			and schoolid in (select id from sys_school where isaf='Y')
+			and t.status='Y'
+			<if test="schoolarea != null">
+				and schoolarea =#{schoolarea}
+			</if>
+			<if test="schoolid != null">
+				and schoolid =#{schoolid}
+			</if>
+		
+		</where>
+	</select>
+	
+	<select id="findCamearname" parameterType="AfManager" resultType="AfManager">
+		select
+		 <include refid="Base_Column_List" />
+		 from af_manager
+		 <include refid="Dynamic_Conditions"/>
+	</select> 
+</mapper>

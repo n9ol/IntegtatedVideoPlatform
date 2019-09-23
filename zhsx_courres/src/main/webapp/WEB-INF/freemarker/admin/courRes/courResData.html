@@ -1,0 +1,92 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<form id="myform">
+<#if lists?? && (lists?size>0)> <#list lists as l>
+<div class="clear zongTiao1 yiru">
+	<div class="cEefyz1">
+		<span class="span_input">
+			<input type="checkbox" name="del_id" value="${l.id!''}"/>
+		</span>
+		<div class="emhb27mw1">
+			<#if l.type == 'ppt' || l.type == 'pptx'><img src="${ctx}/img/Ppt_54_6165188.png" /></#if>
+			<#if l.type == 'doc' || l.type == 'docx'><img src="${ctx}/img/Word_54_6167687.png" /></#if>
+			<#if l.type == 'xls' || l.type == 'xlsx'><img src="${ctx}/img/Excel_54_7880c8c.png" /></#if>
+			<#if l.type == 'pdf'><img src="${ctx}/img/PDF_54_ae4e37a.png" /></#if>
+			<#if l.type == 'txt'><img src="${ctx}/img/Txt_54_1885188.png" /></#if>
+		</div>
+		<div class="file-name1">
+			<a href="${ctx}/courRes/watchCour?id=${l.id!''}" class="wuw5MA" target="_blank"> 
+				<#assign col= "">
+				<#if l.state == "Y"> <#assign col= "color:#5FB878;"> </#if>
+				<#if l.state == "N"> <#assign col= "color:#FF5722;"> </#if>
+				<span class="fileName" style="${col}" title="${l.name!''}">  ${l.name!''}</span>
+			</a>
+		</div>
+		<span class="EOGexf1">
+			<img/>
+		</span>
+	</div>
+	<div class="rkwXRO ellipsisDiv" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.gradeName!''}</span>
+	</div>
+	<div class="rkwXRO ellipsisDiv" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.subjectsName!''}</span>
+	</div>
+	<div class="rkwXRO ellipsisDiv" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.bak!''}</span>
+	</div>
+	<div class="rkwXRO ellipsisDiv" style="width: 7%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.bak1!''}</span>
+	</div>
+	<div class="rkwXRO" style="width: 8%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.size!''}</span>
+	</div>
+	<div class="rkwXRO" style="width: 8%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<#if l.state == "Y"><span style="color:#5FB878;" >已发布</span> </#if>
+		<#if l.state == "N"><span style="color:#FF5722;" >未发布</span> </#if>
+	</div>
+	<div class="rkwXRO" style="width: 8%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<#if l.bak2 == "Y"><span style="color:#5FB878;" >正常</span> </#if>
+		<#if l.bak2 == "N"><span style="color:#FF5722;" >禁止</span> </#if>
+	</div>
+	<div class="nq8L3J" style="width: 22%;float: left;height: 42px;line-height: 42px;font-size: 14px;color: gray;">
+		<span>${l.createTime?string('yyyy-MM-dd')}</span>
+		<ul class="showBianji">
+			<li>
+				<a href="javascript:void(0);" title="下载" onclick="downloadRes('${l.id}');">
+					<i class="layui-icon" style="color: #4E97FF;">&#xe601;</i>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:void(0);" title="编辑" onclick="edit('${l.id}');">
+					<i class="layui-icon" style="color: #4E97FF;">&#xe642;</i>
+				</a>
+			</li>
+			<li>
+				<a href="javascript:void(0);"  title="删除" onclick="del('${l.id}');">
+					<i class="layui-icon" style="color: #4E97FF;">&#xe640;</i>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+</#list></#if>
+</form>
+<form id="myform1">
+	<input type="hidden" name="p" value="${pageNum!''}">
+	<input type="hidden" name="search" value="${search!''}">
+	<input type="hidden" name="sortord" value="${sortord!''}">
+</form>
+<script type="text/javascript" src="${ctx}/js/admin/res/resData.js"></script>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getCourResData();
+	}
+</script>
+<script type="text/javascript">
+	$(function(){
+		var total = "${total!'0'}";
+		$("#total").text(total);
+	});
+</script>

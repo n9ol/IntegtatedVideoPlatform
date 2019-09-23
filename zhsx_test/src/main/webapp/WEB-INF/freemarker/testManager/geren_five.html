@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+	    <!-- <#global ctx=rc.contextPath/> -->
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/geren_five.css" />
+	</head>
+
+	<body>
+
+		<div class="mainbody">
+			<div class="title">
+				<div class="fl arr"></div>
+				<div class="fl text yahei">编辑考题信息</div>
+				<div class="clear"></div>
+			</div>
+			<div class="dotline2"></div>
+			
+			<div class="navbar">
+				<div class="barlist">
+					<div class="fl currbar" style="padding-left:25px;padding-right:25px;">
+						<div class="ntext yahei">1.编辑基本信息</div>
+					</div>
+					<div class="fl currsplit sanjiao" ></div>
+					<div class="fl currbar" style="padding-left:25px;padding-right:25px; color: #fff;">
+						<div class="ntext yahei">2.设置答案</div>
+					</div>
+					<div class="fl  currsplit sanjiao"></div>
+					<div class="fl nextbar" style="padding-left:25px;padding-right:25px;">
+						<div class="ntext yahei">3.完成</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="hsplit"></div>
+		<div class="inforow">
+			<div class="fl text font20 yahei">设置问题答案选项： <span style="color:red;">选中答案,即可设置为正确选项</span></div>
+			<div class="clear"></div>
+		</div>
+		<div class="dotline"></div>
+		
+		<form id="subfrm" >
+			<input type="hidden" name="questionId" value="${questionId!''}">
+			
+			<#if questionType!=0>
+				<div class="formrow">
+					<div class="fr">
+						<div class="fl">
+							<a href="#" class="addQuestion"><img src="${ctx}/img/addanswer.jpg" border="0" /></a>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</#if>
+			
+			<div style="border:1px solid #ccc;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px;">
+
+
+
+			<!-- 展示信息 -->
+			<#if lists??&&(lists?size>0)>
+				<#list lists as l>
+						
+						<!-- 多选题  -->
+					<#if questionType==2>
+						<div style="padding-top:10px;padding-bottom:10px;">
+							<div style="padding-top:10px;">
+								<input type= "hidden" name="answerList[${l_index}].id" value="${l.id!''}">
+								<input type= "hidden" name="answerList[${l_index}].answerText" value="${l.answerText!''}">
+								
+								<div class="fl">
+									<#assign chk="">
+									<#if l.isRight==1>
+										<#assign chk="checked">
+									</#if>
+									<input  id="checkbox" type="checkbox" name="answerList[${l_index}].isRight" value="1"  ${chk}/>
+							    </div>
+								
+								<div class="fl fontbold font12" style="margin-left: 10px;">
+									 <#if l_index == 0> A 
+									     <#elseif l_index == 1> B  
+									     <#elseif l_index == 2> C 
+									     <#elseif l_index == 3> D 
+									     <#elseif l_index == 4> E 
+									     <#elseif l_index == 5> F
+									     <#elseif l_index == 6> G
+									     <#else> H 
+								     </#if>
+								</div>
+									
+								<div class="fl font12">&nbsp;${l.answerText!''}</div>
+								<div class="fr font12"><a href="#" onclick="edit('${l.id!''}','${l.answerText!''}')"  >编辑</a>&nbsp;|&nbsp;
+									<a href="javascript:delAnswer('${l.id!''}')">删除</a></div>
+								<div class="clear"></div>
+							</div>
+							<div class="dotline2"></div>
+						</div>
+					</#if>
+						
+						<!-- 是非题  -->
+					<#if  l.questionType==0>
+						
+						<input type= "hidden" name="answerList[${l_index}].id" value="${l.id!''}">	
+						<input type= "hidden" name="answerList[${l_index}].answerText" value="${l.answerText!''}">
+						<div style="padding-top:10px;padding-bottom:10px;">
+							<div style="padding-top:10px;">
+								<div class="fl">
+									<#assign chk="">
+									<#if l.isRight==1>
+										<#assign chk="checked">
+									</#if>
+									<input type="radio" name="isRight" value="${l.id!''}" ${chk} />
+								</div>
+								
+								<div class="fl fontbold font12" style="margin-left: 10px;">
+									<#if l_index == 0> A <#else> B </#if> &nbsp;
+								</div>
+								
+								<div class="fl font12">&nbsp;${l.answerText!''}</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					 </#if>
+						
+					<!--单选题  -->
+					<#if  l.questionType==1>
+						<div style="padding-top:10px;padding-bottom:10px;">
+							<div style="padding-top:10px;">
+								<input type= "hidden" name="answerList[${l_index}].id" value="${l.id!''}">
+								<input type= "hidden" name="answerList[${l_index}].answerText" value="${l.answerText!''}">
+								
+								<div class="fl">
+									<#assign chk="">
+									<#if l.isRight==1>
+										<#assign chk="checked">
+									</#if>
+									<input type="radio" name="isRight" value="${l.id!''}" ${chk} />
+								</div>
+								
+								<div class="fl fontbold font12" style="margin-left: 10px;">
+									<#if l_index == 0> A 
+									     <#elseif l_index == 1> B  
+									     <#elseif l_index == 2> C 
+									     <#elseif l_index == 3> D 
+									     <#elseif l_index == 4> E 
+									     <#elseif l_index == 5> F
+									     <#elseif l_index == 6> G
+									     <#else> H 
+								     </#if>
+								</div>
+		
+								<div class="fl font12">&nbsp;${l.answerText!''}</div>
+								<div class="fr font12"><a href="javascript:;" onclick="edit('${l.id!''}','${l.answerText!''}')">编辑</a>&nbsp;|&nbsp;
+									<a href="javascript:delAnswer('${l.id!''}')">删除</a></div>
+								<div class="clear"></div>
+							</div>
+							<div class="dotline2"></div>
+						</div>
+					</#if>
+	
+					</#list>
+				
+				<#else> 
+					<font color="#F7B824">暂未设置答案选项！</font>
+				</#if>
+				<!-- end -->
+				
+				</div>
+				<div class="hsplit"></div>
+				<div class="testbtn">
+					<a href="javascript:;" onclick="update();">提交</a>
+				</div>
+			</form>
+			<div class="heightspace"></div>
+
+	</body>
+	<!-- 弹出框  添加-->
+	<div id="main">
+		<div class="formrow">
+			<div class="fl fieldtitle">
+				请输入要添加的备选答案：
+			</div>
+			<div class="fl star2">[<span>*</span>]</div>
+		</div>
+		<form  id="form1" >
+				<input type="hidden" name="questionId" value="${questionId!''}">
+				<input type="hidden" name="questionType" value="${questionType!''}">
+				<input type="hidden" name="id" id="id" value="">
+			<div class="editorrow">
+				<textarea rows="5" cols="10" name="answerText" id="Content" style="width: 530px; height:140px;"></textarea>
+			</div>
+
+			<div class="testbtn testbtn2">
+				<a href="javascript:;" onclick="add()">提交并保存</a>
+			</div>
+			
+		</form>
+	</div>
+	<!-- end -->
+	
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script type="text/javascript">
+		layui.use(['layer', 'form', 'element'], function() {
+			var layer = layui.layer,
+				form = layui.form,
+				element = layui.element;
+
+		});
+		
+		$(".addQuestion").click(function() {
+			setTop();
+		});
+		
+		
+		
+		function edit(id,con){
+			$("#Content").val(con);
+			$("#id").val(id);
+			setTop();
+		}
+		function setTop() {
+			layer.open({
+				type: 1, //此处以iframe举例,
+				title: '添加一条备选答案',
+				area: ['680px', '460px'],
+				shade: 0.2,
+				maxmin: true,
+				content: $('#main'),
+				zIndex: layer.zIndex, //重点1
+				success: function(layero) {
+					layer.setTop(layero); //重点2
+					$("#Content").focus();
+				}
+			});
+		}
+
+ 		function add(){
+ 			var id = $("input[name='questionId']").val();
+			var questionType = $("input[name='questionType']").val();
+ 			 $.ajax({
+ 				   type: "POST",
+ 				   url: "${ctx}/testwebquestionanswer/addAnswer",
+ 				   data: $("#form1").serialize(),
+ 				   success: function(msg){
+ 					  if(msg=="操作成功"){
+ 						 location.reload();
+//  							location.href="${ctx}/testwebquestionanswer/editAnswer?questionId="+id+"&questionType="+questionType;
+ 					  }
+ 				   }
+ 				});   
+ 		}
+ 		
+ 	function delAnswer(id){
+ 		var id1 = $("input[name='questionId']").val();
+ 		var questionType1 = $("input[name='questionType']").val();
+ 			$.ajax({
+ 				   type: "POST",
+ 				   url: "${ctx}/testwebquestionanswer/delAnswer",
+ 				   data: {id:id},
+				   success: function(msg){
+					  if(msg=="操作成功"){
+						  location.reload();
+// 						  location.href="${ctx}/testwebquestionanswer/editAnswer?questionId="+id1+"&questionType="+questionType1;
+ 					  }
+ 				   }
+ 				});   
+		
+ 	}
+ 	
+ 	
+ 	function update(){
+ 		var isok = false;
+ 		var questionType = "${questionType!''}";
+ 		if(questionType == 2 && $("input[type='checkbox']").is(':checked')){
+ 			isok = true;
+ 		}else if(questionType != 2){
+ 			var isRight= $('input:radio[name="isRight"]:checked').val();
+ 			if(isRight != null ){
+ 				isok = true;
+ 			}
+ 		}
+ 		
+ 		
+		if(isok){
+			$.ajax({
+			   type: "POST",
+			   url: "${ctx}/testwebquestionanswer/update",
+			   data: $("#subfrm").serialize(),
+		  	   success: function(msg){
+			      if(msg=="操作成功"){
+				  	location.href="${ctx}/testwebquestionanswer/end"
+				  }
+			   }
+			});
+		}else{
+			layer.msg("请设置正确答案！");
+		}
+   
+		
+ 	}
+	
+	</script>
+
+</html>

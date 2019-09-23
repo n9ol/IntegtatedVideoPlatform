@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<title>仁峰后台管理系统</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/admin/area.css" >
+		<style type="text/css">
+			#imp,#imc{display:inline-block;float:right;}
+		</style>
+	</head>
+
+	<body>
+		<div class="diqu">
+			<span class="map"><span class="logos">◇</span>区域设置</span> <span> — </span> <span>地区信息列表</span>
+		</div>
+		<div class="des">
+			<span>请根据省、市选择市下面的区县信息，点击区县信息对区县信息进行管理。</span> <span class="fenge2">|</span><span class="guanli"> <a href="${ctx}/adminBaseData/area">刷新</a>  </span><span class="fenge2">|</span>
+		</div>
+
+		<div class="sheng">
+			<div class="nav">
+				<span class="sheng_nav"><span class="logo">◇</span>省级导航</span> <span class="tishi" id="ptext">(点击省名称选择市级)</span>
+				<div id="mp" style="display: none;">
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="quitManageP();"> 退出管理  </span>
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="addP();"> 添加省 </span>
+					<span class="fenge">|</span>
+				</div>
+				<div id="imp">
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="manageP();"> 省级管理  </span>
+					<span class="fenge">|</span>
+				</div>
+			</div>
+			<ul class="sheng_ul">
+				<li>
+				    <#assign onc="a"> <#if state==1><#assign onc="e"> </#if>
+					<#if sysDicts?? && (sysDicts?size>0)>
+					<#list sysDicts as l>
+						 <span onclick="${onc}Area('${l.id!''}','${l.keyname!''}')">${l.value!''}(${l.sort!''})</span>
+					</#list>
+					</#if>
+				</li>
+			</ul>
+		</div>
+		<div class="sheng city">
+			<div class="nav">
+				<span class="sheng_nav"><span class="logo">◇</span>市级导航</span> <span class="tishi">(点击市名称选择区县)</span> 
+				<div id="mc" style="display: none;">
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="quitManageC();"> 退出管理  </span>
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="addC();">添加市 </span>
+					<span class="fenge">|</span>
+				</div>
+				<div id="imc">
+					<span class="fenge">|</span>
+					<span class="guanli" onclick="manageC();"> 市级管理  </span>
+					<span class="fenge">|</span>
+				</div>
+			</div>
+			<ul class="sheng_ul" id="city">
+				<li></li>
+			</ul>
+		</div>
+		<div class="sheng county">
+			<div class="nav">
+				<span class="sheng_nav"><span class="logo">◇</span> 区县导航</span> <span class="tishi">(点击区县名称可以对区县信息进行修改编辑、删除操作)</span> 
+				<span class="fenge">|</span>
+				<span class="guanli" onclick="addA();"> 添加区县  </span>
+				<span class="fenge">|</span>
+			</div>
+			<ul class="sheng_ul" id="county">
+				<li></li>
+			</ul>
+		</div>
+	</body>
+	<div>
+		<input type="hidden" id="provinceId">
+		<input type="hidden" id="cityId">
+		<input type="hidden" id="countyId">
+		<input type="hidden" id="state" value="P">
+		<input type="hidden" id="statec">
+	</div>
+<script type="text/javascript">
+	var layer;
+	layui.use(['layer'],function(){
+		layer=layui.layer;
+	});
+	
+	$(function(){
+ 		var st=${state};
+ 		if(st==1){
+			$("#ptext").text("(点击省级名称可以对省级信息进行编辑)");
+			$("#mp").css("display","inline");
+			$("#imp").css("display","none");
+ 		}
+	});
+	
+	//进入省级管理
+	function manageP(){
+		location.href="${ctx}/adminBaseData/area?state=1";
+	}
+	
+	//退出省级管理
+	function quitManageP(){
+		location.href="${ctx}/adminBaseData/area";
+	}
+
+	
+	//进入市级管理
+	function manageC(){
+		$("#mc").css("display","inline");
+		$("#imc").css("display","none");
+		$(".county").css("display","none");	
+		$("#statec").val(1);
+		$("#state").val("C");
+		var id =$("#provinceId").val();
+		aArea(id);
+	}
+	
+	
+	
+	//退出市级管理
+	function quitManageC(){
+		$("#mc").css("display","none");
+		$("#imc").css("display","inline");
+		$(".county").css("display","none");	
+		var id =$("#provinceId").val();
+		$("#statec").val(2);	
+		aArea(id);
+	}
+	
+	function addP(){
+		LayerOpen('添加省', '500px', '365px', '${ctx}/adminBaseData/addArea?keyName=P');
+	}
+	
+	function addC(){
+		var pid=$("#provinceId").val();
+		LayerOpen('添加市', '500px', '365px', '${ctx}/adminBaseData/addArea?keyName=C&pid='+pid);
+	}
+	
+	function addA(){
+		var pid=$("#cityId").val();
+		LayerOpen('添加区县', '500px', '365px', '${ctx}/adminBaseData/addArea?keyName=A&pid='+pid);
+	}
+	
+	
+	//获得对应的市
+	function aArea(id){
+		$("#provinceId").val(id);
+		$(".city").css("display","inline");
+		$(".county").css("display","none");	
+		$("#city li").empty();
+		
+		var statec=$("#statec").val();
+		if(statec=="1"){
+			$.ajax({
+			   type: "POST",
+			   url: "${ctx}/adminBaseData/getCity",
+			   data: { provinceId: id},
+			   dataType: "json",
+			   success: function(json){
+		 			for (var int = 0; int < json.length; int++) {
+						var arrayJson=json[int];
+						$("#city").find("li").append("<span onclick=eArea('"+arrayJson.id+"','"+arrayJson.keyname+"')>"+arrayJson.value+"("+arrayJson.sort+")</span>");
+					} 
+			   }
+			});
+		}else{
+			$("#state").val("A");
+			$.ajax({
+			   type: "POST",
+			   url: "${ctx}/adminBaseData/getCity",
+			   data: { provinceId: id},
+			   dataType: "json",
+			   success: function(json){
+		 			for (var int = 0; int < json.length; int++) {
+						var arrayJson=json[int];
+						$("#city").find("li").append("<span onclick=getCounty('"+arrayJson.id+"','"+arrayJson.keyname+"')>"+arrayJson.value+"("+arrayJson.sort+")</span>");
+					}
+			   }
+			});
+		}
+	}
+	
+	
+	
+	//获得对应的区县
+	function getCounty(id){
+		$("#cityId").val(id);
+		$(".county").css("display","inline");
+		$("#county li").empty();
+		$.ajax({
+		   type: "POST",
+		   url: "${ctx}/adminBaseData/getCounty",
+		   data: {cityId: id},
+		   dataType: "json",
+		   success: function(json){
+	 			for (var int = 0; int < json.length; int++) {
+					var arrayJson=json[int];
+					$("#county").find("li").append("<span onclick=eArea('"+arrayJson.id+"','"+arrayJson.keyname+"')>"+arrayJson.value+"("+arrayJson.sort+")</span>");
+				} 
+		   }
+		});
+	}
+	
+	
+	//编辑地区信息
+	function eArea(id,keyName){
+ 		layer.confirm('您是修改还是删除？', {
+ 			  shade: 0, 
+			  btn: ['修改','删除'] 
+			}, function(index){
+				LayerOpen('编辑', '500px', '365px', '${ctx}/adminBaseData/editArea?id='+id);
+				layer.close(index);
+			}, function(){
+				$.get("${ctx}/adminBaseData/delArea", { id: id ,keyName:keyName}, function(data){
+					layer.msg(data, {time: 500}, function(){
+						var state=$("#state").val();
+						if(state=="P"){
+							location.reload(); 
+						}
+						if(state=="C"){
+							var id =$("#provinceId").val();
+							aArea(id);
+						}
+						if(state=="A"){
+							var id =$("#cityId").val();
+							getCounty(id);
+						}
+					});   
+				 }); 
+			});	
+	}
+	
+	//刷新页面
+	function refreshPage(data){
+		layer.msg(data,{time:500},function(){
+	 		var state=$("#state").val();
+	 		if(state=="P"){
+				location.reload(); 
+			}
+			if(state=="C"){
+				var id =$("#provinceId").val();
+				aArea(id);
+			}
+			if(state=="A"){
+				var id =$("#cityId").val();
+				getCounty(id);
+			}
+		});
+	}
+</script>
+</html>

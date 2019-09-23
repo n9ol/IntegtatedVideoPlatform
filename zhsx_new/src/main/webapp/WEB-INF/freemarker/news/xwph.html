@@ -1,0 +1,13 @@
+<#if lists?? &&(lists?size>0)><#list lists as l>
+	<li onclick="findOne('${l.id}')">
+		<a href="javascript:;" class="check_look" ><p class="paiming">${l_index+1}</p></a>
+		<a href="javascript:;" class="check_look"><span class="timu1" title="${l.title!''}">${l.title!''}</span></a>
+	</li>
+
+
+<!-- 	<a href="javascript:;" onclick="findOne('${l.id}')" title="${l.title!''}" class="list_t" > -->
+<!-- 		<span>${l_index+1}.</span>${l.title!''} -->
+<!-- 	</a> -->
+</#list></#if>
+						
+						

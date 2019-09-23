@@ -1,0 +1,145 @@
+.con {
+				background-color: #fff;
+			}
+			.bt {
+				line-height: 50px;
+				overflow: hidden;
+			}
+			
+			.bt img {
+				width: 16px;
+				float: left;
+				margin-top: 17px;
+				margin-right: 5px;
+			}
+			
+			.bt span {
+				float: left;
+				font-size: 20px;
+			}
+			
+			.btUl ul {
+				overflow: hidden;
+			}
+			
+			.btUl ul li {
+				float: left;
+				line-height: 25px;
+				margin: 0 5px;
+				color: #666666;
+			}
+			
+			/*相关文档推荐*/
+			
+			.bang {
+				width: 200px;
+				position: absolute;
+				top: 0;
+				left: 990px;
+				z-index: 999;
+			}
+			
+			.Quozsk {
+				overflow: hidden;
+				text-overflow: ellipsis;
+				word-wrap: break-word;
+				white-space: nowrap;
+				display: inline-block;
+				max-width: 150px;
+				vertical-align: middle;
+				float: left;
+				font-size: 12px;
+			}
+			
+			.FnUiPy {
+				margin-left: 15px;
+				color: #666;
+				display: inline-block;
+				width: 80px;
+				float: left;
+				font-size: 12px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			
+			.lXeEpq h1 {
+				margin: 0;
+				font-size: 14px;
+				color: #333;
+			}
+			
+			.bang h4 {
+				line-height: 30px;
+			}
+			
+			.HMDKih {
+				display: inline-block;
+				width: 18px;
+				height: 20px;
+				vertical-align: middle;
+				align-items: center;
+				background: url(img/swf.png) center no-repeat;
+				background-size: cover;
+				float: left;
+			}
+			
+			.lXeEpq {
+				flex: 1;
+				flex-direction: column;
+				overflow: hidden;
+				word-break: break-word;
+				justify-content: space-around;
+			}
+			
+			.nmIkct {
+				margin-left: 8px;
+				display: inline-block;
+				float: left;
+			}
+			
+			.bangLi {
+				line-height: 22px;
+				margin-bottom: 15px;
+			}
+			/*留言区*/
+			
+			.CommentArea{
+				width: 1200px;
+				margin: 20px auto;
+			}
+			.sanCA{
+				width: 964px;
+			}
+			
+/*文件头部标题部分*/
+.tittleFilePlay{
+	background-color: #fff;border-bottom: 1px solid #F1F2F7;
+}
+.tittleFilePlaySon{
+	width: 1200px;padding:10px 0;margin: 0 auto;
+	
+}
+
+/*引入的文档浏览窗口*/
+.iframePlay{
+	position: relative;width: 1200px;margin: 0 auto;overflow: hidden;
+}
+#1111{
+	width: 964px;
+}
+
+
+.liuyan_time {
+    width:912px;
+}
+.liuyan_con {
+    width: 851px;
+}
+.liuyan_time {
+    width: 852px;
+}
+
+.con {
+    overflow:hidden;
+}

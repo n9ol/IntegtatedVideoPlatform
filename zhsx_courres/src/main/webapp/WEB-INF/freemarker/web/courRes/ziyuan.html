@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/ziyuan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a><cite>课件资源</cite></a>
+				</span>
+			</div>
+			<!--筛选区域-->
+			<div>
+				<ul class="filter1">
+					
+					<li class="filter2 borderBottom clear">
+						<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+						<ul class="filter3 clear" id="grade">
+							<li class="filterActive" value="">全部</li>
+							<#if gradeList?? && (gradeList?size>0)><#list gradeList as l>
+								<li value="${l.value!''}" >${l.value!''}</li>
+							</#list></#if>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					</li>
+					<li class="filter2  clear">
+						<span class="category1">科&nbsp;&nbsp;&nbsp;&nbsp;目 ></span>
+						<ul class="filter3 clear" id="subject">
+							<li class="filterActive" value="">全部</li>
+							<#if subjectsList?? && (subjectsList?size>0)><#list subjectsList as l>
+								<li value="${l.value!''}" >${l.value!''}</li>
+							</#list></#if>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					</li>
+					<li class="filter2 borderBottom clear isShow">
+						<span class="category1">版 &nbsp;&nbsp;&nbsp;&nbsp;本 ></span>
+						<ul class="filter3 clear" id="version">
+							<li class="filterActive" value="">全部</li>
+							<#if versionList?? && (versionList?size>0)><#list versionList as l>
+								<li value="${l.value!''}" >${l.value!''}</li>
+							</#list></#if>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					</li>
+					<li class="filter2 clear isShow">
+						<span class="category1">册 &nbsp;&nbsp;&nbsp;&nbsp;次 ></span>
+						<ul class="filter3 clear" id="bak1">
+							<li class="filterActive" value="">全部</li>
+							<li value="全册">全册</li>
+							<li value="上册">上册</li>
+							<li value="下册">下册</li>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					</li>
+				</ul>
+				<div class="fitmore">
+					<div class="morediv">
+						<div class="text">
+							<a href="#" class="isShowBtu">显示更多选项</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="ziyuan_zhong">
+			<div class="con_left_div clear">
+					<div class="zonghe">
+						<div class="sousuo">
+							<input style="border: 1px solid gainsboro;padding-left: 2px;" type="search" placeholder="文件名/上传人" id="seatchval"/>
+							<img src="${ctx}/img/sousuo.jpg"  onclick="search();"/>
+						</div>
+					</div>
+				</div>
+				<ul class="lists news">
+
+				</ul>
+				<div id="page"></div>
+			</div>
+		</div>
+		<!--内容end-->
+
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<form id="myform">
+			<input type="hidden" name="p">
+			<input type="hidden" name="gradeName">
+			<input type="hidden" name="subjectsName">
+			<input type="hidden" name="bak">
+			<input type="hidden" name="bak1">
+			<input type="hidden" name="search">
+			<input type="hidden" name="area">
+		</form>
+	</body>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<!--单独的js-->
+	<script type="text/javascript">var principal = "${principal!''}";</script>
+	<script src="${ctx}/js/web/courRes/ziyuan.js" type="text/javascript" charset="utf-8"></script>
+</html>

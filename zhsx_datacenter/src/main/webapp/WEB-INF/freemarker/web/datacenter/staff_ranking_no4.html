@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/sjzx_sjzx.css"/>
+	</head>
+
+	<body>
+		<div class="nr1">
+			<p class="tittle">本教研员所评 -- 同一学校不同教师课中评估得分对比 / 周</p>
+			<div id="main7">
+
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/echarts.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+	setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeRanking'));
+			iframe.height(body.height()+20);
+		}
+		var color7 = ["#ffb981", "#d97e84", "#8d99b3", "#2ec7c9"];
+		var myChart7 = echarts.init(document.getElementById("main7"));
+		var option7 = {
+			color: color7,
+			tooltip: {
+				trigger: 'axis', //弹框的显示与否
+				axisPointer: { // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				}
+			},
+			legend: {
+				data: ['第一周', '第二周', '第三周', '第四周', '第五周', '第六周', '第七周'],
+				y: 'bottom'
+			},
+			xAxis: {
+				data: ["张老师", "李老师", "王老师", "郭老师", "杨老师", "朱老师", "赵老师", "刘老师"],
+				name: '教师'
+			},
+			yAxis: {
+				name: '得分',
+				type: 'value',
+				min: 0,
+				max: 100
+			},
+			series: [{
+				name: '第一周',
+				type: 'bar',
+				data: [50, 80, 70, 50, 90, 85, 36, 80]
+			}, {
+				name: '第二周',
+				type: 'bar',
+				data: [70, 80, 70, 80, 80, 87, 90, 36]
+			}, {
+				name: '第三周',
+				type: 'bar',
+				data: [80, 70, 70, 80, 80, 88, 58, 36]
+			}, {
+				name: '第四周',
+				type: 'bar',
+				data: [60, 90, 80, 60, 60, 85, 47, 36]
+			}, {
+				name: '第五周',
+				type: 'bar',
+				data: [80, 70, 70, 80, 80, 88, 58, 36]
+			}, {
+				name: '第六周',
+				type: 'bar',
+				data: [80, 70, 70, 80, 80, 88, 58, 36]
+			}, {
+				name: '第七周',
+				type: 'bar',
+				data: [80, 70, 70, 80, 80, 88, 58, 36]
+			}, {
+				name: '第八周',
+				type: 'bar',
+				data: [80, 70, 70, 80, 80, 88, 58, 36]
+			}]
+		}
+		//使用刚指定的配置项和数据显示图表
+		myChart7.setOption(option7);
+	</script>
+
+</html>

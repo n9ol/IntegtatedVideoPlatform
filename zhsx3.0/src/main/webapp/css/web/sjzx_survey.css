@@ -1,0 +1,160 @@
+.box {
+				width: 1180px;
+				margin: 0 auto;
+			}
+			
+			.selection {
+				width: 10%;
+				float: left;
+			}
+			
+			.condition {
+				width: 89%;
+				float: right;
+				border: 1px solid rgb(226, 226, 226);
+			}
+			
+			.qiehuan,
+			.qiehuan2,
+			.qiehuan3,
+			.qiehuan4,
+			.qiehuan5,
+			.qiehuan6,
+			.qiehuan7,
+			.qiehuan8,
+			.qiehuan9,
+			.qiehuan10,
+			.qiehuan11,
+			.qiehuan12,
+			.qiehuan13 {
+				text-align: right;
+				padding-top: 20px;
+				padding-right: 20px;
+			}
+			
+			.qiehuan span,
+			.qiehuan2 span,
+			.qiehuan3 span,
+			.qiehuan4 span,
+			.qiehuan5 span,
+			.qiehuan6 span,
+			.qiehuan7 span,
+			.qiehuan8 span,
+			.qiehuan9 span,
+			.qiehuan10 span,
+			.qiehuan11 span,
+			.qiehuan12 span,
+			.qiehuan13 span {
+				display: inline-block;
+				padding: 3px 5px;
+				border: 1px solid gainsboro;
+				cursor: pointer;
+			}
+			
+			.qiehuan span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan2 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan3 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan4 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan5 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan6 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan7 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan8 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan9 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan10 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan11 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.qiehuan12 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			.qiehuan13 span:hover {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.show {
+				background-color: #4596E5;
+				color: white;
+			}
+			
+			#parentIframe1,
+			#parentIframe2,
+			#parentIframe3,
+			#parentIframe4,
+			#parentIframe5,
+			#parentIframe6,
+			#parentIframe7,
+			#parentIframe8,
+			#parentIframe9,
+			#parentIframe10,
+			#parentIframe11,
+			#parentIframe12 ,
+			#parentIframe13{
+				border: none;
+			}
+			
+			.layui-form-checkbox[lay-skin=primary]:hover i {
+				border-color: #4596E5;
+			}
+			
+			.layui-form-checked[lay-skin=primary] i {
+				background-color: #4596E5;
+			}
+			
+			.layui-form-radio i:hover,
+			.layui-form-radioed i {
+				color: #4596E5;
+			}
+			
+			.layui-form-select dl dd.layui-this {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.zLeft,
+			.yRight {
+				width: 49%;
+			}

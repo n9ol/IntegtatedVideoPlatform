@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.OffLineRecordVideoMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.OffLineRecordVideo" >
+		<result column="id" property="id" />
+		<result column="offLineVideoId" property="offlinevideoid" />
+		<result column="classroomId" property="classroomid" />
+		<result column="videoType" property="videotype" />
+		<result column="streamType" property="streamtype" />
+		<result column="classroomType" property="classroomtype" />
+		<result column="videoPatch" property="videopatch" />
+		<result column="create_date" property="createDate" />
+		<result column="modify_date" property="modifyDate" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,offLineVideoId,classroomId,videoType,streamType,classroomType,videoPatch,create_date,modify_date
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from offLine_record_video
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from offLine_record_video
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from offLine_record_video
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="OffLineRecordVideo" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into offLine_record_video (id,offLineVideoId,classroomId,videoType,streamType,classroomType,videoPatch,create_date,modify_date)
+		values (#{id},#{offlinevideoid},#{classroomid},#{videotype},#{streamtype},#{classroomtype},#{videopatch},#{createDate},#{modifyDate})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="OffLineRecordVideo" >
+		update offLine_record_video
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="offlinevideoid != null" >
+				offLineVideoId = #{offlinevideoid},
+			</if>
+			<if test="classroomid != null" >
+				classroomId = #{classroomid},
+			</if>
+			<if test="videotype != null" >
+				videoType = #{videotype},
+			</if>
+			<if test="streamtype != null" >
+				streamType = #{streamtype},
+			</if>
+			<if test="classroomtype != null" >
+				classroomType = #{classroomtype},
+			</if>
+			<if test="videopatch != null" >
+				videoPatch = #{videopatch},
+			</if>
+			<if test="createDate != null" >
+				create_date = #{createDate},
+			</if>
+			<if test="modifyDate != null" >
+				modify_date = #{modifyDate}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="OffLineRecordVideo" >
+		update offLine_record_video
+		set 
+		id = #{id},
+		offLineVideoId = #{offlinevideoid},
+		classroomId = #{classroomid},
+		videoType = #{videotype},
+		streamType = #{streamtype},
+		classroomType = #{classroomtype},
+		videoPatch = #{videopatch},
+		create_date = #{createDate},
+		modify_date = #{modifyDate}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="offlinevideoid != null" >
+				and offLineVideoId = #{offlinevideoid}
+			</if>
+			<if test="classroomid != null" >
+				and classroomId = #{classroomid}
+			</if>
+			<if test="videotype != null" >
+				and videoType = #{videotype}
+			</if>
+			<if test="streamtype != null" >
+				and streamType = #{streamtype}
+			</if>
+			<if test="classroomtype != null" >
+				and classroomType = #{classroomtype}
+			</if>
+			<if test="videopatch != null" >
+				and videoPatch = #{videopatch}
+			</if>
+			<if test="createDate != null" >
+				and create_date = #{createDate}
+			</if>
+			<if test="modifyDate != null" >
+				and modify_date = #{modifyDate}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="OffLineRecordVideo"	resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from offLine_record_video
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="OffLineRecordVideo"	resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from offLine_record_video
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	<select id="getListByCidStime" parameterType="OffLineRecordVideo"	resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from offLine_record_video
+		where classroomId=#{classroomid} and (create_date between #{createDateStr1} and #{createDateStr2})
+	</select>
+
+</mapper>

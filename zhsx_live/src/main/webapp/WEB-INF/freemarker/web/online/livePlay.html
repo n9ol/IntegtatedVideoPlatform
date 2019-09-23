@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>综合视讯</title>
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<!--各页面单独引入的CSS文件-->
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/play.css" />
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+<style type="text/css">
+.swiper-container {
+	height: 370px;
+}
+</style>
+</head>
+<body>
+	<!--头部start-->
+	<#include "/zhsx/t/head.html" encoding="utf-8"/>
+	<!--内容start-->
+	<div class="con">
+		<!--路径导航-->
+		<div class="mianbaoxue">
+			<span class="layui-breadcrumb">
+				<a href="${ctx}/index">首页</a>
+				<a href="${ctx}/online/zb_online">直播</a>
+				<a href="${ctx}/online/zb_online?type=Z">直播课堂</a>
+				<a>
+					<cite>课程播放</cite>
+				</a>
+			</span>
+			<span class="qualityPlayTime">
+				<img class="qualityPlayPng" alt="" src="${ctx}/img/time.png">
+				开始时间：${schedule.startDate!''} &nbsp; 结束时间：${schedule.endDate!''}
+			</span>
+		</div>
+		<!--视频窗口-->
+		<div class="videosss">
+			<div class="video_shipin clear">
+				<div class="video_shipin_left" id="videoPlayer"></div>
+				<div class="video_shipin_right">
+					<div class="shouke clear">
+						<img src="${fileWebPath}/userheadPortrait/${schedule.userPic!''}" onerror="this.src='${ctx}/img/user80.jpg'" />
+						<div class="shouke_right">
+							<p class="ellipsesDiv" style="color: orange; font-size: 15px; line-height: 28px;">${schedule.userName!''}</p>
+							<p class="ellipsesDiv" style="color: gainsboro; font-size: 15px; line-height: 28px;">${schedule.schoolName!''}</p>
+							<p class="ellipsesDiv" style="color: gainsboro; line-height: 28px;">${schedule.gradeId!''}&nbsp;&nbsp;${schedule.subjectId!''}</p>
+						</div>
+					</div>
+					<div class="clear" style="background: url(${ctx}/img/fengexian.png) no-repeat; height: 5px;"></div>
+					<div class="kecheng">
+						<div class="swiper-container">
+							<input type="hidden" id="RCListsLength" value="${RCLists?size!'0'}">
+							<div class="swiper-wrapper">
+								<#if RCLists?? && (RCLists?size>0)><#list RCLists as l>
+								<div class="swiper-slide" onclick="enterPlay('${l.type}','${l.id}','${l.isGoClass}')">
+									<#if l.type?? && l.type=='G'>
+									<img src="${ctx}/images/zhuandi100.png" />
+									<#else>
+									<img src="${ctx}/images/pinggu100.png" />
+									</#if>
+									<div class="kecheng_right clear">
+										<p>
+											<span class="ellipsesSpan" style="width: 60px; float: left; color: orange;" title="${l.userName!''}">${l.userName!''}</span>
+											<span class="ellipsesSpan" style="width: 100px; float: left;" title="${l.schoolName!''}">${l.schoolName!''}</span>
+										</p>
+										<p>
+											<span class="school12 ellipsesSpan" title="${l.gradeId!''} ${l.subjectId!''}">${l.gradeId!''}&nbsp;&nbsp;${l.subjectId!''}</span>
+										</p>
+										<p>
+											<span class="timeB">${l.z_date?string('yyyy-MM-dd')} ${l.startDate!''}-${l.endDate!''} </span>
+										</p>
+									</div>
+								</div>
+								</#list></#if>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="jilu">
+			<div class="jilu_top">
+				<div class="layui-tab layui-tab-card iii">
+					<ul class="layui-tab-title uuu" style="background-color: #4596E5;">
+						<li>点评信息</li>
+					</ul>
+				</div>
+			</div>
+			<div class="tap33"></div>
+		</div>
+	</div>
+	<!--内容end-->
+	<!--底部 start -->
+	<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+</body>
+<!--公共js-->
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript">
+	var userType = "${principal.userType!''}";
+	var receive = {};
+	receive.id = "${id!''}";
+	receive.div = "videoPlayer";
+</script>
+<script type="text/javascript" src="${ctx}/common/ckplayer/ckplayer/ckplayer.js"></script>
+<script type="text/javascript" src="${ctx}/js/web/online/livePlay.js"></script>
+<script type="text/javascript" src="${ctx}/js/liveVideoPlay.js"></script>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<div class="mianbaoxue">
+			<span class="layui-breadcrumb">
+  					<a href="../index.html">首页</a>
+  					<a><cite>班班通</cite></a>
+  					<a><cite>设备维护</cite></a>
+  					<a><cite>设备报修</cite></a>
+				</span>
+		</div>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="layui-tab">
+
+					<div class="larry-separate"></div>
+					<header class="larry-personal-tit">
+						<span>在线报修</span>
+					</header>
+					<div class="layui-tab-content larry-personal-body clearfix">
+						<form id="form1" class="layui-form" action="" method="post">
+							<div class="row">
+								
+								<div class="col-md-6 pull-left">
+									<div class="layui-form-item">
+										<label class="layui-form-label">联系人：</label>
+										<div class="layui-input-block">
+											<input type="text" id="repair_person" name="repair_person" class="layui-input" value="${(dr.repair_person)!''}" disabled>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">联系电话：</label>
+										<div class="layui-input-block">
+											<input type="tel" id="repair_tel" name="repair_tel" class="layui-input" value="${(dr.repair_tel)!''}" disabled>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">报修型号：</label>
+										<div class="layui-input-block">
+											<input type="text" id="device_type" name="device_type" class="layui-input" value="${(dr.device_type)!''}" disabled>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">所在城市：</label>
+										<div class="layui-input-block">
+											<input type="text" name="pca" class="layui-input" value="${(pca)!''}" disabled>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">上门地址：</label>
+										<div class="layui-input-block">
+											<input type="text" id="repair_addr" name="repair_addr" class="layui-input" value="${(dr.repair_addr)!''}" disabled>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">购机时间：</label>
+										<div class="layui-input-block">
+											<input class="layui-input" name="repair_buy_time" placeholder="购机时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" value="${(dr.repair_buy_time?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
+										</div>
+									</div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">服务时间：</label>
+										<div class="layui-input-block">
+											<input class="layui-input" name="repair_service_time" placeholder="服务时间" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})" value="${(dr.repair_service_time?string('yyyy-MM-dd HH:mm:ss'))!}" disabled>
+										</div>
+									</div>
+									<div class="layui-form-item layui-form-text">
+										<label class="layui-form-label">故障描述：</label>
+										<div class="layui-input-block">
+											<textarea id="repair_description" name="repair_description" class="layui-textarea" disabled>${(dr.repair_description)!''}</textarea>
+										</div>
+									</div>
+								</div>
+								
+								<!-- 根据用户进行判断 -->
+								<div class="col-md-6 pull-left">
+									
+									<div class="layui-form-item layui-form-text">
+		                            <label class="layui-form-label">维修状态：</label>
+			                            <div class="layui-input-block">
+			                                <select id="repair_state" name="repair_state" lay-filter="area" disabled>
+			                            		<#assign sel1="">
+			                                	<#if (((dr.repair_state)!'') == '1')> <#assign sel1="selected"> </#if>
+			                            		<option id="state1" value="1" ${sel1}>未维修</option>
+			                            		<#assign sel2="">
+			                                	<#if (((dr.repair_state)!'') == '2')> <#assign sel2="selected"> </#if>
+			                                	<option id="state2" value="2" ${sel2}>维修中</option>
+			                                	<#assign sel0="">
+			                                	<#if (((dr.repair_state)!'') == '0')> <#assign sel0="selected"> </#if>
+			                            		<option id="state0" value="0" ${sel0}>已维修</option>
+			                                </select>
+			                            </div>
+			                        </div>
+			                        <div class="layui-form-item layui-form-text">
+			                            <label class="layui-form-label">维修人：</label>
+			                            <div class="layui-input-block">
+			                                 <input type="text" id="maintenance_man" name="maintenance_man" class="layui-input" value="${(dr.maintenance_man)!''}" disabled>
+			                            </div>
+			                        </div>
+			                        <div class="layui-form-item layui-form-text">
+			                            <label class="layui-form-label">维修人电话：</label>
+			                            <div class="layui-input-block">
+			                                 <input type="text" id="maintenance_tel" name="maintenance_tel" class="layui-input" value="${(dr.maintenance_tel)!''}" disabled>
+			                            </div>
+			                        </div>
+									<div class="layui-form-item">
+										<label class="layui-form-label">维修历史：</label>
+										<div class="layui-input-block">
+											<textarea id="repair_record_description" name="repair_record_description" class="layui-textarea" disabled>${(dr.repair_record_description)!''}</textarea>
+										</div>
+									</div>
+									<div class="layui-form-item layui-form-text">
+										<label class="layui-form-label">您的建议：</label>
+										<div class="layui-input-block">
+											<textarea id="maintenance_suggestion" name="maintenance_suggestion" class="layui-textarea" disabled>${(dr.maintenance_suggestion)!''}</textarea>
+										</div>
+									</div>
+
+								</div>
+								
+								
+							</div>
+						</form>
+
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<!--底部 end-->
+		<#include "/commons/comWebjs.html" encoding="utf-8"/>
+		
+		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
+		<script type="text/javascript">
+			layui.use(['form', 'upload','laydate'], function() {
+				var form = layui.form;
+				var laydate = layui.laydate;
+				
+				layui.upload({
+					url: '', //上传接口 
+					success: function(res) {
+						//上传成功后的回调 
+						console.log(res)
+					}
+				});
+			});
+			
+			//
+			
+			
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,93 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<div id="autoPgTu">
+<div class="auto">自动评估</div>
+<div class="xiangqing">
+	<div class="xiangqing_top">
+		本节课-不同行为指标对教师课中评估得分的影响
+	</div>
+	<div id="main3">
+	</div>
+</div>
+<div class="xiangqing">
+	<div class="xiangqing_top">
+		本节课-不同行为指标对教师课中评估得分的影响
+	</div>
+	<div id="main4">
+	</div>
+</div>
+</div>
+<script type="text/javascript">
+var xdata = "${xdata}";
+if(xdata === "'0'"){
+	$("#autoPgTu").empty();
+}
+
+var myChart3 = echarts.init(document.getElementById("main3"));
+var myChart4 = echarts.init(document.getElementById("main4"));
+
+//活跃度
+//每周的上课次数
+//指定图表的配置项和数据2
+var color3 = ['#da70d6','#32cd32','#6495ed','#ff96b4']
+var option3={
+		color:color3,
+		tooltip: {
+			trigger: 'item',
+			formatter: " {a}<br>第{b}次 : {c}s"
+		},
+	    toolbox: {
+	    	itemGap : 10,
+	    	right : 120,
+	        show : true,
+	        feature : {
+	            magicType: {show: true, type: ['bar','line']},
+	            saveAsImage : {show: true}
+	        }
+	    },
+	    legend: {
+	        data:[ ${legendData!''}]
+	    },
+		xAxis : {
+			name :['次数'],
+			data : [${xdata!'0'}]
+		},
+		yAxis : {
+			name :['回答时长(秒)']
+		},
+		series : [${seriesdata!'0'}]	
+}
+//使用刚指定的配置项和数据显示图表
+myChart3.setOption(option3);
+
+//每周的上课次数
+//指定图表的配置项和数据2
+var color4 = ['#cd5c5c','#ffa500','#40e0d0','#1e90ff']
+var option4={
+		color:color4,
+		tooltip: {
+			trigger: 'item',
+			formatter: " {a}<br>{b}分钟 : {c}次"
+		},
+	    toolbox: {
+	    	itemGap : 10,
+	    	right : 120,
+	        show : true,
+	        feature : {
+	            magicType: {show: true, type: ['bar','line']},
+	            saveAsImage : {show: true}
+	        }
+	    },
+	    legend: {
+	        data:[ ${legendData!''} ]
+	    },
+		xAxis : {
+			name :['时间段(分钟)'],
+			data : ['开始-10','10-20','20-30','30-结束']
+		},
+		yAxis : {
+			name :['回答次数']
+		},
+		series : [${seriesdatanum!''}]	
+}
+myChart4.setOption(option4);
+</script>

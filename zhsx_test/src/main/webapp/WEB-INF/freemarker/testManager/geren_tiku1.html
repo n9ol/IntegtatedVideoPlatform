@@ -1,0 +1,243 @@
+ <!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+<!-- 		<#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+
+	<body> 
+		<div class="kao_right">
+			<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 我的题库管理
+
+			</p>
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this">我的题库</li>
+				</ul>
+			</div>
+			<div class="guanjian">
+				<span>搜索：</span>
+				<span>
+					<span>专业：</span>
+						<select name="gradeName" id="gradeName" onchange="getSubject();">
+       							<option value="">选择专业</option>
+       						<#if grades??&&(grades?size>0)><#list grades as g>
+       							<option  name="${g.id}"  value="${g.value}">${g.value}</option>
+       						</#list></#if>
+      					</select>
+				</span>
+				<span>
+					<select name="subjectName" class="subjectName" id="subjectName">
+        						<option  value="">选择科目</option>
+      				</select>
+				</span>
+				<span>
+					<span>类型：</span>
+						<select name="questionType" id="questionType" class="questionType">
+       							<option value="">选择类型</option>
+       							<option value="1">单选题</option>
+       							<option value="2">多选题</option>
+       							<option value="0">判断题</option>
+      					</select>
+				</span>
+				<span>
+					<span>标题：</span><input type="text" name="search1" id="search1" value="${search!''}" style="width: 100px;height: 19px;" />
+				</span>
+				<a class="layui-btn layui-btn-mini" style="background-color: #4596E5;" onclick="searchSchool();" href="javascript:;">搜索</a>
+			</div>
+			<form id="myform">
+			<table class="layui-table table">
+
+				<thead>
+					<tr>
+					<th><input type="checkbox" id="selected-all-operation"></th>
+						<th>NO</th>
+						<th>类型</th>
+						<th>专业</th>
+						<th>科目</th>
+						<th>考题标题</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<#if lists?? && (lists?size>0)><#list lists as l>
+					<tr>
+					<td><input type="checkbox" name="questionId" value="${l.id!''}">
+					<input type="hidden" name="testId" value="${testId!''}">
+					</td>
+						<td>${l_index+1}</td>
+						<#if l.questionType==0>
+						<td>判断</td>
+						</#if>
+						<#if l.questionType==1>
+						<td>单选</td>
+						</#if>
+						<#if l.questionType==2>
+						<td>多选</td>
+						</#if>
+						<td>${l.gradeName!''}</td>
+						<td>${l.subjectName!''}</td>
+						<td><a href="">${l.questionText!''}</a></td>
+						<td><a href="javascript:;" class="check_look" onclick="addOne('${l.id}');"><i class="layui-icon">&#xe642;</i>&nbsp;添加</a></td>
+					</tr>
+				</#list></#if>	
+				</tbody>
+			</table>
+			
+			</form>
+			<a href="javascript:;" class="layui-btn layui-btn-small" style="background-color: #4596E5;" onclick="batchAdd();"><i class="iconfont icon-shanchu1"></i>批量添加</a>
+			<div id="page" style="text-align: center;"></div>
+		</div>
+
+		<form id="form" action="${ctx}/testwebquestion/findQuestionByMemberId" method="post" >
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="search" value="${search!''}">
+			<input type="hidden" name="memberId" value="${memberId!''}">
+			<input type="hidden" name="gradeName" value="${gradeName!''}">
+			<input type="hidden" name="subjectName" value="${subjectName!''}">
+			<input type="hidden" name="testId" value="${testId!''}">
+			<input type="hidden" name="testTitle" value="${stestTitle!''}">
+			<input type="hidden" name="totalScore" value="${totalScore!''}">
+			<input type="hidden" name="questionType" value="${questionType!''}">
+			
+		</form>
+		
+	</body>	
+	<script type="text/javascript">var testId="${testId!''}";</script>
+	<script type="text/javascript">var testTitle="${testTitle!''}";</script>
+	<script type="text/javascript">var totalScore="${totalScore!''}";</script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+		}
+	</script>
+	<script type="text/javascript">
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height());
+		}
+		layui.use(['form', 'element'], function() {
+			var form = layui.form,
+				element = layui.element;
+			//监听提交
+		 	form.on('submit(formDemo)', function(data) {
+				layer.msg(JSON.stringify(data.field));
+				return false;
+			}); 
+			
+			
+			
+		});
+		
+		function getSubject(){
+			//var  gradeId=$("#gradeName").find("option:selected").val();
+			var  gradeId=$("#gradeName").find("option:selected").attr("name");
+			  //$("option:selected").attr("name");
+			$(".subjectName").empty();
+			$(".subjectName").append('<option value="">请选择科目</option>');
+			$.getJSON("${ctx}/adminBaseData/getSubjects", { gradeId: gradeId}, function(json){
+	 			for (var int = 0; int < json.length; int++) {
+					var arrayJson=json[int];
+					$(".subjectName").append('<option  value="'+arrayJson.value+'">'+arrayJson.value+'</option>');
+	 			}
+				}); 
+			
+	}
+	
+		
+		function searchSchool() {
+			
+			var search = $("input[name='search1']").val();
+			var  gradeName=$("#gradeName").find("option:selected").val();
+			var  subjectName=$(".subjectName").find("option:selected").val();
+			var  questionType=$(".questionType").find("option:selected").val();
+			 $("input[name='search']").val(search);
+			$("input[name='gradeName']").val(gradeName);
+			$("input[name='subjectName']").val(subjectName);
+			$("input[name='questionType']").val(questionType);
+			refreshPage();
+		} 
+		
+		//单个添加
+		function addOne(id){
+			$.ajax({
+				type:"post",
+				url:"${ctx}/testwebtestquestion/add",
+				data:{questionId:id,testId:testId},
+				success: function(data){
+					layer.msg(data,{time : 1200},function() {
+						if (data == "操作成功"){
+							//parent.document.getElementById("parentIframe").src="${ctx}/test/addTi?testId="+testId+"&testTitle="+testTitle+"&totalScore="+totalScore;
+							parent.$(".zhong_right iframe").attr("src", "${ctx}/test/addTi?testId="+testId+"&testTitle="+testTitle+"&totalScore="+totalScore);
+							setIframeH();
+							function setIframeH() {
+								var body = $(document.body);
+								var iframe = $(parent.document.getElementById('parentIframe'));
+								iframe.height(body.height());
+							}
+							
+						}
+					});
+				}
+			});
+			
+		}
+		
+		//全选
+		$("#selected-all-operation").click(function() {
+			if (this.checked) {
+				$("input[name='del_id']").prop("checked", true);
+			} else {
+				$("input[name='del_id']").prop("checked", false);
+			}
+		});
+
+		//批量添加
+		function batchAdd() {
+			var ids = $("input[name='questionId']:checked").val();
+			if (typeof (ids) != "undefined") {
+				
+					$.ajax({
+						type : "POST",
+						url : "${ctx}/testwebtestquestion/batchAdd",
+						data : $("#myform").serialize(),
+						success : function(data) {
+							layer.msg(data,{time:2000},function(){
+									if (data == "操作成功"){
+										//parent.document.getElementById("parentIframe").src="${ctx}/test/addTi?testId="+testId+"&testTitle="+testTitle+"&totalScore="+totalScore;
+										parent.$(".zhong_right iframe").attr("src", "${ctx}/test/addTi?testId="+testId+"&testTitle="+testTitle+"&totalScore="+totalScore);
+										setIframeH();
+										function setIframeH() {
+											var body = $(document.body);
+											var iframe = $(parent.document.getElementById('parentIframe'));
+											iframe.height(body.height());
+										}
+										
+									}
+							});
+						}
+					});
+				
+			} else {
+				layer.msg("请选择要操作的对象");
+			}
+		}
+		
+		
+		function refreshPage(){
+			$("#form").submit();
+		}
+	
+		
+	</script>
+	</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!-- 		<#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+
+	<body>
+		<div class="kao_right">
+			<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 我的试卷库
+			</p>
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this">我的试卷</li>
+					<!--<li>共享试卷</li>-->
+				</ul>
+				<div class="tianjia" ><a href="#" style="color: white;">添加新试卷</a></div>
+
+			</div>
+			<div class="guanjian">
+				<span>搜索：</span>
+				
+				<span>
+					<span>关键词：</span><input type="text" name="search1" id="search1" value="${search!''}" style="width: 100px;height: 19px;" />
+				</span>
+					<a class="layui-btn layui-btn-mini" style="background-color: #4596E5;" onclick="searchSchool();" href="javascript:;">搜索</a>
+			</div>
+			<table class="layui-table table">
+
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>专业</th>
+						<th>科目</th>
+						<th>考试标题</th>
+						<th>题数</th>
+						<th>总分</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<#if lists?? && (lists?size>0)><#list lists as l>
+					<tr>
+						<td>${l_index+1}</td>
+						<td>${l.gradeName!''}</td>
+						<td>${l.subiectName!''}</td>
+						<td><a href="javascript:;" onclick="findOne('${l.id!''}')">${l.testTitle!''}</a></td>
+						<td>${l.questions!''}</td>
+						<td>${l.totalScore!''}</td>
+						<td><a href="javascript:edit('${l.id}');">编辑</a>&nbsp/&nbsp<a href="javascript:delTest('${l.id}');">删除</a></td>
+					</tr>
+				</#list></#if>	
+				</tbody>
+			</table>
+			<form id="form" action="${ctx}/test/paperlist" method="post">
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="search" value="${search!''}">
+			<input type="hidden" name="memberId" value="${memberId!''}">
+		</form>
+			<div id="page" style="text-align: center;"></div>
+		</div>
+	</body>	
+	<script type="text/javascript">var memberId = ${principal.id!''}</script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		setIframeH();
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+		}
+	</script>
+	<script type="text/javascript">
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height());
+		} 
+		
+		
+	
+		var layer;
+		layui.use(['layer', 'form', 'element'], function() {
+			 layer = layui.layer,
+				form = layui.form,
+				element = layui.element;
+	
+		});
+	
+	
+		 function searchSchool() {
+				
+				var search = $("input[name='search1']").val();
+				 $("input[name='search']").val(search);
+				 refreshPage();
+			} 
+		
+		
+		 function delTest(id){
+			 layer.confirm('你确定要删除？',{shade: [0.2, '#FFFFFF']},function(){
+				$.ajax({
+					type:"post",
+					url:"${ctx}/test/del",
+					data:{"id":id},
+					success: function(msg){
+						 parent.$(".zhong_right iframe").attr("src", "${ctx}/test/paperlist?memberId="+memberId);
+						setIframeH();
+						function setIframeH() {
+							var body = $(document.body);
+							var iframe = $(parent.document.getElementById('parentIframe'));
+							iframe.height(body.height());
+						}
+						
+					}
+					
+				});
+			 });
+			} 
+		
+		 function refreshPage(){
+			 
+				$("#form").submit();
+			}
+		
+		 $(".tianjia").click(function() {
+				parent.$(".zhong_right iframe").attr("src", "${ctx}/test/addTest");
+				setIframeH();
+				function setIframeH() {
+					var body = $(document.body);
+					var iframe = $(parent.document.getElementById('parentIframe'));
+					iframe.height(body.height());
+				}
+			});
+		
+		 function edit(id){
+			 
+			 location.href="${ctx}/test/editTest?id="+id;
+			  
+		 }
+		 function findOne(id){
+			 parent.$(".zhong_right iframe").attr("src", "${ctx}/test/findOne?testId="+id);
+				setIframeH();
+				function setIframeH() {
+					var body = $(document.body);
+					var iframe = $(parent.document.getElementById('parentIframe'));
+					iframe.height(body.height());
+				}
+		 }
+		
+	</script>
+</html>

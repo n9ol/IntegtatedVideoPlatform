@@ -1,0 +1,8 @@
+
+						<#if lists?? && (lists?size>0)><#list lists as l>
+							<li>
+							<a href="javascript:;" class="check_look" onclick="findOne('${l.id}');"><p class="paiming">${l_index+1}</p></a>
+							<a href="javascript:;" class="check_look" onclick="findOne('${l.id}');"><span class="timu1">${l.title!''}</span></a>
+							<a href="javascript:;" class="check_look" onclick="findOne('${l.id}');"><span><span style="color: orangered;">${l.count!''}</span>回答数</span></a>
+							</li>
+						</#list></#if>	

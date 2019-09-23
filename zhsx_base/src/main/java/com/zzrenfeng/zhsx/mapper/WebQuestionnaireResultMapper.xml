@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebQuestionnaireResultMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebQuestionnaireResult" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="optionId" property="optionId" />
+		<result column="opinion" property="opinion" />
+		<result column="type" property="type" />
+		<result column="createTime" property="createTime" />
+		<result column="bak" property="bak" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,optionId,opinion,type,createTime,bak 
+	</sql>
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />,
+	 
+		from web_questionnaire_result t
+		where t.id = #{id}
+	</select>
+	
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_questionnaire_result
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebQuestionnaireResult" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_questionnaire_result (id,userId,optionId,opinion,type,createTime,bak )
+		values (#{id},#{userId},#{optionId},#{opinion},#{type},#{createTime},#{bak})
+	</insert>
+
+
+<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="optionId != null" >
+				and optionId = #{optionId}
+			</if>
+			<if test="opinion != null" >
+				and opinion = #{opinion}
+			</if>
+			<if test="type != null" >
+				and type = #{type}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+		</where>
+	</sql>
+
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebQuestionnaireResult" >
+		update web_questionnaire_result
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="optionId != null" >
+				optionId = #{optionId},
+			</if>
+			<if test="opinion != null" >
+				opinion = #{opinion},
+			</if>
+			<if test="type != null" >
+				type = #{type},
+			</if>
+			<if test="createTime != null" >
+				createTime = #{createTime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak}
+			</if>
+			 
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebQuestionnaireResult" >
+		update web_questionnaire_result
+		set 
+		id = #{id} 
+		where id = #{id}
+	</update>
+	
+ 	<select id="findSelective" parameterType="WebQuestionnaireResult" resultType="WebQuestionnaireResult">
+		select 
+		<include refid="Base_Column_List" />
+		from web_questionnaire_result
+		<include refid="Dynamic_Conditions"/>
+	</select>
+</mapper>

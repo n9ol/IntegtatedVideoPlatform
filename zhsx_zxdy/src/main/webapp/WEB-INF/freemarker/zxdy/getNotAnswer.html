@@ -1,0 +1,25 @@
+							<div class="tittle">
+								<span class="tittle1"><strong>标题</strong></span>
+								<span class="tittle4"><strong>发布者</strong></span>
+								<span class="tittle3"><strong>分类</strong></span>
+								<span class="tittle2"><strong>发布时间</strong></span>
+							</div>
+								<ul id="uls" class="tittles">
+							<#if lists?? && (lists?size>0)><#list lists as l>
+							
+								<li class="tittle0">
+								<a href="javascript:;" class="check_look" onclick="findOne('${l.id}');"><span class="tittle5" >${l.title!''}</span></a>
+								<a href="javascript:;" class="check_look" onclick="findOne('${l.id}');"><span class="tittle6">${l.nickName!''}</span></a>
+								<a href="javascript:;" class="check_look" onclick="findOne('${l.id}');"><span class="tittle7">${l.grade!''}&nbsp ${l.subject!''}</span></a>
+								<a href="javascript:;" class="check_look" onclick="findOne('${l.id}');"><span class="tittle8">${l.sendTime?string('yyyy-MM-dd')}</span></a>
+								</li>
+							</#list></#if>
+							</ul>
+						<div id="page" style="text-align: center;"></div>
+						<#include "/commons/comPage.html" encoding="utf-8"/>
+						<script type="text/javascript">
+							function turnPage(p) {
+								$("input[name='p']").val(p);
+								getNotAnswer();
+							}
+						</script>

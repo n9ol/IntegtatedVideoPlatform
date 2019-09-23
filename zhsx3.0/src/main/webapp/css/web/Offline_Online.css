@@ -1,0 +1,209 @@
+.shai{
+	width: 1200px;
+	background-color: #fff;
+	margin: 0 auto;
+	font-size: 16px;
+	border: 1px solid gainsboro;
+	padding: 5px 0;
+}
+.shai>ul{
+	padding: 0 15px;
+}
+
+.c1,.c2{
+	height: 35px;
+	padding-top: 15px;
+}
+.mianbaoxue{
+	width: 1200px;
+	margin: 0 auto;
+	height: 30px;
+	padding-top: 5px;
+}
+
+.sa{
+	float: left;
+	width: 80px;
+	text-align: right;
+	font-size: 15px;
+	}
+	.sa span{
+		margin-left: 25px;
+	}
+	
+.sa2,.sa3,.sa4,.sa5{
+	float: left;
+	margin-left: 55px;
+	width: 80%;
+}
+.sa1{
+	margin-left: 55px;
+	float: left;
+	width: 50%;
+}
+
+
+.sa1 a{
+	display: inline-block;
+	margin-right: 20px;
+	padding-bottom: 10px;
+	font-size: 14px;
+}
+.duos{
+	color: #4596E5;
+	border-bottom: 3px solid #4596E5;
+}
+.ul1 li{
+	float: left;
+	width: 7%;
+	text-align: center;
+	height: 50%;
+	cursor: pointer;
+	font-size: 14px;
+	padding: 3px 2px;
+}
+.ul1 li:hover{
+	color: orangered;
+}
+.c1{
+	border-bottom: 1px dashed gainsboro;
+}
+
+/*中间内容部分*/
+
+.ziyuan_zhong{
+	width: 1200px;
+	margin: 10px auto;
+	background-color: #fff;
+	border: 1px solid gainsboro;
+	
+}
+
+
+.con_left_div {
+	border-bottom: 1px solid gainsboro;
+	height: 50px;
+}
+
+.zonghe {
+	height: 50px;
+	padding-left: 10px;
+	
+}
+
+.zonghe .area-duoxuan {
+	background-color: #4596E5;
+	color: white;
+	border-bottom-left-radius: 50px;
+	border-bottom-right-radius: 50px;
+	border-top-left-radius: 50px;
+	border-top-right-radius: 50px;
+	height: 25px;
+	margin-top: 12.5px;
+	line-height: 25px;
+}
+
+
+/*搜索框*/
+
+.sousuo input {
+	height: 25px;
+	float: left;
+}
+
+.sousuo img {
+	float: left;
+}
+
+.sousuo {
+	float: right;
+	margin-top: 12.5px;
+	margin-right: 20px;
+}
+
+.lists li {
+	height: 137px;
+	margin: 22px;
+	overflow: hidden;
+	border-bottom: 1px dashed #E7E7E7;
+}
+
+.touxiang,
+.zhengwen {
+	float: left;
+	height: 100%;
+}
+.touxiang{
+	width: 64px;
+	padding-top: 25px;
+	margin-right: 20px;
+}
+.touxiang img{
+	width: 100%;
+}
+.zhengwen {
+	padding-top: 10px;
+}
+
+.biaoti {
+	font-size: 16px;
+	height: 50px;
+	line-height: 50px;
+	float: left;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	width: 880px;
+}
+
+
+
+
+
+.xijie span {
+	color: darkgray;
+	margin-right: 20px;
+	display: inline-block;
+	height: 50px;
+	line-height: 50px;
+	width: 200px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.lianjie {
+	float: right;
+	width: 150px;
+	height: 100%;
+	position: relative;
+}
+.download,.col{
+	margin-top: 50px;
+	width: 90px;
+	height: 32px;
+	padding: 0;
+	line-height: 32px;
+}
+.leibie span{
+	color: orange;
+}
+
+.shou_shu,.xia_shu{
+	position: absolute;
+	top: 95px;
+	color: gray;
+}
+.shou_shu{
+	right: 150px;
+}
+.xia_shu{
+	right: 60px;
+}
+#pagerss{
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+
+

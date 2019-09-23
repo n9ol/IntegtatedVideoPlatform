@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<div class="erweima">
+				<div class="apple">
+					<img src="${ctx}/img/img.png" />
+				</div>
+				<div class="anzhuo">
+
+				</div>
+			</div>
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="index.html">首页</a>
+  					<a><cite>数据中心</cite></a>
+				</span>
+			</div>
+			<div class="big_pic">
+				<img src="${ctx}/img/gongxian.png" />
+			</div>
+			<div class="tap">
+				<div class="tap_nei">
+					<img src="${ctx}/img/a1.png" />
+					<img src="${ctx}/img/b2.png" />
+					<img src="${ctx}/img/b3.png" />
+				</div>
+				<div class="tap_zi">
+					<p class="tap_zi_color">教师贡献榜</p>
+					<p>教师排行榜</p>
+					<p>调查问卷</p>
+				</div>
+			</div>
+			<!--<div class="dingwei">
+				<p class="biaotiji">标题</p>
+				<ul>
+					<li>上课情况统计</li>
+					<li>教研员的评估数量 / 周</li>
+					<li>历年河南省使用平台人数的变化</li>
+					<li>不同等级教师的课前备课平均评估得分 / 学校</li>
+					<li>课前备课平均评估得分 / 学校（不同学校）</li>
+					<li>今年河南省教师使用平台人数</li>
+					<li>2016年教师等级上升幅度排行榜</li>
+				</ul>
+				<p class="fanhui">回到顶部 <span class="layui-icon">&#xe619;</span></p>
+			</div>-->
+			<div class="neirong">
+				<div class="nr1 clear">
+					<p class="tittle">上课情况统计</p>
+					<div id="main12"></div>
+					<div id="main122"></div>
+
+				</div>
+				<div class="nr1 clear">
+					<div id="main13"></div>
+					<div id="main133"></div>
+
+				</div>
+				<!--前两周教研员的评估数量-->
+				<div class="nr1">
+					<p class="tittle">教研员的评估数量 / 周</p>
+					<div id="main1"></div>
+				</div>
+
+				<!--历年河南省使用平台人数的变化-->
+				<div class="nr1">
+					<p class="tittle">历年河南省使用平台人数的变化</p>
+					<div id="main2"></div>
+				</div>
+				<!--不同学校课前平均评估图-->
+				<div class="nr1">
+					<p class="tittle">不同等级教师的课前备课平均评估得分 / 学校</p>
+					<div id="main14">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">课前备课平均评估得分 / 学校（不同学校）</p>
+					<div id="main15">
+
+					</div>
+				</div>
+				<!--历年河南省使用平台学校的变化-->
+				<div class="nr1">
+					<p class="tittle">今年河南省教师使用平台人数</p>
+					<div id="main3"></div>
+				</div>
+
+				<!--2017年所有教师成长等级排名-->
+				<div class="nr1">
+					<p class="tittle">2016年教师等级上升幅度排行榜</p>
+					<div id="main5"></div>
+
+				</div>
+
+			</div>
+
+			<div class="neirong">
+				<!--某县/市前一周在平台上课前备课的不同学校的任务-->
+				<div class="nr1">
+					<p class="tittle">本周教师平均得分 / 学校（不同学校）</p>
+					<div id="main6">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">同一学校不同教师课中评估得分对比 / 周</p>
+					<div id="main7">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">本节课 - 不同活跃度方式对教师课中评估得分的影响 / 教师</p>
+					<div id="main8">
+
+					</div>
+				</div>
+				<!--河南省教室等级分类年份对比-->
+
+				<div class="nr1">
+					<p class="tittle">本周课程教师综合得分结果对比</p>
+					<div id="main9">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">2016河南省教师等级人数占比</p>
+					<div id="main10">
+
+					</div>
+				</div>
+				<div class="nr1">
+					<p class="tittle">不同等级教师的课中评估得分 / 学校</p>
+					<div id="main11">
+
+					</div>
+				</div>
+
+			</div>
+			<div class="neirong" style="display: none;">
+				<div class="shuoming clear">
+					<div class="shuoming_wenjuan">
+						<span>调查问卷</span>
+					</div>
+					<div class="shuoming_download">
+						分析&下载
+					</div>
+				</div>
+				<div>
+					<div style="text-align: center;font-size: 22px;">
+						教师上课质量与满意度的调查问卷</div>
+					<div>
+						满意度定义：教师满意度研究是通过对影响教师满意度的因素进行分析，发现影响教师满意度的因素、学生满意度及教师教学行为三者的关系，从而通过最优化成本有效的提升影响教师满意度的关键因素达到改变教学行为，建立和提升教师成长，创造教师教学良好口碑，提升学校的教学质量的一种研究方法
+					</div>
+					<div>
+
+					</div>
+				</div>
+				<div>
+					<form class="layui-form" action="">
+						<label class="layui-form-label">Q1：这门课你是否有过翘课行为</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="经常">
+								<input type="radio" name="sex" title="偶尔">
+								<input type="radio" name="sex" title="从来没有">
+							</div>
+						</div>
+						<label class="layui-form-label">Q2：你认为导致自己不想上课的原因主要是哪方面的（可多选）</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="checkbox" name="" title="A自己不喜欢这门课程，但是已经选了" lay-skin="primary">
+								<input type="checkbox" name="" title="B自己不喜欢老师的授课风格" lay-skin="primary">
+								<input type="checkbox" name="" title="C上课时间不合理，和自己的生活相冲突" lay-skin="primary">
+								<input type="checkbox" name="" title="D教师授课质量差" lay-skin="primary">
+								<input type="checkbox" name="" title="CE其他" lay-skin="primary">
+
+							</div>
+						</div>
+						<label class="layui-form-label">Q3：自己倾向的教师性别</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="男性">
+								<input type="radio" name="sex" title="女性">
+								<input type="radio" name="sex" title="无所谓">
+							</div>
+						</div>
+						<label class="layui-form-label">Q4：最喜欢的教师上课方式</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A多媒体教学">
+								<input type="radio" name="sex" title="B传统板书">
+								<input type="radio" name="sex" title="C言传身教">
+								<input type="radio" name="sex" title="D两两结合">
+							</div>
+						</div>
+						<label class="layui-form-label">Q5：老师讲课的内容是否总是让你满意？</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A很满意">
+								<input type="radio" name="sex" title="B满意">
+								<input type="radio" name="sex" title="C一般">
+								<input type="radio" name="sex" title="D不满意">
+							</div>
+						</div>
+						<label class="layui-form-label">Q6：您对老师的教材熟练程度及知识传递效果是否满意</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A很满意">
+								<input type="radio" name="sex" title="B满意">
+								<input type="radio" name="sex" title="C一般">
+								<input type="radio" name="sex" title="D不满意">
+							</div>
+						</div>
+						<label class="layui-form-label">Q7：课堂上，您对老师的知识延伸是否满意？</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A很满意">
+								<input type="radio" name="sex" title="B满意">
+								<input type="radio" name="sex" title="C一般">
+								<input type="radio" name="sex" title="D不满意">
+							</div>
+						</div>
+						<label class="layui-form-label">Q8：您对教师课上或课间在教师做一些与课堂授课无关的事是否满意</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A很满意">
+								<input type="radio" name="sex" title="B满意">
+								<input type="radio" name="sex" title="C一般">
+								<input type="radio" name="sex" title="D不满意">
+							</div>
+						</div>
+						<label class="layui-form-label">Q9：老师上课比较注重的是什么？</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A照本宣科，毫无方式方法可言">
+								<input type="radio" name="sex" title="B课外延伸，注重全方位的系统知识传授">
+								<input type="radio" name="sex" title="C思维发散，更倾向于培养学生的主动性">
+								<input type="radio" name="sex" title="D其他">
+							</div>
+						</div>
+						<label class="layui-form-label">Q10：您对教师和班级同学的交流情况是否满意？</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A很满意">
+								<input type="radio" name="sex" title="B满意">
+								<input type="radio" name="sex" title="C一般">
+								<input type="radio" name="sex" title="D不满意">
+							</div>
+						</div>
+						<label class="layui-form-label">Q11：您在上课过程中的情况</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="radio" name="sex" title="A爱听不听">
+								<input type="radio" name="sex" title="B很想听，但是听不懂">
+								<input type="radio" name="sex" title="C能听懂，但老师说的不生动，没兴趣">
+								<input type="radio" name="sex" title="D很不错，每次下课后都感觉收获良多">
+							</div>
+						</div>
+						<label class="layui-form-label">Q12：老师上课过程中，你最注重的是什么？</label>
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<input type="checkbox" name="" title="A语言" lay-skin="primary">
+								<input type="checkbox" name="" title="B着重" lay-skin="primary">
+								<input type="checkbox" name="" title="C笑容" lay-skin="primary">
+								<input type="checkbox" name="" title="D授课内容" lay-skin="primary">
+								<input type="checkbox" name="" title="F交流方式" lay-skin="primary">
+								<input type="checkbox" name="" title="G其他" lay-skin="primary">
+							</div>
+						</div>
+						<label class="layui-form-label">Q13：有什么建议？</label>
+						<div class="layui-input-block">
+							<textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+
+						<div class="layui-form-item">
+							<div class="layui-input-block">
+								<button class="layui-btn" lay-submit lay-filter="formDemo" style="background-color: #4596E5;">立即提交</button>
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</form>
+
+				</div>
+				<p class="tihui">本阶段学校整体变化的心得体会</p>
+				<form class="layui-form" action="">
+					<p style="margin-left: 10px;">该学校教师的变化（教师能力，工作态度，敬业精神）</p>
+					<div class="layui-form-item layui-form-text">
+
+						<div class="layui-input-block" style="margin-left: 10px;">
+							<textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+					</div>
+					<p style="margin-left: 10px;">该学校学生的变化（学习态度，学习成绩，学习心态，学习行为）</p>
+					<div class="layui-form-item layui-form-text">
+
+						<div class="layui-input-block" style="margin-left: 10px;">
+							<textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
+						</div>
+					</div>
+				</form>
+
+				<button class="layui-btn layui-btn-normal qingkong" style="float: right;margin-right: 20px;">提交</button>
+
+				<!--</div>-->
+
+			</div>
+
+		</div>
+		<!--内容end-->
+
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<#include "/commons/comWebjs.html" encoding="utf-8"/>
+		<!--底部 end-->
+	</body>
+	<!--单独的js-->
+	<script src="${ctx}/js/web/henan.js" type="text/javascript" charset="utf-8"></script>
+<!-- 	<script src="${ctx}/js/web/sjzx_sjzx.js" type="text/javascript" charset="utf-8"></script> -->
+	<script type="text/javascript">
+		layui.use(['form', 'laydate'], function() {
+			var form = layui.form,
+				laydate = layui.laydate;
+			//监听提交
+			form.on('submit(formDemo)', function(data) {
+				layer.msg(JSON.stringify(data.field));
+				return false;
+			});
+			laydate({
+				elem: '#id', //需显示日期的元素选择器
+				event: 'click', //触发事件
+				format: 'YYYY-MM-DD hh:mm:ss', //日期格式
+				istime: false, //是否开启时间选择
+				isclear: true, //是否显示清空
+				istoday: true, //是否显示今天
+				issure: true,
+				festival: true,
+				min: '1900-01-01 00:00:00', //最小日期
+				max: '2099-12-31 23:59:59', //最大日期
+				start: '2014-6-15 23:00:00', //开始日期
+				fixed: false, //是否固定在可视区域
+				zIndex: 99999999 //css z-index
+			});
+		})
+	</script>
+
+</html>

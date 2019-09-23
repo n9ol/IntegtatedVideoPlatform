@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+	<body>
+		<div class="biaoBox">
+			<p class="kebiao">我的课程表 -- <span style="color: #FF5722;">点击对应课程可设置评估课件</span></p>
+			<table class="layui-table table minWidth">
+				<thead>
+					<tr>
+						<th></th>
+						<th>星期日</th>
+						<th>星期一</th>
+						<th>星期二</th>
+						<th>星期三</th>
+						<th>星期四</th>
+						<th>星期五</th>
+						<th>星期六</th>
+					</tr>
+				</thead>
+				<tbody>
+					<#assign seq = [0,1,2,3,4,5,6]>
+					<#if listCourseScheduleBigTime?? &&(listCourseScheduleBigTime?size>0)><#list listCourseScheduleBigTime as c>
+					<tr>
+						<td title="${(c.startTime)?string('HH:mm')} - ${(c.endTime)?string('HH:mm')}" style="min-width:3em;white-space:nowrap;">第${c.oddSectionOfDay!''}-${c.evenSectionOfDay!''}节</td>
+						<#list seq as l>
+						<td style="position: relative;">
+							<#if listCourseSchedule?? && (listCourseSchedule?size>0)>
+								<#list listCourseSchedule as lo>
+										<#if (lo.bigSectionOfDay==c.bigSectionOfDayString) && (lo.dayOfWeek)==l>
+											 <#assign col="">
+											 <#if lo.isGoClass == 0><#assign col="color:gray;"></#if>
+											 <#if lo.isGoClass == 1><#assign col="color:orange;"></#if>
+											 <#if lo.isGoClass == 2><#assign col="color:#4596E5;"></#if>
+											 <span class="ellipsesSpan" style="cursor:pointer;${col}" title="${lo.subjectName!''}(${lo.classroomName!''})" onclick="setPgCour('${lo.id}','${lo.isGoClass}');"> 
+											 	${lo.classroomName!''}<br>
+											 	${lo.subjectName!''}<br>
+											 	${lo.className!''}<br>
+											 	<#if lo.oddEvenAll == 'odd'>单周<#elseif lo.oddEvenAll == 'even'>双周</#if>
+											 	(${lo.beginWeek!''}-${lo.endWeek!''})[${lo.sectionOfDay!''}节]
+											 </span>
+										</#if>
+								</#list>
+							</#if>
+						</td>
+						</#list> 
+					</tr>
+					</#list></#if>	
+				</tbody>
+			</table>
+		</div>
+	</body>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+	<script type="text/javascript" src="${ctx}/js/personalCenter/geren_kechengbiao.js"></script>
+</html>

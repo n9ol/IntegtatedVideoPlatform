@@ -1,0 +1,98 @@
+.bbt_con {
+				width: 1200px;
+				background-color: #fff;
+				margin: 0 auto 20px;
+				padding: 10px;
+				min-height: 600px;
+				border-radius: 5px;
+			}
+			
+			.pic1_son {
+				height:300px;
+			}
+			
+			.pic2_son {
+				height: 400px;
+			}
+			
+			.pic1_son2 {
+				margin-left: 9px;
+			}
+			
+			.pic1 {
+				margin-bottom: 20px;
+			}
+			
+			#footer {
+				background-color: #fff;
+			}
+			
+			.tableTile {
+				border-bottom: 1px solid #bbb;
+				line-height: 40px;
+				padding-left: 15px;
+				position: relative;
+			}
+			
+			.pic1_son1,
+			.pic1_son2,
+			.pic1_son3 {
+/* 				width: 32%; */
+				border: 1px solid #bbb;
+				border-radius: 5px;
+				padding-bottom: 5px;
+			}
+			.pic1_son1{
+				width:35%;
+			}
+			.pic1_son2{
+				width:28%;
+				
+			}
+			.pic1_son3{
+				width:35%;
+			}
+			
+			.pic2_son1,
+			.pic2_son2 {
+				width: 49%;
+				border: 1px solid #bbb;
+				border-radius: 5px;
+				padding-bottom: 5px;
+			}
+			
+			.termiinal-btnGroup {
+				float: right;
+				margin-right: 10px;
+			}
+			
+			.btn_active {
+				background-color: #4596E5;
+				color: #fff;
+			}
+			
+			.termiinal-btnGroup button {
+				height: 30px;
+				line-height: 30px;
+				width: 80px;
+			}
+			
+			.termiinal-btnGroup button:nth-child {
+				border-top-right-radius: 0;
+				border-bottom-right-radius: 0;
+			}
+			
+			.termiinal-btnGroup button:last-child {
+				border-top-left-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+			
+			.layui-form-item .layui-input-inline {
+				float: left;
+				width: 180px;
+				margin-right: 10px;
+			}
+			
+			.layui-btn+.layui-btn {
+				margin-left: 8px;
+			}

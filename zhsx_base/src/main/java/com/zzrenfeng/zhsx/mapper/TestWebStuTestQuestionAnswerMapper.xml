@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.TestWebStuTestQuestionAnswerMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.TestWebStuTestQuestionAnswer" >
+		<result column="id" property="id" />
+		<result column="stuTestId" property="stuTestId" />
+		<result column="stuId" property="stuId" />
+		<result column="questionId" property="questionId" />
+		<result column="answerCode" property="answerCode" />
+		<result column="answerId" property="answerId" />
+		<result column="isRight" property="isRight" />
+		<result column="stuIsRight" property="stuIsRight" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,stuTestId,stuId,questionId,answerCode,answerId,isRight,stuIsRight,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_stu_testQuestionAnswer
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from test_web_stu_testQuestionAnswer
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="TestWebStuTestQuestionAnswer" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into test_web_stu_testQuestionAnswer (id,stuTestId,stuId,questionId,answerCode,answerId,isRight,stuIsRight,bak1,bak2,bak3)
+		values (#{id},#{stuTestId},#{stuId},#{questionId},#{answerCode},#{answerId},#{isRight},#{stuIsRight},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="TestWebStuTestQuestionAnswer" >
+		update test_web_stu_testQuestionAnswer
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="stuTestId != null" >
+				stuTestId = #{stuTestId},
+			</if>
+			<if test="stuId != null" >
+				stuId = #{stuId},
+			</if>
+			<if test="questionId != null" >
+				questionId = #{questionId},
+			</if>
+			<if test="answerCode != null" >
+				answerCode = #{answerCode},
+			</if>
+			<if test="answerId != null" >
+				answerId = #{answerId},
+			</if>
+			<if test="isRight != null" >
+				isRight = #{isRight},
+			</if>
+			<if test="stuIsRight != null" >
+				stuIsRight = #{stuIsRight},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="TestWebStuTestQuestionAnswer" >
+		update test_web_stu_testQuestionAnswer
+		set 
+		id = #{id},
+		stuTestId = #{stuTestId},
+		stuId = #{stuId},
+		questionId = #{questionId},
+		answerCode = #{answerCode},
+		answerId = #{answerId},
+		isRight = #{isRight},
+		stuIsRight = #{stuIsRight},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="stuTestId != null" >
+				and stuTestId = #{stuTestId}
+			</if>
+			<if test="stuId != null" >
+				and stuId = #{stuId}
+			</if>
+			<if test="questionId != null" >
+				and questionId = #{questionId}
+			</if>
+			<if test="answerCode != null" >
+				and answerCode = #{answerCode}
+			</if>
+			<if test="answerId != null" >
+				and answerId = #{answerId}
+			</if>
+			<if test="isRight != null" >
+				and isRight = #{isRight}
+			</if>
+			<if test="stuIsRight != null" >
+				and stuIsRight = #{stuIsRight}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="TestWebStuTestQuestionAnswer" resultType="TestWebStuTestQuestionAnswer">
+		select 
+		<include refid="Base_Column_List" />,
+		(select answerText from `test_web_question_answer` a where a.id=t.answerId ) as answerText
+		from test_web_stu_testQuestionAnswer t
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="TestWebStuTestQuestionAnswer" resultType="TestWebStuTestQuestionAnswer">
+		select 
+		<include refid="Base_Column_List" />
+		from test_web_stu_testQuestionAnswer
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<select id="findTestDetail" parameterType="TestWebStuTestQuestionAnswer" resultType="TestWebStuTestQuestionAnswer">
+		select
+		<include refid="Base_Column_List" />,
+		(SELECT questionText FROM `test_web_question` q WHERE q.id=t.questionId) as questionText,
+		(SELECT questionType FROM `test_web_question` q WHERE q.id=t.questionId) as questionType
+	</select>
+
+	<select id="FindMyErrors" parameterType="TestWebStuTestQuestionAnswer" resultType="TestWebStuTestQuestionAnswer" >
+		
+		
+	</select>
+	
+	
+	<update id="insertBetch"  parameterType="java.util.List" >
+		insert into test_web_stu_testQuestionAnswer (id,stuTestId,stuId,questionId,answerCode,answerId,isRight,stuIsRight,bak1,bak2,bak3)
+		values
+		<foreach collection="list" item="t"  separator=",">
+			 ((select uuid()),#{t.stuTestId},#{t.stuId},#{t.questionId},#{t.answerCode},#{t.answerId},#{t.isRight},#{t.stuIsRight},#{t.bak1},#{t.bak2},#{t.bak3})
+		</foreach>
+		 on DUPLICATE key update 
+		 stuTestId=VALUES(stuTestId),stuId=VALUES(stuId),questionId=VALUES(questionId),
+		 answerId=VALUES(answerId),isRight=VALUES(isRight),stuIsRight=VALUES(stuIsRight),
+		 bak1=VALUES(bak1)
+		 
+	</update>
+
+
+</mapper>

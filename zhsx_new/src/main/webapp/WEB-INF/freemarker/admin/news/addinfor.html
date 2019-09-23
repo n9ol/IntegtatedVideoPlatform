@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>添加新闻</title>
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/common/webuploader/webuploader.css">
+<link rel="stylesheet" type="text/css" href="${ctx}/css/courRes.css" />
+<style type="text/css">
+.msg {
+	color: red;
+	display: inline-block;
+	height: 100%;
+	width: 42%;
+    margin-top: 10px;
+    float: left;
+    margin-left: 10px;
+    overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.layui-layedit{
+	width: 650px;
+	margin-left: 40px;
+}
+.webuploader-container {
+	padding-top:6px;
+	float:left;
+}
+.webuploader-pick {
+    height: 25px;
+    line-height: 25px;
+}
+</style>
+</head>
+<body>
+	<section class="layui-larry-box">
+		<div class="larry-personal">
+			<div class="larry-personal-body clearfix">
+				<form id="form" class="layui-form">
+					<input id="pageType" type="hidden" value="cross">
+					<div class="row">
+						<div class="layui-form-item">
+							<label class="layui-form-label">标题：</label>
+							<div class="layui-input-block">
+								<input type="text" id="title" name="title" title="标题" class="layui-input" size="30"  style="width: 50%; float: left;" onblur="javascript:checkOk(this,checkString(this));"> 
+								<span id="title_msg" class="msg" >*</span>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">作者：</label>
+							<div class="layui-input-block">
+								<input type="text" id="writer" name="author" title="作者"  class="layui-input" value="" style="width: 50%; float: left;" onblur="javascript:checkOk(this,checkString(this));">
+								<span id="author_msg" class="msg">*</span>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">来源：</label>
+							<div class="layui-input-block">
+								<input type="text" id="source" name="source" class="layui-input" style="width: 50%; float: left;">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">排序：</label>
+							<div class="layui-input-block">
+								<input type="text" id="sortOrder" name="sortOrder" style="width: 50%; float: left;"class="layui-input" value="0">
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">类别：</label>
+							<div   class="layui-input-block">
+								<input type="radio" name="modelType" value="S"  title="视频+文字" lay-filter="test"  checked>
+								<input type="radio" name="modelType" value="W"  title="文字/图片" lay-filter="test">
+							</div>
+						</div>
+			
+						
+						
+						<div class="layui-form-item" id="shangchuanVideo">
+							<label class="layui-form-label">视频：</label>
+							<div  class="layui-input-block">
+								<div id="shangchuanbtu" style="width:150px;height:30px;">+ 选择视频</div>
+								<input type="hidden" name="bak2" id="bak2" title="视频">
+								<span id="bak2_msg" class="msg">*</span>
+							</div>
+						</div>
+						
+						<div class="layui-form-item">
+							<label class="layui-form-label">图片：</label>
+							<div  class="layui-input-block">
+								<div id="uploadImg" style="width:150px;height:30px;">+ 文本编辑器添加图片</div>
+							</div>
+						</div>
+						<div class="layui-form-item">
+							<label class="layui-form-label">添加新闻内容</label>
+							<textarea id="demo" name="bak1" style="display: none;"></textarea>
+						</div>
+
+		
+						<div class="layui-form-item">
+							<div class="layui-input-block text-center">
+								<input type="button" class="layui-btn" onclick="javascript:submitForm();" value="立即提交">
+								<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</section>
+	
+	
+		<div class="box_nav clear">
+			<div class="dialog dialog-web-uploader   dialog-blue h5-uploader" style="width: 550px; top: auto; bottom: 0px; left: auto; right: 0px; display: none; visibility: visible; z-index: 42;">
+				<div class="dialog-header">
+					<h3>
+			  			<span class="dialog-header-title">
+			  				<em class="select-text">文件上传</em>
+			  			</span>
+			  		</h3>
+					<div class="dialog-control">
+						<span class="dialog-icon dialog-close icon icon-close">
+			  				<span class="sicon"><strong>×</strong></span>
+						</span>
+						<span class="dialog-icon dialog-min icon icon-minimize">
+			  				<span class="sicon"><strong>-</strong></span>
+						</span>
+					</div>
+				</div>
+				<div class="dialog-min-header" style="display:none;">
+					<div class="header-progress" style="width:100%;"></div>
+					<h3>
+			  			<span class="dialog-header-title">
+			  				<em class="select-text">文件上传</em>
+			  			</span>
+			  		</h3>
+					<div class="dialog-control">
+						<span class="dialog-icon dialog-close icon icon-close">
+			  				<span class="sicon"><strong>×</strong></span>
+						</span>
+						<span class="dialog-icon dialog-back icon icon-maximizing">
+			  				<span class="sicon"><strong>□</strong></span>
+						</span>
+					</div>
+				</div>
+				<div class="dialog-body">
+					<div class="uploader-list-wrapper">
+						<div class="uploader-list-header">
+							<div class="file-name" style="width:200px;" >文件名</div>
+							<div class="file-size" style="width:100px;">大小</div>
+							<div class="file-status" style="width:150px;">状态</div>
+							<div class="file-operate"style="width:50px;">操作</div>
+						</div>
+						<div class="uploader-list"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+</body>
+<script type="text/javascript" src="${ctx}/js/check.js"></script>
+<script type="text/javascript" src="${ctx}/common/webuploader/webuploader.js"></script>
+<script type="text/javascript" src="${ctx}/js/admin/new/fileUploadNewVideo.js"></script>
+<script type="text/javascript" src="${ctx}/js/admin/new/addinfor.js"></script>
+</html>

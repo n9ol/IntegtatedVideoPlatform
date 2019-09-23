@@ -1,0 +1,23 @@
+<?xml version="1.0"	encoding="UTF-8"?>
+<onVideoList>
+	<#if psilist?? && (psilist?size>0)><#list psilist as f> 
+	<onVideo>
+	 	<schoolname>${f.schoolName!''}</schoolname>
+	 	<teacher>${f.userName!''}</teacher>
+	 	<gradename>${f.gradeId!''}</gradename>
+		<subjectname>${f.subjectId!''}</subjectname>
+		<weekClass>${f.week_class!''}</weekClass>
+		<planClass>${f.plan_class!''}</planClass>
+		<classname>${f.className!''}</classname>
+		<fclassname>${f.fClassNames!''}</fclassname>
+		<fteacher>${f.fTeachers!''}</fteacher>
+	 	<stuNum>${f.stu_num!''}</stuNum>
+	 	<#if f.isGoClass == 1>
+			<state>正在上课</state>
+		<#else>
+			<state> 未在上课</state>					 
+		</#if>
+		<zid>${f.id}</zid>
+	</onVideo>
+	</#list></#if> 
+</onVideoList>

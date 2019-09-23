@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title></title> <#include "/commons/comWeb.html" encoding="utf-8"/>
+<link rel="stylesheet" type="text/css"
+	href="${ctx}/css/web/sjzx_survey.css" />
+</head>
+
+<body>
+	<div class="box clear">
+		<div class="layui-tab">
+
+			<div class="layui-tab-content">
+				<div class="layui-tab-item layui-show">
+					<div class="clear" style="margin-bottom: 20px;"></div>
+
+					<#if questions?? && (questions?size>0)> <#list questions as l>
+
+					<div class="kkk">
+<!-- 						<div class="qiehuan qiehuan0"> -->
+<!-- 							<span class="show">表格</span> <span>饼状图</span> <span>圆环图</span> <span>柱状图</span> -->
+<!-- 							<span>条形图</span> -->
+<!-- 						</div> -->
+						<p>
+							${l_index+1}： ${l.question!''} <span><#if
+								l.type=='A'>[单选题]<#else>[多选题]</#if></span>
+						</p>
+						<div id="tu1">
+							<!-- 								<iframe src="sjzxSurveyBiaoge.html" width="100%" height="100%" id="parentIframe1"></iframe> -->
+							<!-- 		开始开始开始开始开始开始开始开始           -->
+							<div class="box">
+								<div class="layui-form clear">
+									<table class="layui-table">
+										<colgroup>
+											<col width="200">
+											<col width="20">
+											<col width="200">
+											<col>
+										</colgroup>
+										<thead>
+											<tr>
+												<th>选项</th>
+												<th>小计</th>
+												<th>比例</th>
+											</tr>
+										</thead>
+										<tbody>
+
+											<#if l.survey?? && (l.survey?size>0)> 
+												<#list l.survey as o>
+													<#assign inde=o_index>
+													<#assign sort="A"> 
+													<#if inde ==0>
+														<#assign sort="A"> 
+													</#if> 
+													<#if inde ==1> 
+														<#assign sort="B">
+													</#if> 
+													<#if inde ==2> 
+														<#assign sort="C"> 
+													</#if>
+											<tr>
+												<td>${o.option!''}</td>
+												<td>${o.num!''}</td>
+												<td style="width: 20%;">
+													<div class="layui-progress  td_progress" lay-showpercent="true" style="width: 200px; display: inline-block;">
+													
+													<#if l.anwernum ==0> <div class="layui-progress-bar layui-bg-blue" lay-percent="0%"> </div> 
+													
+													<#else>
+													<div class="layui-progress-bar layui-bg-blue" lay-percent="${(o.num / l.anwernum)*100 !'0'}%"> </div>
+													</#if>
+													
+													</div>
+												</td>
+											</tr>
+											</#list> </#if>
+										</tbody>
+										<thead>
+											<tr>
+												<td>本题有效填写人次</td>
+												<td>${l.anwernum!''}</td>
+												<td></td>
+											</tr>
+										</thead>
+									</table>
+								</div>
+							</div>
+							<!-- 		结束结束结束结束结束                     -->
+						</div>
+					</div>
+					</#list> </#if>
+
+
+
+
+				</div>
+				<!-- 						<div class="kkk"> -->
+				<!-- 							<p>13.有什么建议？[填空题]</p> -->
+				<!-- 							<div style="margin-bottom: 20px; width: 500px;"> -->
+				<!-- 							<textarea class="layui-textarea" id="LAY_demo1" style="display: none"></textarea> -->
+				<!-- 							</div> -->
+				<!-- 						</div> -->
+
+				<div style="text-align: right; padding-top: 20px;">
+					<a class="layui-btn layui-btn-normal" href="javascript:downFile()">下载调查报告（Word格式） </a>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+	</div>
+
+</body>
+<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+<script type="text/javascript">
+	$(function() {
+		setIframeH33();
+		function setIframeH33() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeSurvey'));
+			iframe.height(body.height() + 500);
+		}
+	})
+	
+		function downFile(){
+			location.href = "${ctx}/datacenter/downloadWord?id=1&type=analysis";
+	}
+	layui
+			.use(
+					[ 'element', 'form', 'layedit' ],
+					function() {
+						var element = layui.element, form = layui.form, layedit = layui.layedit, $ = layui.jquery;
+						//构建一个默认的编辑器
+						var index = layedit.build('LAY_demo1',{
+							height: 100,
+							tool: [
+								'strong' //加粗
+								, 'italic' //斜体
+								, 'underline' //下划线
+								, 'del' //删除线
+								, '|' //分割线
+								, 'left' //左对齐
+								, 'center' //居中对齐
+								, 'right' //右对齐
+								, 'face' //表情
+							]
+						});
+						$('.site-demo-layedit').on('click', function() {
+							var type = $(this).data('type');
+							active[type] ? active[type].call(this) : '';
+						});
+					});
+	//点击样式变化
+	$(".qiehuan0 span").click(function() {
+		$(this).parent().find("span").removeAttr("class", "show");
+		$(this).addClass("show");
+	})
+</script>
+
+</html>

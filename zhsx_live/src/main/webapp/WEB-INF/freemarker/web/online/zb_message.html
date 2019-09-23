@@ -1,0 +1,56 @@
+<!-- <#global ctx=rc.contextPath/> -->
+<#if lists?? && (lists?size>0)>
+<#list lists as l>
+<li class="con_left_li">
+		<#if l.type?? && l.type=='G'>
+			 <div class="zdb bg5"> 专递课堂  </div>
+		<#elseif l.type=='A'>
+			<div class="zdb" style="background-color: orange;"> 在线评估 </div>
+		<#elseif l.type=='Z'>
+			<div class="zdb" style="background-color:#4596e5;"> 直播课堂 </div>
+		</#if>
+	<div class="demo">
+		<figure class="imghvr-slide-down">
+			<#if l.type?? && l.type=='G'>
+				<img src="${ctx}/images/zhuandi267.png" />
+			<#else>
+				<img src="${ctx}/images/pinggu267.png" />
+			</#if>
+			<figcaption style="padding-top: 70px;background-color: rgba(0,0,0,0.7);">
+				<p style="text-align: center;">${l.startTime?string('HH:mm')} - ${l.endTime?string('HH:mm')}</span></p>
+			</figcaption>
+			<a href="javascript:;" onclick="enterPlay('${l.type}','${l.id}','${l.isGoClass!''}')"></a>
+		</figure>
+		<div class="school_zuan">
+			<div class="school clear">
+				<p style="float:left;"><span class="schoolName" title="${l.classroomName!''}">${l.classroomName!''}</span>
+				<span class="schoolName">${l.teacherName!''}</span></p>
+				<p style="text-align: center;float:right;">
+					<#if l.isGoClass?? && l.isGoClass == 1> <span style="color: green;">正在直播 </span></#if>
+					<#if l.isGoClass?? && l.isGoClass == 2> <span style="color: red;">即将直播</span></#if>
+				</p>
+			</div>
+			<div class="zuan">
+				<#if l.subjectName??>
+					<span style="background-color: #ff8800;float:left;" title="${l.subjectName!''}">${l.subjectName!''}</span>
+				</#if>
+				<#if l.specialtyName??>
+					<span style="background-color: #4596E5;float:left;" title="${l.specialtyName!''}">${l.specialtyName!''}</span>
+				</#if>
+			</div>
+		</div>
+	</div>
+</li>
+</#list>
+<#else>
+	<li class="con_left_li" style="text-align:center;width:100%;">
+		<h3>暂无数据</h3>
+	</li>
+</#if>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getZbMessage();
+	}
+</script>

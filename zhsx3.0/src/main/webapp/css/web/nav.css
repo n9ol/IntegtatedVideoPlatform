@@ -1,0 +1,31 @@
+/*导航*/
+
+.rm-nav>ul {
+	background-color: #fff;
+	display: flex;
+	justify-content: space-between;
+}
+.rm-nav>ul>li>a {
+	color: black;
+	font-size: 16px;
+}
+.rm-nav>ul>li:hover {
+	color: white;
+	background-color: #4596E5;
+}
+
+.rm-nav ul li a:hover {
+	color: white;
+}
+.rm-nav>ul>li {
+	width: 13%;
+	text-align: center;
+}
+
+.rm-nav ul li ul li a {
+	font-size: 14px;
+}
+
+
+
+

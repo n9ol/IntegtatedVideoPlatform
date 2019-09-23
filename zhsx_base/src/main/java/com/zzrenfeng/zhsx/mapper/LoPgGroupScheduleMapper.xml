@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.LoPgGroupScheduleMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.LoPgGroupSchedule" >
+		<result column="id" property="id" />
+		<result column="loscheduleId" property="loscheduleId" />
+		<result column="pgGroupId" property="pgGroupId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,loscheduleId,pgGroupId
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pgGroup_schedule
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pgGroup_schedule
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from lo_pgGroup_schedule
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="LoPgGroupSchedule" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into lo_pgGroup_schedule (id,loscheduleId,pgGroupId)
+		values (#{id},#{loscheduleId},#{pgGroupId})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="LoPgGroupSchedule" >
+		update lo_pgGroup_schedule
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="loscheduleId != null" >
+				loscheduleId = #{loscheduleId},
+			</if>
+			<if test="pgGroupId != null" >
+				pgGroupId = #{pgGroupId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="LoPgGroupSchedule" >
+		update lo_pgGroup_schedule
+		set 
+		id = #{id},
+		loscheduleId = #{loscheduleId},
+		pgGroupId = #{pgGroupId}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="loscheduleId != null" >
+				and loscheduleId = #{loscheduleId}
+			</if>
+			<if test="pgGroupId != null" >
+				and pgGroupId = #{pgGroupId}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="LoPgGroupSchedule" resultType="LoPgGroupSchedule">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pgGroup_schedule
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="LoPgGroupSchedule" resultType="LoPgGroupSchedule">
+		select 
+		<include refid="Base_Column_List" />
+		from lo_pgGroup_schedule
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<insert id="batchInster" parameterType="java.util.Map">
+		delete from lo_pgGroup_schedule where loscheduleId = #{loscheduleId};
+		insert into lo_pgGroup_schedule (id,loscheduleId,pgGroupId)
+		values 
+			<foreach collection="pgGroupIds" item="pgGroupId" separator=","> 
+				((select uuid()),#{loscheduleId},#{pgGroupId})
+			</foreach>
+	</insert>
+
+</mapper>

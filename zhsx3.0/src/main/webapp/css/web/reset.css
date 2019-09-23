@@ -1,0 +1,124 @@
+html {
+	font-family: "微软雅黑", Arial, sans-serif
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, form,
+	fieldset, input, button, textarea, p, th, td {
+	padding: 0;
+	margin: 0;
+	font-family: Arial, sans-serif, Microsoft YaHei
+}
+
+fieldset, img {
+	border: 0
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+	outline: none;
+	margin-bottom:2px;
+}
+
+li {
+	list-style: none
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-size: 100%;
+	font-weight: normal
+}
+
+input, button, textarea, select, optgroup, option {
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-weight: inherit
+}
+
+input, button, textarea, select {
+	*font-size: 100%
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+/*清浮动*/
+.clear:after {
+	display: block;
+	content: "clear";
+	height: 0;
+	clear: both;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+.clear {
+	zoom: 1;
+}
+
+.yahei {
+	font-family: Microsoft yahei, 微软雅黑, Arial, Verdana, Tahoma, sans-serif;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
+}
+
+.ellipsisDiv {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.ellipsisSpan {
+	display: inline-block;
+	width: 80%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.fontbold {
+	font-weight: bold;
+}
+
+.font12 {
+	font-size: 12px;
+}
+
+.font14 {
+	font-size: 14px;
+}
+
+.font18 {
+	font-size: 18px;
+}
+
+.font20 {
+	font-size: 20px;
+}
+
+.font24 {
+	font-size: 24px;
+}
+
+/*span省略号样式*/
+.ellipsesSpan1 {
+	display: inline-block;
+	width: 100%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+/*p或div省略号样式*/
+.ellipsesDiv1 {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

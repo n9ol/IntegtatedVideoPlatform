@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>综合视讯</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<!--各页面单独引入的CSS文件-->
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/xinwen.css" />
+	</head>
+
+	<body>
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a><cite>新闻中心</cite></a>
+				</span>
+			</div>
+
+			<div class="xinwen clear">
+				<div class="left">
+				
+				</div>
+
+				<!--右半边新闻排行-->
+				<div class="main_aside FL">
+					<div class="news_right FL Margin_bot">
+						<h2 class="title clear">新闻排行</h2>
+						<ul class="list tiji">
+						
+						</ul>
+					</div>
+				</div>
+				
+			</div>
+
+		</div>
+		<!--内容end-->
+		<form id="myform">
+			<input type="hidden" name="p" value="${pageNum!''}">
+		</form>
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/> 
+		<!--底部 end-->
+	</body>
+	
+	<!--单独的js-->
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/template.js"></script>
+	<script type="text/javascript">
+	
+		   $(function(){
+				$("#xinwenTop").attr("class","has-sub active");
+				
+				 $.ajax({
+					type: "post",
+					url: "${ctx}/new/getTop",
+					success: function(msg){
+					   $(".list").html(msg);
+					}
+				}); 
+				 
+			 	$.ajax({
+					type: "post",
+					url: "${ctx}/new/findAll",
+					data: $("#myform").serialize(),
+					success: function(msg){
+					   $(".left").html(msg);
+					}
+				}); 
+				
+			}); 
+			
+			 function  findAll(){
+				$.ajax({
+					type: "post",
+					url: "${ctx}/new/findAll",
+					data: $("#myform").serialize(),
+					 success: function(msg){
+						
+					   	$(".left").html(msg);
+					   		
+					   }
+				});
+			}
+			 
+			 
+			 function findOne(id){
+				location.href="${ctx}/new/findOne?id="+id;				 
+			 }
+	</script>
+
+</html>

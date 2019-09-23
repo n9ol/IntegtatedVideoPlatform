@@ -1,0 +1,131 @@
+<!-- 		<#global ctx=rc.contextPath/> -->
+<#if lists??&&(lists?size>0)>
+								<#list lists as l>
+						<li class="clear">
+							<figure class="imghvr-slide-down">
+								<img src="${fileWebPath}/userheadPortrait/${l.filePath!''}" onerror="this.src='${ctx}/img/user126.jpg'"/>
+								<figcaption style="background-color: rgba(0,0,0,0.7);">
+									<div class="see_xiangqing">
+										查看详情
+									</div>
+								</figcaption>
+								<a href="javascript:getDetail('${l.id}')"></a>
+							</figure>
+							<div class="neirong11">
+								<p class="teach_name"><#if l.currName?? && (l.currName!='') >${l.currName!''} <#else>${l.nickName!''}</#if></p>
+								<p class="teach_kecheng">
+									教授课程：<span>${l.subjectName!''}</span>
+								</p>
+								<div class="teach_jianjie">
+									<span style="color:black;">老师简介：</span><#if l.memos?? && (l.memos?length>40)> ${l.memos?substring(0,40)}... <#else>  ${l.memos!'暂无'}</#if>  
+								</div>
+								<p class="teach_lianjie clear kuangss">
+									<img src="${ctx}/img/cheng.jpg" />
+									<a class="growthCurve" href="javascript:searchGrowthCurve('${l.id!''}');">教师成长图</a>
+								</p>
+									<#if l.isGz == 0>
+									<p class="attention clear">  
+										<img class="add" src="${ctx}/img/jiahao1.png">
+										<span class="atten">关注</span>
+										<span class="theId" style="display:none">${l.id!''}</span>
+										<span class="isGz" style="display:none">${l.isGz!'0'}</span>
+									</p>
+									</#if>
+									<#if l.isGz == 1> 
+									<p class="attention clear borderColor">   
+										<img class="add" src="${ctx}/img/duihao1.png">
+										<span class="atten colorOrangered">已关注</span>
+										<span class="theId" style="display:none">${l.id!''}</span>
+										<span class="isGz" style="display:none">${l.isGz!'0'}</span>
+									</p>
+									</#if> 	 	
+				
+								
+								<p class="teach_lianjie clear">
+
+									<input type="checkbox"  name="notChecked" value="${l.id!''}" title="" lay-skin="primary" onclick="showContrastOverwrite(this,'${l.id!''}','${fileWebPath}/userheadPortrait/${l.filePath!''}','${l.nickName!''}','${l.currName!''}')" class="theContrast">
+									<a href="javascript:;">与他人上课得分对比</a>
+								</p>
+
+							</div>
+						</li>
+								</#list>
+					</#if>
+					
+
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		getListData();
+	}
+</script>					
+<script type="text/javascript">
+	//关注按钮的逻辑关系
+	$(".attention").click(function(){
+		if(principal != ""){
+			var theId = $(this).children(".theId").html();
+			if ($(this).children(".isGz").html()==="0") {
+				$(this).children(".atten").html("已关注");
+				$(this).children(".add").attr("src","${ctx}/img/duihao1.png");
+				$(this).children(".isGz").html("1");
+				$(this).children(".atten").addClass("colorOrangered");
+
+				$(this).addClass("borderColor");
+				
+				collection(theId);
+			}else{
+				$(this).children(".atten").html("关注");
+				$(this).children(".add").attr("src","${ctx}/img/jiahao1.png");
+				$(this).children(".isGz").html("0");
+				$(this).children(".atten").removeClass("colorOrangered");
+
+				$(this).removeClass("borderColor");
+				cancelCollection(theId);
+			}
+		}else{
+			layer.msg("请先登录!");
+		}
+	});
+	
+		//关注
+		function collection(id){
+			if(principal != ""){
+				$.ajax({
+				   type: "POST",
+				   url: ctx+"/teacher/insterSysHistory",
+				   data: {pubType:"T",pubFlag:"C",pubId:id},
+				   success: function(msg){
+					   if("操作失败" == msg){     
+							$(this).children(".atten").html("关注");
+							$(this).children(".add").attr("src","${ctx}/img/jiahao1.png"); 
+							$(this).children(".isGz").html("0");
+					   }
+					   
+				   }
+				});
+			}else{
+				layer.msg("请先登录!");
+			}
+		}	
+		//取消关注
+		function cancelCollection(id){
+			if(principal != ""){
+				$.ajax({
+				   type: "POST",
+				   url: ctx+"/teacher/delSysHistory",
+				   data: {pubType:"T",pubFlag:"C",pubId:id},
+				   success: function(msg){
+					   if("操作失败" == msg){     
+						   $(this).children(".atten").html("已关注");
+							$(this).children(".add").attr("src","${ctx}/img/duihao1.png");
+							$(this).children(".isGz").html("1");
+						  }
+					   layer.msg(msg);
+				   }
+				});
+			}else{
+				layer.msg("请先登录!");
+			}
+		}
+</script>

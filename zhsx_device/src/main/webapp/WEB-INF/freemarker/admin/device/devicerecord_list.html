@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<title>仁峰后台管理系统</title>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<#include "/commons/comAdmin.html" encoding="utf-8"/>	
+	</head>
+<body>
+<section class="layui-larry-box">
+	<div class="larry-personal">
+	    <div class="layui-tab">
+            
+            <blockquote class="layui-elem-quote mylog-info-tit" style="height:60px;">
+            	<form id="searchForm" class="layui-form col-lg-11 search-box03" action="" method="post">
+					<div class="pull-left">
+	                    <a href="javascript:;" class="layui-btn layui-btn-danger search-btn01 pull-left" onclick="batchDel(3,0);"><i class="iconfont icon-shanchu1"></i>清空所有记录</a>
+						<label class="layui-form-label">统计时间：</label>
+						<div class="layui-input-inline pull-left">
+							<input class="layui-input" placeholder="开始日" id="LAY_demorange_s2" name="startTime" value="${(startTimeAgu)!''}">  
+						</div>
+						<div class="layui-input-inline pull-left">
+							<input class="layui-input" placeholder="截止日" id="LAY_demorange_e2" name="endTime" value="${(endTimeAgu)!''}">
+						</div>
+								
+						<div class="layui-input-inline pull-left">
+							 <input type="text" id="deviceCode" name="deviceCode" placeholder="请输入设备编号" class="layui-input" value="${(deviceCodeAgu)!''}"/>
+						</div>
+	                    <button class="layui-btn search-btn01 pull-left" type="submit" lay-filter="">搜索</button>
+						<button class="layui-btn layui-btn-primary search-btn01 pull-left" type="reset" lay-filter="">重置</button>
+						
+						<a href="javascript:;" class="layui-btn search-btn01 pull-right" onclick="batchDel(2,0);"><i class="iconfont icon-shanchu1"></i>批量删除</a>
+					</div>
+				</form>
+            </blockquote>
+            
+            <div class="larry-separate"></div>
+		    <div class="layui-tab-content larry-personal-body clearfix">
+				<table class="layui-table table-hover text-center" lay-even="">
+                    <thead>
+	                    <tr>
+	                   		<th><input type="checkbox" id="selected-all-operation"></th>
+	                        <th>设备编号</th>
+	                        <th>开始时间</th>
+	                        <th>结束时间</th>
+	                        <th>操作</th>
+	                    </tr>
+                    </thead>
+                    <tbody>
+                       <#if ldr?exists && ldr?size != 0 >
+                     	<#list ldr as l>
+                     		<tr>
+	                          <td><input type="checkbox" name="del_id" value="${l.dr_id!''}"></td>
+	                           <!--  <td>${(l_index+1)!''}</td> -->
+	                            <td>${l.device_code}</td>
+	                            <td>${(l.dr_start_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+	                            <td>${(l.dr_end_time?string("yyyy-MM-dd HH:mm:ss"))!}</td>
+	                            <td>
+	                            	<a href="javascript:void(0);" onclick="checkOrUpdate('${(l.dr_id)!''}','1');" title="查看" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;查看</a>
+	                                <!--< a href="${ctx}/webdevicerecord/admin/findDRecordById?dr_id=${l.dr_id}&flag=1" title="查看" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;查看</a> -->
+	                               <!--  <a href="${ctx}/webdevicemanage/admin/findDMById?id=${l.dr_id}&flag=2" title="编辑" class="check_look"><i class="layui-icon">&#xe642;</i>&nbsp;编辑</a> -->
+	                                <a href="javascript:;" onclick="batchDel(1,'${l.dr_id}');" title="删除" class="check_look"><i class="layui-icon">&#xe640;</i>&nbsp;删除</a>
+	                            </td>
+	                        </tr>
+                     	</#list>
+                    </#if>
+                    </tbody>
+                    
+                </table> 
+                <!-- 分页 -->
+				<div id="page"></div>
+		    </div>
+		</div>
+	</div>
+</section>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		var deviceCode = $("#deviceCode").val(); 
+		var startTime = $("#LAY_demorange_s2").val();
+		var endTime = $("#LAY_demorange_e2").val();
+		location.href="${ctx}/webdevicerecord/admin/listDeviceRecordBycontion?p="+p+"&startTime="+startTime+"&endTime="+endTime+"&deviceCode="+deviceCode; 
+	}
+</script>
+<script type="text/javascript">
+	layui.use(['jquery', 'form','laydate','laypage'], function() {
+		var form = layui.form;
+		var laydate = layui.laydate;
+		/*  $("#LAY_demorange_s2").val(laydate.now(-7));
+		 $("#LAY_demorange_e2").val(laydate.now()); */
+
+		var start = {
+			min : '1970-01-01 00:00:00',
+			max : '2099-06-16 23:59:59',
+			istoday : true,
+			format: 'YYYY-MM-DD hh:mm:ss',
+			choose : function(datas) {
+				end.min = datas; //开始日选好后，重置结束日的最小日期
+				end.start = datas; //将结束日的初始值设定为开始日
+			}
+		};
+		var end = {
+			min : '1970-01-01 00:00:00'//laydate.now()
+			,
+			max : '2099-06-16 23:59:59',
+			istoday : true,
+			format: 'YYYY-MM-DD hh:mm:ss',
+			choose : function(datas) {
+				start.max = datas; //结束日选好后，重置开始日的最大日期
+			}
+		};
+		document.getElementById('LAY_demorange_s2').onclick = function() {
+			start.elem = this;
+			laydate(start);
+		};
+		document.getElementById('LAY_demorange_e2').onclick = function() {
+			end.elem = this;
+			laydate(end);
+		}
+        
+        //**
+        form.on('submit(search)', function(data){
+			var deviceCode = $("#deviceCode").val(); 
+			var startTime = $("#LAY_demorange_s2").val();
+			var endTime = $("#LAY_demorange_e2").val();
+			
+          	var p = ${pageNum};
+          	location.href="${ctx}/webdevicerecord/admin/listDeviceRecordBycontion?p="+e.curr+"&startTime="+startTime+"&endTime="+endTime+"&deviceCode="+deviceCode;
+          	return false; 
+        });
+        //清空条件，并且返回到首页
+        form.on('submit(reset)', function(data){
+			$("#deviceCode").val("");
+			$("#LAY_demorange_s2").val("");
+			$("#LAY_demorange_e2").val("");
+			
+			var deviceCode =  "";
+			var startTime = "";
+			var endTime = "";
+			
+        	var p = 1;
+        	location.href="${ctx}/webdevicerecord/admin/listDeviceRecordBycontion?p="+e.curr+"&startTime="+startTime+"&endTime="+endTime+"&deviceCode="+deviceCode;
+          	return false; 
+        });
+		
+
+        
+	});
+	
+	//全选
+	$("#selected-all-operation").click(function() {
+		if (this.checked) {
+			$("input[name='del_id']").prop("checked", true);
+		} else {
+			$("input[name='del_id']").prop("checked", false);
+		}
+	});
+
+	//批量删除
+	function batchDel(state,id) {
+		if(state==1){
+			layer.confirm('你确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+				window.location.href="${ctx}/webdevicerecord/admin/deviceDeleteDRecord?ids="+id;
+				layer.close(index);
+			});
+		}else if (state==3){//清空所有
+			layer.confirm('你确定要清空所有吗?', {icon: 3, title:'提示'}, function(index){
+				window.location.href="${ctx}/webdevicerecord/admin/deleteAllDRecord";
+				layer.close(index);
+			});
+		}else{
+			var ids = "";
+		    $('input:checkbox[name=del_id]:checked').each(function(i){
+			    if(0==i){
+			    	ids = $(this).val();
+			    }else{
+			    	ids += (","+$(this).val());
+			    }
+		    });
+		    
+			if (typeof (ids) != "undefined" && (ids.length!=0)) {
+				layer.confirm('你确定要删除吗?', {icon: 3, title:'提示'}, function(index){
+					window.location.href="${ctx}/webdevicerecord/admin/deviceDeleteDRecord?ids="+ids;
+					layer.close(index);
+				});
+			} else {
+				layer.msg("请选择要操作的对象");
+			}
+		}
+	}
+	
+	function checkOrUpdate(id,flag) {
+		self.parent.layer.open({
+	        type: 2,
+	        title: '查看详情',
+	        shade: 0.2,
+	        area: ['820px','500px'],
+	        resize :false,
+	        content:"${ctx}/webdevicerecord/admin/findDRecordById?dr_id="+id+"&flag="+flag
+	     });
+	}
+</script>
+</body>
+</html>

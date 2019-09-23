@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <title>试卷管理</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="format-detection" content="telephone=no">
+
+        <#include "/commons/comAdmin.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/bootstrap/css/bootstrap.css" media="all">
+        <link rel="stylesheet" type="text/css" href="${ctx}/common/global.css" media="all">
+        <link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
+
+    </head>
+<body>
+<section class="layui-larry-box">
+	<div class="larry-personal">
+	    <div class="layui-tab">
+            <blockquote class="layui-elem-quote mylog-info-tit" style="height:80px;">
+
+                <form class="layui-form col-lg-10 search-box03" action="" method="post">
+                   <div class="layui-input-inline pull-left">
+                      <input type="text" id="title" name="title" placeholder="标题" class="layui-input" value="${wq.title!''}"/>
+                    </div>
+                      <div class="layui-input-inline pull-left">
+                                        <input type="text" id="nickName" name="nickName" placeholder="出题人" class="layui-input" value="${wq.nickName!''}"/>
+                    </div>  
+                     <div class="layui-input-inline pull-left">   
+           				<select id ="isShown" name="isShown" lay-verify="">
+           				<#assign typa=''><#assign typb=''>
+           				<#if (((wq.isShown)!'') == 'Y')><#assign typa="selected='selected'"> </#if>
+           				<#if (((wq.isShown)!'') == 'N')><#assign typb="selected='selected'"> </#if>
+						  <option value="">请选择类型</option>
+						  <option value="Y"  ${typa} >已发布</option>
+						  <option value="N"  ${typb} >未发布</option>
+						</select>            
+                     </div>  
+                    <button class="layui-btn search-btn01 pull-left" lay-submit lay-filter="search">搜索</button>
+                   <a class="layui-btn layui-btn-primary   pull-left" style="margin:0 30px 0 30px;" href="${ctx}/questionnaire/questionnaire_list?p=${pageNum!'1'}">
+				    重置
+				     </a>
+                    
+                </form>
+                <!-- 放在里面容易自动提交页面 -->
+                <button class="layui-btn layui-btn-warm search-btn01 pull-left" onclick="add();">添加问卷</button>
+	
+                <a class="layui-btn pull-right refresh_btn" style="margin:0 30px 0 30px;" href="${ctx}/questionnaire/questionnaire_list?p=${pageNum!'1'}">
+                    <i class="iconfont icon-shuaxin"></i> 
+                </a>
+            </blockquote>
+            <div class="larry-separate"></div>
+		    <div class="layui-tab-content larry-personal-body clearfix">
+
+                <table class="layui-table table-hover text-center" lay-even="">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>标题</th>
+                        <th>创建人</th>
+                        <th>创建时间</th>
+                        <th>状态</th>
+                        <th>问卷说明</th>
+                        <th>发布时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+ 					<#if lists?? && (lists?size>0)>
+                       		<#list lists as l>
+                       			<tr>
+		                            <td>${(l_index+1)!''}</td>
+		                            <td style="width:300px; word-break: break-all; word-wrap:break-word;">${l.title!''}</td>
+		                            <td>${l.nickName!''}</td>
+		                            <td><#if l.createTime??> ${(l.createTime!'')?string("yyyy-MM-dd HH:mm:ss")}</#if></td>
+		                            <td>
+		                                <#if l.isShown=='Y'><font color='green'>已发布</font></#if> 
+		                                <#if l.isShown=='N'><font color='red'>未发布</font></#if>  
+									</td>
+									<td style="width:300px;">
+		                                ${l.remarks!''}  
+									</td>
+		                            <td>
+		                             <#if l.isShown=='Y'> <#if l.modiyTime??> ${(l.modiyTime!'')?string("yyyy-MM-dd HH:mm:ss")}</#if></#if> 
+		                           
+		                            </td>
+		                            <td>
+		                            	<a class="check_look" title="添加问题" href="javascript:question('${(l.id)!''}');" >
+		                                    <i class="layui-icon">&#xe641;</i>&nbsp;添加问题
+		                                </a>
+		                                <#if l.isShown=='N'>
+		                                  <a class="check_look" title="发布" href="javascript:fabu('${(l.id)!''}');" >
+						                    <i class="layui-icon">&#xe642;</i>&nbsp;发布
+						                </a>
+		                                </#if>
+		                                <#if l.isShown=='Y'>
+		                                  <a class="check_look" title="取消发布" href="javascript:cancelFabu('${(l.id)!''}');" >
+						                    <i class="layui-icon">&#xe642;</i>&nbsp;取消发布
+						                </a>
+		                                </#if>   
+		                                <a class="check_look" title="编辑" href="javascript:findById('${(l.id)!''}');" >
+		                                    <i class="layui-icon">&#xe642;</i>&nbsp;编辑
+		                                </a>
+		                                <a class="check_look" title="删除" href="javascript:deleteById('${(l.id)!''}');">
+		                                    <i class="layui-icon">&#xe640;</i>&nbsp;删除
+		                                </a>
+		                            </td>
+		                        </tr>
+							</#list>
+						</#if>
+                    </tbody>
+                </table>
+				<div id="page"></div>
+		    </div>
+		</div>
+	</div>
+</section>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+	   	 var isShown = $("#isShown").val();
+		 var title = $("#title").val();
+		 var nickName = $("#nickName").val();
+	     window.location.href="${ctx}/questionnaire/questionnaire_list?p=${pageNum!'1'}&isShown="+isShown+"&title="+title+"&nickName="+nickName;
+	}
+</script>
+
+<script type="text/javascript">
+
+    layui.use(['form','upload'],function(){
+        var form = layui.form;
+        layui.upload({
+            url: '' ,//上传接口
+            success: function(res){//上传成功后的回调
+                console.log(res);
+            }
+        });
+        
+        form.on('submit(search)', function(data){
+       	 var isShown = $("#isShown").val();
+    	 var title = $("#title").val();
+    	 var nickName = $("#nickName").val();
+	     window.location.href="${ctx}/questionnaire/questionnaire_list?p=${pageNum!'1'}&isShown="+isShown+"&title="+title+"&nickName="+nickName;
+   	    // 	 refresh();//手动刷新
+   	   	 return false; //禁止 页面自动刷新
+        });
+    });
+	function add(){
+		LayerOpen('添加', '900px', '500px', '${ctx}/questionnaire/addQuestionnaire');
+	}
+	function findById(id){
+		LayerOpen('编辑', '900px', '500px', '${ctx}/questionnaire/eduQuestionnaire?id='+id);
+	}
+	function deleteById(id){
+		layer.confirm('确定要删除?', {icon: 3, title:'提示'}, function(index){
+  		layer.close(index); 
+  		if((id==null) || (typeof(id)=='undefined') || (id=="")){
+  			layer.msg('信息主键不存在，删除失败！', {icon: 5});
+  		}else{
+  			layer.msg('删除成功！', {icon: 6});
+  			$.ajax({
+  				url: "${ctx}/questionnaire/delQuestionnair",
+  				type: "post",
+  				data: {"qid":id},
+  				success: function(data){
+  					if(data=='操作成功'){
+  						layer.msg(data, {icon: 6});
+  	  					refresh();//手动刷新  有问题
+  					}else{//id不为空
+  						layer.msg(data, {icon: 5});
+  					}
+  				}
+  			}); 
+  		}
+
+        });
+	}
+	
+	function question(qid){
+		window.location.href="${ctx}/questionnaire/findAllQues?qid="+qid;
+	}
+	/*发布*/
+	function fabu(qid){
+		
+		layer.confirm('调查问卷只能发布一套，其他问卷将被弃用，确定要发布该问卷吗?', {icon: 3, title:'提示'}, function(index){
+	  		layer.close(index); 
+	  		if((qid==null) || (typeof(qid)=='undefined') || (qid=="")){
+	  			layer.msg('信息主键不存在，操作失败！', {icon: 5});
+	  		}else{
+	  			layer.msg('操作成功！', {icon: 6});
+	  			$.ajax({
+	  				url: "${ctx}/questionnaire/addFabu",
+	  				type: "post",
+	  				data: {"qid":qid},
+	  				success: function(data){
+	  					if(data=='操作成功'){
+	  						layer.msg(data, {icon: 6});
+	  	  					refresh();//手动刷新  有问题
+	  					}else{//id不为空
+	  						layer.msg(data, {icon: 5});
+	  					}
+	  				}
+	  			}); 
+	  		}
+
+	        });
+		
+	}
+	/*取消发布*/
+	function cancelFabu(qid){
+		
+		layer.confirm('确定?', {icon: 3, title:'提示'}, function(index){
+	  		layer.close(index); 
+	  		if((qid==null) || (typeof(qid)=='undefined') || (qid=="")){
+	  			layer.msg('信息主键不存在，操作失败！', {icon: 5});
+	  		}else{
+	  			layer.msg('操作成功！', {icon: 6});
+	  			$.ajax({
+	  				url: "${ctx}/questionnaire/cancelFabu",
+	  				type: "post",
+	  				data: {"qid":qid},
+	  				success: function(data){
+	  					if(data=='操作成功'){
+	  						layer.msg(data, {icon: 6});
+	  	  					refresh();//手动刷新  有问题
+	  					}else{//id不为空
+	  						layer.msg(data, {icon: 5});
+	  					}
+	  				}
+	  			}); 
+	  		}
+
+	        });
+		
+	}
+</script>
+</body>
+</html>

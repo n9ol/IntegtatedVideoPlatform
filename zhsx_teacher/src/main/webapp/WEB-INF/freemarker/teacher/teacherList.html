@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>综合视讯</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_mstd.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/imagehover.min.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/zyzn_1.css" />
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a><cite>名师团队</cite></a>
+				</span>
+			</div>
+			<!--筛选区域-->
+			<div>
+				<ul class="filter1">
+					<li class="filter2 borderBottom clear">
+						<span class="category1">专&nbsp;&nbsp;&nbsp;&nbsp;业 ></span>
+							<ul class="filter3 clear">
+								<li onclick='searchAllByNj()' class="filterActive">全部</li>
+								<#if gradeList?? && (gradeList?size>0)><#list gradeList as l>
+									<li onclick="searchByNj('${l.id!''}')" id="${l.id!''}_nj">${l.value!''}</li>
+								</#list></#if>
+							</ul>
+							<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+						</span>
+					<li class="filter2 clear">
+					   <span class="category1">科&nbsp;&nbsp;&nbsp;&nbsp;目 ></span>
+						<ul class="filter3 clear">
+							<li onclick='searchAllByKm()' class="filterActive">全部</li>
+							<#if subjectsList?? && (subjectsList?size>0)><#list subjectsList as l>
+								<li onclick="searchByKm('${l.id!''}')" id="${l.id!''}_km">${l.value!''}</li>
+							</#list></#if>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+					    </span>
+					</li>
+					<li class="clear filter2 isShow">
+						<span class="category1">排&nbsp;&nbsp;&nbsp;&nbsp;序 ></span>
+						<ul class="clear filter3">
+							<li class="filterActive" onclick="javascript:listSort(0);">综合</li>
+							<li onclick="javascript:listSort(1);">最新</li>
+						</ul>
+						<span class="category2">
+							<button class="layui-btn layui-btn-small unfolded"><strong>+</strong> 展开</button>
+							<button class="layui-btn layui-btn-small putAway" style="display: none;"><strong>-</strong> 收起</button>
+					    </span>
+					</li>
+				</ul>
+				<div class="fitmore">
+					<div class="morediv">
+						<div class="text">
+							<a href="#" class="isShowBtu">显示更多选项</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--中间两部分-->
+			<div class="zhong clear">
+				<div class="zhong_zuo">
+					<div class="con_left_div clear">
+						<div class="zonghe">
+						</div>
+						<div class="sousuo">
+							 <form id="myform">
+							    <input style="border: 1px solid gainsboro;" type="text" name="currName" placeholder="教师姓名" /><img  onclick="searchByName();" src="${ctx}/img/sousuo.jpg" />
+								<input type="hidden" name="p">
+								<input type="hidden" name="gradeName">
+								<input type="hidden" name="subjectsName">
+								<input type="hidden" name="bak" value='0'>
+								<input type="hidden" name="bak1">
+								<input type="hidden" name="search">
+								<input type="hidden" name="bak2"><!--地区搜索 -->
+					 			<input type="hidden" name="schoolName" value="${gradeid!''}"><!--专业 -->
+								<input type="hidden" name="authority" value="${kmid!''}"><!--科目 -->
+							</form>
+						</div>
+					</div>
+						
+						<ul id="teacherList" class="teach_jieshao clear news">
+					
+						</ul>
+						<div id="page"></div>
+					</div>
+					
+
+					<div class="zhong_you">
+					<div class="you_shang">
+						<div class="layui-tab" style="margin-top: 0;">
+							<p class="bang">最新名师</p>
+							
+							<ul class="biaoti">
+							<#if newTeacher??&&(newTeacher?size>0)>
+								<#list newTeacher as n>
+								<li onclick="getDetail('${n.id}')">·<#if n.currName?? && (n.currName!='') >${n.currName!''} <#else>${n.nickName!''}</#if></li>
+								</#list>
+							</#if>
+							</ul>
+
+						</div>
+
+					</div>
+					<div class="you_shang"  style="margin-top: 10px;">
+						<p class="bang">名师关注排行榜</p>
+						<ul class="biaoti biaoti2">
+						    <#if hotTeacher??&&(hotTeacher?size>0)>
+								<#list hotTeacher as h>
+								<li onclick="getDetail('${h.id}')">·<#if h.currName?? && (h.currName!='') >${h.currName!''} <#else>${h.nickName!''}</#if></li>
+								</#list>
+							</#if>
+						</ul>
+					</div>
+					
+					
+					<div class="you_xia"  >
+						<a class='closeX2 hover-red' href="javascript:closeContrast()">X</a>
+						<p class="bang2">[<span id='c_sum'>0</span>/4]&nbsp;&nbsp;&nbsp;对比栏</p>
+						
+						<ul id="theContrast" class="biaoti3">
+
+						</ul>
+
+						<ul class="biaoti3">
+						    <button class="layui-btn layui-btn-mini layui-btn-normal" onclick="contrastOverwrite()">对比</button>
+						</ul>
+					</div>
+				</div>
+
+				</div>
+
+				
+			</div>
+
+		</div>
+		<!--内容end-->
+
+		<!--底部 start -->
+			<#include "/zhsx/t/bottom.html" encoding="utf-8"/> 
+		<!--底部 end-->
+		<div id="main1" class="clear">
+			
+			<div id="main2"></div>
+<!-- 			<div id="main3"></div> -->
+			<div class="duibi">
+				成绩对比图
+			</div>
+		</div>
+
+		<div id="main4">
+			<div id="main5"></div>
+		</div>
+		
+	</body>
+	<!--公共js-->
+    <script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/template.js"></script>
+	<script  type="text/javascript" charset="utf-8" src="${ctx}/js/web/responsive-menu.js"></script>
+	<script  type="text/javascript"  src="${ctx}/js/web/nav.js"></script>
+	<!--单独的js-->
+	<script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+   <script type="text/javascript">
+	 var ctx="${ctx}";
+	 var principal = "${principal!''}"; 
+	</script>
+	<script src="${ctx}/js/web/mstd_mstd.js" type="text/javascript" charset="utf-8"></script>
+	<script src="${ctx}/js/web/City_data.js" type="text/javascript" charset="utf-8"></script>
+	<script src="${ctx}/js/web/areadata.js" type="text/javascript" charset="utf-8"></script>
+	<script src="${ctx}/js/web/auto_area.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function(){
+			$("#teacherTop").attr("class","has-sub active");
+		});
+	
+		function setTop() {
+			layer.open({
+				type: 1, //此处以iframe举例
+				title: '<i class = "layui-icon" style = "font-size:25px;">&#xe63c;</i> 上课得分对比',
+				area: ['390px', '520px'],
+				shade: 0.2,
+				maxmin: true,
+				content: $('#main1'),
+				zIndex: layer.zIndex, //重点1
+				success: function(layero) {
+					layer.setTop(layero); //重点2
+				}
+			});
+		}
+
+	
+		var show_per_page = 6;
+		layui.use(['layer', 'form', 'element'], function() {
+			var layer = layui.layer,
+				form = layui.form,
+				element = layui.element;
+
+		});
+
+		
+		function getDetail(id){
+			location.href="${ctx}/teacher/teacherDetails?id="+id;
+		}
+		
+	</script>
+
+</html>

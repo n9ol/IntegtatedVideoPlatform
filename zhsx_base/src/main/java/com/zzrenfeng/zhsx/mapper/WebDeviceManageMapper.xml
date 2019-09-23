@@ -1,0 +1,576 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebDeviceManageMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebDeviceManage" >
+		<result column="device_id" property="device_id" />
+		<result column="device_code" property="device_code" />
+		<result column="device_type" property="device_type" />
+		<result column="device_province" property="device_province" />
+		<result column="device_city" property="device_city" />
+		<result column="device_area" property="device_area" />
+		<result column="school_id" property="school_id" />
+		<result column="school_name" property="school_name" />
+		<result column="device_state" property="device_state" />
+		<result column="device_client_version_num" property="device_client_version_num" />
+		<result column="device_ip" property="device_ip" />
+		<result column="device_mac" property="device_mac" />
+		<result column="device_isvalid" property="device_isvalid" />
+		<result column="create_time" property="create_time" />
+		<result column="modify_time" property="modify_time" />
+		<result column="create_id" property="create_id" />
+		<result column="modify_id" property="modify_id" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		device_id,device_code,device_type,device_province,device_city,device_area,school_id,school_name,device_state,device_client_version_num,device_ip,device_mac,device_isvalid,create_time,modify_time,create_id,modify_id
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_manage
+		where device_id = #{device_id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_device_manage
+		where device_id = #{device_id}
+	</delete>
+
+	<insert id="insert" parameterType="WebDeviceManage" >
+		<selectKey keyProperty="device_id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_device_manage (device_id,device_code,device_type,device_province,device_city,device_area,school_id,school_name,device_state,device_client_version_num,device_ip,device_mac,device_isvalid,create_time,modify_time,create_id,modify_id)
+		values (#{device_id},#{device_code},#{device_type},#{device_province},#{device_city},#{device_area},#{school_id},#{school_name},#{device_state},#{device_client_version_num},#{device_ip},#{device_mac},#{device_isvalid},#{create_time},#{modify_time},#{create_id},#{modify_id})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebDeviceManage" >
+		update web_device_manage
+		<set >
+			<if test="device_code != null" >
+				device_code = #{device_code},
+			</if>
+			<if test="device_type != null" >
+				device_type = #{device_type},
+			</if>
+			<if test="device_province != null" >
+				device_province = #{device_province},
+			</if>
+			<if test="device_city != null" >
+				device_city = #{device_city},
+			</if>
+			<if test="device_area != null" >
+				device_area = #{device_area},
+			</if>
+			<if test="school_id != null" >
+				school_id = #{school_id},
+			</if>
+			<if test="school_name != null" >
+				school_name = #{school_name},
+			</if>
+			<if test="device_state != null" >
+				device_state = #{device_state},
+			</if>
+			<if test="device_client_version_num != null" >
+				device_client_version_num = #{device_client_version_num},
+			</if>
+			<if test="device_ip != null" >
+				device_ip = #{device_ip},
+			</if>
+			<if test="device_mac != null" >
+				device_mac = #{device_mac},
+			</if>
+			<if test="device_isvalid != null" >
+				device_isvalid = #{device_isvalid},
+			</if>
+			<if test="create_time != null" >
+				create_time = #{create_time},
+			</if>
+			<if test="modify_time != null" >
+				modify_time = #{modify_time},
+			</if>
+			<if test="create_id != null" >
+				create_id = #{create_id},
+			</if>
+			<if test="modify_id != null" >
+				modify_id = #{modify_id}
+			</if>
+		</set>
+		where device_id = #{device_id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebDeviceManage" >
+		update web_device_manage
+		set 
+		<!-- device_id = #{device_id}, -->
+		device_code = #{device_code},
+		device_type = #{device_type},
+		device_province = #{device_province},
+		device_city = #{device_city},
+		device_area = #{device_area},
+		school_id = #{school_id},
+		school_name = #{school_name},
+		device_state = #{device_state},
+		device_client_version_num = #{device_client_version_num},
+		device_ip = #{device_ip},
+		device_mac = #{device_mac},
+		device_isvalid = #{device_isvalid},
+		create_time = #{create_time},
+		modify_time = #{modify_time},
+		create_id = #{create_id},
+		modify_id = #{modify_id}
+		where device_id = #{device_id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="device_id != null" >
+				and device_id = #{device_id}
+			</if>
+			<if test="device_code != null" >
+				and device_code = #{device_code}
+			</if>
+			<if test="device_type != null" >
+				and device_type = #{device_type}
+			</if>
+			<if test="device_province != null" >
+				and device_province = #{device_province}
+			</if>
+			<if test="device_city != null" >
+				and device_city = #{device_city}
+			</if>
+			<if test="device_area != null" >
+				and device_area = #{device_area}
+			</if>
+			<if test="school_id != null" >
+				and school_id = #{school_id}
+			</if>
+			<if test="school_name != null" >
+				and school_name = #{school_name}
+			</if>
+			<if test="device_state != null" >
+				and device_state = #{device_state}
+			</if>
+			<if test="device_client_version_num != null" >
+				and device_client_version_num = #{device_client_version_num}
+			</if>
+			<if test="device_ip != null" >
+				and device_ip = #{device_ip}
+			</if>
+			<if test="device_mac != null" >
+				and device_mac = #{device_mac}
+			</if>
+			<if test="device_isvalid != null" >
+				and device_isvalid = #{device_isvalid}
+			</if>
+			<if test="create_time != null" >
+				and create_time = #{create_time}
+			</if>
+			<if test="modify_time != null" >
+				and modify_time = #{modify_time}
+			</if>
+			<if test="create_id != null" >
+				and create_id = #{create_id}
+			</if>
+			<if test="modify_id != null" >
+				and modify_id = #{modify_id}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebDeviceManage" resultType="WebDeviceManage">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_manage
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebDeviceManage" resultType="WebDeviceManage">
+		select 
+		<include refid="Base_Column_List" />
+		from web_device_manage
+		<include refid="Dynamic_Conditions"/>
+	</select>
+	
+	<!-- 查询单条数据-->
+    <parameterMap type="Map" id="schoolCountParams">
+	    <parameter property="province" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="city" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="area" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="startTime" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>
+	   	<parameter property="endTime" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>
+	   	
+	   	<parameter property="totaldevices" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="schooldevices" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="averageuserate" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+	   	<parameter property="averageuselength" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+   </parameterMap>
+   <!-- 查询数据总量 -->
+   <select id="getTotalSchool" parameterMap="schoolCountParams" statementType="CALLABLE" resultType="java.util.HashMap"> 
+   	{call school_count_total(?,?,?,?,?,?,?,?,?)}
+   </select>
+     
+   <parameterMap type="Map" id="schoolCountDetailParams">
+		<parameter property="province" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="city" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="area" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="startTime" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>
+	   	<parameter property="endTime" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>
+	   	<parameter property="school_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	
+	   	<parameter property="schoolName" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT"/>
+	   	<parameter property="schoolTotaldevices" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="schoolUsedevices" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="schoolUserate" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+	   	<parameter property="totaluselength" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+	   	<parameter property="averageuselength" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+   </parameterMap>
+   <!-- 查询学校的详细信息 -->
+   <select id="getdetailSchool" parameterMap="schoolCountDetailParams" statementType="CALLABLE" resultType="java.util.HashMap">
+   	{call school_count_detail(?,?,?,?,?,?,?,?,?,?,?,?)}
+   </select>
+     
+   <parameterMap type="Map" id="classCountDetailParams">
+		<parameter property="device_province" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="device_city" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="device_area" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	  	<parameter property="school_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	<parameter property="dr_start_time" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>
+	   	<parameter property="dr_end_time" jdbcType="TIMESTAMP" javaType="java.util.Date" mode="IN"/>
+	   	<parameter property="class_id" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	
+	   	<parameter property="className" jdbcType="VARCHAR" javaType="java.lang.String" mode="OUT"/>
+	   	<parameter property="classTotaldevices" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="classUsedevices" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="classUserate" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+	   	<parameter property="totaluselength" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+	   	<parameter property="averageuselength" jdbcType="DOUBLE" javaType="java.lang.Double" mode="OUT"/>
+   </parameterMap>
+   <!-- 查询学校的详细信息 -->
+   <select id="getDetailClass" parameterMap="classCountDetailParams" statementType="CALLABLE" resultType="java.util.HashMap">
+   	{call class_count_detail(?,?,?,?,?,?,?,?,?,?,?,?,?)}
+   </select>  
+   <select id="selectDeviceCalssInfo" parameterType="java.lang.String" resultType="java.util.HashMap">
+		SELECT
+			dm.device_type AS deviceType,
+			dm.device_state AS deviceState,
+			dm.device_ip AS deviceIp,
+			dm.device_mac AS deviceMac,
+			dm.device_client_version_num AS deviceClientVersionNum,
+			cd.classid AS classid,
+			cd.classname AS classname,
+			dm.device_province AS deviceProvince,
+			sd1.`value` AS provinceName,
+			dm.device_city AS deviceCity,
+			sd2.`value` AS cityName,
+			dm.device_area AS deviceArea,
+			sd3.`value` AS areaName,
+			dm.school_id AS schoolId,
+			dm.school_name AS schoolName,
+			dm.modify_id AS teacherName
+		FROM
+			`web_device_manage` dm
+		LEFT JOIN web_class_device cd ON dm.device_code = cd.device_code
+		LEFT JOIN sys_dict sd1 ON dm.device_province = sd1.id
+		LEFT JOIN sys_dict sd2 ON dm.device_city = sd2.id
+		LEFT JOIN sys_dict sd3 ON dm.device_area = sd3.id
+		WHERE
+			dm.device_code = #{deviceCode};
+	</select>
+	<!-- 是在线的设备，并且设备编码不能为空 -->
+	<select id="selectAllDeviceCodeOnline" resultType="java.lang.String" >
+		SELECT 
+			DISTINCT(wdm.device_code)
+		FROM
+			web_device_manage wdm
+		WHERE
+			wdm.device_code <![CDATA[<>]]> ''
+			AND wdm.device_state='0'
+	</select>
+	<select id="findTotal" resultType="java.util.HashMap" >
+		SELECT 
+		(SELECT COUNT(*) FROM web_device_manage wdm WHERE wdm.device_isvalid = '0') AS totalCount,
+		(SELECT COUNT(*) FROM web_device_manage wdm WHERE wdm.device_isvalid = '0' AND wdm.device_state= '0') AS totalOnlineCount,
+		(SELECT COUNT(*) FROM web_device_repair wdr WHERE wdr.repair_state= '0') AS totalRepairCount,
+		(SELECT SUM(TIMESTAMPDIFF(HOUR,wdr.create_time,wdr.modify_time))/COUNT(*) FROM web_device_repair wdr WHERE wdr.repair_state= '0') avgRepairLong,
+		(SELECT COUNT(*) FROM web_device_repair wdr WHERE wdr.repair_isvalid ='0' AND wdr.repair_state<![CDATA[<>]]>'0') AS onRepairDevice
+	</select>
+	<!-- 每天设备上线数量  -->
+	<select id="onlineDeviceEveryday" parameterType="java.util.Map" resultType="java.util.HashMap" >
+		SELECT
+			DATE_FORMAT(wdre.dr_start_time,'%Y-%m-%d') AS dates,
+			COUNT(DISTINCT(wdre.device_code)) AS counts
+		FROM
+			web_device_record wdre
+		LEFT JOIN 
+			web_device_manage wdm 
+			ON wdre.device_code = wdm.device_code
+		WHERE
+			DATE_FORMAT(wdre.dr_start_time,'%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+		AND DATE_FORMAT(wdre.dr_start_time,'%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+		
+		<if test="province != null" >
+			and wdm.device_province = #{province}
+		</if>
+		<if test="city != null" >
+			and wdm.device_city = #{city}
+		</if>
+		<if test="area != null" >
+			and wdm.device_area = #{area}
+		</if>
+		GROUP BY
+			DATE_FORMAT(wdre.dr_start_time,'%Y-%m-%d')
+		ORDER BY 
+		  DATE_FORMAT(wdre.dr_start_time,'%Y-%m-%d')
+	</select>
+	
+	<select id="totalOnlineDeviceCount" parameterType="java.util.Map" resultType="java.util.HashMap" >
+		SELECT
+		(
+			SELECT
+				COUNT(*)
+			FROM
+				web_device_manage wdm
+			WHERE
+				wdm.device_isvalid = '0'
+			<if test="province != null" >
+				and wdm.device_province = #{province}
+			</if>
+			<if test="city != null" >
+				and wdm.device_city = #{city}
+			</if>
+			<if test="area != null" >
+				and wdm.device_area = #{area}
+			</if>
+		) AS totalCountByContion,
+		(
+			SELECT
+				COUNT(*)
+			FROM
+				web_device_manage wdm
+			WHERE
+				wdm.device_isvalid = '0'
+			AND wdm.device_state = '0'
+			<if test="province != null" >
+				and wdm.device_province = #{province}
+			</if>
+			<if test="city != null" >
+				and wdm.device_city = #{city}
+			</if>
+			<if test="area != null" >
+				and wdm.device_area = #{area}
+			</if>
+		) AS totalOnlineCountByContion
+	</select>
+	
+	<!-- 按月统计 去掉了日期 -->
+	<select id="everyDayAccessCount" parameterType="java.util.Map" resultType="java.util.HashMap" >
+		<!-- SELECT
+			DATE_FORMAT(wdm.create_time, '%Y-%m') AS dates,
+			COUNT(*) AS counts
+		FROM
+			web_device_manage wdm
+		WHERE 
+			DATE_FORMAT(wdm.create_time,'%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+			AND DATE_FORMAT(wdm.create_time,'%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+			<if test="province != null" >
+				and wdm.device_province = #{province}
+			</if>
+			<if test="city != null" >
+				and wdm.device_city = #{city}
+			</if>
+			<if test="area != null" >
+				and wdm.device_area = #{area}
+			</if>
+		GROUP BY
+			DATE_FORMAT(wdm.create_time, '%Y-%m') -->
+			
+		
+		SELECT
+			tt.dates,
+			(
+				SELECT
+					SUM(tt2.counts)
+				FROM
+					(
+						SELECT
+							DATE_FORMAT(wdm.create_time, '%Y-%m') AS dates,
+							COUNT(*) AS counts
+						FROM
+							web_device_manage wdm
+						WHERE 
+							DATE_FORMAT(wdm.create_time,'%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+							AND DATE_FORMAT(wdm.create_time,'%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+							<if test="province != null" >
+								and wdm.device_province = #{province}
+							</if>
+							<if test="city != null" >
+								and wdm.device_city = #{city}
+							</if>
+							<if test="area != null" >
+								and wdm.device_area = #{area}
+							</if>
+						GROUP BY
+							DATE_FORMAT(wdm.create_time, '%Y-%m')
+					) AS tt2
+				WHERE<!-- 核心语句 -->
+					tt2.dates<![CDATA[<=]]> tt.dates
+			) AS counts
+		FROM
+			(
+				SELECT
+					DATE_FORMAT(wdm.create_time, '%Y-%m') AS dates,
+					COUNT(*) AS counts
+				FROM
+					web_device_manage wdm
+				WHERE 
+					DATE_FORMAT(wdm.create_time,'%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+					AND DATE_FORMAT(wdm.create_time,'%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+					<if test="province != null" >
+						and wdm.device_province = #{province}
+					</if>
+					<if test="city != null" >
+						and wdm.device_city = #{city}
+					</if>
+					<if test="area != null" >
+						and wdm.device_area = #{area}
+					</if>
+				GROUP BY
+					DATE_FORMAT(wdm.create_time, '%Y-%m')
+			) AS tt
+		
+		
+			
+	</select>
+	<!-- 设备维修数量变化曲线 -->
+	<select id="repairDeviceCount" parameterType="java.util.Map" resultType="java.util.HashMap" >
+		<!-- SELECT
+			DATE_FORMAT(wdr.create_time, '%Y-%m') AS dates,
+			COUNT(wdr.repair_id) AS counts
+		FROM
+			web_device_repair wdr
+		LEFT JOIN sys_school sc ON wdr.repair_unit = sc.id
+		WHERE
+			DATE_FORMAT(wdr.create_time,'%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+			AND DATE_FORMAT(wdr.create_time,'%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+			<if test="province != null" >
+				and sc.provinceId = #{province}
+			</if>
+			<if test="city != null" >
+				and sc.cityId = #{city}
+			</if>
+			<if test="area != null" >
+				and sc.countyId = #{area}
+			</if>
+		GROUP BY
+			DATE_FORMAT(wdr.create_time, '%Y-%m')
+		 -->
+			
+		SELECT
+			tt.dates,
+			(
+				SELECT
+					SUM(tt2.counts)
+				FROM
+					(
+						SELECT
+							DATE_FORMAT(wdr.create_time, '%Y-%m') AS dates,
+							COUNT(wdr.repair_id) AS counts
+						FROM
+							web_device_repair wdr
+						LEFT JOIN sys_school sc ON wdr.repair_unit = sc.id
+						WHERE
+							DATE_FORMAT(wdr.create_time,'%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+							AND DATE_FORMAT(wdr.create_time,'%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+							<if test="province != null" >
+								and sc.provinceId = #{province}
+							</if>
+							<if test="city != null" >
+								and sc.cityId = #{city}
+							</if>
+							<if test="area != null" >
+								and sc.countyId = #{area}
+							</if>
+						GROUP BY
+							DATE_FORMAT(wdr.create_time, '%Y-%m')
+					) AS tt2
+				WHERE
+					tt2.dates<![CDATA[<=]]> tt.dates
+			) AS counts
+		FROM
+			(
+				SELECT
+					DATE_FORMAT(wdr.create_time, '%Y-%m') AS dates,
+					COUNT(wdr.repair_id) AS counts
+				FROM
+					web_device_repair wdr
+				LEFT JOIN sys_school sc ON wdr.repair_unit = sc.id
+				WHERE
+					DATE_FORMAT(wdr.create_time,'%Y-%m-%d') <![CDATA[>=]]> #{startTime}
+					AND DATE_FORMAT(wdr.create_time,'%Y-%m-%d') <![CDATA[<=]]> #{endTime}
+					<if test="province != null" >
+						and sc.provinceId = #{province}
+					</if>
+					<if test="city != null" >
+						and sc.cityId = #{city}
+					</if>
+					<if test="area != null" >
+						and sc.countyId = #{area}
+					</if>
+				GROUP BY
+					DATE_FORMAT(wdr.create_time, '%Y-%m')
+			) AS tt
+	</select>
+	<select id="usageRateRank" parameterType="java.util.Map" resultType="java.util.HashMap" >
+		SELECT
+			SUM(wdr.dr_using_long) / 60000 / DATEDIFF(#{endTime}, #{startTime}) AS  usageRate,
+			COUNT(DISTINCT(wdm.device_code)) AS countDeviceCode, 
+			wdm.school_id,
+			wdm.school_name
+		FROM
+			web_device_manage wdm
+		LEFT JOIN web_device_record wdr ON wdm.device_code = wdr.device_code
+		WHERE
+			DATE_FORMAT(
+				wdr.dr_start_time,
+				'%Y-%m-%d'
+			) <![CDATA[>]]> #{startTime}
+		AND DATE_FORMAT(
+			wdr.dr_start_time,
+			'%Y-%m-%d'
+		) <![CDATA[<]]> #{endTime}
+		
+		<if test="province != null" >
+			AND wdm.device_province = #{province}
+		</if>
+		<if test="city != null" >
+			AND wdm.device_city = #{city}
+		</if>
+		<if test="area != null" >
+			AND wdm.device_area = #{area}
+		</if>
+		
+		GROUP BY
+			wdm.school_id
+		ORDER BY
+			usageRate DESC
+		LIMIT 10 	
+	</select>
+	
+	<select id="findDeviceStateByClassId" parameterType="java.lang.String" resultType="java.lang.Integer" >
+		SELECT
+			wdm.device_state
+		FROM
+			web_class_device wcd
+		LEFT JOIN web_device_manage wdm ON wcd.device_code = wdm.device_code
+		WHERE
+			wcd.classid = #{classId}
+		<!-- AND wdm.device_type = '' 现在不做修改 -->
+		LIMIT 1
+	</select>
+</mapper>

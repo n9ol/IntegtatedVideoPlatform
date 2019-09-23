@@ -1,0 +1,101 @@
+.filter1 {
+	width: 1200px;
+	margin: 0 auto;
+	border: 1px solid gainsboro;
+	background-color: #fff;
+/* 	height:176px; */
+	overflow:hidden;
+}
+
+.filter2 {
+	width: 1190px;
+	margin: 0 auto;
+}
+
+.filter3 {
+	margin: 20px 0;
+	width: 930px;
+	float: left;
+	height: 47px;
+	overflow: hidden;
+}
+
+.filter3 li {
+	float: left;
+	padding: 2px 15px;
+	min-width: 2em;
+	font-size: 14px;
+	cursor: pointer;
+	margin: 10px 0;
+}
+
+.filterActive {
+	background-color: #4596E5;
+	color: #fff;
+	border-radius: 3px;
+}
+
+.category1 {
+	float: left;
+	display: block;
+	margin: 30px 10px;
+	padding: 2px 8px;
+	width: 85px;
+	overflow: hidden;
+}
+
+.category2 {
+	float: left;
+	display: block;
+	margin: 30px 10px;
+	padding: 2px 8px;
+}
+
+.category2 button {
+	height: 23px;
+	line-height: 23px;
+	background-color: #f1f1f1;
+	color: rgb(153, 153, 153);
+	margin-left: 0;
+	font-weight: 800;
+}
+
+.category2 button:hover {
+	color: #000;
+}
+
+.borderBottom {
+	border-bottom: 1px dashed gainsboro;
+}
+
+.layui-btn+.layui-btn {
+	margin-left: 0px;
+}
+
+
+ .fitmore {
+ 	width:1200px;
+ 	margin:0 auto;
+    height: 30px;
+}
+ .fitmore .morediv {
+    width: 160px;
+    height: 24px;
+ 	margin:-1px auto 0;
+ 	background-color:#fff;
+ 	border-bottom-left-radius:8px;
+ 	border-bottom-right-radius:8px;
+ 	border: 1px solid gainsboro;
+ 	border-top: none;
+}
+.fitmore .morediv .text {
+    padding-top: 2px;
+    font-size: 12px;
+    text-align: center;
+}
+.fitmore .morediv .text a {
+	display:block;
+    color: #999;
+    height:100%;
+    width:100%;
+}

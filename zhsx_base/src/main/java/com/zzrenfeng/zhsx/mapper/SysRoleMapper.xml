@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysRoleMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysRole" >
+		<result column="id" property="id" />
+		<result column="role" property="role" />
+		<result column="description" property="description" />
+		<result column="available" property="available" />
+		<result column="role_type" property="roleType" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,role,description,available,role_type
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from sys_role
+		where id = #{id}
+	</select>
+	
+	<select id="findAll" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_role
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_role_permission where roleId = #{id};
+		delete from sys_user_role where roleId = #{id};
+		delete from sys_role where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="SysRole" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_role (id,role,description,available,role_type)
+		values (#{id},#{role},#{description},#{available},#{roleType})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysRole" >
+		update sys_role
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="role != null" >
+				role = #{role},
+			</if>
+			<if test="description != null" >
+				description = #{description},
+			</if>
+			<if test="available != null" >
+				available = #{available},
+			</if>
+			<if test="roleType != null" >
+				role_type = #{roleType}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysRole" >
+		update sys_role
+		set 
+		id = #{id},
+		role = #{role},
+		description = #{description},
+		available = #{available},
+		role_type = #{roleType}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="role != null" >
+				and role = #{role}
+			</if>
+			<if test="description != null" >
+				and description = #{description}
+			</if>
+			<if test="available != null" >
+				and available = #{available}
+			</if>
+			<if test="roleType != null" >
+				and role_type = #{roleType}
+			</if>
+		</where>
+		ORDER BY id
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysRole" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="SysRole" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_role
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	
+	<insert id="updateRolePermission" parameterType="java.util.Map">
+		insert into sys_role_permission (id,roleId,permissionId)
+		values 
+			<foreach collection="permissionIds" separator="," item="permissionId">
+				((select uuid()),#{id},#{permissionId})
+			</foreach>
+		ON DUPLICATE KEY UPDATE roleId = #{id}
+	</insert>
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.AfDhMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.AfDh" >
+		<result column="id" property="id" />
+		<result column="dhname" property="dhname" />
+		<result column="sortorder" property="sortorder" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+		<result column="bak3" property="bak3" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,dhname,sortorder,bak1,bak2,bak3
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from af_dh
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from af_dh
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="AfDh" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into af_dh (id,dhname,sortorder,bak1,bak2,bak3)
+		values (#{id},#{dhname},#{sortorder},#{bak1},#{bak2},#{bak3})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="AfDh" >
+		update af_dh
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="dhname != null" >
+				dhname = #{dhname},
+			</if>
+			<if test="sortorder != null" >
+				sortorder = #{sortorder},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2},
+			</if>
+			<if test="bak3 != null" >
+				bak3 = #{bak3}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="AfDh" >
+		update af_dh
+		set 
+		id = #{id},
+		dhname = #{dhname},
+		sortorder = #{sortorder},
+		bak1 = #{bak1},
+		bak2 = #{bak2},
+		bak3 = #{bak3}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="dhname != null" >
+				and dhname = #{dhname}
+			</if>
+			<if test="sortorder != null" >
+				and sortorder = #{sortorder}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<if test="bak3 != null" >
+				and bak3 = #{bak3}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="AfDh" resultType="AfDh">
+		select 
+		<include refid="Base_Column_List" />
+		from af_dh
+		<include refid="Dynamic_Conditions"/>
+		order by sortorder 
+	</select>
+
+
+	<select id="findPageSelective" parameterType="AfDh" resultType="AfDh">
+		select 
+		<include refid="Base_Column_List" />
+		from af_dh
+		<include refid="Dynamic_Conditions"/>
+		order by sortorder
+	</select>
+
+
+</mapper>

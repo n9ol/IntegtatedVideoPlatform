@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>教育综合视讯管理平台</title>
+<#include "/commons/comWeb.html" encoding="utf-8"/>
+<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+</head>
+<body>
+	<form id="myform">
+		<input type="hidden" name="p">
+	</form>
+	<ul id="pjRecord" class="jilubiao news">
+		<#if loSchedules??&&(loSchedules?size>0)><#list loSchedules as l>
+		<li class="clear" onclick="watchZVideo('${l.id!''}','${l.type!''}','${l.isGoClass!''}')">
+			<div class="con_left_li">
+				<div class="zdb">在线评估</div>
+				<div class="ke_img">
+					<img src="${ctx}/images/pinggu112.png" />
+				</div>
+			</div>
+			<div class="jilujieshao">
+				<p class="jjj0">
+					<span>${l.schoolName!''} -- ${l.userName!''} </span>
+				</p>
+				<p class="jjj">
+					<span>
+						科目：
+						<span style="color: orange;">${l.subjectId!''}</span>
+					</span>
+					<span>
+						专业：
+						<span style="color: orange;">${l.gradeId!''}</span>
+					</span>
+					<span>
+						教室：
+						<span style="color: orange;">${l.className!''}</span>
+					</span>
+				</p>
+				<p class="jjj">
+					<span>
+						直播时间：
+						<#if l.isGoClass == 1>
+							<span style="color:green;">正在直播</span>
+						<#else>
+							<span style="color:red;">即将直播</span>
+						</#if>
+						<span style="margin-left: 20px;">${l.z_date?string('yyyy-MM-dd')} (${l.startDate!'00:00:00'}--${l.endDate!'00:00:00'})</span>
+					</span>
+				</p>
+			</div>
+			<div class="jilu_anniu">
+				<span class="layui-btn layui-btn-mini see">
+					<img alt="" src="${ctx}/img/eye2.png">
+					<a href="javascript:;">进入评估</a>
+				</span>
+			</div>
+		</li>
+		</#list>
+		<#else>
+			<li>
+				<h2>暂无需要您评估的课程</h2>
+			</li>
+		</#if>
+	</ul>
+	<div id="page"></div>
+</body>
+<#include "/commons/comWebjs.html" encoding="utf-8"/>
+<script type="text/javascript" src="${ctx}/js/personalCenter/myPgLoSchedule.js"></script>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		location.href="${ctx}/personalCenter/myPgLoSchedule?p="+p;
+	}
+</script>
+</html>

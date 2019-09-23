@@ -1,0 +1,59 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<form id="myformPjInfo">
+<input type="hidden" name="webPjInfoId" value="${webpj.id!''}"/>
+<div class="xiangqing clear">
+	<div class="huizong">
+		<img src="${ctx}/img/zhong_ping.png" />
+		<div class="hui_wen">督课记录</div>
+	</div>
+	<div class="biaotou">
+		<span>督课老师</span><span>评分</span><span>课后督课</span>
+	</div>
+	<ul class="xize">
+	<#if webpj.bak1??>
+			<li>
+			<span ><font style="font-size:20px; color:gray">${principal.nickName!''}</font></span> 
+			<span><font style="font-size:20px; color:gray">  ${webpj.bak1!''}</font></span> 
+			<span><a href="javascript:" class="sse"><font style="font-size:20px; color:gray"> <#if webpj.bak2?? && (webpj.bak2?length>5)> ${webpj.bak2?substring(0,5)}... <#else>  ${webpj.bak2!''}</#if></font> <span style="display:none;">${webpj.bak2!''}</span> </a></span>
+	   		</li>
+	</#if>
+	<#if dekelist?? && (dekelist?size>0)><#list dekelist as l>
+			<#if principal.id != l.id>
+			<li>
+			<span> ${l.nickName!''}</span> 
+			<span> ${l.bak1!''} </span> 
+			<span><a href="javascript:" class="sse"><#if l.bak2?? && (l.bak2?length>5)> ${l.bak2?substring(0,5)}... <#else>  ${l.bak2!''}</#if> <span style="display:none;">${l.bak2!''}</span> </a></span>
+	   		</li>
+	       </#if>
+	</#list></#if>
+
+ 
+	</ul>
+</div>
+<div id='div11' class="xiangqing" style="display:none;">
+	<div class="pingyutianxie clear"  >
+		<div class="huizong">
+			<img src="${ctx}/img/ketangpingyu.png" />
+			<div class="hui_wen">课后督课</div>
+		</div>
+		<div class="biaotou">
+		<span ><font style="font-size:20px; color:gray">我的评分：${webpj.bak1!''}</font></span> <span></span><span></span> 
+	    </div>
+		<textarea name="content" rows="" cols="" placeholder="暂无" readonly="readonly">${webpj.bak2!''}</textarea>
+	</div>
+</div>
+
+</form>
+<script type="text/javascript">
+$(document).ready(function(){
+	var tipsi;
+	  $(".sse").hover(function(){
+		  var aa=$(this).children('span').html();
+	     tipsi = layer.tips(aa,this, {time:0});
+	   },function(){
+			layer.close(tipsi);
+	   });
+ 
+});
+
+</script>

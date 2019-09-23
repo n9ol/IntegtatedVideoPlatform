@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_kezhong.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_dianping.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_chakan.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/swiper.min.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/db_bofangye.css" />
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a href="${ctx}/offLine/dianbo">点播</a>
+  					 <#if type??>
+  					 	<a href="${ctx}/offLine/dianbo?type=${type!''}">
+	  						<#if type == "P">离线评估 </#if>
+	  						<#if type == "B">课堂回放</#if>
+	  						<#if type == "S">精品微课</#if>
+	  						<#if type == "H">优质课程</#if>
+  						</a>
+  					</#if>
+  					<a><cite>课程播放</cite></a>
+				</span>
+				<span class="collectImg">
+					<#if isCollect?? && isCollect == "Y">
+						<img  src="${ctx}/img/collect2.png" onclick="cancelCollect();">
+					<#else>
+						<img  src="${ctx}/img/collect1.png" onclick="addCollect();">
+					</#if>
+				</span>
+			</div>
+
+			<!--视频窗口-->
+			<div class="videosss">
+				<div class="video_shipin clear">
+					<div class="video_shipin_left" id="videoPlayer">
+						<div id="flashContent">
+							<p>To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.</p>
+							<script type="text/javascript">
+								var pageHost = ((document.location.protocol == "https:") ? "https://"
+										: "http://");
+								document
+										.write("<a href='http://www.adobe.com/go/getflashplayer'><img src='" 
+													+ pageHost + "www.adobe.com/images/shared/download_buttons/get_flash_player.gif' alt='Get Adobe Flash player' /></a>");
+							</script>
+						</div>
+					</div>
+					<div class="video_shipin_right">
+						<div class="shouke clear">
+							<img src="${fileWebPath}/userheadPortrait/${vr.teacherPic!''}" onerror="this.src='${ctx}/img/user80.jpg'"/>
+							<div class="shouke_right">
+								<p class="ellipsesDiv" style="color: orange;font-size: 15px;line-height:28px;">${vr.teacherName!''}</p>
+								<p class="ellipsesDiv" style="color: gainsboro;font-size: 15px;line-height:28px;">${vr.schoolName!''}</p>
+								<p class="ellipsesDiv" style="color: gainsboro;line-height:28px;">${vr.gradeName!''}&nbsp;&nbsp;${vr.subjectName!''}</p>
+							</div>
+						</div>
+						<div class="clear" style="background:url(${ctx}/img/fengexian.png) no-repeat;height:5px;"></div>
+						<div class="kecheng">
+							<div class="swiper-container">
+							<input type="hidden" id="hotListsLength" value="${hotLists?size!'0'}">
+								<div class="swiper-wrapper">
+									<#if hotLists?? && (hotLists?size>0)><#list hotLists as l>
+									<a href="${ctx}/offLine/videoPlayback?id=${l.id!''}&type=${type!''}" target="_blank" style="position:relative;">
+										<div class="swiper-slide">
+												<img src="${fileWebPath}/videoRes/${l.picPath!''}" onerror="this.src='${ctx}/img/lunbo4.png'"/>
+												<span class="smallClassTime">${l.timeLength!''}</span>
+												<div class="kecheng_right clear">
+													<p title="${l.title!''}" style="color:orange;width: 145px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
+														<span>${l.title!''}</span>
+													</p>
+													<p  title="${l.teacherName!''}&nbsp;&nbsp;${l.schoolName!''}" style="color:white;width: 145px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-top:5px;">
+														<span >${l.teacherName!''}&nbsp;&nbsp;${l.schoolName!''}</span>
+													</p>
+													<p style="color: white;width: 145px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;margin-top:5px;">
+														<span title="${l.gradeName!''}&nbsp;&nbsp;${l.subjectName!''}">${l.gradeName!''}&nbsp;&nbsp;${l.subjectName!''}</span>
+													</p>
+												</div>
+										</div>
+									</a>
+									</#list></#if>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="jilu">
+				<div class="jilu_top">
+					<div class="layui-tab layui-tab-card iii">
+						<ul class="ddd clear" style="background-color: #4596E5;">
+							<#if type?? && type == "P" && principal.userType != 'S'>
+								<li class="kkk" style="color: black;">离线评估</li>
+								<li>查看结果</li>
+								<li>点评信息</li>
+							<#else>
+								<li class="kkk" style="color: black;">点评信息</li>
+							</#if>
+						</ul>
+					</div>
+				</div>
+				<div class="tap11"></div>
+				<div class="tap22" style="display: none;"></div>
+				<div class="tap33" style="display: none;"></div>
+			</div>
+		</div>
+		<!--内容end-->
+
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+	</body>
+	<!--单独的js-->
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript" src="${ctx}/Inc/swfobject.js"></script>
+	<script type="text/javascript">
+		var videoType = "${type!''}";
+		var userType = "${principal.userType!''}";
+		var fileWebPath = "${fileWebPath}";
+		var receive = {};
+		receive.id = "${vr.id!''}";
+	</script>
+	<script type="text/javascript">
+		var swfVersionStr = "11.1.0";
+		var xiSwfUrlStr = "${ctx}/Inc/playerProductInstall.swf";
+		var flashvars = {};
+		flashvars.ip = "${ip!''}";
+		flashvars.port = "${port!''}";
+		flashvars.videoName1 = "${video1Url!''}";
+		flashvars.videoName2 = "${video2Url!''}";
+		flashvars.videoName3 = "${video3Url!''}";
+		flashvars.videoNamea = "${videoaUrl!''}";
+		var params = {};
+		params.quality = "high";
+		params.bgcolor = "#ffffff";
+		params.allowscriptaccess = "sameDomain";
+		params.allowfullscreen = "true";
+		params.wmode = "Opaque";
+		var attributes = {};
+		attributes.id = "RFLVideoPlayback";
+		attributes.name = "RFLVideoPlayback";
+		attributes.align = "middle";
+		swfobject.embedSWF("${ctx}/Inc/RFLVideoPlayback${vsc}.swf", "flashContent", "100%",
+				"100%", swfVersionStr, xiSwfUrlStr, flashvars, params, attributes);
+		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+	</script>
+	<script type="text/javascript" src="${ctx}/js/tlayer.js"></script>
+	<script type="text/javascript" src="${ctx}/js/web/offLine/db_bofangye.js"></script>
+</html>

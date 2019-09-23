@@ -1,0 +1,27 @@
+
+<ul class="news local_con">
+	<#if lists?? &&(lists?size>0)><#list lists as l>
+	<li>
+		<div class="local_tittle">
+			<a href="javascript:;" onclick="findOne('${l.id}')">
+				<span class="abb">·${l.title!''}</span>
+			</a>
+			<span>${l.addtime?string('yyyy-MM-dd')}</span>
+		</div>
+		<div class="local_link">
+			<span>上传者：${l.author!''}</span>
+			<span>更新时间：${l.addtime?string('yyyy-MM-dd HH:mm')}</span>
+			<span>浏览：${l.view!''}</span>
+			<span>来源：${l.source!''}</span>
+		</div>
+	</li>
+	</#list></#if>
+</ul>
+<div id="page" style="text-align: center;"></div>
+<#include "/commons/comPage.html" encoding="utf-8"/>
+<script type="text/javascript">
+	function turnPage(p) {
+		$("input[name='p']").val(p);
+		findAll();
+	}
+</script>

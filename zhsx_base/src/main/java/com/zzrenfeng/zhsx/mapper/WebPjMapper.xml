@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.WebPjMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.WebPj" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="pgId" property="pgId" />
+		<result column="onOff" property="onOff" />
+		<result column="allResult" property="allResult" />
+		<result column="score" property="score" />
+		<result column="ispj" property="ispj" />
+		<result column="addTime" property="addTime" />
+		<result column="bak" property="bak" />
+		<result column="bak1" property="bak1" />
+		<result column="bak2" property="bak2" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,pgId,onOff,allResult,score,ispj,addTime,bak,bak1,bak2
+	</sql>
+	<sql id="leader_judge">
+		<if test="isadmin == 'PA'">
+			LEFT JOIN `user` u ON p.userId=u.id 
+			LEFT JOIN  sys_dict sd ON sd.id=u.bak2
+			LEFT JOIN  sys_dict sd2 ON sd2.id=sd.pid
+			WHERE
+				p.ispj = '1'
+			AND sd2.pid=#{regionId}
+		</if>
+		<if test="isadmin == 'CA'">
+			LEFT JOIN `user` u ON p.userId=u.id 
+			LEFT JOIN  sys_dict sd ON sd.id=u.bak2
+			WHERE
+				p.ispj = '1'
+			AND sd.pid=#{regionId}		
+		</if>
+		<if test="isadmin == 'AA' or isadmin == 'NA'">
+			LEFT JOIN `user` u ON p.userId=u.id 
+			WHERE
+				p.ispj = '1'
+			AND u.bak2=#{regionId}		
+		</if>
+		<if test="isadmin == 'SA'">
+			LEFT JOIN `user` u ON p.userId=u.id 
+			WHERE
+				p.ispj = '1'
+			AND u.schoolId=#{regionId}		
+		</if>
+		<if test="isadmin == 'OA'">
+			WHERE
+				p.ispj = '1'		
+		</if>		
+	</sql>
+	
+	
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id = p.userId) as userName
+		from web_pj p
+		where id = #{id}
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from web_pj
+		where id = #{id}
+	</delete>
+
+
+	<insert id="insert" parameterType="WebPj" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_pj (id,userId,pgId,onOff,allResult,score,ispj,addTime,bak,bak1,bak2)
+		values (#{id},#{userId},#{pgId},#{onOff},#{allResult},#{score},#{ispj},now(),#{bak},#{bak1},#{bak2})
+	</insert>
+	
+	<insert id="insterPgMessage" parameterType="WebPj">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into web_pj (id,userId,pgId,onOff,addTime) 
+		values (#{id},#{userId},#{pgId},#{onOff},now());
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="WebPj" >
+		update web_pj
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="pgId != null" >
+				pgId = #{pgId},
+			</if>
+			<if test="onOff != null" >
+				onOff = #{onOff},
+			</if>
+			<if test="allResult != null" >
+				allResult = #{allResult},
+			</if>
+			<if test="score != null" >
+				score = #{score},
+			</if>
+			<if test="ispj != null" >
+				ispj = #{ispj},
+			</if>
+			<if test="addTime != null" >
+				addTime = #{addTime},
+			</if>
+			<if test="bak != null" >
+				bak = #{bak},
+			</if>
+			<if test="bak1 != null" >
+				bak1 = #{bak1},
+			</if>
+			<if test="bak2 != null" >
+				bak2 = #{bak2}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="WebPj" >
+		update web_pj
+		set 
+		id = #{id},
+		userId = #{userId},
+		pgId = #{pgId},
+		onOff = #{onOff},
+		allResult = #{allResult},
+		score = #{score},
+		ispj = #{ispj},
+		addTime = #{addTime},
+		bak = #{bak},
+		bak1 = #{bak1},
+		bak2 = #{bak2}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="pgId != null" >
+				and pgId = #{pgId}
+			</if>
+			<if test="onOff != null" >
+				and onOff = #{onOff}
+			</if>
+			<if test="allResult != null" >
+				and allResult = #{allResult}
+			</if>
+			<if test="score != null" >
+				and score = #{score}
+			</if>
+			<if test="ispj != null" >
+				and ispj = #{ispj}
+			</if>
+			<if test="bak != null" >
+				and bak = #{bak}
+			</if>
+			<if test="bak1 != null" >
+				and bak1 = #{bak1}
+			</if>
+			<if test="bak2 != null" >
+				and bak2 = #{bak2}
+			</if>
+			<!-- 当属于在线评估时,userId和pgId判断不了唯一性 。增加日期验证查询
+				addTime != null 的判断是为了数据中心和个人中心查看评估结果时不执行时间判断
+			 -->
+			<if test="onOff != null and onOff == 'ON'.toString() and addTime != null">
+				and DATE_FORMAT(#{addTime},'%Y-%m-%d') = DATE_FORMAT(addTime,'%Y-%m-%d')
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="WebPj" resultType="WebPj">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id = p.userId) as userName
+		from web_pj p
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="WebPj" resultType="WebPj">
+		select 
+		<include refid="Base_Column_List" />
+		from web_pj
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	
+
+	
+	
+	<select id="getPgAverageDraw" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT  IFNULL(ROUND(AVG(score),2),0) as pjavg,IFNULL(ROUND(AVG(bak),2),0) as kqpjavg FROM web_pj WHERE pgId = #{pgId} AND ispj = 1
+	</select>
+	
+	
+		<select id="findPjRecord" parameterType="java.lang.String"  resultType="java.util.Map">
+					SELECT
+				t.id,
+				t.onOff,
+				o.id AS oId,
+				o.title AS oTitle,
+				o.subjectName AS oSubjectName,
+				o.teacherId AS oTeacherId,
+				ou.nickName,
+				ou.currName,
+				o.timeLength AS oTimeLength,
+				o.gradeName AS oGradeName,
+				o.pageView AS oPageView,
+				o.createTime AS oCreateTime,
+				o.picPath AS oPicPath,
+				o.type AS oType,
+			
+				l.id AS lId,
+				l.classId,
+				cl.className,
+				l.schoolId,
+				sc.schoolName,
+				l.subjectId AS lSubjectName,
+				l.userId AS lTeacherId,
+				ul.nickName AS lNickName,
+				ul.currName AS lCurrName,
+				l.z_date,
+				l.bak AS z_time,
+				lc.starttime ,lc.endtime,
+				l.gradeId AS lGradeName,
+				l.type AS lType,
+				l.coverpath AS lPicPath
+			FROM
+				web_pj t
+			LEFT JOIN offLine_videoResources o ON o.id = t.pgId
+			AND t.onOff = 'OFF'
+			AND o.releaseState = 'Y'
+			AND o.isShow = 'Y'
+			LEFT JOIN `user` ou ON ou.id = o.teacherId
+			LEFT JOIN lo_schedule l ON l.id = t.pgId
+			AND t.onOff = 'ON'  AND (l.type = 'A'or l.type = 'G')
+			LEFT JOIN sys_school sc ON sc.id = l.schoolId
+			LEFT JOIN sys_classroom cl ON cl.id = l.classId
+			LEFT JOIN `user` ul ON ul.id = l.userId
+			LEFT JOIN lo_classTime lc ON lc.id=l.bak
+			WHERE
+				(o.id IS NOT NULL
+					OR l.id IS NOT NULL
+				)
+			   AND t.ispj='1'
+			<if test="_parameter != null" >
+		
+				and t.userId = #{_userId}
+			</if>
+			ORDER BY t.addTime desc
+	</select>
+	
+		<select id="findGrowth" parameterType="java.lang.String"  resultType="java.util.Map">
+				SELECT
+					(
+						CASE IFNULL(SUM(t.bak) / COUNT(t.id), '')
+						WHEN '' THEN
+							0
+						ELSE
+							round(AVG(t.bak),0) 
+						END
+					) AS q,
+					(
+						CASE IFNULL(SUM(t.score) / COUNT(t.id), '')
+						WHEN '' THEN
+							0
+						ELSE
+							round(AVG(t.score),0) 
+						END
+					) AS z,
+					(
+						CASE IFNULL(SUM(t.bak1) / COUNT(t.id), '')
+						WHEN '' THEN
+							0
+						ELSE
+						round(AVG(t.bak1),0) 
+						END
+					) AS h
+				FROM
+					web_pj t
+					LEFT JOIN offLine_videoResources o ON o.id = t.pgId
+					AND t.onOff = 'OFF'
+					AND o.releaseState = 'Y'
+					AND o.isShow = 'Y'
+					LEFT JOIN `user` ou ON ou.id = o.teacherId
+					LEFT JOIN lo_schedule l ON l.id = t.pgId
+					AND t.onOff = 'ON'
+					LEFT JOIN `user` ul ON ul.id = l.userId
+					WHERE
+						(o.id IS NOT NULL
+							OR l.id IS NOT NULL
+						)
+					<if test="_parameter != null" >
+						  AND (ou.id= #{_userId}
+						  OR  ul.id= #{_userId}
+						  )
+					</if>
+					AND t.ispj='1'
+	</select>
+	<!-- 20个参数 -->
+	<parameterMap type="Map" id="staffCountContributionEvaluation">
+		<parameter property="userId" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/>
+	   	
+	   	<parameter property="standardDay" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="standardWeek" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="standardMonth" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="standardSemester" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount1" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount2" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount3" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount4" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount5" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc1" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc2" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc3" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc4" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc1" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc2" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc3" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc4" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="firstNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="nextNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	</parameterMap>
+	<!-- 教研员的教师贡献榜-->
+	<select id="getStaffCountContributionEvaluation" parameterMap="staffCountContributionEvaluation" statementType="CALLABLE" resultType="java.util.HashMap">
+		{call staff_count_contribution_evaluation(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}
+	</select>
+	
+	<!-- 20个参数  这是管理员 的参数列表 管理员和教研员只有一个属性不一样（第一个属性）-->
+	<parameterMap type="Map" id="leaderCountContributionEvaluation">
+		<parameter property="isadmin" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/><!-- 管理员的角色 -->
+		<parameter property="regionId" jdbcType="VARCHAR" javaType="java.lang.String" mode="IN"/><!-- 区域的id -->
+	   	
+	   	<parameter property="standardDay" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="standardWeek" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="standardMonth" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="standardSemester" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount1" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount2" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount3" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount4" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekscount5" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc1" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc2" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc3" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="weekc4" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc1" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc2" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc3" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="monthc4" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="firstNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	   	<parameter property="nextNum" jdbcType="INTEGER" javaType="java.lang.Integer" mode="OUT"/>
+	</parameterMap>
+	<!-- 管理员的教师贡献榜 -->
+	<select id="getLeaderCountContributionEvaluation" parameterMap="leaderCountContributionEvaluation" statementType="CALLABLE" resultType="java.util.HashMap">
+		{call leader_count_contribution_evaluation(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}
+	</select>
+	 
+	<!-- 教研员评论的所有的老师     pj.addTime 评论时间 -->
+	<select id="getStaffCommonentAllTeacher" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT 
+			DISTINCT(ls.userId) userId,u.nickName teacherName
+		FROM
+			web_pj pj
+		LEFT JOIN lo_schedule ls ON pj.pgId = ls.id
+		LEFT JOIN `user` u ON u.id = ls.userId
+		WHERE
+			pj.ispj = '1' 
+		AND pj.userId = #{userId}
+		AND ls.userId <![CDATA[ <> ]]> ''
+		<if test="week7 != null"><!-- 7周之内  -->
+			AND YEARWEEK(pj.addTime) <![CDATA[ > ]]> YEARWEEK(DATE_SUB(NOW(),INTERVAL 7*7 DAY ))
+			AND YEARWEEK(pj.addTime) <![CDATA[ <= ]]> YEARWEEK(DATE_SUB(NOW(),INTERVAL 7*(-1) DAY ))
+			LIMIT 8
+		</if>
+		<if test="day7 != null"><!-- 7天之内    -->
+			AND DATE_FORMAT(pj.addTime,'%Y-%m-%d') <![CDATA[ > ]]> DATE_ADD(CURDATE(),INTERVAL -7 DAY) 
+			AND DATE_FORMAT(pj.addTime,'%Y-%m-%d') <![CDATA[ <= ]]> CURDATE() 
+		</if>
+		<if test="currentWeek != null"><!-- 当前星期之内    -->
+			AND YEARWEEK (pj.addTime) = YEARWEEK(NOW())
+		</if>
+	</select>
+	
+	<select id="getStaffCommonentTeacherCountsAndTimelength" parameterType="java.lang.String"  resultType="java.util.HashMap">
+		SELECT
+			los.userId teacherId,
+			(
+				SELECT
+					u.nickName
+				FROM
+					`user` u
+				WHERE
+					u.id = #{userId}
+			) teacherName,
+			COUNT(*) counts,
+			AVG(aqc.timelength) avgTimelength
+		FROM
+			lo_schedule los
+		RIGHT JOIN answer_questions_collected aqc ON los.id = aqc.zid
+		WHERE
+			los.userId = #{userId}
+		AND los.z_date <![CDATA[ > ]]> DATE_ADD(CURDATE(), INTERVAL - 7 DAY)
+		AND los.z_date <![CDATA[ < ]]> CURDATE(); 
+	</select>
+	<!-- 返回List<Map>类型     课前 -->
+	<select id="getStaffCommonentAVGAndEXP" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT
+			s.userId teacherId,
+			AVG(p.bak) oneTeacherAvg,
+			(
+				SELECT
+					u.EXP
+				FROM
+					`user` u
+				WHERE
+					s.userId = u.id
+			) exp
+		FROM
+			web_pj p,
+			lo_schedule s
+		WHERE
+			p.pgId = s.id
+		AND	p.ispj = '1'
+		AND p.userId = #{userId}
+		AND s.userId <![CDATA[<>]]>  '' <!-- 有时为空   在这里判断不为空 -->
+		AND DATE_FORMAT(p.addTime,'%Y-%m-%d')=#{dates}
+		GROUP BY
+			teacherId
+	</select>
+	<!-- 省级范围内    -->
+	<select id="getLeaderCommonentAVGAndEXP" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT
+			s.userId teacherId,
+			AVG(p.bak) oneTeacherAvg,
+			(
+				SELECT
+					u.EXP
+				FROM
+					`user` u
+				WHERE
+					s.userId = u.id
+			) exp
+		FROM
+			web_pj p
+		LEFT JOIN lo_schedule s ON p.pgId = s.id
+		<!-- 引用角色的判断 -->
+		<include refid="leader_judge"/>
+		AND s.userId <![CDATA[<>]]>  ''
+		AND DATE_FORMAT(p.addTime, '%Y-%m-%d') = #{dates}
+		GROUP BY
+			teacherId
+	</select>
+	
+	<select id="getAVGBySchool" parameterType="java.util.Map"  resultType="java.util.Map">
+		<!--  SELECT
+			s.schoolId schoolId,
+			school.schoolName schoolName,
+			AVG(p.bak) oneSchoolAvg
+		FROM
+			web_pj p,
+			lo_schedule s,
+			sys_school school
+		WHERE
+			p.pgId = s.id
+		AND s.schoolId = school.id
+		AND p.userId =  #{userId}
+		AND DATE_FORMAT(p.addTime,'%Y-%m-%d')=#{dates}
+		GROUP BY
+			schoolId -->
+		
+		SELECT 
+		(SELECT IFNULL((SELECT AVG(p.bak) oneSchoolAvg FROM web_pj p,lo_schedule s WHERE p.pgId = s.id AND p.userId = #{userId} AND s.schoolId=#{schoolId} AND DATE_FORMAT(p.addTime,'%Y-%m-%d')=#{weekDay1} GROUP BY s.schoolId),0)) weekDay1,
+		(SELECT IFNULL((SELECT AVG(p.bak) oneSchoolAvg FROM web_pj p,lo_schedule s WHERE p.pgId = s.id AND p.userId = #{userId} AND s.schoolId=#{schoolId} AND DATE_FORMAT(p.addTime,'%Y-%m-%d')=#{weekDay2} GROUP BY s.schoolId),0)) weekDay2,
+		(SELECT IFNULL((SELECT AVG(p.bak) oneSchoolAvg FROM web_pj p,lo_schedule s WHERE p.pgId = s.id AND p.userId = #{userId} AND s.schoolId=#{schoolId} AND DATE_FORMAT(p.addTime,'%Y-%m-%d')=#{weekDay3} GROUP BY s.schoolId),0)) weekDay3,
+		(SELECT IFNULL((SELECT AVG(p.bak) oneSchoolAvg FROM web_pj p,lo_schedule s WHERE p.pgId = s.id AND p.userId = #{userId} AND s.schoolId=#{schoolId} AND DATE_FORMAT(p.addTime,'%Y-%m-%d')=#{weekDay4} GROUP BY s.schoolId),0)) weekDay4,
+		(SELECT IFNULL((SELECT AVG(p.bak) oneSchoolAvg FROM web_pj p,lo_schedule s WHERE p.pgId = s.id AND p.userId = #{userId} AND s.schoolId=#{schoolId} AND DATE_FORMAT(p.addTime,'%Y-%m-%d')=#{weekDay5} GROUP BY s.schoolId),0)) weekDay5	
+	</select>
+	<select id="getStaffCommentSchool" parameterType="java.util.Map"  resultType="java.util.Map">
+		 SELECT
+		 	school.id schoolId,
+			school.schoolName schoolName
+		FROM
+			web_pj p,
+			lo_schedule s,
+			sys_school school
+		WHERE
+			p.pgId = s.id
+		AND s.schoolId = school.id
+		AND p.userId =  #{userId}
+		AND DATE_FORMAT(p.addTime,'%Y-%m-%d')<![CDATA[ > ]]>#{beginDate}
+		AND DATE_FORMAT(p.addTime,'%Y-%m-%d')<![CDATA[ < ]]>#{endDate}
+		GROUP BY
+			schoolId
+	</select>
+	<!-- 返回List<Map>类型     课中  -->
+	<select id="getStaffCommonentAVGAndEXPMiddle" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT
+			s.userId teacherId,
+			AVG(p.score) oneTeacherAvg,
+			(
+				SELECT
+					u.EXP
+				FROM
+					`user` u
+				WHERE
+					s.userId = u.id
+			) exp
+		FROM
+			web_pj p
+		LEFT JOIN lo_schedule s ON p.pgId = s.id
+		WHERE
+			p.userId = #{userId}
+		AND p.ispj = '1'
+		AND DATE_FORMAT(p.addTime, '%Y-%m-%d') = #{dates}
+		GROUP BY
+			teacherId
+	</select>
+	<!-- 管理员    返回List<Map>类型     课中  -->	
+	<select id="getLeaderCommonentAVGAndEXPMiddle" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT
+			s.userId teacherId,
+			AVG(p.score) oneTeacherAvg,
+			(
+				SELECT
+					u.EXP
+				FROM
+					`user` u
+				WHERE
+					s.userId = u.id
+			) exp
+		FROM
+			web_pj p
+		LEFT JOIN lo_schedule s ON p.pgId = s.id
+		<!-- 引用角色的判断 -->
+		<include refid="leader_judge"/>
+		AND s.userId <![CDATA[<>]]>  ''
+		
+		AND DATE_FORMAT(p.addTime, '%Y-%m-%d') = #{dates}
+		GROUP BY
+			teacherId
+	</select>
+	
+	<select id="getStaffCommentAVGInCourse" parameterType="java.util.Map"  resultType="java.lang.Integer">
+		SELECT
+			AVG(pj.score) oneTeacherAvg
+		FROM
+			web_pj pj
+		LEFT JOIN lo_schedule ls ON pj.pgId = ls.id
+		WHERE
+			pj.userId = #{userId}
+			
+		AND YEARWEEK(pj.addTime) = YEARWEEK(NOW())-#{k}
+		
+		AND pj.ispj = '1'
+		AND ls.userId = #{teacherUserId}
+	</select>
+	<!-- 本教研员所评     本周课程教师综合得分结果对比  -->
+	<select id="getStaffCommentAllTeacherScoreByCurrentWeek" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT
+			AVG(pj.bak) beforeCourse,AVG(pj.score) inCourse,AVG(pj.bak1) afterCourse
+		FROM
+			web_pj pj
+		LEFT JOIN lo_schedule ls ON pj.pgId = ls.id
+		WHERE
+			pj.userId = #{userId} <!-- 教研员id -->
+		AND pj.ispj = '1' <!--  有效的评估 -->
+		AND YEARWEEK(pj.addTime) = YEARWEEK(NOW()) 
+		AND ls.userId = #{teacherUserId}<!--  某个老师 -->
+		GROUP BY ls.userId 
+	</select>
+	<!--  某个学校周几的三项（前、中、后）平均分数 -->
+	<select id="getAVGAllBySchool" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT
+			AVG(pj.bak) beforeCourse,
+			AVG(pj.score) inCourse,
+			AVG(pj.bak1) afterCourse
+		FROM
+			web_pj pj
+		LEFT JOIN lo_schedule s ON pj.pgId = s.id
+		WHERE
+			pj.ispj = '1'
+		AND pj.userId = #{userId}
+		AND s.schoolId = #{schoolId}
+		AND DATE_FORMAT(pj.addTime, '%Y-%m-%d') = #{weekDay}
+		GROUP BY
+			s.schoolId
+	</select>
+	<!-- 1.教研员评论的老师   2.该老师在前3个月等级上升幅度（上升幅度大的老师） -->
+	<select id="getStaffCommonentTopTenTeacherByBigRise" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT 
+			h.userId teacherId,u.nickName teacherName,u.EXP EXP,SUM(h.bak) teacherAllScore,(u.EXP-SUM(h.bak)) preThreeMonthValue
+		FROM
+			web_pj pj
+		LEFT JOIN lo_schedule ls ON pj.pgId = ls.id
+		LEFT JOIN sys_history h ON ls.userId = h.userId
+		LEFT JOIN `user` u ON u.id = h.userId
+		WHERE
+			pj.ispj = '1'
+		AND pj.userId = #{userId} <!-- 教研员所评论 --> 
+		AND ls.userId <![CDATA[ <> ]]> ''
+		AND CONCAT(h.createTime,' ',h.modiyTime) <![CDATA[ < ]]> NOW() <!-- 用此时间的目的：老师在前3个月等级上升幅度   ;  而不是前3个月教研员的评论 -->
+		AND CONCAT(h.createTime,' ',h.modiyTime) <![CDATA[ > ]]> DATE_ADD(NOW(), INTERVAL - 90 DAY)
+		<!-- 不用下面的时间
+			AND pj.addTime > DATE_ADD(NOW(),INTERVAL -90 DAY)
+			AND pj.addTime < NOW()
+		 -->
+		AND h.bak<![CDATA[ <> ]]>''
+		GROUP BY
+			h.userId
+		ORDER BY teacherAllScore DESC <!-- 这一步不能省略，是差别最大的排行榜 -->
+		LIMIT 10
+	</select>
+	
+	
+	<select id="findSelectiveAndallResultNotNull">
+		select 
+		<include refid="Base_Column_List" />,
+		(SELECT nickName FROM `user` u WHERE u.id = p.userId) as userName
+		from web_pj p
+		<include refid="Dynamic_Conditions"/>
+		and allResult != ""
+	</select>
+	
+	
+	<select id="findDukeList" parameterType="java.util.Map"  resultType="java.util.Map">
+		SELECT
+		u.id,
+		u.nickName,
+		u.currName,
+		t.bak1,
+		t.bak2
+		FROM
+			web_pj t
+		JOIN `user` u ON u.id = t.userId 
+		WHERE
+			t.pgId = #{pgId}
+		AND t.bak1 IS NOT NULL
+		ORDER BY t.addTime DESC
+		LIMIT 0, 10
+	</select>
+	
+	
+	
+	<delete id="deleteWebPg" parameterType="WebPj">
+		delete from web_pjdetail where userId = #{userId} and pgId = #{pgId};
+		delete from web_pjinfo where userId = #{userId} and pgId = #{pgId};
+		delete from web_pj where userId = #{userId} and pgId = #{pgId};
+	</delete>
+	
+	
+	
+	
+	<select id="listWebPjResult" parameterType="WebPj" resultType="WebPj">
+		SELECT 
+			b.*,a.classroom_name as courScheduleClassroomName, a.teacher_name as courScheduleTeacherName, 
+			a.specialty_name as courScheduleSpecialtyName, a.subject_name as courScheduleSubjectName, 
+			a.start_time as courScheduleStartTime, a.end_time as courScheduleEndTime,
+			a.type as courScheduleType 
+		FROM 
+			class_brand.course_schedule a, zhsx_rf.web_pj b 
+		WHERE 
+			a.id = b.pgId AND b.ispj = 1 AND onOff = 'ON'
+			<if test="search != null">
+				<bind name="pattern" value="'%' + search + '%'" />
+				and(
+					a.teacher_name like #{pattern}
+					or a.classroom_name like #{pattern}
+				)
+			</if>
+			<if test="courScheduleSpecialtyName != null">
+				and a.specialty_name = #{courScheduleSpecialtyName}
+			</if>
+			<if test="courScheduleSubjectName != null">
+				and a.subject_name = #{courScheduleSubjectName}
+			</if>
+		GROUP BY 
+			b.pgId ,DATE_FORMAT(b.addTime,'%Y-%m-%d')
+	</select>
+	
+	<select id="listPersonalWebPjRecord" parameterType="java.lang.String" resultType="WebPj">
+		SELECT 
+			a.id, a.userId, a.pgId, a.onOff, a.allResult, a.score, a.ispj, a.addTime, 
+			b.title AS offLineVideoTitle, b.gradeName AS offLineVideoGradeName, b.subjectName AS offLineVideoSubjectName, b.picPath AS offLineVideoPicPath, b.timeLength AS offLineVideoTimeLength, b.pageView AS offLineVideoPageView, 
+		  	c.classroom_name AS courScheduleClassroomName, c.teacher_name AS courScheduleTeacherName, c.specialty_name AS courScheduleSpecialtyName, c.subject_name AS courScheduleSubjectName, c.start_time AS courScheduleStartTime, c.end_time AS courScheduleEndTime, c.type AS courScheduleType 
+		FROM 
+			zhsx_rf.web_pj a, zhsx_rf.offLine_videoResources b, class_brand.course_schedule c 
+		WHERE
+			a.userId = #{userId} AND a.ispj = 1 AND (a.pgId = b.id OR a.pgId = c.id) 
+		GROUP BY 
+			a.pgId, DATE_FORMAT(a.addTime, '%Y-%m-%d')
+	</select>
+	
+	
+	
+</mapper>

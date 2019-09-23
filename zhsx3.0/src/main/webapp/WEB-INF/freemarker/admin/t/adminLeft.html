@@ -1,0 +1,75 @@
+<!-- <#global ctx=rc.contextPath /> -->
+<!-- 系统设置-->
+<li class="layui-nav-item layui-this">
+	<a href="javascript:;" data-url="${ctx}/adminWelcome">
+		<i class="iconfont icon-home1" data-icon='icon-home1'></i>
+		<span>后台首页</span>
+	</a>
+</li>
+<#if principal.bak1== 'OA' && menuType=='base'>
+<li class="layui-nav-item">
+	<a href="javascript:;">
+		<i class="iconfont icon-jiaoseguanli"></i>
+		<span>角色权限</span>
+		<em class="layui-nav-more"></em>
+	</a>
+	<dl class="layui-nav-child">
+		<!-- 		<dd> -->
+		<!-- 			<a href="javascript:;" data-url="${ctx}/log/sysLog"> -->
+		<!-- 				<i class="iconfont icon-piliangicon" data-icon='icon-piliangicon'></i> -->
+		<!-- 				<span>日志</span> -->
+		<!-- 			</a> -->
+		<!-- 		</dd> -->
+		<dd>
+			<a href="javascript:;" data-url="${ctx}/adminSysrole/sysrole?roleType=base">
+				<i class="iconfont icon-piliangicon" data-icon='icon-piliangicon'></i>
+				<span>基本信息角色权限</span>
+			</a>
+		</dd>
+		<dd>
+			<a href="javascript:;" data-url="${EClassBrandPath}/sysrole/roleList?roleType=schedule">
+				<i class="iconfont icon-piliangicon" data-icon='icon-piliangicon'></i>
+				<span>课程安排角色权限</span>
+			</a>
+		</dd>
+		<dd>
+			<a href="javascript:;" data-url="${ctx}/adminSysrole/sysrole?roleType=zhsx">
+				<i class="iconfont icon-piliangicon" data-icon='icon-piliangicon'></i>
+				<span>综合视讯角色权限</span>
+			</a>
+		</dd>
+		<dd>
+			<a href="javascript:;" data-url="${EClassBrandPath}/sysrole/roleList?roleType=EClassBrand">
+				<i class="iconfont icon-piliangicon" data-icon='icon-piliangicon'></i>
+				<span>电子班牌角色权限</span>
+			</a>
+		</dd>
+	</dl>
+</li>
+</#if>
+
+<#if firstSysPermissions?? && (firstSysPermissions?size>0)><#list firstSysPermissions as f>
+<li class="layui-nav-item">
+	<a href="javascript:;">
+		<i class="iconfont icon-jiaoseguanli"></i>
+		<span>${f.name!''}</span>
+		<em class="layui-nav-more"></em>
+	</a>
+	<dl class="layui-nav-child">
+		<#list sysPermissions as p> <#if p.parentId== f.id>
+		<dd>
+			<#if menuType== 'base' || menuType=='zhsx'> <a href="javascript:;" data-url="${ctx}/${p.url!''}">
+				<i class="iconfont icon-piliangicon" data-icon='icon-piliangicon'></i>
+				<span>${p.name!''}</span>
+			</a> </#if>
+			<#if menuType== 'schedule' || menuType=='EClassBrand'> <a href="javascript:;"
+				data-url="${EClassBrandPath}${p.url!''}">
+				<i class="iconfont icon-piliangicon" data-icon='icon-piliangicon'></i>
+				<span>${p.name!''}</span>
+			</a> </#if>
+		</dd>
+		</#if> </#list>
+	</dl>
+</li>
+</#list></#if>
+<script type="text/javascript" src="${ctx}/js/larry.js"></script>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<#include "/commons/comAdmin.html" encoding="utf-8"/>
+<meta charset="UTF-8">
+<title>审核课件</title>
+<style type="text/css">
+body {
+	height: 750px;
+}
+.courResViewer {
+	border: none;
+	width: 100%;
+	height: 95%;
+}
+.layui-form{
+	margin: 15px -100px;
+}
+</style>
+</head>
+<body>
+	<iframe class="courResViewer" src="${ctx}/generic/web/viewer.html?file=${ctx}/courRes/receivePdfStream/${id!''}"></iframe>
+	<div class="layui-form">
+		<div class="layui-form-item">
+			<div class="layui-input-block">
+				<input class="layui-btn" type="button" value="通过" onclick="changeAuditState('Y');">
+				<input class="layui-btn" type="button" value="驳回" onclick="changeAuditState('N');">
+			</div>
+		</div>
+	</div>
+</body>
+<script type="text/javascript">
+	var layer;
+	layui.use([ 'layer', 'form' ], function() {
+		layer = layui.layer;
+	});
+
+	function changeAuditState(bak2) {
+		var id = "${id!''}";
+		$.ajax({
+			type : "POST",
+			url : ctx + "/adminCourRes/updataCourRes",
+			data : {
+				id : id,
+				bak2 : bak2
+			},
+			success : function(msg) {
+				layer.msg(msg, {
+					time : 1500
+				}, function() {
+					closeiframe(window.name);
+					refresh();
+				});
+			}
+		});
+	}
+</script>
+</html>

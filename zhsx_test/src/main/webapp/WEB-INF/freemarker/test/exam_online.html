@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!--公共样式表-->
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/index2222.css"/>
+	</head>
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<!--内容start-->
+		<div class="con">
+			<!--路径导航-->
+			<div class="mianbaoxue">
+				<span class="layui-breadcrumb">
+  					<a href="${ctx}/index">首页</a>
+  					<a href="${ctx}/test/test">考试中心</a>
+  					<cite>在线考试</cite>
+				</span>
+			</div>
+			<div class="kaoshixiangqing clear">
+				<div>
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<div class="content connn">
+							<div style="width: 100%;height:auto;display: inline-block;position: relative;margin-top:10px;">
+								<div style="width: 100%;">
+									<div style="width: 80%;margin: 0px auto">
+										<div style="width: 100%;height:100px;border: 1px solid #CCC;border-bottom:none;background:#FFF;">
+											<div class="middle-top" style="width: 100%;height: 50px;border-bottom: 1px solid #CCC;background:#4596E5; position:relative;">
+												<div class="middle-top-left pull-left" style="height: 100%;padding-left: 20px;;background:#4596E5;color:#FFF;">
+													<div class="text-center pull-left progress-left" style="border: 1px solid #A2C69A;background:#FFF;border-radius:10px;line-height:20px;height:20px;margin:15px 0px 15px 0px;font-size: 11px;position:relative;">
+														<div class="progress pull-left" style="background: #609E53;width: 0px;height:18px;position:absolute;left: 0px;"></div>
+														<div class="pro-text" style="left: 0px;color: #609E53;position:absolute;top:0px;width:100%;"> 已完成<span class="progres"></span></div>
+													</div>
+													<div class="pull-left" style=" width:135px;line-height:20px;height:20px;margin:15px;font-size:15px;">
+														<!--已做答的数量和考题总数-->
+														当前第<span class="questioned"></span>题/共<span class="question_sum" id="question_sum"></span>题 </div>
+												</div>
+												<div class="middle-top-right text-center pull-left" style="width:160px; height: 100%;border-left: 1px solid red;position: absolute;right: 0px;">
+													<div class="pull-left" style="width: 160px; height: 100%;padding: 10px 0px 10px 0px;">
+														<div class="time" style="width:160px;height: 30px;line-height:30px; border-radius:15px;font-size:20px;color:#FFF; margin-left:2px; "> </div>
+													</div>
+												</div>
+											</div>
+											<div style="width: 100%;height: 50px;font-size:15px;color: #000;line-height: 50px;padding-left: 20px;" id="questionType">
+											</div>
+										</div>
+										<div style="width: 100%;height:auto;display: inline-block;border: 1px solid #CCC;border-bottom:1px dashed #CCC;background:#FFF;">
+											<div style="width: 100%;height: 90%;padding:20px 20px 0px 20px;">
+												<!--试题区域-->
+												<form id="form"  > 
+													<div class="hidd">
+														<input type="hidden" name="testId" value="${tId!''}">
+													</div>
+													<input type="hidden" id="isshoucang">
+													<ul class="list-unstyled question" id="" name="">
+													
+														<!-- 标题 -->
+														
+														<li class="question_title"></li>
+														
+														
+														
+													</ul>
+													<!--考题的操作区域-->
+													<div class="operation" style="margin-top: 20px;">
+														<div class="text-right" style="margin-right: 20px;">
+															<div class="form-group" style="color: #FFF;">
+																<input type="button" class="btn btn-success" id="submitQuestions" value="提交试卷" >
+																<input type="button" class="btn btn-info" id="nextQuestion" value="下一题">
+															</div>
+														</div>
+													</div>
+												
+												</form>
+											</div>
+										</div>
+										<div style="width: 100%;height:auto;display: inline-block;border: 1px solid #CCC;border-top:none;background:#FFF;">
+											<div style="width: 100%;padding:20px;">
+												<div class="panel-default">
+													<div class="panel-heading" class="panel-heading" id="closeCard" style="color: #DCE4EC;font-size: 15px;display: none;background: none;">
+														<span>收起答题卡</span> <span class="glyphicon glyphicon-chevron-up"></span> </div>
+													<div class="panel-heading" id="openCard" style="font-size: 15px;background: none;"> <span>展开答题卡</span> <span class="glyphicon glyphicon-chevron-down"></span> </div>
+													<div id="answerCard" style="display: none;">
+														<div class="panel-body form-horizontal" style="padding: 0px;">
+															<ul class="list-unstyled">
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div style="width: 100%;height: auto;display: inline-block;">
+<!-- 								<div class="text-center" style="width: 100%;"> 底部 </div> -->
+							</div>
+						</div>
+					</div>
+					<div class="col-md-1"></div>
+				</div>
+			</div>
+
+		</div>
+		
+		<form >
+			<input type='hidden' name='idm'>
+		</form>
+		<!--内容end-->
+
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<!--底部 end-->
+	</body>
+	
+	<div id="tan" style="display:none;margin:0 auto; width:65%;">
+		<div class="kaoqing">
+			本次考试情况如下
+		</div>
+		<ul class="daan">
+			
+		</ul>
+	</div>
+	<#include "/commons/comWebjs.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		var QuestionJosn = ${jsonList!''}, times = ${times!''};
+	</script>
+	<script type="text/javascript" src="${ctx}/js/web/exam_online.js"></script>
+	<script type="text/javascript">
+	 layui.use(['layer','element'],function(){
+		var layer = layui.layer,
+		    element = layui.element;
+		
+		 	$("#submitQuestions").click(function() {
+				setTop();
+			});
+			
+			function setTop() {
+				layer.open({
+					type: 1,
+					title: '<i class = "layui-icon" style = "font-size:30px;">&#xe63c;</i> <span style = "font-size:20px;">成绩单</span>',
+					area: ['900px', '550px'],
+					maxmin: true,
+					shade: 0.2,
+					content: $('#tan'),
+					success: function(layero) {
+						layer.setTop(layero); //重点2
+					},
+					cancel: function(index, layero){
+						$('#tan').hide();
+						return true; 
+					}    
+				});
+			}
+			
+	}); 
+	</script>
+</html>

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+	<head>
+		<meta charset="utf-8">
+		<title>教育综合视讯管理平台</title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/personal.css" media="all">
+	</head>
+
+	<body>
+		<!--头部start-->
+		<#include "/zhsx/t/head.html" encoding="utf-8"/>
+		<!--头部end-->
+		<div class="mianbaoxue">
+			<span class="layui-breadcrumb">
+  					<a href="../index.html">首页</a>
+  					<a><cite>班班通</cite></a>
+  					<a><cite>设备管理</cite></a>
+  					<a><cite>学校使用统计</cite></a>
+				</span>
+		</div>
+		<section class="layui-larry-box">
+			<div class="larry-personal">
+				<div class="layui-tab">
+					<blockquote class="layui-elem-quote mylog-info-tit">
+
+						<form id="myform" class="layui-form col-lg-11 search-box03" action="" method="post">
+							<label class="layui-form-label">统计地区：</label>
+							<div class="pull-left">
+							<#if platformLevel?? && platformLevel != 'A'>
+								<#if platformLevel?? && platformLevel == 'N'>
+								<div class="layui-input-inline">
+									<select id="province" name="province" lay-filter="province" >
+		                                <option value="">请选择省份</option>
+		                                <#if provinceList?exists && provinceList?size != 0 >
+		                                	<#list provinceList as province>
+		                                		 <#if (((province.id)!'') == ((provinceAgu)!''))>
+		                                		 	<option value="${(province.id)!''}" selected>${(province.value)!''}</option>
+		                                		 <#else>
+		                                		 	<option value="${(province.id)!''}" >${(province.value)!''}</option>
+		                                		 </#if>
+		                                	</#list>
+		                                </#if>
+	                           		</select>
+								</div>
+								</#if>
+								
+								<#if platformLevel?? && (platformLevel == 'N' || platformLevel == 'P')>
+		                        <#assign marginLeftP = "">
+		                        <#if platformLevel == 'P'><#assign marginLeftP = "margin-left:20px;"></#if>
+								<div class="layui-input-inline">
+									<select id="city" name="city" lay-filter="city" >
+		                                <option value="">请选择市</option>
+		                                 <#if cityList?exists && cityList?size != 0 >
+		                                	<#list cityList as city>
+		                                		 <#if (((city.id)!'') == ((cityAgu)!''))>
+		                                		  	<option value="${(city.id)!''}" selected>${(city.value)!''}</option>
+		                                		 <#else>
+		                                		 	 <option value="${(city.id)!''}">${(city.value)!''}</option>
+		                                		 </#if>
+		                                	</#list>
+		                                </#if>
+		                            </select>
+								</div>
+								</#if>
+								 
+								<#if platformLevel?? && (platformLevel == 'N' || platformLevel == 'P' || platformLevel == 'C')>
+		                        <#assign marginLeftC = "">
+		                        <#if platformLevel == 'C'><#assign marginLeftC = "margin-left:20px;"></#if>
+								<div class="layui-input-inline">
+									<select id="area" name="area" lay-filter="area" >
+		                                <option value="">请选择县/区</option>
+		                                <#if areaList?exists && areaList?size != 0 >
+			                               	<#list areaList as area>
+			                               		 <#if (((area.id)!'') == ((areaAgu)!''))>
+		                                		  	<option value="${(area.id)!''}" selected>${(area.value)!''}</option>
+		                                		 <#else>
+		                                		 	 <option value="${(area.id)!''}">${(area.value)!''}</option>
+		                                		 </#if>
+			                               	</#list>
+		                               </#if>
+		                            </select>
+								</div>
+								</#if>
+		                      
+		                    	<#else>
+			             			<input type="hidden" id="countyId" name="countyId" value="${platformLevelId!''}">
+								</#if>
+								
+								
+								<!-- <label class="layui-form-label">统计日期：</label> -->
+			                    <div class="layui-input-inline pull-left">
+			                        <input class="layui-input" placeholder="开始日" name="startTime" id="LAY_demorange_s2" value="${startTimeAgu!''}" >
+			                    </div>
+			                    <div class="layui-input-inline pull-left">
+			                        <input class="layui-input" placeholder="截止日" name="endTime" id="LAY_demorange_e2" value="${endTimeAgu!''}" >
+			                    </div>
+			                    <!-- 默认值 -->
+			                    <!--  <input type="text" id="flag" name="flag" value="2"> -->
+								
+								<input class="layui-btn search-btn01 pull-left" type="button" onclick="search()" value="搜索">
+								<button class="layui-btn layui-btn-primary search-btn01 pull-left" type="reset" lay-filter="">重置</button>
+							</div>
+
+							
+						</form>
+
+					</blockquote>
+					<div class="larry-separate"></div>
+					<div class="layui-tab-content larry-personal-body clearfix">
+
+						<div class="alert alert-success">
+
+							<table class="layui-table text-center total_tab" lay-even="" lay-skin="nob">
+								<thead>
+									<tr>
+										<th>总设备数</th>
+										<th>有设备的学校数</th>
+										<th>平均在线率</th>
+										<th>平均使用时长</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<#if totalSchoolMap??&&totalSchoolMap?size gt 0>
+				                        	<td>
+					                            <h3>
+					                           	 ${(totalSchoolMap.totaldevices)!''}
+					                            </h3>
+				                            </td>
+				                            <td>
+					                            <h3>
+					                           	 ${(totalSchoolMap.schooldevices)!''}
+					                            </h3>
+				                            </td>
+				                            <td>
+					                            <h3>
+					                             <#if totalSchoolMap.averageuserate??>
+				                            		${(totalSchoolMap.averageuserate)!''} %
+				                            	 <#else>
+				                            		0 %
+				                            	 </#if>
+					                            </h3>
+				                            </td>
+				                            <td>
+					                            <h3>
+						                           	<#if totalSchoolMap.averageuselength??>
+					                            		${((totalSchoolMap.averageuselength)!'')/3600000}
+					                            	<#else>
+					                            		0
+					                            	</#if>
+					                            </h3>
+				                            </td>
+			                        	</#if>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="row">
+							
+							<div class="col-lg-3">
+								<div class="tongji_info" id="tongji_info_school"></div>
+							</div>
+							
+							<div class="col-lg-9">
+								<table class="layui-table">
+									<thead>
+										<th>学校名称</th>
+										<th>设备总数</th>
+										<th>在线数量</th>
+										<th>在线率</th>
+										<th>总使用时长（小时）</th>
+										<th>平均使用时长（小时）</th>
+										<!-- <th>操作</th> -->
+									</thead>
+									<tbody id="schoolcount">
+				                        <#if detailSchoolListMap?? && (detailSchoolListMap?size>0)>
+				                       		<#list detailSchoolListMap as dsMap>
+				                       			<tr>
+						                            <td>${(dsMap.schoolName)!''}</td>
+						                            <td>${(dsMap.schoolTotaldevices)!''}</td>
+						                            <td>${(dsMap.schoolUsedevices)!''}</td>
+						                            <td>
+						                            	<#if dsMap.schoolUserate??>
+						                            		${(dsMap.schoolUserate)!''} %
+						                            	<#else>
+						                            		0 %
+						                            	</#if>
+						                            </td>
+						                            <td>
+						                            	<#if dsMap.totaluselength??>
+						                            		${((dsMap.totaluselength)!'')/3600000}
+						                            	<#else>
+						                            		0
+						                            	</#if>
+						                            </td>
+						                            <td>
+						                            	<#if dsMap.averageuselength??>
+						                            		${((dsMap.averageuselength)!'')/3600000}
+						                            	<#else>
+						                            		0
+						                            	</#if>
+						                            </td>
+						                           <!--  <td>
+						                                <a href="" title="查看" class="check_look">查看</a>
+						                            </td> -->
+						                        </tr>
+											</#list>
+										</#if> 
+		                            </tbody>
+								</table>
+								<!-- 分页 -->
+								<div id="page"></div>
+								
+							</div>
+							
+							
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</section>
+		<!--底部 start -->
+		<#include "/zhsx/t/bottom.html" encoding="utf-8"/>
+		<!--底部 end-->
+		<#include "/commons/comWebjs.html" encoding="utf-8"/>
+		<script type="text/javascript" src="${ctx}/js/webdevice/bbt_common.js"></script>
+		<#include "/commons/comPage.html" encoding="utf-8"/>
+		<script type="text/javascript">
+			function turnPage(p) {
+				var province = $("#province").val();
+				var city = $("#city").val();
+				var area = $("#area").val();
+				
+				var startTime = $("#LAY_demorange_s2").val();
+				var endTime = $("#LAY_demorange_e2").val(); 
+				
+				if(platformLevel=='N'){
+					location.href="${ctx}/webdevicemanage/schoolUsingCount?p="+e.curr+"&province="+province+"&city="+city+"&area="+area+"&startTime="+startTime+"&endTime="+endTime;
+	          	}else if(platformLevel=='P'){
+	          		location.href="${ctx}/webdevicemanage/schoolUsingCount?p="+e.curr+"&city="+city+"&area="+area+"&startTime="+startTime+"&endTime="+endTime;
+	          	}else if(platformLevel=='C'){
+	          		location.href="${ctx}/webdevicemanage/schoolUsingCount?p="+e.curr+"&area="+area+"&startTime="+startTime+"&endTime="+endTime;
+	          	}else if(platformLevel=='A'){
+	          		location.href="${ctx}/webdevicemanage/schoolUsingCount?p="+e.curr+"&startTime="+startTime+"&endTime="+endTime;
+	          	}
+			}
+		</script>
+		
+
+		
+		<script type="text/javascript">
+		 	var platformLevel = "${platformLevel}";
+		 
+			var $;
+			var form;
+			var $form;
+			layui.use(['jquery', 'form','laypage'], function() {
+			    $ = layui.jquery;
+			    form = layui.form;
+			    $form = $('form');
+			    
+			    form.on('select(province)', function(data){
+			    	   $("#city").empty();
+			    	   $("#cityId").append('<option value="">请选择市</option>');
+				   	   $("#area").empty();
+			    	   $("#area").append("<option value=''>请选择县/区</option>");
+				   	   
+			    	   $.ajax({
+				   			url:"${ctx}/adminBaseData/getCity?provinceId="+data.value,
+				   			type:'post',
+				   			success:function(datas){
+				   				var cityHtml = '<option value="">请选择市</option>';
+				   				for(var i = 0; i < datas.length; i++) {
+			  		                cityHtml += '<option value="' + datas[i].id + '">' +
+			  		              	datas[i].value + '</option>';
+			  		            }
+			  		            $("#city").html(cityHtml).parent().show();
+			  		            form.render();
+				   			}
+				   	   }); 
+			    	   return false;
+			   		}); 
+			        form.on('select(city)', function(data){
+				   	     $("#area").empty();
+			    	     $("#area").append("<option value=''>请选择县/区</option>");
+				       	 $.ajax({
+								url:"${ctx}/adminBaseData/getCounty?cityId="+data.value,
+								type:'post',
+								success:function(datas){
+									var areaHtml = '<option value=""></option>';
+						            for(var i = 0; i < datas.length; i++) {
+						                areaHtml += '<option value="' + datas[i].id + '">' +
+						                datas[i].value + '</option>';
+						             }
+						            $("#area").html(areaHtml).parent().show();
+						            form.render();
+								}
+						 });
+				       	 return false;
+			  		});  
+			});
+			/*时间设定*/
+		    layui.use('laydate', function(){
+		        var laydate = layui.laydate;
+		        //$("#LAY_demorange_s2").val(laydate.now(-7));
+		        //$("#LAY_demorange_e2").val(laydate.now());
+		        //精确到秒
+		        var start = {
+		             min: '1970-01-01 00:00:00'
+		             ,max: '2099-06-16 23:59:59'
+		             ,istoday: true
+		             ,istime: true
+		             ,format: 'YYYY-MM-DD hh:mm:ss'
+		             ,choose: function(datas){
+		                 end.min = datas; //开始日选好后，重置结束日的最小日期
+		                 end.start = datas; //将结束日的初始值设定为开始日
+		             }
+		         };
+		         var end = {
+		             min: '1970-01-01 00:00:00'//laydate.now()
+		             ,max: '2099-06-16 23:59:59'
+		             ,istoday: true
+		             ,istime: true
+		             ,format: 'YYYY-MM-DD hh:mm:ss'
+		             ,choose: function(datas){
+		                 start.max = datas; //结束日选好后，重置开始日的最大日期
+		             }
+		         };
+         		
+		        /*
+		                    精确到日
+		        var start = {
+		            min: '1970-01-01 00:00:00'
+		            ,max: '2099-06-16 23:59:59'
+		            ,istoday: true
+		            ,choose: function(datas){
+		                end.min = datas; //开始日选好后，重置结束日的最小日期
+		                end.start = datas; //将结束日的初始值设定为开始日
+		            }
+		        };
+		        var end = {
+		            min: '1970-01-01 00:00:00'//laydate.now()
+		            ,max: '2099-06-16 23:59:59'
+		            ,istoday: true
+		            ,choose: function(datas){
+		                start.max = datas; //结束日选好后，重置开始日的最大日期
+		            }
+		        }; */
+		        document.getElementById('LAY_demorange_s2').onclick = function(){
+		            start.elem = this;
+		            laydate(start);
+		        };
+		        document.getElementById('LAY_demorange_e2').onclick = function(){
+		            end.elem = this;
+		            laydate(end);
+		        }
+	
+		    });
+			function search(){
+				//验证
+				if(platformLevel=='N'){
+					var pe=$("#province").val();
+					if(pe == null || pe.length == 0 ){
+		            	alert('请选择省份');
+						return false;
+		            }
+					var cy=$("#city").val();
+					if(cy == null || cy.length == 0 ){
+		            	alert('请选择市');
+						return false;
+		            }
+					var aa=$("#area").val();
+					if(aa == null || aa.length == 0 ){
+		            	alert('请选择区县');
+						return false;
+		            }
+	          	}else if(platformLevel=='P'){
+	          		var cy=$("#city").val();
+					if(cy == null || cy.length == 0 ){
+		            	alert('请选择市');
+						return false;
+		            }
+					var aa=$("#area").val();
+					if(aa == null || aa.length == 0 ){
+		            	alert('请选择区县');
+						return false;
+		            }
+	          	}else if(platformLevel=='C'){
+	          		var aa=$("#area").val();
+					if(aa == null || aa.length == 0 ){
+		            	alert('请选择区县');
+						return false;
+		            }
+	          	}
+				
+				
+				$("#myform").attr("action","${ctx}/webdevicemanage/schoolUsingCount");
+				$("#myform").submit();  
+			}
+			
+			var otherDevice = "${otherDevice}";//会在tongji_info_school.js中使用
+			
+		</script>
+		<!--公共js-->
+		<script type="text/javascript" src="${ctx}/js/webdevice/tongji_info_school.js"></script>
+	</body>
+
+</html>

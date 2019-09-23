@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<#include "/commons/comWeb.html" encoding="utf-8"/>
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/sjzx_sjzx.css" />
+	</head>
+
+	<body>
+		<div class="nr1">
+			<p class="tittle">本教研员所评 -- 最近一周 - 不同活跃度分析 / 教师</p>
+			<div id="main8">
+			</div>
+		</div>
+		<!--不同学校课前平均评估图-->
+		<div class="nr1">
+			<p class="tittle">本教研员所评 -- 不同等级教师的课前备课评估平均得分 </p>
+			<div id="main14">
+			</div>
+		</div>
+		<div class="nr1">
+			<p class="tittle">本教研员所评 -- 课前备课平均评估得分 / 学校（不同学校）</p>
+			<div id="main15">
+			</div>
+		</div>
+		
+	</body>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/echarts.min.js"></script>
+	<script type="text/javascript">
+		setIframeH();
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframeRanking'));//parentIframeRanking
+			iframe.height(body.height()+50);
+		}	
+		
+		var teacherNames=[];
+		var counts=[];
+		var avgTimelength=[];
+		//freemarker 和js 的结合
+		<#if listMaps?exists && listMaps?size != 0 >
+		 	<#list listMaps as l>
+			 	teacherNames.push("${l.teacherName!''}");
+			 	counts.push("${l.counts!''}");
+			 	avgTimelength.push("${l.avgTimelength!'0'}");
+		 	</#list>
+		</#if>
+		
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var myChart8 = echarts.init(document.getElementById("main8"));
+		var option8 = {
+			color: color3,
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: {
+					type: 'shadow'
+				}
+			},
+			legend: {
+				data: ['学生回答问题时长', '学生回答问题次数']
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: {
+				type: 'value',
+				boundaryGap: [0, 0.01]
+			},
+			
+			yAxis: {
+				type: 'category',
+				data: teacherNames
+			},
+			series: [{
+				name: '学生回答问题时长',
+				type: 'bar',
+				data: avgTimelength
+			}, {
+				name: '学生回答问题次数',
+				type: 'bar',
+				data: counts
+			}]
+		};
+		myChart8.setOption(option8);
+		
+		/*本教研员所评 -- 不同等级教师的课前备课评估平均得分 */
+		var teachers1=[];
+		var teachers2=[];
+		var teachers3=[];
+		var teachers4=[];
+		var teachers5=[];
+		var teachers6=[];
+		
+    	<#assign item1 = resultMap.teacher1>   
+    	<#list item1 as itemValue>
+    		teachers1.push("${itemValue}");
+     	</#list>
+    	<#assign item2 = resultMap.teacher2>   
+    	<#list item2 as itemValue>
+    		teachers2.push("${itemValue}");
+     	</#list>
+    	<#assign item3 = resultMap.teacher3>   
+    	<#list item3 as itemValue>
+    		teachers3.push("${itemValue}");
+     	</#list>
+    	<#assign item4 = resultMap.teacher4>   
+    	<#list item4 as itemValue>
+    		teachers4.push("${itemValue}");
+     	</#list>
+    	<#assign item5 = resultMap.teacher5>   
+    	<#list item5 as itemValue>
+    		teachers5.push("${itemValue}");
+     	</#list>
+    	<#assign item6 = resultMap.teacher6>   
+    	<#list item6 as itemValue>
+    		teachers6.push("${itemValue}");
+     	</#list>
+		
+		var myChart14 = echarts.init(document.getElementById("main14"));
+		var option14 = {
+			color: color3,
+			tooltip: {
+				trigger: 'axis',
+				axisPointer: { // 坐标轴指示器，坐标轴触发有效
+					type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+				}
+			},
+			legend: {
+				/* data: ['新手教师', '普通教师', '一级教师', '二级教师', '三级教师', '特级教师'] */
+				data: ['初级教师', '三级教师', '二级教师', '一级教师', '高级教师', '特级教师']
+			},
+			grid: {
+				left: '3%',
+				right: '4%',
+				bottom: '3%',
+				containLabel: true
+			},
+			xAxis: {
+				type: 'value'
+			},
+			yAxis: {
+				type: 'category',
+				data: ['周一', '周二', '周三', '周四', '周五']//,'周六','周日'
+			},
+			series: [{
+				name: '初级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers1
+			}, {
+				name: '三级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data:teachers2
+			}, {
+				name: '二级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers3
+			}, {
+				name: '一级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers4
+			}, {
+				name: '高级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers5
+			}, {
+				name: '特级教师',
+				type: 'bar',
+				stack: '总量',
+				label: {
+					normal: {
+						show: true,
+						position: 'insideRight'
+					}
+				},
+				data: teachers6
+			}]
+		};
+		myChart14.setOption(option14);
+		
+		/*本教研员所评 -- 课前备课平均评估得分 / 学校（不同学校）*/
+		var schoolNameData=[];
+		<#if schoolIdNames?exists && schoolIdNames?size != 0 >
+		 	<#list schoolIdNames as l>
+		 		schoolNameData.push("${l.schoolName!''}");
+		 	</#list>
+		</#if>
+		
+		var seriesData=[];
+	    <#list schoolDataMap?keys as schoolKey>
+	      var temp = {};	
+	      temp.name='${schoolKey!''}';
+	      temp.type='line';
+/* 	      temp.stack='总量';   加上这个属性后图标展示的是总的数量 */	
+      
+	      <#assign items = schoolDataMap[schoolKey]>
+          var weekData=[];
+          <#list items as itemValue>
+          	weekData.push("${itemValue?default(0)}");
+          </#list>
+          
+          temp.data=weekData;
+          seriesData.push(temp);
+	    </#list>
+		    
+		//不同学校在前一周课前备课评估得分图
+		var color3 = ['#4596e5', '#2ec7c9', '#b6a2de', '#5c9ded', '#36bd9b', '#22b7e5', '#7266bb', '#fe9331'];
+		var myChart15 = echarts.init(document.getElementById("main15"));
+		
+		/* 这个图也可以
+		var option15 = {
+			color: color3,
+			legend: {
+				orient: 'vertical',
+				left: 'left',
+				data: [{
+					name: schoolNameData
+				}]
+			},
+			tooltip: {
+				trigger: 'axis', //弹框的显示与否
+				axisPointer: {
+					type: 'cross'
+				}
+			},
+			xAxis: {
+				data: ['周一', '周二', '周三', '周四', '周五']
+			},
+			yAxis: {
+				tupe: 'value',
+				min: 1,
+				max: 100
+			},
+			legend: {
+				data: schoolNameData
+			},
+			series: seriesData
+		} */
+		
+		var option15 = {
+			color: color3,
+			tooltip: {
+				trigger: 'axis'
+			},
+			legend: {
+				data: schoolNameData /*tihuan*/
+			},
+			calculable: true,
+			xAxis: [{
+				type: 'category',
+				boundaryGap: false,
+				data: ['周一', '周二', '周三', '周四', '周五']
+			}],
+			yAxis: [{
+				type: 'value',
+				min : 0,
+				max : 100
+			}],
+			series: seriesData
+		};
+		
+		myChart15.setOption(option15);
+	</script>
+
+</html>

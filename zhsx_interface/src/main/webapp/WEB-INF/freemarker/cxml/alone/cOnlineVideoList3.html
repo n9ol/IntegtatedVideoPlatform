@@ -1,0 +1,20 @@
+<?xml version="1.0"	encoding="UTF-8"?>
+<onlinevideolist>
+	<#if psilist?? && (psilist?size>0)> 
+    <#list psilist as l>
+    <onVideo>
+    	<id>${(l.id)!'0'}</id>
+    	<tname>${(l.teacherName)!''}</tname>
+    	<classid>${(l.classroomId)!'0'}</classid>
+    	<classname>${(l.classroomName)!'0'}</classname>
+    	<starttime>${l.startTime?string('HH:mm:ss')}</starttime>
+    	<endtime>${l.endTime?string('HH:mm:ss')}</endtime>
+    	<gradename>${(l.specialtyName)!''}</gradename>
+    	<subjectname>${(l.subjectName)!''}</subjectname>
+    	<schoolname>${(l.schoolName)!''}</schoolname>
+    	<sectionofday>${(l.sectionOfDay)!''}</sectionofday>
+    	<state>正在直播</state>
+    </onVideo>
+    </#list>
+    </#if>
+</onlinevideolist>

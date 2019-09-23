@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+	<!-- 		<#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+		<style type="text/css">
+			.layui-input-block{
+					width:400px;
+				}
+				.layui-input-block {
+				    margin-left: 135px;
+				}
+				.layui-form-label {
+				    width: 105px;
+				}
+				.zong_subfrm{
+						margin-left:100px;
+				}
+				.msg{
+					float:right;
+					margin-top:-25px;
+					width:285px;
+				}
+		</style>
+	</head>
+
+	<body>
+		<div class="kao_right">
+			<div class="mainbody">
+				<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i> 添加新试卷</p>
+
+				<div class="navbar">
+					<div class="barlist">
+						<div class="fl currbar" style="padding-left:25px;padding-right:25px;color: #fff;">
+							<div class="ntext yahei">1.添加基本信息</div>
+						</div>
+						<div class="fl currsplit sanjiao" ></div>
+						<div class="fl currbar" style="padding-left:25px;padding-right:25px; ">
+							<div class="ntext yahei">2.添加选项</div>
+						</div>
+						<div class="fl  currsplit sanjiao"></div>
+						<div class="fl nextbar" style="padding-left:25px;padding-right:25px;">
+							<div class="ntext yahei">3.完成发布</div>
+						</div>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<div class="zong_subfrm" >
+			<form class="layui-form" action="" id="form">
+			<div class="diyibu">
+				<div id="subfrm"  style="display: block;">
+				<div class="hsplit"></div>
+				<div class="inforow">
+					<div class="fl text font20 yahei">第一步、选择试卷分类：</div>
+					<div class="clear"></div>
+				</div>
+				<div style="height:30px;"></div>
+			
+				
+				  <div class="layui-form-item">
+					    <label class="layui-form-label" >选择教育类型：</label>
+					    <div class="layui-input-block" >
+					      <select type="text" id="stuType" name="stuType" title="试卷版本">
+					        <option value="基础教育">基础教育</option>
+					        <option value="专题教育">专题教育</option>
+					        <option value="专题教育">专题教育</option>
+					        <option value="课外拓展">课外拓展</option>
+					      </select>
+					    </div>
+				  </div>
+							
+					<div style="height:20px;"></div>
+			   <div class="layui-form-item">
+					    <label class="layui-form-label" >选择专业：</label>
+					    <div class="layui-input-block" >
+					      <select type="text" id="gradeId" name="gradeName" title="专业" lay-filter="gradeId" lay-search>
+					     
+					         	<option value="">请选择专业</option>
+					        <#if grades??&&(grades?size>0)><#list grades as g>
+       							<option  name="${g.id}"  value="${g.id}">${g.value}</option>
+       						</#list></#if>
+					      </select>
+					    </div>
+					     <span id="gradeId_msg" class="msg" style="color:red;">*</span>
+				  </div>
+					<div style="height:20px;"></div>
+				</div>
+			</div>
+			<div id="subfrm" action="" method="post">
+				<div class="inforow">
+					<div class="fl text font20 yahei">
+						第二步、选择科目册次：
+					</div>
+					<div class="clear"></div>
+
+				</div>
+				<div style="height: 30px;"></div>
+				<div class="layui-form-item">
+					    <label class="layui-form-label" >选择科目：</label>
+					    <div class="layui-input-block" >
+					      	<select name="subiectName" class="subjectId" id="subjectId">
+        						<option  value="">选择科目</option>
+      						</select>
+					    </div>
+					     <span id="subjectId_msg" class="msg" style="color:red;">*</span>
+				</div>
+				<div style="height: 20px;"></div>
+				  <div class="layui-form-item">
+					    <label class="layui-form-label" >选择册目：</label>
+					    <div class="layui-input-block" >
+					      <select type="text" id="volume" name="volume" title="试卷版本">
+					        <option value="0">全册</option>
+					        <option value="1">上册</option>
+					        <option value="2">下册</option>
+					      </select>
+					    </div>
+				  </div>
+				
+				<div style="height: 20px;"></div>
+		
+			<div id="subfrm" >
+				
+				<div class="inforow">
+					<div class="fl text font20 yahei">
+						第三步、填写试卷信息：
+					</div>
+					<div class="clear"></div>
+
+				</div>
+				<div style="height: 30px;"></div>
+				
+				<div class="layui-form-item">
+					    <label class="layui-form-label" >选择版本：</label>
+					    <div class="layui-input-block" >
+					      <select type="text" id="version" name="version" title="试卷版本">
+					        <#if version?? && (version?size>0)><#list version as v>
+									<option value="${v.value!''}" checked>${v.value!''} </option>
+								</#list></#if>
+					      </select>
+					    </div>
+				  </div>
+				
+				<div style="height: 20px;"></div>
+				<div class="formrow">
+					  <div class="layui-form-item">
+					    <label class="layui-form-label">试卷标题:</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="testTitle" id="testTitle" required  lay-verify="required" autocomplete="off" class="layui-input" onblur="javascript:checkOk(checkString(this));">
+					    </div>
+						<span id="testTitle_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>      
+					  </div>
+				</div>				
+				<div style="height: 20px;"></div>
+				<div class="formrow">
+					  <div class="layui-form-item">
+					    <label class="layui-form-label">预设总分:</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="totalScore" id="totalScore" required  lay-verify="required"  autocomplete="off" class="layui-input" onblur="checkOk(this,checkString(this)&&checkNum(this))">
+					    </div>
+						 <span id="totalScore_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>   
+					  </div>
+				</div>				
+				<div style="height: 20px;"></div>
+				<div class="formrow">
+					  <div class="layui-form-item">
+					    <label class="layui-form-label">考试时间（分）:</label>
+					    <div class="layui-input-block">
+					      <input type="text" name="times" id="times" required  lay-verify="required"  autocomplete="off" class="layui-input" onblur="checkOk(this,checkString(this)&&checkNum(this))">
+					    </div>
+					  <span id="times_msg" class="msg" style="color:#F7B824;">*&nbsp;&nbsp;必填</span>   
+					  </div>
+				</div>			
+				<div style="height: 20px;"></div>	
+				<div class="formrow">
+					  <div class="layui-form-item">
+					   <label class="layui-form-label">试卷截止日期:</label>
+					    <div class="layui-inline">
+							  <input class="layui-input"  name="lockTime"  id="lockTime"  onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+						</div>
+					   
+					  </div>
+				</div>		
+				<div style="height: 20px;"></div>		
+					<div class="layui-form-item">
+				    <div class="layui-input-block">
+				      <input type="button" class="layui-btn" value="确认提交">
+				      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+				    </div>
+				  </div>	
+					
+				</form>
+			</div>
+			
+	</div>
+			
+	</body>
+	<script type="text/javascript">var ctx="${ctx!''}";</script>
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<script src="${ctx}/js/web/mstd_geren.js" type="text/javascript" charset="utf-8"></script>
+	<script  type="text/javascript"  src="${ctx}/js/check.js"></script>
+	
+	<script type="text/javascript">
+		setIframeH();
+
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height());
+		}
+		
+	</script>
+	<script type="text/javascript">
+	$(function (){
+		
+		agradeSubject("${gradeChk!''}");
+		
+	});
+	var layer;
+
+	layui.use([ 'layer','form','laydate'], function() {
+		layer = layui.layer;
+		var form = layui.form;
+		 var laydate = layui.laydate;
+		form.on('select(gradeId)', function(data){
+			$("#subjectId").empty();
+			$("#subjectId").append('<option value="">请选择科目</option>');
+			$.getJSON(ctx+"/adminBaseData/getSubjects", { gradeId: data.value}, function(json){
+				for (var int = 0; int < json.length; int++) {
+					var arrayJson=json[int];
+				$("#subjectId").append('<option  value="'+arrayJson.value+'">'+arrayJson.value+'</option>');
+					
+				}
+				form.render('select');
+			});  
+		});
+	});
+	
+	//表单验证
+	function chkForm() {
+		var isok = true;
+		var  title=$("input[name='testTitle']").val();
+		if(title==""){
+			isok = false;
+			$("#testTitle_msg").css("color","#f00");
+			$("#testTitle_msg").html("请填写标题!");
+		}else{
+			$("#testTitle_msg").css("color","#060");
+			$("#testTitle_msg").html("<img src='${ctx}/images/chk_ok.jpg' border=0>");
+		}
+		var  gradeId=$("#gradeId").find("option:selected").val();
+		if(gradeId=="" || gradeId=="请选择专业"){
+			isok = false;
+			$("#gradeId_msg").css("color","#f00");
+			$("#gradeId_msg").text("请选择专业!");
+		}else{
+			$("#gradeId_msg").css("color","#060");
+			$("#gradeId_msg").html("<img src='${ctx}/images/chk_ok.jpg' border=0>");
+		}
+		
+		var  subjectId=$("#subjectId").find("option:selected").val();
+		if(subjectId=="" || subjectId=="请选择科目"){
+			isok = false;
+			$("#subjectId_msg").css("color","#f00");
+			$("#subjectId_msg").text("请选择科目!");
+		}else{
+			$("#subjectId_msg").css("color","#060");
+			$("#subjectId_msg").html("<img src='${ctx}/images/chk_ok.jpg' border=0>");
+		}
+		var testTitle = document.getElementById("testTitle");
+		var totalScore = document.getElementById("totalScore");
+		var times = document.getElementById("times");
+		
+		 if (!checkString(testTitle)) {
+				isok = false;
+			}else if(!(totalScore,checkString(totalScore)&&checkNum(totalScore))){
+				isok = false;
+			}else if(!(times,checkString(times)&&checkNum(times))){
+				isok = false;
+			}
+		return isok;
+	}
+
+	
+	
+	$(".layui-btn").click(function (){
+		if(chkForm()){
+			var testTitle = $("input[name='testTitle']").val();
+			var stuType =  $("#stuType").find("option:selected").val();
+			var gradeName = $("#gradeId").find("option:selected").text();
+			var subiectName =$("#subjectId").find("option:selected").val();
+			var volume = $("#volume").find("option:selected").val();
+			var version =$("#version").find("option:selected").val();
+			var totalScore =  $("input[name='totalScore']").val();
+			var times = $("input[name='times']").val();
+			var lockTime = $("input[name='lockTime']").val();
+			
+			$.getJSON("${ctx}/test/saveTest", { testTitle:testTitle,stuType:stuType,gradeName:gradeName,subiectName:subiectName,volume:volume,version:version,totalScore:totalScore,times:times,lockTime:lockTime}, function(json){	
+				location.href="${ctx}/test/addTi?testId="+json.testId+"&testTitle="+json.testTitle+"&totalScore="+json.totalScore;
+			});
+		}
+	} );
+	
+	
+	
+	
+	
+	
+	
+	
+	</script>
+
+
+
+</html>

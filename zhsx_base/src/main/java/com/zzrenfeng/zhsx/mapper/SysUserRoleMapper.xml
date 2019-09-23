@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zzrenfeng.zhsx.mapper.SysUserRoleMapper" >
+ 
+	<resultMap id="BaseResultMap"  type="com.zzrenfeng.zhsx.model.SysUserRole" >
+		<result column="id" property="id" />
+		<result column="userId" property="userId" />
+		<result column="roleId" property="roleId" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,userId,roleId
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		select 
+		<include refid="Base_Column_List" />
+		from sys_user_role
+		where id = #{id}
+	</select>
+
+	<select id="selectAll" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_user_role
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		delete from sys_user_role
+		where id = #{id}
+	</delete>
+	
+	<delete id="deleteByUserId" parameterType="java.lang.String">
+		delete from sys_user_role
+		where userId = #{userId}
+	</delete>
+	
+
+	<insert id="insert" parameterType="SysUserRole" >
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">select uuid()</selectKey>
+		insert into sys_user_role (id,userId,roleId)
+		values (#{id},#{userId},#{roleId})
+	</insert>
+
+
+	<update id="updateByPrimaryKeySelective" parameterType="SysUserRole" >
+		update sys_user_role
+		<set >
+			<if test="id != null" >
+				id = #{id},
+			</if>
+			<if test="userId != null" >
+				userId = #{userId},
+			</if>
+			<if test="roleId != null" >
+				roleId = #{roleId}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+
+	<update id="updateByPrimaryKey" parameterType="SysUserRole" >
+		update sys_user_role
+		set 
+		id = #{id},
+		userId = #{userId},
+		roleId = #{roleId}
+		where id = #{id}
+	</update>
+	
+	<sql id="Dynamic_Conditions">
+		<where>
+			1=1
+			<if test="id != null" >
+				and id = #{id}
+			</if>
+			<if test="userId != null" >
+				and userId = #{userId}
+			</if>
+			<if test="roleId != null" >
+				and roleId = #{roleId}
+			</if>
+		</where>
+	</sql>
+	
+	
+	<select id="findSelective" parameterType="SysUserRole" resultType="SysUserRole">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_user_role
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+
+	<select id="findPageSelective" parameterType="SysUserRole" resultType="SysUserRole">
+		select 
+		<include refid="Base_Column_List" />
+		from sys_user_role
+		<include refid="Dynamic_Conditions"/>
+	</select>
+
+	
+	<insert id="updateUserRole" parameterType="java.util.Map">
+		insert into sys_user_role (id,userId,roleId)
+		values 
+		<foreach collection="roleIds" separator="," item="roleId">
+			((select uuid()),#{userId},#{roleId})
+		</foreach>
+		ON DUPLICATE KEY UPDATE userId = #{userId}
+	</insert>
+	
+	
+	
+	<select id="findroleIdsByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT id FROM sys_role WHERE id IN ( select roleId from sys_user_role where userId = #{userId}) AND available = 1
+	</select>
+	
+	
+</mapper>

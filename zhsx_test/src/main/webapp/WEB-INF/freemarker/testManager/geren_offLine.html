@@ -1,0 +1,192 @@
+ <!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>教育综合视讯管理平台</title>
+		<!-- <#global ctx=rc.contextPath/> -->
+		<link rel="stylesheet" type="text/css" href="${ctx}/common/layui/css/layui.css">
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/reset.css" />
+		<link rel="stylesheet" type="text/css" href="${ctx}/css/web/mstd_geren.css" />
+	</head>
+
+	<body> 
+		<div class="kao_right">
+			<p class="examTitle"><i class="layui-icon" style="color: orangered;font-size: 20px;">&#xe602;</i>我的离线考试</p>
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this">我的离线考试</li>
+				</ul>
+				<div class="tianjia" ><a href="javascript:;" onclick="add()" style="color: white;">上传离线数据</a></div>
+			</div>
+			<div class="guanjian">
+				<span>筛选：</span>
+				<span>
+						<select name="gradeId" id="gradeId" onchange="getSubject();">
+       						<option value="">选择专业</option>
+       						<#if grades??&&(grades?size>0)><#list grades as g>
+       							<option  name="${g.id}"  value="${g.id}">${g.value}</option>
+       						</#list></#if>
+      					</select>
+				</span>
+				<span>
+					<select name="subjectId" class="subjectId" id="subjectName">
+        						<option  value="">选择科目</option>
+      				</select>
+				</span>
+				<img  onclick="searchSchool();" style="margin-top:12px;" alt="搜索" src="${ctx}/img/sousuo.jpg">
+				<span style="float:right;">
+					<input type="search" name="search1" id="search1" value="${search!''}" style="width: 150px;height: 27px;" />
+				</span>
+			</div>
+			<table class="layui-table table">
+
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>专业</th>
+						<th>班级</th>
+						<th>科目</th>
+						<th>标题</th>
+						<th>参考人数</th>
+						<th>及格人数</th>
+						<th>及格比例</th>
+						<th>操作</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+				<#if lists?? && (lists?size>0)><#list lists as l>
+					<tr>
+						<td>${l_index+1}</td>
+						<td>${l.gradeName!''}</td>
+						<td>${l.classId!''}</td>
+						<td>${l.subjectName!''}</td>
+						<td><a href="javascript:findTi(${l.id});">${l.title!''}</a></td>
+						<td>${l.sum!''}</td>
+						<td>${l.passNum!''}</td>
+						<td>${l.percentage!''}</td>
+						<td><a href="javascript:;" class="check_look" onclick="edit('${l.id}');"><i class="layui-icon">&#xe642;</i>&nbsp;编辑</a></td>
+						<td><a href="javascript:;" class="check_look" onclick="del('${l.id}');"><i class="layui-icon">&#xe640;</i>&nbsp;删除</a></td>
+					</tr>
+					
+					
+				</#list></#if>	
+				</tbody>
+			</table>
+			<div id="page" style="text-align: center;"></div>
+		</div>
+
+		<form id="form" action="${ctx}/testOffLine/managerOffLine" method="post" >
+			<input type="hidden" name="p" value="${pageNum!''}">
+			<input type="hidden" name="search" value="${search!''}">
+			<input type="hidden" name="memberId" value="${uid!''}">
+			<input type="hidden" name="gradeId" value="${gradeId!''}">
+			<input type="hidden" name="subjectId" value="${subjectId!''}">
+			<input type="hidden" name="schoolId" value="${schoolId!''}">
+			
+		</form>
+	</body>	
+	<script type="text/javascript" src="${ctx}/common/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="${ctx}/common/layui/layui.js"></script>
+	<#include "/commons/comPage.html" encoding="utf-8"/>
+	<script type="text/javascript">
+		function turnPage(p) {
+			$("input[name='p']").val(p);
+			refreshPage();
+		}
+	</script>
+	<script type="text/javascript">
+		function setIframeH() {
+			var body = $(document.body);
+			var iframe = $(parent.document.getElementById('parentIframe'));
+			iframe.height(body.height());
+		}
+		
+		var layer;
+		layui.use([ 'layer' ], function() {
+			layer = layui.layer;
+		});
+		layui.use(['form', 'element'], function() {
+			var form = layui.form,
+				element = layui.element;
+			//监听提交
+		 	form.on('submit(formDemo)', function(data) {
+				layer.msg(JSON.stringify(data.field));
+				return false;
+			}); 
+			
+			
+			
+		});
+		
+		function getSubject(){
+			var  gradeId=$("#gradeId").find("option:selected").attr("name");
+			$(".subjectId").empty();
+			$(".subjectId").append('<option value="">请选择科目</option>');
+			$.getJSON("${ctx}/adminBaseData/getSubjects", { gradeId: gradeId}, function(json){
+	 			for (var int = 0; int < json.length; int++) {
+					var arrayJson=json[int];
+					$(".subjectId").append('<option  value="'+arrayJson.id+'">'+arrayJson.value+'</option>');
+	 			}
+				}); 
+			
+	}
+	
+		
+		function searchSchool() {
+			
+			var search = $("input[name='search1']").val();
+			var  gradeId=$("#gradeId").find("option:selected").val();
+			var  subjectId=$(".subjectId").find("option:selected").val();
+			 $("input[name='search']").val(search);
+			$("input[name='gradeId']").val(gradeId);
+			$("input[name='subjectId']").val(subjectId);
+			
+			refreshPage();
+		} 
+		
+		function del(id){
+			layer.confirm('你确定要删除？',{shade: [0.2, '#FFFFFF']},function(){
+				$.ajax({
+					type : "POST",
+					url : "${ctx}/testOffLine/del",
+					data : {id:id},
+					success : function(data) {
+						layer.msg(data,{time : 1200},function() {
+							if (data == "操作成功")
+								$("#myform1").submit();
+								window.location.reload();
+						});
+					}
+				});
+			});
+			
+		}
+		
+		function edit(id){
+			location.href="${ctx}/testOffLine/edit?id="+id;
+		}
+		
+		function add(){
+			location.href="${ctx}/testOffLine/add";
+			
+		}
+		
+		
+		function refreshPage(){
+			$("#form").submit();
+		}
+		//查看试题详情
+		 function findTi(id){
+				 parent.$(".zhong_right iframe").attr("src", "${ctx}/testwebquestionanswer/QueAnswer?questionId="+id);
+					setIframeH();
+					function setIframeH() {
+						var body = $(document.body);
+						var iframe = $(parent.document.getElementById('parentIframe'));
+						iframe.height(body.height());
+					}
+			 }
+		
+	</script>
+	</html>
