@@ -53,7 +53,7 @@
 		<commons.lang3.version>3.0</commons.lang3.version>
 		<servlet.version>2.5</servlet.version>
 		<jacksoncore.version>2.5.1</jacksoncore.version>
-		<jacksondatabind.version>2.5.1</jacksondatabind.version>
+		<jacksondatabind.version>2.9.10.1</jacksondatabind.version>
 		<jacksonannotations.version>2.5.1</jacksonannotations.version>
 		<mail.version>1.4</mail.version>
 		<tomcat.catalina.version>7.0.82</tomcat.catalina.version>
